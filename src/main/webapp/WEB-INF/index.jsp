@@ -3,6 +3,7 @@
 <%
 	String ctxPath = request.getContextPath();
 %>
+
 <jsp:include page="header.jsp" />
 <div class="text-center">
 	<img src="<%=ctxPath %>/images/main.png" class="img-fluid rounded" alt="..." style="max-width: 150%;">
@@ -18,7 +19,7 @@
 	            <div class="container px-4 px-lg-5 mt-5">
 	                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 	                    <div class="col mb-5">
-	                        <div class="card h-100 curpointer">
+	                        <div class="card h-100 curpointer" id="newItem1">
 	                            <!-- Sale badge-->
 	                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
 	                            <!-- Product image-->

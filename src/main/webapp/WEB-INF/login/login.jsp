@@ -44,7 +44,7 @@ button#pwdFind {
     </div>
     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button" id="btnSubmit">로그인</button>
     <div class="login_sub_btn">
-        <button type="button" class="btn btn-secondary" id="idFind" name="idFind">아이디 찾기</button>
+        <button type="button" class="btn btn-secondary" id="idFind" name="idFind" onclick="goIdFind('<%= ctxPath%>')">아이디 찾기</button>
         <button type="button" class="btn btn-secondary" id="pwdFind" name="pwdFind">비밀번호 찾기</button>
     </div>
     <hr class="my-4">

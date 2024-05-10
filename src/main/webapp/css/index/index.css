@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+div#container{
+    font-family: "Noto Sans KR";
+}
+
 div#container > div {
     width: 90%;
     margin: 2% auto;

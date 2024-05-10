@@ -20,6 +20,9 @@
 	
 	<!-- Font -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 	
 	<!-- 직접만든 CSS -->
     <link rel="stylesheet" href="<%=ctxPath %>/css/index/index.css">
@@ -62,6 +65,12 @@
 		$("label#btnHome").bind('click',()=>{
 			location.href="<%=ctxPath%>/index.wine";
 		})
+		
+		$('div#newItem1').bind("click",function(){
+			
+			location.href= "<%=ctxPath%>/shop/product.wine";
+			
+		});
 		
 	}
 	

@@ -55,3 +55,8 @@ function doregister(){
     window.parent.closeModal();
 
 }
+
+function goIdFind(ctxPath) {
+	
+	location.href=ctxPath+"/login/idFind.wine";
+}
