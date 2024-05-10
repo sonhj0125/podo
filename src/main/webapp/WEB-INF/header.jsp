@@ -23,6 +23,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">	
 	
 	<!-- 직접만든 CSS -->
     <link rel="stylesheet" href="<%=ctxPath %>/css/index/index.css">
@@ -45,11 +46,16 @@
     
     footer {
     	padding : 0 2%;
+    	
     }
     
     div#loginModal{
     	height: 80rem;
     	
+    }
+    
+    header{
+    	font-family: "PT Serif";
     }
     
 	</style>
@@ -58,18 +64,24 @@
 	
 	window.onload = ()=>{
 		
+		<%-- Header Home --%>
 		$("label#navTitle").bind('click',()=>{
 			location.href="<%=ctxPath%>/index.wine";
 		});
 		
+		<%-- Footer Home --%>
 		$("label#btnHome").bind('click',()=>{
 			location.href="<%=ctxPath%>/index.wine";
 		})
 		
+		<%-- New Product Click --%>
 		$('div#newItem1').bind("click",function(){
-			
 			location.href= "<%=ctxPath%>/shop/product.wine";
-			
+		});
+		
+		<%-- Header Shop Click --%>
+		$("label#btnShop").bind('click',()=>{
+			location.href="<%=ctxPath%>/shop/list.wine";
 		});
 		
 	}
@@ -83,25 +95,30 @@
     
 </head>
 <body>
-    <nav class="py-2 bg-dark border-bottom">
+    <nav class="py-2 bg-dark">
         <div class="container d-flex flex-wrap justify-content-center">
             <div class="nav">
                 <label id="navTitle" class="text-align-center curpointer" style="color: white;"><img src="<%=ctxPath %>/images/title.png" class="img-fluid mx-auto d-block" style="max-width: 40%;"></label>
             </div>
         </div>
     </nav>
-    <header class="py-1 mb-2 d-flex flex-wrap">
+    <header class="py-1 mb-2 d-flex flex-wrap ">
             <div class="p-2 me-2 d-flex me-auto">
                 <ul class="nav">
-                    <li class="nav-item"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
-                    <li class="nav-item"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">About</label></li>
+                    <li class="nav-item fw-bold"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
+                    <div class="vr m-2"></div>
+                    <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">Event</label></li>
+                    <div class="vr m-2"></div>
+                    <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">About</label></li>
                 </ul>
             </div>
             <div class="p-2 me-2 d-flex">
                 <ul class="nav">
-                    <li class="nav-item"><label id="btnSingup" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</label></li>
-                    <li class="nav-item"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
-                    <li class="nav-item"><label id="btnSearch" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#searchModal">Search</label></li>
+                    <li class="nav-item fw-bold"><label id="btnSingup" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</label></li>
+                    <div class="vr m-2"></div>
+                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
+                    <div class="vr m-2"></div>
+                    <li class="nav-item fw-bold"><label id="btnSearch" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#searchModal">Search</label></li>
                 </ul>
             </div>
             
