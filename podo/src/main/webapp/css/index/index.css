@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+div#container > div {
+    width: 90%;
+    margin: 2% auto;
+}
+div#container > footer{
+    padding : 0 3%;
+}
+
+label.curpointer:hover{
+    cursor: pointer;
+}
+
+div.curpointer{
+	transition: 0.5s;
+}
+
+div.curpointer:hover{
+	transform: scale(1.1);
+    z-index: 1;
+    cursor: pointer;
+}
+
