@@ -48,13 +48,28 @@
     	height: 80rem;
     	
     }
+    
 	</style>
 	
 	<script type="text/javascript">
+	
+	window.onload = ()=>{
+		
+		$("label#navTitle").bind('click',()=>{
+			location.href="<%=ctxPath%>/index.wine";
+		});
+		
+		$("label#btnHome").bind('click',()=>{
+			location.href="<%=ctxPath%>/index.wine";
+		})
+		
+	}
+	
 	window.closeModal = function() {
 	    $('#loginModal').modal('hide');
 	    location.href="<%=ctxPath%>/member/memberRegister.wine";
 	}
+	
 	</script>
     
 </head>
@@ -62,7 +77,7 @@
     <nav class="py-2 bg-dark border-bottom">
         <div class="container d-flex flex-wrap justify-content-center">
             <div class="nav">
-                <label class="text-align-center curpointer" style="color: white;">PODO</label>
+                <label id="navTitle" class="text-align-center curpointer" style="color: white;"><img src="<%=ctxPath %>/images/title.png" class="img-fluid mx-auto d-block" style="max-width: 40%;"></label>
             </div>
         </div>
     </nav>
