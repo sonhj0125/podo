@@ -6,16 +6,15 @@
 
 <jsp:include page="header.jsp" />
 <div class="text-center">
-	<img src="<%=ctxPath %>/images/main.png" class="img-fluid rounded" alt="..." style="max-width: 150%;">
+	<img src="<%=ctxPath %>/images/main.png" class="img-fluid rounded" alt="...">
 </div> 
     <div id="container">
-		<br>
         <div>
-            <h1 class="px-lg-5 text-center">
+            <h1 class="py-5 px-lg-5 text-center">
                 NEW ARRIVALS
             </h1>
             <!-- Section-->
-	        <section class="py-5">
+	        <section class="py-3">
 	            <div class="container px-4 px-lg-5 mt-5">
 	                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 	                    <div class="col mb-5">
