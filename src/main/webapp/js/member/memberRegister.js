@@ -1,6 +1,6 @@
-window.onload =()=>{
+$(function(){
 
-    // 다음 주소찾기
+
     $('input#address').click(function(){
 
         new daum.Postcode({
@@ -28,4 +28,4 @@ window.onload =()=>{
 
     });
 
-}
+});
