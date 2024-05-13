@@ -25,6 +25,10 @@
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">	
 	
+	<%-- jQueryUI CSS 및 JS --%>
+	<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/jquery-ui.min.css" />
+	<script type="text/javascript" src="<%= ctxPath%>/js/jquery-ui.min.js"></script>
+	
 	<!-- 직접만든 CSS -->
     <link rel="stylesheet" href="<%=ctxPath %>/css/index/index.css">
     

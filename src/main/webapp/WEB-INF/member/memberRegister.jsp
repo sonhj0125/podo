@@ -4,16 +4,13 @@
 	String ctxPath = request.getContextPath();
 %>
 
-<jsp:include page="/WEB-INF/header.jsp" /> 
+<jsp:include page="/WEB-INF/header.jsp" />
 
 <!-- Main css -->
 <link rel="stylesheet" href="<%=ctxPath %>/css/member/memberRegister.css" type="text/css">
 
 <!-- 우편번호찾기 API -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-<!-- Jquery JS -->
-<script src="<%=ctxPath %>/js/jquery-3.7.1.min.js"></script>
 
 <!-- Main JS-->
 <script src="<%=ctxPath %>/js/member/memberRegister.js"></script>
@@ -59,8 +56,9 @@
                         <div class="input-group">
                             <label class="label">생년월일</label>
                             <div class="input-group-icon">
-                                <input class="input--style-4 js-datepicker" type="text" name="birthday" id="birthday">
-                                <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                <!-- <input class="input--style-4 js-datepicker" type="text" name="birthday" id="birthday"> -->
+                                <input class="input--style-4" id="date-picker" name="birthday" aria-label="Search" aria-describedby="basic-addon2" th:value="|${year}-${month}|">
+                                <!-- <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i> -->
                             </div>
                         </div>
                     </div>
