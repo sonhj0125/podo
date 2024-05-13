@@ -36,7 +36,7 @@
                     <div class="col-2">
                         <div class="input-group">
                             <label class="label">아이디</label>
-                            <input class="input--style-4" type="text" name="userid">
+                            <input class="input--style-4" type="text" id="userid" name="userid">
                         </div>
                     </div>
                 </div>
@@ -44,13 +44,13 @@
                     <div class="col-2">
                         <div class="input-group">
                             <label class="label">비밀번호</label>
-                            <input class="input--style-4" type="password" name="pwd">
+                            <input class="input--style-4" type="password" id="pwd" name="pwd">
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="input-group">
                             <label class="label">비밀번호 확인</label>
-                            <input class="input--style-4" type="password">
+                            <input class="input--style-4" type="password" id="pwdCheck">
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <div class="col-2">
                         <div class="input-group">
                             <label class="label">이메일</label>
-                            <input class="input--style-4" type="email" name="email">
+                            <input class="input--style-4" type="email" name="email" id ="email">
                         </div>
                     </div>
                     <div class="col-2">
@@ -115,6 +115,19 @@
             </form>
         </div>
     </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">주의</strong>
+      <small>회원가입</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toast-msg">
+    	
+    </div>
+  </div>
 </div>
 
 <jsp:include page="/WEB-INF/footer.jsp" /> 
