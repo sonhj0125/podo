@@ -56,8 +56,7 @@
                         <div class="input-group">
                             <label class="label">생년월일</label>
                             <div class="input-group-icon">
-                                <!-- <input class="input--style-4 js-datepicker" type="text" name="birthday" id="birthday"> -->
-                                <input class="input--style-4" id="date-picker" name="birthday" aria-label="Search" aria-describedby="basic-addon2" th:value="|${year}-${month}|">
+                                <input class="input--style-4 js-datepicker" type="text" name="birthday" id="date-picker">
                                 <!-- <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i> -->
                             </div>
                         </div>
