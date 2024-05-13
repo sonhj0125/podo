@@ -132,7 +132,7 @@
                 </ul>
             </div>
             
-            <%-- Sign up Modal --%>
+            <%-- Sign in Modal --%>
             <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		        <div class="modal-dialog">
 		            <div class="modal-content rounded-4 shadow">
@@ -142,15 +142,15 @@
 		                </div>
 		
 		                <div class="modal-body p-5 pt-0">
-		                    <div id="idFind">
-								<iframe id="iframe_login" style="border: none; width: 100%; height: 380px;" src="<%= ctxPath%>/login/login.wine">
+		                    <div id="login">
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%= ctxPath%>/login/login.wine">
 								</iframe>
 							</div>
 		                </div>
 		            </div>
 		        </div>
 		    </div>
-		    <%-- Sign up Modal 끝 --%>
+		    <%-- Sign in Modal 끝 --%>
 		    
 		     <%-- 검색 Modal --%>
              <form>
