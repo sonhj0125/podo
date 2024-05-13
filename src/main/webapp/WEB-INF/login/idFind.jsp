@@ -51,7 +51,7 @@
 		   </ul> 
 		   	
 		   <div class="my-3" style="text-align: center;">
-		    	<button type="button" id="btn-success" class="btn btn-Primary">찾기</button>
+		    	<button type="button" id="btn-Primary" class="btn btn-Primary">찾기</button>
 		   </div>
 	   
 		</form>
