@@ -60,3 +60,8 @@ function goIdFind(ctxPath) {
 	
 	location.href=ctxPath+"/login/idFind.wine";
 }
+
+function goPwdFind(ctxPath) {
+	
+	location.href=ctxPath+"/login/pwdFind.wine";
+}

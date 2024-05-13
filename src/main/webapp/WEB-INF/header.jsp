@@ -62,7 +62,15 @@
 	
 	<script type="text/javascript">
 	
-	window.onload = ()=>{
+	$(document).ready(function(){
+		
+		<%-- 모달창을 끄면 새로고침--%>
+		$("button.btn-close").click(function(){
+			javascript:history.go(0);
+		}); 
+	});
+	
+	window.onload = ()=> {
 		
 		<%-- Header Home --%>
 		$("label#navTitle").bind('click',()=>{
@@ -90,6 +98,8 @@
 	    $('#loginModal').modal('hide');
 	    location.href="<%=ctxPath%>/member/memberRegister.wine";
 	}
+	
+	
 	
 	</script>
     
