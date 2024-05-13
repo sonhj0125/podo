@@ -108,7 +108,7 @@ $(function(){
 	    const bool = regExp_email.test($(e.target).val());
 
         if(email == ""){
-            toastmsg.innerText="이메일 입력해주세요";
+            toastmsg.innerText="이메일을 입력해주세요";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
