@@ -25,6 +25,10 @@
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">	
 	
+	<%-- jQueryUI CSS 및 JS --%>
+	<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/jquery-ui.min.css" />
+	<script type="text/javascript" src="<%= ctxPath%>/js/jquery-ui.min.js"></script>
+	
 	<!-- 직접만든 CSS -->
     <link rel="stylesheet" href="<%=ctxPath %>/css/index/index.css">
     
@@ -157,7 +161,7 @@
                 </ul>
             </div>
             
-            <%-- Sign up Modal --%>
+            <%-- Sign in Modal --%>
             <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		        <div class="modal-dialog">
 		            <div class="modal-content rounded-4 shadow">
@@ -167,15 +171,15 @@
 		                </div>
 		
 		                <div class="modal-body p-5 pt-0">
-		                    <div id="idFind">
-								<iframe id="iframe_login" style="border: none; width: 100%; height: 380px;" src="<%= ctxPath%>/login/login.wine">
+		                    <div id="login">
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
 								</iframe>
 							</div>
 		                </div>
 		            </div>
 		        </div>
 		    </div>
-		    <%-- Sign up Modal 끝 --%>
+		    <%-- Sign in Modal 끝 --%>
 		    
 		     <%-- 검색 Modal --%>
              <form>

@@ -1,4 +1,4 @@
-$(function(){
+$(function () {
 
     const toastLive = document.getElementById('liveToast');
     const toastmsg = document.getElementById('toast-msg');
@@ -23,7 +23,7 @@ $(function(){
     	maxYear: 2025
 	});
 
-    $('input#address').click(function(){
+    $('input#address').click(function () {
 
         new daum.Postcode({
             oncomplete: function (data) {
@@ -49,8 +49,11 @@ $(function(){
         $(e.target).val("").next().show();
 
     });
+    
 
     // 유효성 검사
+
+    let isIdDuplicate; // 아이디 중복 확인용
 
     // 아이디
     $("input#userid").blur( (e) => {
@@ -58,21 +61,53 @@ $(function(){
         const userid = $(e.target).val().trim();
         const tag = $('input#userid');
 
+        // === 아이디 중복 확인 ===
+        $.ajax({
+            url: "idDuplicateCheck.wine",
+            data: {"userid":$(e.target).val()},
+            type: "post",
+            async : false,
+            dataType : "json",
+            success : function(json) {
+                
+                if(json.isExist) {
+                    // 입력한 userid가 이미 사용 중인 경우 (중복 O)
+                    isIdDuplicate = true;
+                    
+                } else {
+                    isIdDuplicate = false;
+                }
+            },
+            error: function(request, status, error) {
+                alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+            }
+        });
+
         if(userid == "") {
-            toastmsg.innerText="아이디를 입력해주세요";
+            toastmsg.innerText="아이디를 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkUserid = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else if(userid.length<6) {
+
+        } else if(userid.length<6) {
             toastmsg.innerText="아이디는 6글자 이상으로 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkUserid = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else{
+
+        } else if(isIdDuplicate) {
+            toastmsg.innerText="중복된 아이디입니다. 다시 입력해주세요!";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            checkUserid = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
+
+        } else {
 			checkUserid = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
@@ -165,6 +200,9 @@ $(function(){
 
     });
 
+
+    let isEmailDuplicate; // 이메일 중복 확인용
+
     // 이메일 확인
     $("input#email").blur( (e) => {
 
@@ -174,21 +212,53 @@ $(function(){
         const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
 	    const bool = regExp_email.test($(e.target).val());
 
-        if(email == ""){
-            toastmsg.innerText="이메일을 입력해주세요";
+        // === 이메일 중복 확인 ===
+        $.ajax({
+            url: "emailDuplicateCheck.wine",
+            data: {"email":$(e.target).val()},
+            type: "post",
+            async : false,
+            dataType : "json",
+            success : function(json) {
+                
+                if(json.isExist) {
+                    // 입력한 email이 이미 사용 중인 경우 (중복 O)
+                    isEmailDuplicate = true;
+                    
+                } else {
+                    isEmailDuplicate = false;
+                }
+            },
+            error: function(request, status, error) {
+                alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+            }
+        });
+
+        if(email == "") {
+            toastmsg.innerText="이메일을 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else if(!bool){
-            toastmsg.innerText="올바른 이메일형식이 아닙니다.";
+
+        } else if(!bool){
+            toastmsg.innerText="올바른 이메일 형식이 아닙니다.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else{
+
+        } else if(isEmailDuplicate) {
+            toastmsg.innerText="중복된 이메일입니다. 다시 입력해주세요!";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            checkUserid = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
+
+        } else{
             checkEmail = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
