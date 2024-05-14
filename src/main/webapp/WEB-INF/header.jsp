@@ -92,6 +92,17 @@
 			location.href="<%=ctxPath%>/shop/list.wine";
 		});
 		
+		<%-- Header Shop Click --%>
+		$("label#btnEvent").bind('click',()=>{
+			location.href="<%=ctxPath%>/shop/event.wine";
+		});
+		
+		<%-- Header Shop Click --%>
+		$("label#btnAbout").bind('click',()=>{
+			location.href="<%=ctxPath%>/shop/about.wine";
+		});
+
+		
 	}
 	
 	window.closeModal = function() {
@@ -117,7 +128,7 @@
                 <ul class="nav">
                     <li class="nav-item fw-bold"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
                     <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">Event</label></li>
+                    <li class="nav-item fw-bold"><label id="btnEvent" class="nav-link link-body-emphasis px-2 curpointer">Event</label></li>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">About</label></li>
                 </ul>

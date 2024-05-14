@@ -32,7 +32,9 @@
 	
 	<div id="divIdFindFrm">
 		<form name="idFindFrm">
-	
+		<div style="text-align: center">
+			<h3>아이디 찾기</h3>
+		</div>
 		   <ul style="list-style-type: none;">
 		      <li style="margin: 25px 0">
 		          <label style="display: inline-block; width: 60px;">성명</label>
@@ -52,6 +54,7 @@
 		   	
 		   <div class="my-3" style="text-align: center;">
 		    	<button type="button" id="btn-Primary" class="btn btn-Primary">찾기</button>
+		    	<button type="button" class="btn btn-info" onclick="history.back()">이전</button>
 		   </div>
 	   
 		</form>
