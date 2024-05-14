@@ -45,11 +45,12 @@ public class Signin extends AbstractController {
 				}else {
 				
 					System.out.println("없는아이디");
+					return;
 					
 				}
 				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/index.jsp");
+				super.setRedirect(true);
+				super.setViewPage(request.getContextPath()+"/index.wine");
 	
 				
 			}else {
