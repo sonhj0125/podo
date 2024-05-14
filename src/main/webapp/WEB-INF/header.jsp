@@ -68,6 +68,7 @@
 		$("button.btn-close").click(function(){
 			javascript:history.go(0);
 		}); 
+		
 	});
 	
 	window.onload = ()=> {
@@ -105,10 +106,18 @@
 		
 	}
 	
-	window.closeModal = function() {
+	window.closeModal = function(login) {
+		
 	    $('#loginModal').modal('hide');
-	    location.href="<%=ctxPath%>/member/memberRegister.wine";
+	    
+	    if(!login){
+	    	location.href="<%=ctxPath%>/member/memberRegister.wine";
+	    }else{
+	    	javascript:history.go(0);
+	    }
+	    
 	}
+	
 	
 	
 	
@@ -135,7 +144,12 @@
             </div>
             <div class="p-2 me-2 d-flex">
                 <ul class="nav">
-                    <li class="nav-item fw-bold"><label id="btnSingup" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</label></li>
+                	<c:if test="${empty sessionScope.loginUser}">
+                    	<li class="nav-item fw-bold"><label id="btnSingup" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</label></li>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.loginUser}">
+                    	<li class="nav-item fw-bold"><label id="btnSingout" class="nav-link link-body-emphasis px-2 curpointer">Sign out</label></li>
+                    </c:if>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>

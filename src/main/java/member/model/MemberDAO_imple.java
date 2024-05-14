@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -88,6 +89,53 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 		
 	}// end of public int doRegister(MemberDTO mdto)
+
+	@Override
+	public MemberDTO signin(Map<String, String> paraMap) throws SQLException {
+		
+		MemberDTO mdto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email, phone, address, addressdetail, gender, birthday, point, registerday, pwdupdateday, memberidx "
+					+ " from MEMBER where userid = ? and pwd = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				mdto = new MemberDTO();
+				
+				mdto.setUserid(rs.getString(1));
+				mdto.setName(rs.getString(2));
+				mdto.setEmail(aes.encrypt(rs.getString(3)));
+				mdto.setPhone(aes.encrypt(rs.getString(4)));
+				mdto.setAddress(rs.getString(5));
+				mdto.setAddressDetail(rs.getString(6));
+				mdto.setGender(rs.getString(7));
+				mdto.setBirthday(rs.getString(8));
+				mdto.setPoint(rs.getString(9));
+				mdto.setRegisterDay(rs.getString(10));
+				mdto.setPwdUpdateDay(rs.getString(11));
+				mdto.setMemberIdx(rs.getString(12));
+				
+			}
+			
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return mdto;
+		
+	}// end of public MemberDTO signin(Map<String, String> paraMap)
 	
 	
 	
