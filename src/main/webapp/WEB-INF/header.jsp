@@ -147,7 +147,7 @@
 		
 		                <div class="modal-body p-5 pt-0">
 		                    <div id="login">
-								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%= ctxPath%>/login/login.wine">
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
 								</iframe>
 							</div>
 		                </div>

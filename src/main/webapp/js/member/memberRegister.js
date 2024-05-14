@@ -44,84 +44,16 @@ $(function () {
 
     });
 
-    $('input#date-picker').keyup((e) => {
+    $('input#birthday').keyup((e)=>{
 
         $(e.target).val("").next().show();
 
     });
-/*
-    // === jQuery UI 의 datepicker === //
-    $('input.js-datepicker').datepicker({
-        dateFormat: 'yy-mm-dd'  // Input Display Format 변경
-        , showOtherMonths: true   // 빈 공간에 현재월의 앞뒤월의 날짜를 표시
-        , showMonthAfterYear: true // 년도 먼저 나오고, 뒤에 월 표시
-        , changeYear: true        // 콤보박스에서 년 선택 가능
-        , changeMonth: true       // 콤보박스에서 월 선택 가능                
-        //  , showOn: "both"          // button:버튼을 표시하고,버튼을 눌러야만 달력 표시됨. both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시됨.  
-        , buttonImage: "/images/calendar.png"  // 버튼 이미지 경로
-        , buttonImageOnly: true   // 기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-        //  , buttonText: "선택"       // 버튼에 마우스 갖다 댔을 때 표시되는 텍스트
-        // , yearSuffix: "년"         // 달력의 년도 부분 뒤에 붙는 텍스트
-        // , monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']  // 달력의 월 부분 텍스트
-        // , monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']  // 달력의 월 부분 Tooltip 텍스트
-        // , dayNamesMin: ['일', '월', '화', '수', '목', '금', '토']  // 달력의 요일 부분 텍스트
-        // , dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']  // 달력의 요일 부분 Tooltip 텍스트
-        //  , minDate: "-1M"  // 최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-        //  , maxDate: "+1M"  // 최대 선택일자(+1D:하루후, +1M:한달후, +1Y:일년후)
-    });
-
-    // 초기값을 오늘 날짜로 설정
-    // $('input.js-datepicker').datepicker('setDate', 'today');  // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
-
-
-    // === 전체 datepicker 옵션 일괄 설정하기 ===  
-    //     한번의 설정으로 $("input#fromDate"), $('input#toDate')의 옵션을 모두 설정할 수 있다.
-    $(function () {
-        //모든 datepicker에 대한 공통 옵션 설정
-        $.datepicker.setDefaults({
-            dateFormat: 'yy-mm-dd' //Input Display Format 변경
-            , showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-            , showMonthAfterYear: true //년도 먼저 나오고, 뒤에 월 표시
-            , changeYear: true //콤보박스에서 년 선택 가능
-            , changeMonth: true //콤보박스에서 월 선택 가능                
-            // ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시됨. both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시됨.  
-            , buttonImage: "/images/calendar.png" //버튼 이미지 경로
-            // ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-            // ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
-            // , yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
-            // , monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] //달력의 월 부분 텍스트
-            // , monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'] //달력의 월 부분 Tooltip 텍스트
-            // , dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'] //달력의 요일 부분 텍스트
-            // , dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'] //달력의 요일 부분 Tooltip 텍스트
-            // ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-            // ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                    
-        });
-
-        // input을 datepicker로 선언
-        $("input#fromDate").datepicker();
-        $("input#toDate").datepicker();
-
-        // From의 초기값을 오늘 날짜로 설정
-        $('input#fromDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
-
-        // To의 초기값을 3일후로 설정
-        $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
-
-    });*/
     
-    $('input#date-picker').datepicker({
-        dateFormat: "yy-mm-dd",
-        showOtherMonths: true, // 빈 공간에 현재월의 앞뒤월의 날짜를 표시
-        showMonthAfterYear: true, // 년도 먼저 나오고, 뒤에 월 표시
-        buttonImageOnly: true,
-        changeYear: true, //콤보박스에서 년 선택 가능
-        changeMonth: true, //콤보박스에서 월 선택 가능      
-        language: "ko",
-        autoclose: true
-        
-    });
 
     // 유효성 검사
+
+    let isIdDuplicate; // 아이디 중복 확인용
 
     // 아이디
     $("input#userid").blur( (e) => {
@@ -129,21 +61,53 @@ $(function () {
         const userid = $(e.target).val().trim();
         const tag = $('input#userid');
 
+        // === 아이디 중복 확인 ===
+        $.ajax({
+            url: "idDuplicateCheck.wine",
+            data: {"userid":$(e.target).val()},
+            type: "post",
+            async : false,
+            dataType : "json",
+            success : function(json) {
+                
+                if(json.isExist) {
+                    // 입력한 userid가 이미 사용 중인 경우 (중복 O)
+                    isIdDuplicate = true;
+                    
+                } else {
+                    isIdDuplicate = false;
+                }
+            },
+            error: function(request, status, error) {
+                alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+            }
+        });
+
         if(userid == "") {
-            toastmsg.innerText="아이디를 입력해주세요";
+            toastmsg.innerText="아이디를 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkUserid = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else if(userid.length<6) {
+
+        } else if(userid.length<6) {
             toastmsg.innerText="아이디는 6글자 이상으로 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkUserid = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else{
+
+        } else if(isIdDuplicate) {
+            toastmsg.innerText="중복된 아이디입니다. 다시 입력해주세요!";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            checkUserid = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
+
+        } else {
 			checkUserid = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
@@ -236,6 +200,9 @@ $(function () {
 
     });
 
+
+    let isEmailDuplicate; // 이메일 중복 확인용
+
     // 이메일 확인
     $("input#email").blur( (e) => {
 
@@ -245,21 +212,53 @@ $(function () {
         const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
 	    const bool = regExp_email.test($(e.target).val());
 
-        if(email == ""){
-            toastmsg.innerText="이메일을 입력해주세요";
+        // === 이메일 중복 확인 ===
+        $.ajax({
+            url: "emailDuplicateCheck.wine",
+            data: {"email":$(e.target).val()},
+            type: "post",
+            async : false,
+            dataType : "json",
+            success : function(json) {
+                
+                if(json.isExist) {
+                    // 입력한 email이 이미 사용 중인 경우 (중복 O)
+                    isEmailDuplicate = true;
+                    
+                } else {
+                    isEmailDuplicate = false;
+                }
+            },
+            error: function(request, status, error) {
+                alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+            }
+        });
+
+        if(email == "") {
+            toastmsg.innerText="이메일을 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else if(!bool){
-            toastmsg.innerText="올바른 이메일형식이 아닙니다.";
+
+        } else if(!bool){
+            toastmsg.innerText="올바른 이메일 형식이 아닙니다.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-        }else{
+
+        } else if(isEmailDuplicate) {
+            toastmsg.innerText="중복된 이메일입니다. 다시 입력해주세요!";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            checkUserid = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
+
+        } else{
             checkEmail = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
