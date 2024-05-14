@@ -128,7 +128,7 @@ public class MemberDAO_imple implements MemberDAO {
 				mdto.setBirthday(rs.getString(8));
 				mdto.setPoint(rs.getString(9));
 				mdto.setRegisterDay(rs.getString(10));
-				mdto.setPwdUpdateDsay(rs.getString(11));
+				mdto.setPwdUpdateDay(rs.getString(11));
 				mdto.setMemberIdx(rs.getString(12));
 				
 			}
