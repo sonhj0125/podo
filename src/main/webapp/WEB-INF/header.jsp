@@ -66,15 +66,6 @@
 	
 	<script type="text/javascript">
 	
-	$(document).ready(function(){
-		
-		<%-- 모달창을 끄면 새로고침--%>
-		$("button.btn-close").click(function(){
-			javascript:history.go(0);
-		}); 
-		
-	});
-	
 	window.onload = ()=> {
 		
 		<%-- Header Home --%>
@@ -106,24 +97,35 @@
 		$("label#btnAbout").bind('click',()=>{
 			location.href="<%=ctxPath%>/shop/about.wine";
 		});
-
 		
-	}
+		<%-- Header Sing out Click --%>
+		$("label#btnSingout").bind('click',()=>{
+			location.href="<%=ctxPath%>/login/signout.wine";
+		});
+		
+		<%-- 모달창을 끄면 모달창을 새로고침--%>
+		$("button.btn-close").click(function(){
+			javascript:history.go(0);
+		});
+		
+		
+
+	} // end of window.onload
 	
 	window.closeModal = function(login) {
 		
 	    $('#loginModal').modal('hide');
 	    
-	    if(!login){
+	    if(!login){ // 회원가입일경우
 	    	location.href="<%=ctxPath%>/member/memberRegister.wine";
-	    }else{
-	    	javascript:history.go(0);
+	    }else{ // 로그인일경우
+	    	setTimeout(function() {
+			    console.log("aa");
+			    javascript:history.go(0);
+			}, 800);
 	    }
 	    
-	}
-	
-	
-	
+	}// end of window.closeModal
 	
 	</script>
     

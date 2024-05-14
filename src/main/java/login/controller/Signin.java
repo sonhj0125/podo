@@ -24,6 +24,7 @@ public class Signin extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		try {
+			
 			String method = request.getMethod();
 			
 			if("POST".equalsIgnoreCase(method)) {
@@ -37,14 +38,13 @@ public class Signin extends AbstractController {
 				
 				if(loginUser != null) {
 					
-					System.out.println("있는아이디");
-					
 					HttpSession session = request.getSession();
 					session.setAttribute("loginUser", loginUser);
 					
 				}else {
-				
-					System.out.println("없는아이디");
+					
+					super.setRedirect(false);
+					super.setViewPage("/WEB-INF/index.jsp");
 					return;
 					
 				}
@@ -54,8 +54,10 @@ public class Signin extends AbstractController {
 	
 				
 			}else {
+				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/index.jsp");
+				
 			}
 			
 		}catch (Exception e) {
