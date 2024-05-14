@@ -3,6 +3,7 @@ $(function(){
     const toastLive = document.getElementById('liveToast');
     const toastmsg = document.getElementById('toast-msg');
     let checkUserid = false;
+    let checkName = false;
     let checkPwd = false;
     let checkPwdCheck = false;
     let checkEmail = false;
@@ -10,13 +11,13 @@ $(function(){
     
     $('.datepicker').daterangepicker({
 		singleDatePicker: true,
-    	locale: {               
-		    "format": 'YYYY-MM-DD',
-		    "applyLabel": "확인",
-		    "cancelLabel": "취소",
-		    "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
-		    "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-	    },
+    	locale: {
+		    "format": 'YYYY-MM-DD',
+		    "applyLabel": "확인",
+		    "cancelLabel": "취소",
+		    "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+		    "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+	    },
 		showDropdowns: true,
 		minYear: 1900,
     	maxYear: 2025
@@ -51,31 +52,70 @@ $(function(){
 
     // 유효성 검사
 
-    // UserID
+    // 아이디
     $("input#userid").blur( (e) => {
     
         const userid = $(e.target).val().trim();
+        const tag = $('input#userid');
 
         if(userid == "") {
             toastmsg.innerText="아이디를 입력해주세요";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkUserid = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else if(userid.length<6) {
             toastmsg.innerText="아이디는 6글자 이상으로 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkUserid = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else{
 			checkUserid = true;
+            tag.addClass("status-g");
+            tag.removeClass("status-ng");
 		}
     
+    });
+
+    // 이름
+    $("input#name").blur( (e) => {
+
+        const name = $(e.target).val().trim();
+        const tag = $('input#name');
+
+        const regExp_name = new RegExp(/^[가-힣]{2,10}$/); 
+        const bool = regExp_name.test($(e.target).val());
+
+        if(name == ""){
+            toastmsg.innerText="이름을 입력해주세요";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            checkName = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
+        }else if(!bool){
+            toastmsg.innerText="올바른 이름이 아닙니다.";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            checkName = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
+        }else{
+            checkName = true;
+            tag.addClass("status-g");
+            tag.removeClass("status-ng");
+        }
+
     });
 
     // 비밀번호
     $("input#pwd").blur( (e) => {
     
         const pwd = $(e.target).val().trim();
+        const tag = $('input#pwd');
 
         const regExp_pwd = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g); 
         // 숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
@@ -86,13 +126,19 @@ $(function(){
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkPwd = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else if (!bool) {
             toastmsg.innerHTML="비밀번호은 숫자/문자/특수문자 포함하여<br>8~15자리 이내로 작성해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkPwd = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else{
 			checkPwd = true;
+            tag.addClass("status-g");
+            tag.removeClass("status-ng");
 		}
     
     });
@@ -102,14 +148,19 @@ $(function(){
     
         const pwd = $('input#pwd').val();
         const pwdCheck = $(e.target).val().trim();
+        const tag = $('input#pwdCheck');
     
         if(pwd != pwdCheck){
             toastmsg.innerText="비밀번호가 일치하지 않습니다";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkPwdCheck = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else{
             checkPwdCheck = true;
+            tag.addClass("status-g");
+            tag.removeClass("status-ng");
         }
 
     });
@@ -118,6 +169,7 @@ $(function(){
     $("input#email").blur( (e) => {
 
         const email = $(e.target).val().trim();
+        const tag = $('input#email');
 
         const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
 	    const bool = regExp_email.test($(e.target).val());
@@ -127,13 +179,19 @@ $(function(){
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else if(!bool){
             toastmsg.innerText="올바른 이메일형식이 아닙니다.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkEmail = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else{
             checkEmail = true;
+            tag.addClass("status-g");
+            tag.removeClass("status-ng");
         }
 
     });
@@ -142,6 +200,7 @@ $(function(){
     $("input#phone").blur( (e) =>{
 
         const phone = $(e.target).val().trim();
+        const tag = $('input#phone');
 
         const regExp_phone = new RegExp(/^01[016789]{1}[0-9]{3,4}[0-9]{4}$/);
         const bool = regExp_phone.test($(e.target).val());
@@ -151,20 +210,26 @@ $(function(){
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkPhone = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else if(!bool){
             toastmsg.innerHTML="올바른 연락처가 아닙니다.<br>하이폰[-]를 빼고 입력해주세요.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkPhone = false;
+            tag.removeClass("status-g");
+            tag.addClass("status-ng");
         }else{
             checkPhone = true;
+            tag.addClass("status-g");
+            tag.removeClass("status-ng");
         }
 
     });
 
     $("#register").bind("click",()=>{
 		
-        if(checkUserid && checkPwd && checkPwdCheck && checkEmail && checkPhone){
+        if(checkUserid && checkName && checkPwd && checkPwdCheck && checkEmail && checkPhone){
             goRegister(toastLive,toastmsg);
         }else{
             toastmsg.innerHTML="올바르게 입력하세요";
@@ -182,8 +247,6 @@ function goRegister(toastLive,toastmsg){
     const addressDetail = $("input#addressDetail").val().trim();
     const birthday = $("input#birthday").val().trim();
     const birthdaySplit = birthday.split("-");
-
-    console.log(birthdaySplit);
 
     const today = new Date();
     const birthDate = new Date(birthdaySplit[0], birthdaySplit[1], birthdaySplit[2]);
@@ -211,7 +274,7 @@ function goRegister(toastLive,toastmsg){
 
     const frm = document.Registerfrm;
     frm.action = "memberRegister.wine";
-    frm.method = "get";
+    frm.method = "post";
     frm.submit();
 
 }

@@ -31,9 +31,11 @@
         font-weight: 500;
         font-style: normal;
     }
+    
     .month{
     	padding: 0 10px;
     }
+    
     .yearselect{
     	display : inline-block;
     	float: left;
@@ -41,6 +43,7 @@
     	max-width: 65px;
     	min-width: 65px;
     }
+    
     .monthselect{
     	display : inline-block;
     	float: right;
@@ -48,6 +51,7 @@
     	max-width : 65px;
     	min-width : 65px;
     }
+    
     .weekend{
     	color : red;
     }
@@ -58,12 +62,18 @@
     <div class="card card-4">
         <div class="card-body">
             <h2 class="title">PODO 회원가입</h2>
-            <form method="POST" id="Registerfrm">
+            <form name="Registerfrm">
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
                             <label class="label">아이디</label>
                             <input class="input--style-4" type="text" id="userid" name="userid">
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <label class="label">이름</label>
+                            <input class="input--style-4" type="text" id="name" name="name">
                         </div>
                     </div>
                 </div>
@@ -96,11 +106,11 @@
                             <label class="label">성별</label>
                             <div class="pt-3">
                                 <label class="radio-container m-r-45">남자
-                                    <input type="radio" checked="checked" name="gender">
+                                    <input type="radio" checked="checked" name="gender" value="1">
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="radio-container" style="margin-left: 5%;">여자
-                                    <input type="radio" name="gender">
+                                    <input type="radio" name="gender" value="2">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
@@ -137,7 +147,7 @@
                 </div> 
 
                 <div class="p-t-15">
-                    <button type="button" class="btn btn-dark" id="register">가입</button>
+                    <input type="button" class="btn btn-dark" id="register" value="가입">
                 </div>
             </form>
         </div>
