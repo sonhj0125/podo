@@ -14,10 +14,10 @@ public class Signout extends AbstractController {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		// 현 위치 주소 받아서 뷰단으로 날려야함;;
+		String uri = request.getParameter("uri");
 		
 		super.setRedirect(true);
-		super.setViewPage(request.getContextPath()+"/index.wine");
+		super.setViewPage(uri);
 		
 	}
 

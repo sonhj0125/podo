@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String ctxPath = request.getContextPath();
+	String uri = request.getRequestURI();
 %>
 <!DOCTYPE html>
 <html>
@@ -100,7 +101,9 @@
 		
 		<%-- Header Sing out Click --%>
 		$("label#btnSingout").bind('click',()=>{
-			location.href="<%=ctxPath%>/login/signout.wine";
+			const frm = document.passFrm;
+		    frm.action = "<%=ctxPath%>/login/signout.wine";
+		    frm.submit();
 		});
 		
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
@@ -108,8 +111,6 @@
 			javascript:history.go(0);
 		});
 		
-		
-
 	} // end of window.onload
 	
 	window.closeModal = function(login) {
@@ -119,10 +120,11 @@
 	    if(!login){ // 회원가입일경우
 	    	location.href="<%=ctxPath%>/member/memberRegister.wine";
 	    }else{ // 로그인일경우
+	    	$('#spinner').show();
 	    	setTimeout(function() {
-			    console.log("aa");
+	    		$('#spinner').hide();
 			    javascript:history.go(0);
-			}, 800);
+			}, 1200);
 	    }
 	    
 	}// end of window.closeModal
@@ -136,6 +138,9 @@
             <div class="nav">
                 <label id="navTitle" class="text-align-center curpointer" style="color: white;"><img src="<%=ctxPath %>/images/title.png" class="img-fluid mx-auto d-block" style="max-width: 40%;"></label>
             </div>
+            <div id="spinner" class="spinner-border text-light z-1 position-absolute p-2 top-0 end-0" role="status" style="display: none; margin-right: 3%; margin-top: 30px;">
+			  <span class="visually-hidden">Loading...</span>
+			</div>
         </div>
     </nav>
     <header class="py-1 mb-2 d-flex flex-wrap ">
@@ -204,3 +209,7 @@
             </form>
     	    <%-- 검색 Modal --%>
     </header>
+    
+    <form action="post" name="passFrm" style="display : none;">
+    	<input type="text" value="${requestScope["javax.servlet.forward.request_uri"]}" name="uri">
+    </form>
