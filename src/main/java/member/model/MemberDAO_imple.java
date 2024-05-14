@@ -40,6 +40,9 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	}// end of public MemberDAO_imple()
 	
+	
+	
+	// 자원 반납
 	private void close() {
 		
 		try {
@@ -52,6 +55,9 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	}// end of private void close()
 
+	
+	
+	// 회원가입
 	@Override
 	public int doRegister(MemberDTO mdto) throws SQLException {
 		
@@ -88,6 +94,69 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 		
 	}// end of public int doRegister(MemberDTO mdto)
+
+	
+	
+	// 아이디 중복 확인
+	@Override
+	public boolean idDuplicateCheck(String userid) throws SQLException {
+		
+		boolean isExist = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select userid "
+					   + " from member "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+			isExist = rs.next(); // 행이 있으면(중복된 userid) true,
+                				 // 행이 없으면(사용가능한 userid) false
+			
+		} finally {
+			close();
+		}
+		
+		return isExist;
+		
+	} // end of public boolean idDuplicateCheck(String userid) throws SQLException -----------
+
+
+
+	// 이메일 중복 확인
+	@Override
+	public boolean emailDuplicateCheck(String email) throws SQLException {
+
+		boolean isExist = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select email "
+					   + " from member "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, aes.encrypt(email));
+			rs = pstmt.executeQuery();
+			
+			isExist = rs.next(); // 행이 있으면(중복된 userid) true,
+                				 // 행이 없으면(사용가능한 userid) false
+			
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return isExist;
+		
+	} // end of public boolean emailDuplicateCheck(String email) throws SQLException ------------
 	
 	
 	
