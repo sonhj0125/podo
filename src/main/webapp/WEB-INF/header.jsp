@@ -96,6 +96,11 @@
 		$("label#btnEvent").bind('click',()=>{
 			location.href="<%=ctxPath%>/shop/event.wine";
 		});
+		
+		<%-- Header Shop Click --%>
+		$("label#btnAbout").bind('click',()=>{
+			location.href="<%=ctxPath%>/shop/about.wine";
+		});
 
 		
 	}
