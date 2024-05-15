@@ -12,7 +12,7 @@ public class Product extends AbstractController {
 
 	ProductDAO pdao = null;
 	
-	Product(){
+	public Product(){
 		pdao = new ProductDAO_imple();
 	}
 	
@@ -20,7 +20,6 @@ public class Product extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String index = request.getParameter("pindex");
-		System.out.println(index);
 		
 		try {
 			

@@ -37,13 +37,26 @@
 		                                    <!-- Product name-->
 		                                    <h6 class="fw-bolder">${newList.pname}</h6>
 		                                    <!-- Product price-->
-		                                    ${newList.pprice}
+		                                    ${newList.pprice}원
 		                                </div>
 		                            </div>
 		                            <!-- Product details-->
 		                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-		                                <div class="text-center">${newList.ptype}</div>
-		                                <div class="text-center">${newList.phometown}</div>
+		                                <div class="text-center">
+		                                	<c:if test="${newList.ptype == '레드'}">
+		                                		<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
+		                                	</c:if>
+		                                	<c:if test="${newList.ptype == '화이트'}">
+		                                		<span class="badge rounded-pill p-2" style="background-color: #ffb366;">화이트</span>
+		                                	</c:if>
+		                                	<c:if test="${newList.ptype == '로제'}">
+		                                		<span class="badge rounded-pill p-2" style="background-color: #ff8080;">로제</span>
+		                                	</c:if>
+		                                	<c:if test="${newList.ptype == '스파클링'}">
+		                                		<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
+		                                	</c:if>
+		                                	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">${newList.phometown}</span>
+		                                </div>
 		                            </div>
 		                        </div>
 	                    	</div>
