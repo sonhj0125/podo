@@ -63,31 +63,6 @@
 	                    
 	                    </c:forEach>
 	                    
-	                    <%-- 
-	                    <div class="col mb-5">
-	                        <div class="card h-100 curpointer" id="newItem1">
-	                            <!-- Sale badge-->
-	                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	                            <!-- Product image-->
-	                            <img class="card-img-top" src="<%=ctxPath %>/images/product/디아블로 데블스 카나발 카베르네.png" alt="..." />
-	                            <div class="card-body p-4">
-	                                <div class="text-center fw-bolder">
-	                                    <!-- Product name-->
-	                                    <h6 class="fw-bolder">디아블로데블 카나발카베르네</h6>
-	                                    <!-- Product price-->
-	                                    14,900원
-	                                </div>
-	                            </div>
-	                            <!-- Product details-->
-	                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-	                                <div class="text-center">레드와인</div>
-	                                <div class="text-center">칠레산</div>
-	                                <div class="text-center">카베르네 소비뇽</div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    --%>
-	                    
 	                </div>
 	            </div>
 	        </section>
