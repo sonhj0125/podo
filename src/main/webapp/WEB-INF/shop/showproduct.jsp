@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -23,8 +24,19 @@
             <hr class="my-4">
 
             <div class="mb-3">
-              <span class="badge rounded-pill p-2" style="background-color: #ff8080;">${requestScope.pdto.ptype}</span>
-              <span class="badge rounded-pill p-2" style="background-color: #ff8080;">${requestScope.pdto.phometown}</span>
+              <c:if test="${requestScope.pdto.ptype == '레드'}">
+               		<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
+              </c:if>
+               	<c:if test="${requestScope.pdto.ptype == '화이트'}">
+               		<span class="badge rounded-pill p-2" style="background-color: #ffb366;">화이트</span>
+               	</c:if>
+               	<c:if test="${requestScope.pdto.ptype == '로제'}">
+               		<span class="badge rounded-pill p-2" style="background-color: #ff8080;">로제</span>
+               	</c:if>
+              	<c:if test="${requestScope.pdto.ptype == '스파클링'}">
+              		<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
+                </c:if>
+               <span class="badge rounded-pill p-2" style="background-color: #9999ff;">${requestScope.pdto.phometown}</span>
             </div>
 
             <form>
