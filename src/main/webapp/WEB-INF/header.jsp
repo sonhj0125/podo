@@ -141,6 +141,11 @@
             <div id="spinner" class="spinner-border text-light z-1 position-absolute p-2 top-0 end-0" role="status" style="display: none; margin-right: 3%; margin-top: 30px;">
 			  <span class="visually-hidden">Loading...</span>
 			</div>
+			<c:if test="${not empty sessionScope.loginUser}">
+				<div class="position-absolute z-1 position-absolute p-2 top-0 end-0" style="margin-right: 1%; margin-top: 50px;">
+					<span class="badge text-bg-light">${sessionScope.loginUser.userid}</span>
+				</div>
+			</c:if>
         </div>
     </nav>
     <header class="py-1 mb-2 d-flex flex-wrap ">
