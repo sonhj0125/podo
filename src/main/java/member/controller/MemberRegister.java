@@ -36,11 +36,6 @@ public class MemberRegister extends AbstractController {
 				mdto.setGender(request.getParameter("gender"));
 				mdto.setBirthday(request.getParameter("birthday"));
 				
-				if(mdao.doRegister(mdto)==1) {
-					System.out.println("GOOD");
-				}else {
-					System.out.println("NG");					
-				}
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/index.jsp");	

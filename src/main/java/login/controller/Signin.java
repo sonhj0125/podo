@@ -38,6 +38,8 @@ public class Signin extends AbstractController {
 				
 				if(loginUser != null) {
 					
+					
+					
 					HttpSession session = request.getSession();
 					session.setAttribute("loginUser", loginUser);
 					
