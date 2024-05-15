@@ -79,11 +79,6 @@
 			location.href="<%=ctxPath%>/index.wine";
 		})
 		
-		<%-- New Product Click --%>
-		$('div#newItem1').bind("click",function(){
-			location.href= "<%=ctxPath%>/shop/product.wine";
-		});
-		
 		<%-- Header Shop Click --%>
 		$("label#btnShop").bind('click',()=>{
 			location.href="<%=ctxPath%>/shop/list.wine";
@@ -128,6 +123,13 @@
 	    }
 	    
 	}// end of window.closeModal
+	
+	// product 보기
+	function showProduct(idx){
+		
+		location.href = "<%=ctxPath %>/shop/product.wine?pindex="+idx;
+		
+	}
 	
 	</script>
     

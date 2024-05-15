@@ -10,6 +10,7 @@ $(function () {
     let checkPhone = false;
     
     $('.datepicker').daterangepicker({
+        autoUpdateInput: false,
 		singleDatePicker: true,
     	locale: {
 		    "format": 'YYYY-MM-DD',
@@ -332,6 +333,11 @@ function goRegister(toastLive,toastmsg){
         return;
     }else if(addressDetail == ""){
         toastmsg.innerHTML="상세주소를 입력하세요";
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+        toastBootstrap.show();
+        return;
+    }else if(birthday = ""){
+        toastmsg.innerHTML="생년월일을 입력하세요";
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
         toastBootstrap.show();
         return;

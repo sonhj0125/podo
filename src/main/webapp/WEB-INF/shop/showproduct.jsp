@@ -14,7 +14,7 @@
       <div class="row gx-4 gx-lg-5 align-items-center" >
           <div class="col-md-5"><img class="card-img-top mb-5 mb-md-0" src="../images/product/디아블로 데블스 카나발 카베르네.png" /></div>
           <div class="col-md-6">
-              <h1 style="font-weight: bold;">디아블로데블 카나발카베르네</h1>
+              <h1 style="font-weight: bold;">${request.pdto.pname}</h1>
             <p class="card-text" style="font-size: 12pt; font-weight: bold; color:rgba(59, 59, 59, 0.877);" >Diablo Devil Canaval Cabernet</p>
             <div class="fs-5 mb-5">
                 <input type="hidden" id="price" name="price">
