@@ -169,7 +169,7 @@ public class MemberDAO_imple implements MemberDAO {
 		
 		return isExist;
 		
-	} // end of public boolean idDuplicateCheck(String userid) throws SQLException -----------
+	} // end of public boolean idDuplicateCheck(String userid)
 
 
 
@@ -201,7 +201,41 @@ public class MemberDAO_imple implements MemberDAO {
 		
 		return isExist;
 		
-	} // end of public boolean emailDuplicateCheck(String email) throws SQLException ------------
+	} // end of public boolean emailDuplicateCheck(String email)
+
+
+
+	@Override
+	public String finduserid(Map<String, String> paraMap) throws SQLException {
+		
+		String userid = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select userid from member where name = ? and email = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("name"));
+			pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				userid = rs.getString("userid");
+			}
+			
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return userid;
+	}
+
+
 	
 	
 	

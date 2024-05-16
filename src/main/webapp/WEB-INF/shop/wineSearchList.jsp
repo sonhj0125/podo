@@ -29,7 +29,7 @@
 		<div class="row row-cols-1 row-cols-md-4 g-4 mb-5 mt-3">
 
 			<c:forEach var="pvo" items="${requestScope.wineList}">
-				<div class="col">
+				<div class="col curpointer" onclick="showProduct('${pvo.pindex}')">
 					<div class="card h-100">
 						<%-- product image --%>
 						<img src="../images/product/${pvo.pimg}" class="card-img-top" alt="...">

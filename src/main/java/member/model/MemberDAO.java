@@ -18,6 +18,9 @@ public interface MemberDAO {
 
 	// 이메일 중복 확인
 	boolean emailDuplicateCheck(String email) throws SQLException;
+	
+	// 아이디 찾기
+	String finduserid(Map<String, String> paraMap) throws SQLException;
 
 	
 }

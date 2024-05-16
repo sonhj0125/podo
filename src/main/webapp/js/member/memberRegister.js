@@ -107,7 +107,6 @@ $(function () {
             checkUserid = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
-
         } else {
 			checkUserid = true;
             tag.addClass("status-g");
@@ -200,7 +199,6 @@ $(function () {
         }
 
     });
-
 
     let isEmailDuplicate; // 이메일 중복 확인용
 

@@ -172,16 +172,14 @@
 		
 		if(searchWord == "") {
 			alert("와인 이름을 입력해주세요!");
-			
 		} else {
 			const frm = document.searchFrm;
 			frm.action = "<%=ctxPath%>/shop/search.wine";
 			frm.submit();
-			
 		}
 	}
 	
-	</script>
+</script>
     
 </head>
 <body>

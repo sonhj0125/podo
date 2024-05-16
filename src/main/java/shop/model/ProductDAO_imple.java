@@ -165,7 +165,7 @@ public class ProductDAO_imple implements ProductDAO {
 
 			conn = ds.getConnection();
 
-			String sql = " select pname, pengname, ptype, phometown, pprice, pdetail, pimg "
+			String sql = " select pname, pengname, ptype, phometown, pprice, pdetail, pimg, pindex "
 					   + " from product "
 					   + " where pname like '%'|| ? || '%' ";
 
@@ -188,6 +188,7 @@ public class ProductDAO_imple implements ProductDAO {
 				pvo.setPprice(price);
 				pvo.setPdetail(rs.getString("pdetail"));
 				pvo.setPimg(rs.getString("pimg"));
+				pvo.setPindex(rs.getInt("pindex"));
 
 				wineList.add(pvo);
 
