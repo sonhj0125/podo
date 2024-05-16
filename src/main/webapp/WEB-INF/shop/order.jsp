@@ -12,10 +12,10 @@
 			<br><br>
 			<h2 style="margin-bottom: 1.5%;">주문하기</h2>
 			
-			<div style="text-align: center;">
+			<div style="text-align: center; margin:0 5%;">
 			<div style="display: flex; width: 16.5%; margin:0 auto;">
 				
-				<div style="margin-right: 5%;">
+				<div style="margin-right: 8%;">
 					<i class="fa-solid fa-cart-shopping" style="color: #bcbcbc;"></i>
 					<br>
 					<div style="font-weight: bold; color: #bcbcbc;">장바구니</div>
@@ -149,7 +149,7 @@
 		
 		<div class="cart_footer" style="text-align: center; margin-top: 4%;">
 			<button type="button" class="btn btn-outline-secondary">취소</button>
-			<button type="button" class="btn btn-outline-secondary">주문하기</button>
+			<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/orderEnd.wine';">주문하기</button>
 		</div>
 
 	</div>

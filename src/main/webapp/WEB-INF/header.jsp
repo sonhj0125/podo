@@ -64,6 +64,7 @@
 	
 	$(document).ready(function(){
 		
+
 		<%-- 모달창을 끄면 새로고침--%>
 		$("button.btn-close").click(function(){
 			javascript:history.go(0);
@@ -84,9 +85,6 @@
 		       }
 	
 		}); 
-		
-
-		
 
 	});
 	
@@ -196,7 +194,7 @@
                      <div class="modal-body">
                      <div class="input-group">
                           <div class="form-outline" data-mdb-input-init style="padding-left: 8.5%;">
-                            <input type="search" id="form1" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
+                            <input type="search" name="wine" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
                           </div> 
                           <button type="button" class="btn btn-primary" style="height: 50px;" data-mdb-ripple-init>
                                   <i class="fas fa-search"></i>

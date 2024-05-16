@@ -36,7 +36,7 @@ function count(type)  {
 		<div class="cart_header" style="background-color: #F8F8F8; width: 100%; height: 200px; text-align: center;">
 			<br><br>
 			<h2 style="margin-bottom: 1.5%;">장바구니</h2>
-			<div style="text-align: center;">
+			<div style="text-align: center; margin:0 8%;">
 			<div style="display: flex; width: 16.5%; margin:0 auto;">
 				
 				<div style="margin-right: 5%;">
