@@ -68,6 +68,26 @@
 		$("button.btn-close").click(function(){
 			javascript:history.go(0);
 		}); 
+		
+		
+		$("input:text[name='memo']").hide();
+		
+		$('#order_msg').change(function() {
+		
+			const order_msg = $("select[name='order_msg']").val();
+		       if(order_msg == "직접입력") { 
+					$("input:text[name='memo']").show();
+					return false;
+		       }
+		       else {
+		    	   $("input:text[name='memo']").hide();
+		       }
+	
+		}); 
+		
+
+		
+
 	});
 	
 	window.onload = ()=> {
@@ -100,6 +120,11 @@
 		<%-- Header Shop Click --%>
 		$("label#btnAbout").bind('click',()=>{
 			location.href="<%=ctxPath%>/shop/about.wine";
+		});
+		
+		<%-- Header Shop Click --%>
+		$("label#btnCart").bind('click',()=>{
+			location.href="<%=ctxPath%>/shop/cart.wine";
 		});
 
 		
