@@ -5,9 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import product.domain.ProductDTO;
-import product.model.ProductDAO;
-import product.model.ProductDAO_imple;
+import shop.domain.ProductDTO;
+import shop.model.ProductDAO;
+import shop.model.ProductDAO_imple;
 
 public class IndexController extends AbstractController {
 

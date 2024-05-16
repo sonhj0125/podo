@@ -161,8 +161,7 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(1, userid);
 			rs = pstmt.executeQuery();
 			
-			isExist = rs.next(); // 행이 있으면(중복된 userid) true,
-                				 // 행이 없으면(사용가능한 userid) false
+			isExist = rs.next();
 			
 		} finally {
 			close();
@@ -185,14 +184,13 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			String sql = " select email "
 					   + " from member "
-					   + " where userid = ? ";
+					   + " where email = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, aes.encrypt(email));
 			rs = pstmt.executeQuery();
 			
-			isExist = rs.next(); // 행이 있으면(중복된 userid) true,
-                				 // 행이 없으면(사용가능한 userid) false
+			isExist = rs.next(); 
 			
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();

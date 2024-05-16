@@ -1,4 +1,4 @@
-package product.model;
+package shop.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import product.domain.ProductDTO;
+import shop.domain.ProductDTO;
 
 public class ProductDAO_imple implements ProductDAO {
 
@@ -155,6 +155,50 @@ public class ProductDAO_imple implements ProductDAO {
 		return pdto;
 	}// end of public ProductDTO getproduct(int pindex)
 	
-	
+	// Search창 와인 검색
+	@Override
+	public List<ProductDTO> searchWineName(String searchWord) throws SQLException {
+
+		List<ProductDTO> wineList = new ArrayList<>();
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select pname, pengname, ptype, phometown, pprice, pdetail, pimg "
+					   + " from product "
+					   + " where pname like '%'|| ? || '%' ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, searchWord);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				ProductDTO pvo = new ProductDTO();
+
+				pvo.setPname(rs.getString("pname"));
+				pvo.setPengname(rs.getString("pengname"));
+				pvo.setPtype(rs.getString("ptype"));
+				pvo.setPhometown(rs.getString("phometown"));
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				
+				pvo.setPprice(price);
+				pvo.setPdetail(rs.getString("pdetail"));
+				pvo.setPimg(rs.getString("pimg"));
+
+				wineList.add(pvo);
+
+			}
+
+		} finally {
+			close();
+		}
+
+		return wineList;
+
+	} // end of public List<ProductVO> searchWineName(String searchWord)
 
 }

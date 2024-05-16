@@ -1,4 +1,4 @@
-package product.domain;
+package shop.domain;
 
 public class ProductDTO {
 	

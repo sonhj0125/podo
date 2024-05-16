@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import common.controller.AbstractController;
-import product.domain.ProductDTO;
-import product.model.ProductDAO;
-import product.model.ProductDAO_imple;
+import shop.domain.ProductDTO;
+import shop.model.ProductDAO;
+import shop.model.ProductDAO_imple;
 
 public class Product extends AbstractController {
 

@@ -255,7 +255,7 @@ $(function () {
             toastmsg.innerText="중복된 이메일입니다. 다시 입력해주세요!";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
-            checkUserid = false;
+            checkEmail = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
 

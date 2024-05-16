@@ -8,3 +8,7 @@ ORDER BY PINDEX DESC;
 select *
 from PRODUCT
 where PINDEX=50;
+
+select pname, pengname, ptype, phometown, pprice, pdetail, pimg
+from product
+where pname like '%'|| '엠' || '%';

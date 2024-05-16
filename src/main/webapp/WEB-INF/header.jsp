@@ -102,10 +102,44 @@
 		    frm.submit();
 		});
 		
+		<%-- Header Shop Click --%>
+		$("label#btnCart").bind('click',()=>{
+			location.href="<%=ctxPath%>/shop/cart.wine";
+		});
+		
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
 		$("button.btn-close").click(function(){
 			javascript:history.go(0);
 		});
+		
+		$("input:text[name='memo']").hide();
+		
+		$('#order_msg').change(function() {
+		
+			const order_msg = $("select[name='order_msg']").val();
+		       if(order_msg == "직접입력") { 
+					$("input:text[name='memo']").show();
+					return false;
+		       }
+		       else {
+		    	   $("input:text[name='memo']").hide();
+		       }
+	
+		});
+		
+		<%-- 와인 검색 (input 창에서 엔터 시) --%>
+		$("input#searchWord").bind("keydown", function(e) {
+			if(e.keyCode == 13) {
+				goSearch();
+			}
+		});
+		
+		<%-- 와인 검색 (버튼 클릭 시) --%>
+		$("button#wineSearch").click(function() {
+			goSearch();
+		});
+		
+		
 		
 	} // end of window.onload
 	
@@ -130,6 +164,21 @@
 		
 		location.href = "<%=ctxPath %>/shop/product.wine?pindex="+idx;
 		
+	}
+	
+	function goSearch() {
+		
+		const searchWord = $("input#searchWord").val();
+		
+		if(searchWord == "") {
+			alert("와인 이름을 입력해주세요!");
+			
+		} else {
+			const frm = document.searchFrm;
+			frm.action = "<%=ctxPath%>/shop/search.wine";
+			frm.submit();
+			
+		}
 	}
 	
 	</script>
@@ -197,16 +246,16 @@
 		    <%-- Sign in Modal 끝 --%>
 		    
 		     <%-- 검색 Modal --%>
-             <form>
+             <form name="searchFrm">
                <div class="modal fade" id="searchModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                  <div class="modal-dialog modal-lg">
                    <div class="modal-content">
                      <div class="modal-body">
                      <div class="input-group">
                           <div class="form-outline" data-mdb-input-init style="padding-left: 8.5%;">
-                            <input type="search" id="form1" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
+                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
                           </div> 
-                          <button type="button" class="btn btn-primary" style="height: 50px;" data-mdb-ripple-init>
+                          <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
                                   <i class="fas fa-search"></i>
                           </button>
                      </div>
