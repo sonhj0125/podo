@@ -91,7 +91,7 @@ div.container {
 								<span class="badge rounded-pill p-2" style="background-color: #9999ff;">${pdto.phometown}</span>
 							</div>
 							<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">
-								<fmt:formatNumber value="${pdto.pprice}" pattern="###,###" />원
+								${pdto.pprice}원
 							</p>
 						</div>
 					</div>

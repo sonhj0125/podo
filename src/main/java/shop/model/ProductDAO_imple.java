@@ -49,6 +49,9 @@ public class ProductDAO_imple implements ProductDAO {
 		
 	}// end of private void close()
 
+	
+	
+	// 제품 리스트 뽑아오기 DESC
 	@Override
 	public List<ProductDTO> listReadDesc() throws SQLException {
 		
@@ -107,6 +110,9 @@ public class ProductDAO_imple implements ProductDAO {
 		
 	}// end of public Map<Integer, ProductDTO> listReadDesc()
 
+	
+	
+	// 제품 하나 뽑아오기
 	@Override
 	public ProductDTO getproduct(int pindex) throws SQLException {
 		
@@ -155,6 +161,8 @@ public class ProductDAO_imple implements ProductDAO {
 		
 		return pdto;
 	}// end of public ProductDTO getproduct(int pindex)
+	
+	
 	
 	// Search창 와인 검색
 	@Override
@@ -205,7 +213,6 @@ public class ProductDAO_imple implements ProductDAO {
 
 	
 	
-	
 	// 페이징 처리를 위해 상품에 대한 총 페이지 수 알아오기 (검색 X)
 	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
@@ -236,7 +243,6 @@ public class ProductDAO_imple implements ProductDAO {
 
 	} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException -------
 
-	
 	
 	
 	// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
