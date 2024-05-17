@@ -22,5 +22,8 @@ public interface MemberDAO {
 	// 아이디 찾기
 	String finduserid(Map<String, String> paraMap) throws SQLException;
 
+	// 로그기록
+	int logwrite(Map<String, String> paraMap) throws SQLException;
+
 	
 }

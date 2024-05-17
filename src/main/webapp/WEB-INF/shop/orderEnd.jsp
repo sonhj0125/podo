@@ -37,7 +37,6 @@
                <br>
                <div style="font-weight: bold;">주문완료</div>
             </div>
-         
          </div>
          </div>
          
@@ -47,11 +46,8 @@
       </div>
       
       <div style="width: 85%;">
-
       
       <div class="cart_body_2" style="margin: 0 auto; display: flex;">
-      
-
          
       </div>
 

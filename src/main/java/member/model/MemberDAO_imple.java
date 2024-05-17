@@ -236,6 +236,34 @@ public class MemberDAO_imple implements MemberDAO {
 	}
 
 
+
+	@Override
+	public int logwrite(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+		
+			conn = ds.getConnection();
+			
+			String sql = "insert into LOG(LOGINDEX, userid, ipaddress) VALUES (SEQ_LOGIDX.nextval, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("clientip"));
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			
+			close();
+		
+		}
+		
+		return result;
+	}
+
+
 	
 	
 	

@@ -12,3 +12,5 @@ where PINDEX=50;
 select pname, pengname, ptype, phometown, pprice, pdetail, pimg
 from product
 where pname like '%'|| '엠' || '%';
+
+insert into LOG(LOGINDEX, userid, ipaddress) VALUES (SEQ_LOGIDX.nextval, 'redtree2379', 'red');

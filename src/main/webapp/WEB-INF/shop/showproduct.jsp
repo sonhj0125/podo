@@ -9,6 +9,11 @@
 
 <script type="text/javascript" src="<%=ctxPath %>/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 
+<script type="text/javascript">
+
+
+</script>
+
 <div class="container">
 
 <!-- Product detail-->
@@ -65,7 +70,7 @@
                     </button>
                 </form>
                 &nbsp;&nbsp; 
-                <button class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
+                <button id="btn_addcart" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
                     CART
                  </button>
              </div>
