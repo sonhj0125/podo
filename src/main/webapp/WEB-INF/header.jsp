@@ -127,9 +127,15 @@
 	
 		});
 		
+		<%-- search 클릭 시 검색창 자동 focus --%>
+		$("#searchModal").on('shown.bs.modal', function () {
+		  $("input#searchWord").trigger('focus');
+		});
+		
 		<%-- 와인 검색 (input 창에서 엔터 시) --%>
 		$("input#searchWord").bind("keydown", function(e) {
 			if(e.keyCode == 13) {
+				e.preventDefault();
 				goSearch();
 			}
 		});
@@ -147,9 +153,9 @@
 		
 	    $('#loginModal').modal('hide');
 	    
-	    if(!login){ // 회원가입일경우
+	    if(!login){ // 회원가입일 경우
 	    	location.href="<%=ctxPath%>/member/memberRegister.wine";
-	    }else{ // 로그인일경우
+	    }else{ // 로그인일 경우
 	    	$('#spinner').show();
 	    	setTimeout(function() {
 	    		$('#spinner').hide();
@@ -166,12 +172,14 @@
 		
 	}
 	
+	<%-- 와인 검색 --%>
 	function goSearch() {
 		
 		const searchWord = $("input#searchWord").val();
 		
 		if(searchWord == "") {
 			alert("와인 이름을 입력해주세요!");
+			
 		} else {
 			const frm = document.searchFrm;
 			frm.action = "<%=ctxPath%>/shop/search.wine";
@@ -266,5 +274,5 @@
     </header>
     
     <form action="post" name="passFrm" style="display : none;">
-    	<input type="text" value="${requestScope["javax.servlet.forward.request_uri"]}" name="uri">
+    	<input type="text" value="${requestScope['javax.servlet.forward.request_uri']}" name="uri">
     </form>

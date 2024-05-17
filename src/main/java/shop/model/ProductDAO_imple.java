@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -201,5 +202,119 @@ public class ProductDAO_imple implements ProductDAO {
 		return wineList;
 
 	} // end of public List<ProductVO> searchWineName(String searchWord)
+
+	
+	
+	
+	// 페이징 처리를 위해 상품에 대한 총 페이지 수 알아오기 (검색 X)
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+
+		int totalPage = 0;
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select ceil(count(*)/?) "
+					   + " from product ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
+
+			rs = pstmt.executeQuery();
+			rs.next();
+
+			totalPage = rs.getInt(1);
+
+		} finally {
+			close();
+		}
+
+		return totalPage;
+
+	} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException -------
+
+	
+	
+	
+	// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
+	@Override
+	public List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException {
+
+		List<ProductDTO> pdtList = new ArrayList<>();
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " SELECT RNO, PNAME, PENGNAME, PTYPE, PHOMETOWN, PPRICE, "
+						+ "           PPOINT, PBODY, PACID, PTANNIN, PACL, PDETAIL, PIMG, PSTOCK, PINDEX "
+						+ "FROM "
+						+ "(  "
+						+ "    select rownum AS RNO, pname, pengname, ptype, phometown, pprice, "
+						+ "           ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex "
+						+ "    from "
+						+ "    ( "
+						+ "        select * "
+						+ "        from product "
+						+ "        order by pindex desc "
+						+ "    ) V "
+						+ ") T "
+						+ "WHERE T.rno BETWEEN ? AND ? ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			/*
+			=== 페이징처리의 공식 ===
+			where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
+			*/
+
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
+
+			pstmt.setInt(1, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				ProductDTO pdto = new ProductDTO();
+
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				pdto.setPprice(price);
+
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPbody(rs.getString("pbody"));
+				pdto.setPacid(rs.getString("pacid"));
+				pdto.setPtannin(rs.getString("ptannin"));
+				pdto.setPacl(rs.getString("pacl"));
+				pdto.setPdetail(rs.getString("pdetail"));
+				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPstock(rs.getString("pstock"));
+				pdto.setPindex(rs.getInt("pindex"));
+
+				pdtList.add(pdto);
+
+			} // end of while(rs.next()) ------------------------------------
+
+		}
+//		catch (GeneralSecurityException | UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//			
+//		}
+		finally {
+			close();
+		}
+
+		return pdtList;
+	} // end of public List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException -----------
 
 }

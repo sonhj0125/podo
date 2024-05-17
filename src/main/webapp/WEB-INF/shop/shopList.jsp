@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -7,6 +12,13 @@
 <jsp:include page="../header.jsp" />
 
 <style>
+
+div.container {
+	
+	font-family: "Noto Sans KR", sans-serif;
+	font-optical-sizing: auto;
+	font-style: normal;
+}
 
 <%--  체크박스 색상 변경 --%>
 input[type="checkbox"] { 
@@ -84,183 +96,88 @@ datalist > option {
 			</div>
 		</form>
 		<div class="p-2 ms-auto"></div>
-			<div class="p-2">
-				<button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-					<img src="../images/setting.png" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"/>
-					<span style="font-size:10pt; font-weight:bold; color:black;">SMART SEARCH</span>
-				</button>
-			</div>
+		<div class="p-2">
+			<button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+				<img src="../images/setting.png" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"/>
+				<span style="font-size:10pt; font-weight:bold; color:black;">SMART SEARCH</span>
+			</button>
 		</div>
+	</div>
 
 	<%-- 본페이지 --%>
-	<div class="row row-cols-1 row-cols-md-4 g-4 mb-5 mt-3">
-	  	<div class="col">
-	    	<div class="card h-100">
-	    	<%-- product image --%>
-	      	<img src="../images/product/1.png" class="card-img-top" alt="...">
-	      	<%-- sale badge --%>
-		    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-		    <%-- product explain --%>
-		    <div class="card-body">
-		    	<h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-		        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-		        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-		        <div class="mb-3 text-center">
-              		<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
-              		<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            	</div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      	</div>
-	    	</div>
-	  </div>
-	  
-	  <div class="col">
-    	 <div class="card h-100">
-	    	<!-- product image -->
-	      	<img src="../images/product/2.png" class="card-img-top" alt="...">
-	      	<!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      	<!-- product explain -->
-	      	<div class="card-body">
-		        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-		        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-		        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-		        <div class="mb-3 text-center">
-	              	<span class="badge rounded-pill p-2" style="background-color: #ffb366;">화이트</span>
-	              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-	            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	      </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/3.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #ff8080;">로제</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/4.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/5.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/6.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/7.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/8.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	  
-	  <div class="col">
-	    <div class="card h-100">
-	      <img src="../images/product/9.png" class="card-img-top" alt="...">
-	      <!-- sale badge -->
-	      	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-	      <div class="card-body">
-	        <h5 class="card-title text-center" style="font-weight: bold;">맥스 에이트 (8, VIII)</h5>
-	        <p class="card-text text-center" style="font-weight: bold;">Max Eight (8, VIII)</p>
-	        <p class="card-text">80명이 넘는 오너가 소유하고있는 포도밭으로 부르고뉴에서 가장 비싼 포도밭 중 하나</p>
-	        <div class="mb-3 text-center">
-              	<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
-              	<span class="badge rounded-pill p-2" style="background-color: #9999ff;">칠레</span>
-            </div>
-            	<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">39,900원</p>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	</div>
+	<c:if test="${empty requestScope.pdtList}">
+		<div class="m-5" style="text-align: center;">
+			<span style="font-size: 20pt;">상품이 존재하지 않습니다. <i class="fa-solid fa-face-sad-tear"></i></span>
+		</div>
+	</c:if>
+
+	<c:if test="${not empty requestScope.pdtList}">
+		<div class="row row-cols-1 row-cols-md-4 g-4 mb-5 mt-3">
+			<c:forEach var="pdto" items="${requestScope.pdtList}">
+				<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+				<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
+
+			  	<div class="col">
+			    	<div class="card h-100">
+				    	<%-- product image --%>
+						<img src="../images/product/${pdto.pimg}" class="card-img-top" alt="...">
+						<%-- sale badge --%>
+						<c:if test="${pdto.pstock == '0'}">
+							<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sold-out</div>
+						</c:if>
+						<c:if test="${pdto.pstock != '0'}">
+							<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+						</c:if>
+						<%-- product explain --%>
+						<div class="card-body">
+							<h6 class="card-title text-center" style="font-weight: bold;">
+								${pdto.pname}
+							</h6>
+							<p class="card-text text-center">
+								<c:choose>
+									<c:when test="${fn:length(pdto.pengname) gt 28}">
+										${fn:substring(pdto.pengname, 0, 24)}...
+									</c:when>
+									<c:otherwise>
+										${pdto.pengname}
+									</c:otherwise>
+								</c:choose>
+							</p>
+							<%-- <p class="card-text">
+								<c:choose>
+									<c:when test="${fn:length(pdto.pdetail) gt 60}">
+										${fn:substring(pdto.pdetail, 0, 57)}...
+									</c:when>
+									<c:otherwise>
+										${pdto.pdetail}
+									</c:otherwise>
+								</c:choose>
+							</p> --%>
+							<div class="mb-3 text-center">
+								<c:if test="${pdto.ptype == '레드'}">
+                              		<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
+                              	</c:if>
+                              	<c:if test="${pdto.ptype == '화이트'}">
+                              		<span class="badge rounded-pill p-2" style="background-color: #ffb366;">화이트</span>
+                              	</c:if>
+                              	<c:if test="${pdto.ptype == '로제'}">
+                              		<span class="badge rounded-pill p-2" style="background-color: #ff8080;">로제</span>
+                              	</c:if>
+                              	<c:if test="${pdto.ptype == '스파클링'}">
+                              		<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
+                              	</c:if>
+								<span class="badge rounded-pill p-2" style="background-color: #9999ff;">${pdto.phometown}</span>
+							</div>
+							<p class="card-text text-center" style="font-size: 16pt; font-weight: bold;">
+								${pdto.pprice}원
+							</p>
+						</div>
+			    	</div>
+			    </div>
+			</c:forEach>
+
+		</div>
+	</c:if>
 	
 	
 	
@@ -455,17 +372,7 @@ datalist > option {
 
 	<%-- 페이지 이동 --%>
 	<nav aria-label="Page navigation example">
-	  <ul class="pagination justify-content-center">
-	    <li class="page-item">
-	      <a class="page-link">◀</a>
-	    </li>
-	    <li class="page-item"><a class="page-link">1</a></li>
-	    <li class="page-item"><a class="page-link">2</a></li>
-	    <li class="page-item"><a class="page-link">3</a></li>
-	    <li class="page-item">
-	      <a class="page-link">▶</a>
-	    </li>
-	  </ul>
+	  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
 	</nav>
 	
 
