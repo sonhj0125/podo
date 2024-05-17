@@ -48,8 +48,8 @@ button#pwdFind {
         <button type="button" class="btn btn-secondary" id="pwdFind" name="pwdFind" onclick="goPwdFind('<%= ctxPath%>')">비밀번호 찾기</button>
     </div>
     <hr class="my-4">
-    <!-- <h2 class="fs-5 fw-bold mb-3">Or use a third-party</h2> -->
-    <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="button" id="signIn" onclick="doregister()">
+    <h2 class="fs-5 fw-bold mb-3">등록된 회원이 아니신가요?</h2>
+    <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="button" id="signUp" onclick="doregister()">
         회원가입
     </button>
 </form>

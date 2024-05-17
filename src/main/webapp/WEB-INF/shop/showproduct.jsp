@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String ctxPath = request.getContextPath();
 %>
 
 <jsp:include page="../header.jsp" />
+
+<script type="text/javascript" src="<%=ctxPath %>/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="container">
 
@@ -12,20 +15,30 @@
 <section class="py-5">
   <div class="container px-4 px-lg-5 my-5">
       <div class="row gx-4 gx-lg-5 align-items-center" >
-          <div class="col-md-5"><img class="card-img-top mb-5 mb-md-0" src="../images/product/디아블로 데블스 카나발 카베르네.png" /></div>
+          <div class="col-md-5"><img class="card-img-top mb-5 mb-md-0" src="../images/product/${requestScope.pdto.pimg}" /></div>
           <div class="col-md-6">
-              <h1 style="font-weight: bold;">디아블로데블 카나발카베르네</h1>
-            <p class="card-text" style="font-size: 12pt; font-weight: bold; color:rgba(59, 59, 59, 0.877);" >Diablo Devil Canaval Cabernet</p>
+              <h1 style="font-weight: bold;">${requestScope.pdto.pname}</h1>
+            <p class="card-text" style="font-size: 12pt; font-weight: bold; color:rgba(59, 59, 59, 0.877);" >${requestScope.pdto.pengname}</p>
             <div class="fs-5 mb-5">
                 <input type="hidden" id="price" name="price">
-                <span class="text-decoration-none">14,900원</span>
+                <span class="text-decoration-none">${requestScope.pdto.pprice}원</span>
             </div>
             <hr class="my-4">
 
             <div class="mb-3">
-              <span class="badge rounded-pill p-2" style="background-color: #ff8080;">레드</span>
-              <span class="badge rounded-pill p-2" style="background-color: #ff8080;">칠레산</span>
-              <span class="badge rounded-pill p-2" style="background-color: #ff8080;">카베르네 소비뇽</span>
+              <c:if test="${requestScope.pdto.ptype == '레드'}">
+               		<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
+              </c:if>
+               	<c:if test="${requestScope.pdto.ptype == '화이트'}">
+               		<span class="badge rounded-pill p-2" style="background-color: #ffb366;">화이트</span>
+               	</c:if>
+               	<c:if test="${requestScope.pdto.ptype == '로제'}">
+               		<span class="badge rounded-pill p-2" style="background-color: #ff8080;">로제</span>
+               	</c:if>
+              	<c:if test="${requestScope.pdto.ptype == '스파클링'}">
+              		<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
+                </c:if>
+               <span class="badge rounded-pill p-2" style="background-color: #9999ff;">${requestScope.pdto.phometown}</span>
             </div>
 
             <form>
@@ -62,11 +75,46 @@
 	</div>
 </section>
 
+<ul class="nav nav-tabs">
+		  <li class="nav-item">
+		    <a class="nav-link active" data-toggle="tab" href="#home2">Home2</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#menu4">Menu 4</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#menu5">Menu 5</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#menu6">Menu 6</a>
+		  </li>
+		</ul>
+		
+		<!-- Tab panes -->
+		<div class="tab-content py-3">
+		  <div class="tab-pane container active" id="home2">
+		  	<h4>HOME2</h4>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+		  </div>
+		  <div class="tab-pane container fade" id="menu4">
+		    <h4>Menu 4</h4>
+			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+		  </div>
+		  <div class="tab-pane container fade" id="menu5">
+		    <h4>Menu 5</h4>
+			Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+		  </div>
+		  <div class="tab-pane container fade" id="menu6">
+		    <h4>Menu 6</h4>
+			Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+		  </div>
+		</div>	
+
 <div class="accordion" id="accordionExample">
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button style="font-weight: bold; font-size: 14pt;" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            PRODUCT
+            INFO
           </button>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -100,12 +148,12 @@
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button style="font-weight: bold; font-size: 14pt;" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            RELATED PRODUCT
+            PRODUCT
           </button>
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <strong>등록된 정보가 없습니다.</strong>
+            <strong>${requestScope.pdto.pdetail}</strong>
           </div>
         </div>
       </div>

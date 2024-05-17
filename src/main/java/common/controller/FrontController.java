@@ -62,14 +62,14 @@ private Map<String, Object> cmdMap = new HashMap<>();
 			}
 			
 		}catch (FileNotFoundException e) {
-			System.out.println("Property 파일이 없거나 찾지 못함\nFileNotFoundException [위치 : MainController]");
+			System.out.println("Property 파일이 없거나 찾지 못함\nFileNotFoundException");
 		}catch (IOException e) {
 			System.out.println("IOExeption [위치 : MainController]");
 		}catch (ClassNotFoundException e) {
-			System.out.println("멥핑된 위치에 클래스 파일이 없음\nClassNotFoundException [위치 : MainController]");
+			System.out.println("멥핑된 위치에 클래스 파일이 없음\nClassNotFoundException");
 		}catch (Exception e) {
 			String err_msg = e.getMessage();
-			System.out.println("알수없는 이유로 예외발생 [위치 : MainController]\n"+err_msg);
+			System.out.println("알수없는 이유로 예외발생\n"+err_msg);
 		}
 		
 	}
@@ -83,7 +83,7 @@ private Map<String, Object> cmdMap = new HashMap<>();
 		AbstractController action = (AbstractController) cmdMap.get(key); 
 		
 		if(action == null) {
-			System.out.println(key+"는 Mapping되지 않음 [위치 : MainController]");
+			System.out.println(key+"는 Mapping되지 않음");
 		}
 		else {
 			try {

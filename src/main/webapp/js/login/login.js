@@ -14,45 +14,36 @@ $(document).ready(function(){
 
 });// end of $(document).ready(function(){})------------------------------------
 
-
-// function Declaration
- 
-// === 로그인 처리 함수 === //
 function goLogin() {
 
-    // alert("확인용 로그인 처리하러 간다");
 
     if( $("input#loginUserid").val().trim() == "" ) {
         alert("아이디를 입력하세요!!");
         $("input#loginUserid").val("").focus();
-        return; // goLogin() 함수 종료
+        return; 
     }
 
     if( $("input#loginPwd").val().trim() == "" ) {
         alert("암호를 입력하세요!!");
         $("input#loginPwd").val("").focus();
-        return; // goLogin() 함수 종료
+        return; 
     }
 
-
-    if($("input:checkbox[id='saveid']").prop("checked")) { // ==> input:checkbox#saveid
-        // alert("아이디 저장 체크를 하셨네요~");
-        localStorage.setItem('saveid', $("input#loginUserid").val());
-                            //  key                value
-        
-    } else {
-        // alert("아이디 저장 체크를 해제하셨네요~");
-        localStorage.removeItem('saveid');
-    }
+    const login = true;
 
     const frm = document.loginFrm;
+    frm.method = "POST"
+    frm.action = "signin.wine"
     frm.submit();
-
-} // end of function goLogin()
+    window.parent.closeModal(login);
+    
+}
 
 function doregister(){
 
-    window.parent.closeModal();
+    const login = false;
+
+    window.parent.closeModal(login);
 
 }
 
@@ -64,4 +55,5 @@ function goIdFind(ctxPath) {
 function goPwdFind(ctxPath) {
 	
 	location.href=ctxPath+"/login/pwdFind.wine";
+
 }
