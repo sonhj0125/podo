@@ -47,11 +47,6 @@
       
       <div style="width: 85%;">
       
-      <div class="cart_body_2" style="margin: 0 auto; display: flex;">
-         
-      </div>
-
-      
       <div class="cart_footer" style="text-align: center;">
          <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/index.wine';">메인 화면으로</button>
       </div>
