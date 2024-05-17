@@ -27,10 +27,11 @@ public class Signin extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		String msg = "";
+		
 		try {
 			
 			String method = request.getMethod();
-			String msg = "";
 			String location = request.getContextPath()+"/index.wine";
 			
 			if("POST".equalsIgnoreCase(method)) {
@@ -56,30 +57,26 @@ public class Signin extends AbstractController {
 						if(loginUser.getPwdUpdateDay() == null) { // pw 변경이력 X
 							
 							Date now = new Date();
-							SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+							SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 							String nowStr = sdf.format(now);
 							String updatedayStr = loginUser.getRegisterDay();
+							
 							
 							String[] nowArr = nowStr.split("[-]");
 							String[] updatedayArr = updatedayStr.split("[-]");
 							
-							try {
-							
-								LocalDate date1 = LocalDate.of(Integer.parseInt(nowArr[0]) , Integer.parseInt(nowArr[1]), Integer.parseInt(nowArr[2]));
-						        LocalDate date2 = LocalDate.of(Integer.parseInt(updatedayArr[0]), Integer.parseInt(updatedayArr[1]), Integer.parseInt(updatedayArr[2]));
-						        
-						        Period period = Period.between(date1, date2);
-						        
-						        dayDiff = period.getDays();
-						        
-							}catch(Exception e) {
-								e.printStackTrace();
-							}
+							LocalDate date1 = LocalDate.of(Integer.parseInt(nowArr[0]) , Integer.parseInt(nowArr[1]), Integer.parseInt(nowArr[2]));
+					        LocalDate date2 = LocalDate.of(Integer.parseInt(updatedayArr[0]), Integer.parseInt(updatedayArr[1]), Integer.parseInt(updatedayArr[2]));
+					        
+					        Period period = Period.between(date2, date1);
+					        
+					        dayDiff = period.getDays();
+						     
 					        
 						}else { // pw 변경이력 O
 							
 							Date now = new Date();
-							SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+							SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 							String nowStr = sdf.format(now);
 							String updatedayStr = loginUser.getPwdUpdateDay();
 							
@@ -105,7 +102,16 @@ public class Signin extends AbstractController {
 							
 							msg = "비밀번호 변경한지 90일을 초과하였습니다.";
 							
-						}else { // 아닌경우
+						}else { // 비밀번호 변경한지 90일 이내인 경우
+							
+							String auto = request.getParameter("auto");
+							
+							if("auto".equalsIgnoreCase(auto)) {
+								super.setRedirect(true);
+								super.setViewPage(request.getContextPath()+"/index.wine");
+								return;
+							}
+							
 							super.setRedirect(false);
 							super.setViewPage("/WEB-INF/index.jsp");
 							return;

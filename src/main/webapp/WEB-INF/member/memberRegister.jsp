@@ -96,7 +96,7 @@
                         <div class="input-group">
                             <label class="label">생년월일</label>
                             <div class="input-group-icon">
-                                <input class="input--style-4 datepicker" type="text" name="birthday" id="birthday" readonly>
+                                <input class="input--style-4 datepicker" type="text" name="birthday" id="birthday">
                                 <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                             </div>
                         </div>
