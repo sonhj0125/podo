@@ -113,11 +113,11 @@ datalist > option {
 
 	<c:if test="${not empty requestScope.pdtList}">
 		<div class="row row-cols-1 row-cols-md-4 g-4 mb-5 mt-3">
-			<c:forEach var="pdto" items="${requestScope.pdtList}">
+			<c:forEach var="pdto" items="${requestScope.pdtList}" >
 				<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 				<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 
-			  	<div class="col">
+			  	<div class="col curpointer" onclick="showProduct('${pdto.pindex}')">
 			    	<div class="card h-100">
 				    	<%-- product image --%>
 						<img src="../images/product/${pdto.pimg}" class="card-img-top" alt="...">
