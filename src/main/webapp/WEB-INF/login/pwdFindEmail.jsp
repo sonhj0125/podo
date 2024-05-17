@@ -91,7 +91,7 @@
 			frm.userCertificationCode.value = input_confirmCode; // 입력받은 인증코드 넣기
 			frm.userid.value = $("input:text[name='userid']").val();
 			
-			frm.action = "<%=ctxPath%>/login/verifyCertification.up";
+			frm.action = "<%=ctxPath%>/login/verifyCertification.wine";
 			frm.method = "post";
 			frm.submit();
 			

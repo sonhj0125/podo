@@ -249,12 +249,15 @@ public class MemberDAO_imple implements MemberDAO {
 
 			String sql = " select userid "
 					   + " from member "
-					   + " where status = 1 and userid = ? and email = ? ";
+					   + " where memberidx = 1 and name = ? and userid = ? and email = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("userid"));
-			pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+			pstmt.setString(1, paraMap.get("name"));
+			pstmt.setString(2, paraMap.get("userid"));
+			pstmt.setString(3, aes.encrypt(paraMap.get("email")));
 
+			System.out.println(aes.encrypt(paraMap.get("email")));
+			
 			rs = pstmt.executeQuery();
 
 			isUserExist = rs.next(); // 행이 있으면(사용자가 존재하면) true,
@@ -270,6 +273,35 @@ public class MemberDAO_imple implements MemberDAO {
 		return isUserExist;
 		
 	} // end of public boolean isUserExist(Map<String, String> paraMap) throws SQLException { -----------
+
+
+
+	// 비밀번호 변경
+	@Override
+	public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update member set pwd = ?, pwdupdateday = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd"))); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			pstmt.setString(2, paraMap.get("userid"));
+	        
+	        result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int pwdUpdate(Map<String, String> paraMap) throws SQLException ------------
 
 
 	
