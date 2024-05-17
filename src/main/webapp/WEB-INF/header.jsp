@@ -290,7 +290,7 @@
 	    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	  </div>
 	  
-	  <div class="offcanvas-body">
+	<div class="offcanvas-body">
 
             <hr style="width: 90%; color: purple; border: solid 2px;"> 		
 	  	    <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name}</span>님 안녕하세요!</div>
