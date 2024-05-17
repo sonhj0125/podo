@@ -2,3 +2,4 @@
 .class
 .project
 build/*
+src/main/webapp/WEB-INF/Command.properties

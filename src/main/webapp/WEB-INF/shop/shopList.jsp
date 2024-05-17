@@ -399,11 +399,11 @@ datalist > option {
 				        <option value="4">약간무거움</option>
 				        <option value="5">무거움</option>
 				    </datalist>
-				    <div class="form-check pt-3">
-					  	<input class="form-check-input" type="checkbox" id="" value="">
-					  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
-					</div>
-		    </div>
+			    <div class="form-check pt-3">
+				  	<input class="form-check-input" type="checkbox" id="" value="">
+				  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
+				</div>
+	    	</div>
 		    
 		    <br>
 		    
@@ -418,10 +418,10 @@ datalist > option {
 				        <option value="4">약간높음</option>
 				        <option value="5">높음</option>
 				    </datalist>
-				    <div class="form-check pt-3">
-					  	<input class="form-check-input" type="checkbox" id="" value="">
-					  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
-					</div>
+			    <div class="form-check pt-3">
+				  	<input class="form-check-input" type="checkbox" id="" value="">
+				  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
+				</div>
 		    </div>
 		    
 		    <br>
@@ -437,10 +437,10 @@ datalist > option {
 				        <option value="4">약간강함</option>
 				        <option value="5">강함</option>
 				    </datalist>
-				    <div class="form-check pt-3">
-					  	<input class="form-check-input" type="checkbox" id="" value="">
-					  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
-					</div>
+			    <div class="form-check pt-3">
+				  	<input class="form-check-input" type="checkbox" id="" value="">
+				  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
+				</div>
 		    </div>
 	  </div>
 	  
