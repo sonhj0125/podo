@@ -14,10 +14,10 @@ public class Signout extends AbstractController {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		String uri = request.getParameter("uri");
+		String url = request.getParameter("url");
 		
 		super.setRedirect(true);
-		super.setViewPage(uri);
+		super.setViewPage(url);
 		
 	}
 

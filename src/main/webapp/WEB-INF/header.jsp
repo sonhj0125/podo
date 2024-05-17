@@ -3,7 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String ctxPath = request.getContextPath();
-	String uri = request.getRequestURI();
+	
+	String url = "";
+	url += request.getAttribute("javax.servlet.forward.request_uri");
+	if(request.getQueryString() != null){
+		url = url + "?" + request.getQueryString();
+	}
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -273,6 +279,6 @@
     	    <%-- 검색 Modal --%>
     </header>
     
-    <form action="post" name="passFrm" style="display : none;">
-    	<input type="text" value="${requestScope['javax.servlet.forward.request_uri']}" name="uri">
+    <form action="post" name="passFrm" style="display: none;">
+    	<input type="text" value="<%= url %>" name="url">
     </form>
