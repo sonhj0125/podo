@@ -183,7 +183,7 @@ function undoBtn(type){
 		   	
 		   <div class="my-3" style="text-align: center;">
 		    	<button type="button" id="btn-success-idFind" class="btn btn-Primary">찾기</button>
-		    	<button id ="btn-undo-idFind" type="button" class="btn btn-info">이전</button>
+		    	<button id ="btn-undo-idFind" type="button" class="btn btn-secondary">이전</button>
 		   </div>
 	   
 	   		<div id="result-msg"></div>

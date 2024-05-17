@@ -39,9 +39,10 @@
 			const pwd2 =  $("input:password#pwd2").val(); // input:password[id='pwd2']
 			
 			if(pwd != pwd2) {
-				alert("암호가 일치하지 않습니다.");
+				alert("비밀번호가 일치하지 않습니다.");
 				$("input:password[name='pwd']").val("");
 				$("input:password#pwd2").val("");
+				$("input:password[name='pwd']").focus();
 				return; // 함수 종료
 				
 			} else {
@@ -52,9 +53,10 @@
 	            
 	            if(!bool) {
 	            	// 암호가 정규표현식에 위배된 경우
-	                alert("암호는 8글자 이상 15글자 이하 영문자, 숫자, 특수기호가 혼합되어야 합니다.");
+	                alert("비밀번호는 8글자 이상 15글자 이하 영문자, 숫자, 특수기호가 혼합되어야 합니다.");
 	                $("input:password[name='pwd']").val("");
 	                $("input:password[id='pwd2']").val("");
+	                $("input:password[name='pwd']").focus();
 	                return; // 함수 종료
 	                
 	            } else {
@@ -86,7 +88,7 @@
 		<input type="hidden" name="userid" value="${requestScope.userid}">
 	
 		<div style="text-align: center;">
-			<button type="button" class="btn btn-success">암호 변경하기</button>
+			<button type="button" class="btn btn-success">변경하기</button>
 		</div>
 	</form>
 </c:if>
@@ -96,6 +98,7 @@
 	<div style="text-align: center; font-size: 14pt; color: navy;">
 		<c:if test="${requestScope.n == 1}">
 	         <p class="mt-5">사용자 ID ${requestScope.userid}님의 비밀번호가 변경되었습니다.</p>
+	         <button type="button" class="btn btn-primary mt-3" onclick="location.href='<%=ctxPath%>/login/login.wine'">로그인하러 가기</button>
 	    </c:if>
 
 		<c:if test="${requestScope.n == 0}">

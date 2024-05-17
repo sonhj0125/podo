@@ -50,7 +50,7 @@ public class PwdFindEmail extends AbstractController {
 				Random rnd = new Random();
 
 				String certification_code = "";
-				// 인증키는 영문소문자 5글자 + 숫자 7글자 로 만들겠습니다.
+				// 인증키는 영문 대문자 5글자로 생성
 
 				char randchar = ' ';
 				for (int i = 0; i < 5; i++) {

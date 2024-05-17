@@ -285,7 +285,7 @@ public class MemberDAO_imple implements MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " update member set pwd = ?, pwdupdateday = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') "
+			String sql = " update member set pwd = ?, pwdupdateday = to_char(sysdate, 'yyyy-mm-dd') "
 					   + " where userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);

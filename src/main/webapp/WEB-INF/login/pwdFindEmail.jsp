@@ -180,7 +180,7 @@
 		
 		<div class="my-3 text-center">
 		   <button type="button" class="btn btn-Primary">찾기</button>
-		   <button type="button" class="btn btn-info" onclick="history.back()">이전</button>
+		   <button type="button" class="btn btn-secondary" onclick="history.back()">이전</button>
 		</div>
 	</form>
 	
