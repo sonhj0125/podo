@@ -7,6 +7,8 @@
 
 <jsp:include page="../header.jsp" />
 
+<script type="text/javascript" src="<%=ctxPath %>/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
 <div class="container">
 
 <!-- Product detail-->
@@ -72,6 +74,41 @@
 
 	</div>
 </section>
+
+<ul class="nav nav-tabs">
+		  <li class="nav-item">
+		    <a class="nav-link active" data-toggle="tab" href="#home2">Home2</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#menu4">Menu 4</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#menu5">Menu 5</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#menu6">Menu 6</a>
+		  </li>
+		</ul>
+		
+		<!-- Tab panes -->
+		<div class="tab-content py-3">
+		  <div class="tab-pane container active" id="home2">
+		  	<h4>HOME2</h4>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+		  </div>
+		  <div class="tab-pane container fade" id="menu4">
+		    <h4>Menu 4</h4>
+			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+		  </div>
+		  <div class="tab-pane container fade" id="menu5">
+		    <h4>Menu 5</h4>
+			Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+		  </div>
+		  <div class="tab-pane container fade" id="menu6">
+		    <h4>Menu 6</h4>
+			Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+		  </div>
+		</div>	
 
 <div class="accordion" id="accordionExample">
       <div class="accordion-item">
