@@ -205,11 +205,11 @@
             <div class="nav">
                 <label id="navTitle" class="text-align-center curpointer" style="color: white;"><img src="<%=ctxPath %>/images/title.png" class="img-fluid mx-auto d-block" style="max-width: 40%;"></label>
             </div>
-            <div id="spinner" class="spinner-border text-light z-1 position-absolute p-2 top-0 end-0" role="status" style="display: none; margin-right: 3%; margin-top: 30px;">
+            <div id="spinner" class="spinner-border text-light z-1 position-absolute p-2 top-0 start-0" role="status" style="display: none; margin-left: 3%; margin-top: 30px;">
 			  <span class="visually-hidden">Loading...</span>
 			</div>
 			<c:if test="${not empty sessionScope.loginUser}">
-				<div class="position-absolute z-1 position-absolute p-2 top-0 end-0" style="margin-right: 1%; margin-top: 50px;">
+				<div class="position-absolute z-1 position-absolute p-2 top-0 start-0" style="margin-left: 1%; margin-top: 50px;">
   						<span class="btn badge text-bg-light" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">${sessionScope.loginUser.userid}</span>
 				</div>
 			</c:if>
@@ -282,8 +282,6 @@
     	    <%-- 검색 Modal --%>
     </header>
     
-    <form action="post" name="passFrm" style="display: none;">
-    	<input type="text" value="<%= url %>" name="url">
     <%-- 로그인 후 상단에 아이디 버튼 클릭 시 마이페이지 오프캔버스 나오기 --%>
 	<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
 	
@@ -295,7 +293,7 @@
 	  <div class="offcanvas-body">
 
             <hr style="width: 90%; color: purple; border: solid 2px;"> 		
-	  	    <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">강민정</span>님 안녕하세요!</div>
+	  	    <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name}</span>님 안녕하세요!</div>
 	  		<div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
 				<div style="margin-right: 5%;">
 	               <i class="fa-regular fa-newspaper" style="margin: 10%;"></i>
@@ -312,7 +310,7 @@
 	               <i class="fa-solid fa-circle-dollar-to-slot"></i>
 	               <br>
 	               <div style="font-weight: bold;">적립금</div>
-	               <div style="color: purple;">3,800</div>
+	               <div style="color: purple;">${sessionScope.loginUser.point}</div>
 	            </div>
 	        </div>
 	        <hr style="width: 90%; color: purple; border: solid 2px;">  
@@ -351,7 +349,9 @@
 	  </div>
 	  
 	</div>
-    
-    <form action="post" name="passFrm" style="display : none;">
-    	<input type="text" value="${requestScope['javax.servlet.forward.request_uri']}" name="uri">
+	
+	<%-- 현 주소 기록 --%>
+	<form action="post" name="passFrm" style="display: none;">
+    	<input type="text" value="<%= url %>" name="url">
     </form>
+    
