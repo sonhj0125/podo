@@ -15,23 +15,21 @@
 <script type="text/javascript" src="<%= ctxPath%>/js/login/login.js"></script>
 
 <style>
-div.login_sub_btn {
-    border: solid 0px red;
-    display: flex;
-    margin: 3% auto;
-}
-
-button#idFind,
-button#pwdFind {
-    width: 48%;
-}
-
-button#pwdFind {
-    margin-left: 5%;
-}
+	div.login_sub_btn {
+	    border: solid 0px red;
+	    display: flex;
+	    margin: 3% auto;
+	}
+	
+	button#idFind,
+	button#pwdFind {
+	    width: 48%;
+	}
+	
+	button#pwdFind {
+	    margin-left: 5%;
+	}
 </style>
-
-
 
 <form name="loginFrm">
     <div class="form-floating mb-3">

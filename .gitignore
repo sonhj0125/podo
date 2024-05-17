@@ -3,3 +3,6 @@
 .project
 build/*
 src/main/webapp/WEB-INF/Command.properties
+src/main/webapp/WEB-INF/header.jsp
+src/main/webapp/WEB-INF/Command.properties
+src/main/webapp/js/member/memberUpdate.js

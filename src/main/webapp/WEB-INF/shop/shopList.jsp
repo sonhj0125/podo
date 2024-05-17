@@ -308,6 +308,7 @@ datalist > option {
 		    <div class="mt-5">
 			    <p style="font-weight:bold; font-size:14pt;">🍷바디</p>
 			    <hr>
+			    
 			    <input id="slider" type="range" min="1" max="5" step="1" list="body">
 				    <datalist id="tickmarks">
 				        <option value="1">가벼움</option>
@@ -316,10 +317,12 @@ datalist > option {
 				        <option value="4">약간무거움</option>
 				        <option value="5">무거움</option>
 				    </datalist>
-			    <div class="form-check pt-3">
-				  	<input class="form-check-input" type="checkbox" id="" value="">
-				  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
-				</div>
+					<div class="form-check pt-3">
+					  	<input class="form-check-input" type="checkbox" value="" id="none1">
+					  	<label class="form-check-label" style="font-size:12pt;" for="none1">
+					    	상관없음
+					  	</label>
+					</div>
 	    	</div>
 		    
 		    <br>
@@ -335,10 +338,12 @@ datalist > option {
 				        <option value="4">약간높음</option>
 				        <option value="5">높음</option>
 				    </datalist>
-			    <div class="form-check pt-3">
-				  	<input class="form-check-input" type="checkbox" id="" value="">
-				  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
-				</div>
+			    	<div class="form-check pt-3">
+					  	<input class="form-check-input" type="checkbox" value="" id="none2">
+					  	<label class="form-check-label" style="font-size:12pt;" for="none2">
+					    	상관없음
+					  	</label>
+					</div>
 		    </div>
 		    
 		    <br>
@@ -354,10 +359,12 @@ datalist > option {
 				        <option value="4">약간강함</option>
 				        <option value="5">강함</option>
 				    </datalist>
-			    <div class="form-check pt-3">
-				  	<input class="form-check-input" type="checkbox" id="" value="">
-				  	<label class="form-check-label" style="font-size:12pt;" for="">상관없음</label>
-				</div>
+			    	<div class="form-check pt-3">
+					  	<input class="form-check-input" type="checkbox" value="" id="none3">
+					  	<label class="form-check-label" style="font-size:12pt;" for="none3">
+					    	상관없음
+					  	</label>
+					</div>
 		    </div>
 	  </div>
 	  

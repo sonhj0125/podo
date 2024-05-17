@@ -28,5 +28,7 @@ public interface MemberDAO {
 	// 비밀번호 변경
 	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
 
+	// 로그기록
+	int logwrite(Map<String, String> paraMap) throws SQLException;
 	
 }
