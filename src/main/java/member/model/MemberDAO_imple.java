@@ -141,7 +141,7 @@ public class MemberDAO_imple implements MemberDAO {
 		
 		return mdto;
 		
-	}// end of public MemberDTO signin(Map<String, String> paraMap)
+	} // end of public MemberDTO signin(Map<String, String> paraMap)
 	
 	
 	// 아이디 중복 확인
@@ -205,6 +205,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 
+	// 아이디 찾기
 	@Override
 	public String finduserid(Map<String, String> paraMap) throws SQLException {
 		
@@ -233,7 +234,42 @@ public class MemberDAO_imple implements MemberDAO {
 		}
 		
 		return userid;
-	}
+	} // end of public String finduserid(Map<String, String> paraMap) throws SQLException
+
+
+
+	// 비밀번호 찾기(성명, 아이디, 이메일을 입력받아 해당 사용자가 존재하는지 여부 알아오기)
+	@Override
+	public boolean isUserExist(Map<String, String> paraMap) throws SQLException {
+
+		boolean isUserExist = false;
+		
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select userid "
+					   + " from member "
+					   + " where status = 1 and userid = ? and email = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+
+			rs = pstmt.executeQuery();
+
+			isUserExist = rs.next(); // 행이 있으면(사용자가 존재하면) true,
+			 						 // 행이 없으면(사용자가 존재하지 않으면) false
+
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+
+		return isUserExist;
+		
+	} // end of public boolean isUserExist(Map<String, String> paraMap) throws SQLException { -----------
 
 
 	

@@ -16,7 +16,6 @@
 
 <%-- Optional JavaScript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="<%= ctxPath%>/js/login/PwdFind.js?ver=1"></script>
 
 <style>
     div#divpwdFindFrm {
@@ -27,33 +26,55 @@
     }
 </style>
 
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		
+		$("button#pwdFind").bind("click", function() {
+			goPwdFind();
+		});
+	});
+	
+	function goPwdFind() {
+		
+		// 인증 방식을 선택했는지 검사하기
+	    const radio_checked_length = $("input:radio[name='findType']:checked").length;
+	
+	    if (radio_checked_length == 0) {
+	    	
+	    	alert("인증 방식을 선택하세요!");
+	        return; // goPwdFind() 함수 종료
+	        
+	    }
+	    
+    	const findType = $("input:radio[name='findType']:checked").val();
+    	
+    	if(findType == "mobile") {
+    		location.href = "<%=ctxPath%>/login/pwdFindMobile.wine";
+    		
+    	} else {
+    		location.href = "<%=ctxPath%>/login/pwdFindEmail.wine";
+    	}
+	} // end of function goPwdFind() -------------------------------------
+	
+</script>
+
 <body>
 	
 	<form name="pwdFindFrm">
 		<div style="text-align: center">
 			<h3>비밀번호 찾기</h3>
 		</div>
-	   <ul style="list-style-type: none;">
-	      <li style="margin: 25px 0">
-	          <label style="display: inline-block; width: 60px;">아이디</label>
-	          <input type="text" name="userid" size="25" autocomplete="off" />
-	          <br>
-		      <label style="display: inline-block; width: 60px;"></label>
-	          <span class="errorid" style="color: red;">아이디를 입력해주세요!</span>  
-	      </li>
-	      <li style="margin: 25px 0">
-	          <label style="display: inline-block; width: 60px;">이메일</label>
-	          <input type="text" name="email" size="25" autocomplete="off" />
-	          <br>
-		      <label style="display: inline-block; width: 60px;"></label>
-	          <span class="erroremail" style="color: red;">이메일을 올바르게 입력해주세요!</span>  
-	      </li>
-	   </ul> 
-	
-	   <div class="my-3 text-center">
-	      <button type="button" class="btn btn-Primary">찾기</button>
-	      <button type="button" class="btn btn-info" onclick="history.back()">이전</button>
-       </div>
+		
+		<div class="m-5 text-center">
+			<input type="radio" name="findType" value="mobile" id="mobile" /><label for="mobile" style="margin-left: 1.5%;">휴대폰 인증</label>
+            <input type="radio" name="findType" value="email" id="email" style="margin-left: 10%;" /><label for="email" style="margin-left: 1.5%;">이메일 인증</label>
+		</div>
+		
+		<div class="my-3 text-center">
+		   <button type="button" class="btn btn-Primary" id="pwdFind">찾기</button>
+		   <button type="button" class="btn btn-info" onclick="history.back()">이전</button>
+		</div>
 	</form>
 	
 </body>
