@@ -11,8 +11,7 @@
 		<div class="cart_header" style="background-color: #F8F8F8; width: 100%; height: 200px; text-align: center;">
 			<br><br>
 			<h2 style="margin-bottom: 1.5%;">주문하기</h2>
-			
-			<div style="text-align: center; margin:0 5%;">
+			<div style="text-align: center; margin:0 7%;">
 			<div style="display: flex; width: 16.5%; margin:0 auto;">
 				
 				<div style="margin-right: 8%;">
@@ -22,7 +21,7 @@
 				</div>
 				<div style="margin-right: 5%;">
 					<br>
-					<i class="fa-solid fa-chevron-right"></i>
+					<i class="fa-solid fa-chevron-right" style="color: #c0c0c1;"></i>
 				</div>
 				<div style="margin-right: 5%;">
 					<i class="fa-regular fa-credit-card"></i>
