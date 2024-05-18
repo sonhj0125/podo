@@ -1,42 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
    String ctxPath = request.getContextPath();
 %>
 
-<script type="text/javascript">
+<style>
 
-function count(type)  {
-     // 결과를 표시할 element
-     const resultElement = document.getElementById('result');
-     
-     // 현재 화면에 표시된 값
-     let number = resultElement.innerText;
-     
-     // 더하기/빼기
-     if(type === 'plus') {
-        
-       number = parseInt(number) + 1;
-       
-     } else if(type === 'minus')  {
-        
-       number = parseInt(number) - 1;
-       
-       if(number < 1) {
-          number == 1
-          retrun;
-       }
-     }
-     
-     // 결과 출력
-     resultElement.innerText = number;
-}
-   
-   
-</script>
+	.checkb{
+	
+		border: solid 1px red;
+	
+	}
+
+</style>
 
 <jsp:include page="../header.jsp" />
+
+<script type="text/javascript" src="<%=ctxPath %>/js/shop/cart.js"></script>
 
    <div id="container">
    
@@ -75,40 +57,69 @@ function count(type)  {
       </div>
       
       <div class="cart_body">
-         <input class="form-check-input" type="checkbox" id="flexCheckDefault">
-         <label class="form-check-label" for="flexCheckDefault">
-             전체 선택
-         </label>
-         <hr>
+      
+      	<div style="margin-bottom: 15px">
+	      	 <input class="form-check-input" type="checkbox" id="flexCheckDefault" style="margin-right : 1%;">
+	         <label class="form-check-label" for="flexCheckDefault" style="font-weight: blod;">
+	             전체 선택
+	         </label>
+         </div>
+         
          
          <c:if test="${not empty requestScope.cdtoList}">
-         	
          	<c:forEach var="cdtolist" items="${requestScope.cdtoList}">
          	
-	         	<div class="hstack gap-3" style="border: solid 3px gray; border-width: 0 0 3px; border-style: solid; padding: 2% 0;">
-		           <input type="checkbox">
-		           <img src="<%=ctxPath %>/images/product/${cdtolist.pdto.pimg}" style="width: 100px; height: 100px;">
-		           <h5 style="font-weight: bold; margin-right: 1%;">${cdtolist.pdto.pname}</h5>
-		           <div style="margin-right: 23%;">
-		              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.ptype}</span>
-		              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.phometown}</span>
-		            </div>
-		            <div style="display: flex; margin-right: 20.999%;">
-		               <input type='button' onclick='count("minus")' value='-' style="margin-right:15%;"/>
-		              <div id='result'>${cdtolist.cvolume}</div>
-		              <input type='button' onclick='count("plus")' value='+' style="margin-left:15%;"/>
+	         	<div class="hstack gap-1" style=" border-top : solid 1px rgb(187, 184, 184); padding-top: 10px; padding-bottom: 10px">
+	         	
+		           <input class ="form-check-input" type="checkbox">
+		           
+		           <div style="width: 15%; min-width: 15%;">
+		           	<img src="<%=ctxPath %>/images/product/${cdtolist.pdto.pimg}" style="width: 100%;">
 		           </div>
-		            <div style="font-size: 22pt;">${cdtolist.pdto.pprice}원</div>
+		           
+		           <div style="width: 30%; min-width: 30%; font-weight: bold; font-size: 1.5vw;">
+		           		${cdtolist.pdto.pname}
+		           </div>
+		           
+		           <div style="width: 12%; min-width: 12%;">
+		              <c:if test="${cdtolist.pdto.ptype == '레드'}">
+                      		<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
+                      </c:if>
+                      <c:if test="${cdtolist.pdto.ptype == '화이트'}">
+                      		<span class="badge rounded-pill p-2" style="background-color: #ffb366;">화이트</span>
+                      </c:if>
+                      <c:if test="${cdtolist.pdto.ptype == '로제'}">
+                      		<span class="badge rounded-pill p-2" style="background-color: #ff8080;">로제</span>
+                      </c:if>
+                      <c:if test="${cdtolist.pdto.ptype == '스파클링'}">
+                      		<span class="badge rounded-pill p-2" style="background-color: #66c2ff;">스파클링</span>
+                      </c:if>
+		              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.phometown}</span>
+		           </div>
+		           
+		           <div style="width: 10%; min-width: 10%; text-align: center; font-size: 2vw;">
+						${cdtolist.cvolume}EA
+		           </div>
+		           
+		           <div style="width: 10%; min-width: 10%; ">
+		           		<button type="button" class="btn btn-light">변경</button>
+		           </div>
+		           
+		           <div class="priceOne" style="width:15%; min-width: 15%; font-size: 2vw; font-weight: bold; text-align: right;">
+		                  ${cdtolist.pdto.pprice}원
+		           </div>
 		         </div>
-         	
          	</c:forEach>
-         	
+         		<div class="hstack gap-1" style="border-top: solid 2px gray; padding-left: 65%; font-size: 2vw; font-weight: bold;">
+         			<div style="width:25%; min-width: 25%;">총합 : </div>
+         			<div id="sumPrice" style="width:70%; min-width: 70%; font-size: 3vw; font-weight: bold; text-align: right; padding-right: 7%">
+		        	</div>
+         		</div>
          </c:if>
          
-         
-         
-         
-         
+         <c:if test="${empty requestScope.cdtoList}">
+         	물건없음
+         </c:if>
          
       </div>
       
