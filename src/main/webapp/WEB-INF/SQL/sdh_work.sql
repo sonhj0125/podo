@@ -13,4 +13,4 @@ select pname, pengname, ptype, phometown, pprice, pdetail, pimg
 from product
 where pname like '%'|| '엠' || '%';
 
-insert into LOG(LOGINDEX, userid, ipaddress) VALUES (SEQ_LOGIDX.nextval, 'redtree2379', 'red');
+select USERID,CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE from CART join PRODUCT on CART.PINDEX = PRODUCT.PINDEX where USERID='redtree2379';

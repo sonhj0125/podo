@@ -3,12 +3,44 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String ctxPath = request.getContextPath();
+
+	String url = "";
+	url += request.getAttribute("javax.servlet.forward.request_uri");
+	if(request.getQueryString() != null){
+		url = url + "?" + request.getQueryString();
+	}
 %>
 
 <jsp:include page="../header.jsp" />
 
 <script type="text/javascript" src="<%=ctxPath %>/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+<script>
 
+$(function (){
+	
+	// 카트 클릭
+	$("#btncart").bind("click",function(){
+		
+		const frm = document.cartin;
+		frm.method = "post";
+		frm.action = "<%=ctxPath%>/cart/cartin.wine";
+		frm.submit();
+		
+	});
+	
+	$("#btncart-out").bind("click",function(){
+		
+		const frm = document.cartin;
+		frm.method = "post";
+		frm.action = "<%=ctxPath%>/cart/cartout.wine";
+		frm.submit();
+		
+	});
+	
+	
+});
+
+</script>
 
 <div class="container">
 
@@ -44,14 +76,17 @@
 	               <span class="badge rounded-pill p-2" style="background-color: #9999ff;">${requestScope.pdto.phometown}</span>
 	            </div>
 	
-	            <form>
-	            <div class="input-group fs-5 mb-5">
-	                <div class="input-group-prepend">
-	                    <input type="hidden" id="stockquantity" name="stockquantity">
-	                    <span class="input-group-text">주문 수량</span>
-	                </div>
-	                <input class="form-control text-center me-3" id="count" name="count" type="number" value="1" start="1" min="0" max="100" style="max-width: 5rem" />
-	            </div>
+	            <form name="cartin">
+		            <div class="input-group fs-5 mb-5">
+		                <div class="input-group-prepend">
+		                    <input type="hidden" id="stockquantity" name="stockquantity">
+		                    <span class="input-group-text">주문 수량</span>
+		                </div>
+		                	<input class="form-control text-center me-3" id="count" name="cvolume" type="number" value="1" start="1" min="0" max="100" style="max-width: 5rem" />
+		                	<input name="userid" value = "${sessionScope.loginUser.userid}" style="display: none;"/>
+		                	<input name="pindex" value = "${requestScope.pdto.pindex}" style="display: none;"/>
+		                	<input name="url" value = "<%= url%>" style="display:none;"/>
+		            </div>
 	            </form>
 	
 	            <br>
@@ -68,9 +103,16 @@
 	                    </button>
 	                </form>
 	                &nbsp;&nbsp; 
-	                <button class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
-	                    CART
-	                 </button>
+	                <c:if test="${requestScope.cartInfo == 'none'}">
+		                <button id="btncart" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
+		                    CART
+		                 </button>
+	                </c:if>
+	                <c:if test="${requestScope.cartInfo == 'show'}">
+		                <button id="btncart-out" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
+		                    CART OUT
+		                 </button>
+	                </c:if>
 	             </div>
 	         </div>
 	     </div>

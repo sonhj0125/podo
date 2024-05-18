@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
    String ctxPath = request.getContextPath();
 %>
 
 <script type="text/javascript">
+
 function count(type)  {
      // 결과를 표시할 element
      const resultElement = document.getElementById('result');
@@ -29,7 +31,9 @@ function count(type)  {
      
      // 결과 출력
      resultElement.innerText = number;
-   }
+}
+   
+   
 </script>
 
 <jsp:include page="../header.jsp" />
@@ -76,22 +80,36 @@ function count(type)  {
              전체 선택
          </label>
          <hr>
-         <div class="hstack gap-3" style="border: solid 3px gray; border-width: 0 0 3px; border-style: solid; padding: 2% 0;">
-           <input type="checkbox">
-           <img src="<%=ctxPath %>/images/product/1.png" style="width: 100px; height: 100px;">
-           <h5 style="font-weight: bold; margin-right: 1%;">디아블로데블 카나발카베르네</h5>
-           <div style="margin-right: 23%;">
-              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">레드</span>
-              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">칠레산</span>
-              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">카베르네 소비뇽</span>
-            </div>
-            <div style="display: flex; margin-right: 20.999%;">
-               <input type='button' onclick='count("minus")' value='-' style="margin-right:15%;"/>
-              <div id='result'>1</div>
-              <input type='button' onclick='count("plus")' value='+' style="margin-left:15%;"/>
-           </div>
-            <div style="font-size: 22pt;">14,900원</div>
-         </div>
+         
+         <c:if test="${not empty requestScope.cdtoList}">
+         	
+         	<c:forEach var="cdtolist" items="${requestScope.cdtoList}">
+         	
+	         	<div class="hstack gap-3" style="border: solid 3px gray; border-width: 0 0 3px; border-style: solid; padding: 2% 0;">
+		           <input type="checkbox">
+		           <img src="<%=ctxPath %>/images/product/${cdtolist.pdto.pimg}" style="width: 100px; height: 100px;">
+		           <h5 style="font-weight: bold; margin-right: 1%;">${cdtolist.pdto.pname}</h5>
+		           <div style="margin-right: 23%;">
+		              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.ptype}</span>
+		              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.phometown}</span>
+		            </div>
+		            <div style="display: flex; margin-right: 20.999%;">
+		               <input type='button' onclick='count("minus")' value='-' style="margin-right:15%;"/>
+		              <div id='result'>${cdtolist.cvolume}</div>
+		              <input type='button' onclick='count("plus")' value='+' style="margin-left:15%;"/>
+		           </div>
+		            <div style="font-size: 22pt;">${cdtolist.pdto.pprice}원</div>
+		         </div>
+         	
+         	</c:forEach>
+         	
+         </c:if>
+         
+         
+         
+         
+         
+         
       </div>
       
       <div class="cart_footer" style="text-align: center;">
@@ -103,6 +121,5 @@ function count(type)  {
       </div>
 
    </div>
-
 
 <jsp:include page="../footer.jsp" />

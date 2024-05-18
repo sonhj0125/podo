@@ -113,7 +113,7 @@
 		
 		<%-- Header Shop Click --%>
 		$("label#btnCart").bind('click',()=>{
-			location.href="<%=ctxPath%>/shop/cart.wine";
+			location.href="<%=ctxPath%>/cart/cart.wine";
 		});
 		
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
