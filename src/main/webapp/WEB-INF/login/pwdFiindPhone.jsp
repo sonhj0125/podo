@@ -17,7 +17,7 @@
 
 <%-- Optional JavaScript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.7.1.min.js"></script>
-<%-- <script type="text/javascript" src="<%= ctxPath%>/js/login/pwdFindEmail.js?ver=1"></script> --%>
+<%-- <script type="text/javascript" src="<%= ctxPath%>/js/login/pwdFindPhone.js?ver=1"></script> --%>
 
 <style>
     div#divpwdFindFrm {
@@ -31,7 +31,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-		const method = "${requestScope.method}";
+		/* const method = "${requestScope.method}";
 		
 		if(method == "GET") {
 			$("div#div_findResult").hide();
@@ -40,40 +40,40 @@
 		if(method == "POST") {
 			$("input#name").val("${requestScope.name}");
  			$("input#userid").val("${requestScope.userid}");
-			$("input#email").val("${requestScope.email}");
+			$("input#phone").val("${requestScope.phone}");
 			
 			if(${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}) {
 				$("button.btn-success").hide();
 			}
-		}
+		} */
 		
 		///////////////////////////////////////
 	
 	    $("input#name").focus();
 	    
-	    $("span.errorname-pwdFindEmail").hide();
-	    $("span.errorid-pwdFindEmail").hide();
-	    $("span.erroremail-pwdFindEmail").hide();
+	    $("span.errorname-pwdFindPhone").hide();
+	    $("span.errorid-pwdFindPhone").hide();
+	    $("span.errorphone-pwdFindPhone").hide();
 	
 	    $("input#name").bind("change", function() {
-	        $("span.errorname-pwdFindEmail").hide(); 
+	        $("span.errorname-pwdFindPhone").hide(); 
 	    });
 	
 	    $("input#userid").bind("change", function() {
-	        $("span.errorid-pwdFindEmail").hide(); 
+	        $("span.errorid-pwdFindPhone").hide(); 
 	    });
 	
-	    $("input#email").bind("change", function() {
-	        $("span.erroremail-pwdFindEmail").hide(); 
+	    $("input#phone").bind("change", function() {
+	        $("span.errorphone-pwdFindPhone").hide(); 
 	    });
 	    
 	    $("button.btn-Primary").click(function() {
-	       goPwdFindEmail();
+	       goPwdFindPhone();
 	    });
 	    
-	    $("input#email").bind("keyup", function(e) {
+	    $("input#phone").bind("keyup", function(e) {
 	       if(e.keyCode == 13) { 
-	          goPwdFindEmail();
+	    	   goPwdFindPhone();
 	       }
 	    });
 	    
@@ -102,54 +102,52 @@
 	
 	
 	// Function Declaration
-	function goPwdFindEmail() {
+	function goPwdFindPhone() {
 		
 		// 성명을 입력했는지 검사
-		const name = $("input:text[name='name']").val().trim();
+		const name = $("input#name").val().trim();
 		
 		if(name == "") {
-	        $("span.errorname-pwdFindEmail").show();
-	        $("input:text[name='name']").focus();
+	        $("span.errorname-pwdFindPhone").show();
+	        $("input#name").focus();
 	        return;
 		}
 		
 		// 아이디를 입력했는지 검사
-		const userid = $("input:text[name='userid']").val().trim();
+		const userid = $("input#userid").val().trim();
 		
 		if(userid == "") {
-	        $("span.errorid-pwdFindEmail").show();
-	        $("input:text[name='userid']").focus();
+	        $("span.errorid-pwdFindPhone").show();
+	        $("input#userid").focus();
 	        return;
 		}
 		
-		// 이메일 검사
-		const email = $("input:text[name='email']").val();
+		// 연락처 검사
+		const phone = $("input#phone").val().trim();
 		
-		const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
-		// 이메일 정규표현식 객체 생성 
-	    
-	    const bool = regExp_email.test(email);
-	
+		const regExp_phone = new RegExp(/^01[016789]{1}[0-9]{3,4}[0-9]{4}$/);
+        const bool = regExp_phone.test(phone);
+
 	    if(!bool) {
-	        // 이메일이 정규표현식에 위배된 경우
-	        
-	        $("span.erroremail-pwdFindEmail").show();
-	        $("input:text[name='email']").val("").focus();
+	        // 연락처가 정규표현식에 위배된 경우
+	        $("span.infophone-pwdFindPhone").hide();
+	        $("span.errorphone-pwdFindPhone").show();
+	        $("input#phone").val("").focus();
 	        return;
 	    }
 	    
-	    const frm = document.pwdFindEmailFrm;
-	    frm.action = "<%=ctxPath%>/login/pwdFindEmail.wine";
+	    const frm = document.pwdFindPhoneFrm;
+	    frm.action = "<%=ctxPath%>/login/pwdFindPhone.wine";
 	    frm.method = "post";
-	    frm.submit();
+//	    frm.submit();
 	    
-	} // end of function goPwdFindEmail() ----------------------------------------
+	} // end of function goPwdFindPhone() ----------------------------------------
 
 </script>
 
 <body>
 	
-	<form name="pwdFindEmailFrm">
+	<form name="pwdFindPhoneFrm">
 		<div style="text-align: center">
 			<h3>비밀번호 찾기</h3>
 		</div>
@@ -160,21 +158,22 @@
 		       <input type="text" id="name" name="name" size="25" autocomplete="off" />
 		       <br>
 		    <label style="display: inline-block; width: 60px;"></label>
-		       <span class="errorname-pwdFindEmail" style="color: red;">성명을 입력해주세요!</span>  
+		       <span class="errorname-pwdFindPhone" style="color: red;">성명을 입력해주세요!</span>  
 		   </li>
 		   <li style="margin: 25px 0">
 		       <label style="display: inline-block; width: 60px;">아이디</label>
 		       <input type="text" id="userid" name="userid" size="25" autocomplete="off" />
 		       <br>
 		    <label style="display: inline-block; width: 60px;"></label>
-		       <span class="errorid-pwdFindEmail" style="color: red;">아이디를 입력해주세요!</span>  
+		       <span class="errorid-pwdFindPhone" style="color: red;">아이디를 입력해주세요!</span>  
 		   </li>
 		   <li style="margin: 25px 0">
-		       <label style="display: inline-block; width: 60px;">이메일</label>
-		       <input type="text" id="email" name="email" size="25" autocomplete="off" />
+		       <label style="display: inline-block; width: 60px;">연락처</label>
+		       <input type="text" id="phone" name="phone" size="25" autocomplete="off" />
 		       <br>
 		    <label style="display: inline-block; width: 60px;"></label>
-		       <span class="erroremail-pwdFindEmail" style="color: red;">이메일을 올바르게 입력해주세요!</span>  
+		       <span class="infophone-pwdFindPhone" style="font-size: 10pt; color: blue;">하이픈[-]을 빼고 입력하세요.</span>
+		       <span class="errorphone-pwdFindPhone" style="color: red;">연락처를 올바르게 입력해주세요!</span>  
 		   </li>
 		</ul>
 		
@@ -183,37 +182,5 @@
 		   <button type="button" class="btn btn-secondary" onclick="history.back()">이전</button>
 		</div>
 	</form>
-	
-	
-	<div class="my-3 text-center" id="div_findResult">
-
-		<c:if test="${requestScope.isUserExist == false}">
-			<span style="color: red;">사용자 정보가 없습니다.</span>
-		</c:if>
-		
-		
-		<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}">
-			<span style="font-size: 10pt;">
-				인증코드가 ${requestScope.email}로 발송되었습니다.<br>
-				인증코드를 입력해주세요.
-			</span>
-			<br>
-			<input type="text" name="input_confirmCode" />
-			<br><br>
-			<button type="button" class="btn btn-info">인증하기</button>
-		</c:if>
-		
-		
-		<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == false}">
-			<span style="color: red;">메일 발송에 실패했습니다.</span>
-		</c:if>
-		
-	</div>
-
-<%-- 인증하기 form --%>
-<form name="verifyCertificationFrm">
-	<input type="hidden" name="userCertificationCode" />
-	<input type="hidden" name="userid" />
-</form>
 	
 </body>
