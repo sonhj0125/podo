@@ -185,21 +185,21 @@ public class ProductDAO_imple implements ProductDAO {
 
 			while(rs.next()) {
 
-				ProductDTO pvo = new ProductDTO();
+				ProductDTO pdto = new ProductDTO();
 
-				pvo.setPname(rs.getString("pname"));
-				pvo.setPengname(rs.getString("pengname"));
-				pvo.setPtype(rs.getString("ptype"));
-				pvo.setPhometown(rs.getString("phometown"));
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
 				
 				String price = df.format(Integer.parseInt(rs.getString("pprice")));
 				
-				pvo.setPprice(price);
-				pvo.setPdetail(rs.getString("pdetail"));
-				pvo.setPimg(rs.getString("pimg"));
-				pvo.setPindex(rs.getInt("pindex"));
+				pdto.setPprice(price);
+				pdto.setPdetail(rs.getString("pdetail"));
+				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPindex(rs.getInt("pindex"));
 
-				wineList.add(pvo);
+				wineList.add(pdto);
 
 			}
 
@@ -209,7 +209,7 @@ public class ProductDAO_imple implements ProductDAO {
 
 		return wineList;
 
-	} // end of public List<ProductVO> searchWineName(String searchWord)
+	} // end of public List<ProductDTO> searchWineName(String searchWord)
 
 	
 	
