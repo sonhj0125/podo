@@ -140,7 +140,7 @@ int result = 0;
 			
 			conn = ds.getConnection();
 			
-			String sql = "select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG,cart.PINDEX as pindex "
+			String sql = "select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG,cart.PINDEX as pindex,cindex "
 					+ " from CART join PRODUCT on CART.PINDEX = PRODUCT.PINDEX "
 					+ " where USERID = ? ";
 			
@@ -160,6 +160,7 @@ int result = 0;
 				
 				CartDTO cdto = new CartDTO();
 				cdto.setCvolume(rs.getString("CVOLUME"));
+				cdto.setCindex(rs.getInt("cindex"));;
 				
 				ProductDTO pdto = new ProductDTO();
 				pdto.setPname(rs.getString("pname"));

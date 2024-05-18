@@ -134,6 +134,11 @@
 		                  ${cdtolist.sumprice}원
 		           </div>
 		         </div>
+		         
+		         <div class="stack-index">
+		         	${cdtolist.cindex}
+		         </div>
+		         
          	</c:forEach>
          		<div class="hstack gap-1" style="border-top: solid 2px gray; padding-left: 65%; font-size: 2vw; font-weight: bold;">
          			<div style="width:45%; min-width: 45%;">결제 예정금액 : </div>
@@ -141,6 +146,10 @@
 		        	</div>
          		</div>
          </c:if>
+         
+         <form name="orderSet">
+         	<input type="text" name="Arr_cindex" value="">
+         </form>
          
          <c:if test="${empty requestScope.cdtoList}">
          	<div style="width: 100%; text-align: center; font-weight: bold; padding: 70px 0; font-size: 2vw;" >
