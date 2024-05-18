@@ -140,7 +140,7 @@ int result = 0;
 			
 			conn = ds.getConnection();
 			
-			String sql = "select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG "
+			String sql = "select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG,cart.PINDEX as pindex "
 					+ " from CART join PRODUCT on CART.PINDEX = PRODUCT.PINDEX "
 					+ " where USERID = ? ";
 			
@@ -166,6 +166,13 @@ int result = 0;
 				pdto.setPtype(rs.getString("ptype"));
 				pdto.setPhometown(rs.getString("phometown"));
 				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPindex(rs.getInt("pindex"));
+				
+				int sumpriceInt = Integer.parseInt(rs.getString("pprice"))*Integer.parseInt(rs.getString("CVOLUME"));
+				
+				String sumprice = df.format(sumpriceInt);
+				
+				cdto.setSumprice(sumprice);
 				
 				String price = df.format(Integer.parseInt(rs.getString("pprice")));
 				

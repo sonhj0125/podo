@@ -8,6 +8,7 @@ public class CartDTO {
 	private MemberDTO mdto;
 	private ProductDTO pdto;
 	private String cvolume;
+	private String sumprice;
 	private int cindex;
 	
 	public MemberDTO getMdto() {
@@ -33,6 +34,12 @@ public class CartDTO {
 	}
 	public void setCindex(int cindex) {
 		this.cindex = cindex;
+	}
+	public String getSumprice() {
+		return sumprice;
+	}
+	public void setSumprice(String sumprice) {
+		this.sumprice = sumprice;
 	}
 	
 }
