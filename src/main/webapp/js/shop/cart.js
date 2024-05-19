@@ -1,5 +1,6 @@
 $(function (){
-	
+    
+	// 총가격 계산
 	const pricearr = document.querySelectorAll(".priceOne");
     let sumPrice = 0;
 
@@ -18,9 +19,9 @@ $(function (){
     const indexIn = document.querySelectorAll("div.cart-index");
     let Arr = "";
     let fristSet = true;
+    // end
 
-
-    // 포장
+    // Form 포장하기
     indexIn.forEach((item)=>{
 
         if(fristSet){
@@ -29,14 +30,23 @@ $(function (){
         }else{
             Arr += ","+item.innerText;
         }
-        
     })
-
     $('#setCindex').attr('value', Arr);
     //end
 
+    //전부 check
     const cbAll = $("input#cbAll");
 
+    cbAll.prop('checked', true);
+
+    const cbOne = $('input.cbOne');
+
+    cbOne.each(function(){
+        $(this).prop('checked',true);
+    })
+    //end
+
+    //체크 상태
     cbAll.on('change', function() {
 
         $('input.cbOne').prop('checked', $(this).prop('checked'));
@@ -59,5 +69,8 @@ $(function (){
         }
 
     })
+    // end
+
+
 
 });
