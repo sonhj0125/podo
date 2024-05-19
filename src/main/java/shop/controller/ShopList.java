@@ -23,9 +23,22 @@ public class ShopList extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		String sortType = request.getParameter("sortType");
+		
+		String ptype = request.getParameter("ptype");
+		String pprice = request.getParameter("pprice");
+		String phometown = request.getParameter("phometown");
+		String pbody = request.getParameter("pbody");
+		String pacid = request.getParameter("pacid");
+		String ptannin = request.getParameter("ptannin");
+		
 		String sizePerPage = "8";
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
-
+		
+		if(sortType == null) {
+			sortType = "";
+		}
+		
 		if(sizePerPage == null ||
 		   !"8".equals(sizePerPage)) {
 
@@ -69,10 +82,10 @@ public class ShopList extends AbstractController {
 
 
 		// *** [맨처음][이전] 만들기 *** //
-		pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>◀◀</a></li>";
+		pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo=1'>◀◀</a></li>";
 
 		if(pageNo != 1) {
-			pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>◀</a></li>";
+			pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo="+(pageNo-1)+"'>◀</a></li>";
 		}
 
 
@@ -83,7 +96,7 @@ public class ShopList extends AbstractController {
 
 			}
 			else {
-				pageBar += "<li class='page-item'><a class='page-link' href='list.wine?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sortType="+sortType+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 			}
 
 			loop++;		// 1 2 3 4 5 6 7 8 9 10
@@ -101,18 +114,36 @@ public class ShopList extends AbstractController {
 
 		if( pageNo <= totalPage ) {
 			// 맨 마지막이 아닌 경우에만 다음을 넣어준다.
-			pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>▶</a></li>";
+			pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo="+pageNo+"'>▶</a></li>";
 		}
 
-		pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>▶▶</a></li>";
+		pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo="+totalPage+"'>▶▶</a></li>";
 
 		// *** ==== 페이지바 만들기 끝 ==== *** //
 
+		paraMap.put("sortType", sortType);
+		
+		paraMap.put("ptype", ptype);
+		paraMap.put("pprice", pprice);
+		paraMap.put("phometown", phometown);
+		paraMap.put("pbody", pbody);
+		paraMap.put("pacid", pacid);
+		paraMap.put("ptannin", ptannin);
+		
 		// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
 		List<ProductDTO> pdtList = pdao.selectProductPaging(paraMap);
 
 		request.setAttribute("pdtList", pdtList); // 상품 목록
 
+		request.setAttribute("sortType", sortType); // 정렬 타입
+		
+		request.setAttribute("ptype", ptype);
+		request.setAttribute("pprice", pprice);
+		request.setAttribute("phometown", phometown);
+		request.setAttribute("pbody", pbody);
+		request.setAttribute("pacid", pacid);
+		request.setAttribute("ptannin", ptannin);
+		
 		request.setAttribute("sizePerPage", sizePerPage); // 한 페이지당 보일 상품 개수 (8개)
 
 		request.setAttribute("pageBar", pageBar); // 페이지바

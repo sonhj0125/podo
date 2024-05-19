@@ -49,8 +49,8 @@
 	    
     	const findType = $("input:radio[name='findType']:checked").val();
     	
-    	if(findType == "mobile") {
-    		location.href = "<%=ctxPath%>/login/pwdFindMobile.wine";
+    	if(findType == "phone") {
+    		location.href = "<%=ctxPath%>/login/pwdFindPhone.wine";
     		
     	} else {
     		location.href = "<%=ctxPath%>/login/pwdFindEmail.wine";
@@ -67,7 +67,7 @@
 		</div>
 		
 		<div class="m-5 text-center">
-			<input type="radio" name="findType" value="mobile" id="mobile" /><label for="mobile" style="margin-left: 1.5%;">휴대폰 인증</label>
+			<input type="radio" name="findType" value="phone" id="phone" /><label for="phone" style="margin-left: 1.5%;">휴대폰 인증</label>
             <input type="radio" name="findType" value="email" id="email" style="margin-left: 10%;" /><label for="email" style="margin-left: 1.5%;">이메일 인증</label>
 		</div>
 		

@@ -256,22 +256,96 @@ public class ProductDAO_imple implements ProductDAO {
 			conn = ds.getConnection();
 
 			String sql = " SELECT RNO, PNAME, PENGNAME, PTYPE, PHOMETOWN, PPRICE, "
-						+ "           PPOINT, PBODY, PACID, PTANNIN, PACL, PDETAIL, PIMG, PSTOCK, PINDEX "
+						+ "            PPOINT, PBODY, PACID, PTANNIN, PACL, PDETAIL, PIMG, PSTOCK, PINDEX "
 						+ "FROM "
 						+ "(  "
 						+ "    select rownum AS RNO, pname, pengname, ptype, phometown, pprice, "
 						+ "           ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex "
 						+ "    from "
 						+ "    ( "
-						+ "        select * "
-						+ "        from product "
-						+ "        order by pindex desc "
-						+ "    ) V "
-						+ ") T "
-						+ "WHERE T.rno BETWEEN ? AND ? ";
-
+						+ "        select pname, pengname, ptype, phometown, to_number(pprice) as pprice, "
+						+ "			      ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex "
+						+ "        from product"
+						+ "		   where ptype like '%' ||  ? || '%' and ";
+			
+			String ptype = paraMap.get("ptype");
+			String pprice = paraMap.get("pprice");
+			String phometown = paraMap.get("phometown");
+			String pbody = paraMap.get("pbody");
+			String pacid = paraMap.get("pacid");
+			String ptannin = paraMap.get("ptannin");
+			
+			if(pprice != null) {
+				
+				switch (pprice) {
+				case "1":
+					sql += " to_number(pprice) < 10000 and ";
+					break;
+					
+				case "2":
+					sql += " 10000 <= to_number(pprice) and to_number(pprice) < 50000 and ";
+					break;
+					
+				case "3":
+					sql += " 50000 <= to_number(pprice) and to_number(pprice) < 150000 and ";
+					break;
+					
+				case "4":
+					sql += " 150000 <= to_number(pprice) and to_number(pprice) < 300000 and ";
+					break;
+					
+				case "5":
+					sql += " to_number(pprice) >= 300000 and ";
+					break;
+					
+				default:
+					break;
+				}
+			}
+			
+			sql += " phometown like '%' ||  ? || '%' and "
+				 + " pbody like '%' ||  ? || '%' and "
+				 + " pacid like '%' ||  ? || '%' and "
+				 + " ptannin like '%' ||  ? || '%' ";
+			
+			String sortType = paraMap.get("sortType");
+			
+			switch (sortType) {
+			case "latest":
+				sql += " order by pindex desc ";
+				break;
+				
+			case "popular":
+				
+				break;
+				
+			case "highPrice":
+				sql += " order by pprice desc ";
+				break;
+				
+			case "lowPrice":				
+				sql += " order by pprice asc ";
+				break;
+				
+			default:
+				sql += " order by pindex desc ";
+				break;
+				
+			} // end of switch(sortType) ---------------
+			
+						
+			sql += "    ) V "
+			+ " ) T "
+			+ " WHERE T.rno BETWEEN ? AND ? ";
+			
 			pstmt = conn.prepareStatement(sql);
 
+			pstmt.setString(1, ptype);
+			pstmt.setString(2, phometown);
+			pstmt.setString(3, pbody);
+			pstmt.setString(4, pacid);
+			pstmt.setString(5, ptannin);
+			
 			/*
 			=== 페이징처리의 공식 ===
 			where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
@@ -280,8 +354,8 @@ public class ProductDAO_imple implements ProductDAO {
 			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
 			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
 
-			pstmt.setInt(1, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
-			pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+			pstmt.setInt(6, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+			pstmt.setInt(7, (currentShowPageNo * sizePerPage));
 
 			rs = pstmt.executeQuery();
 
@@ -294,7 +368,7 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPtype(rs.getString("ptype"));
 				pdto.setPhometown(rs.getString("phometown"));
 
-				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				String price = df.format(rs.getInt("pprice"));
 				pdto.setPprice(price);
 
 				pdto.setPpoint(rs.getString("ppoint"));

@@ -5,21 +5,22 @@ from product
 where pname like '%' || '빈야드' || '%';
 
 
--- 페이징 처리한 상품 목록 보여주기
+-- 페이징 처리한 상품 목록 보여주기 (정렬 포함)
 SELECT RNO, PNAME, PENGNAME, PTYPE, PHOMETOWN, PPRICE,
-           PPOINT, PBODY, PACID, PTANNIN, PACL, PDETAIL, PIMG, PSTOCK, PINDEX
+       PPOINT, PBODY, PACID, PTANNIN, PACL, PDETAIL, PIMG, PSTOCK, PINDEX
 FROM
 ( 
     select rownum AS RNO, pname, pengname, ptype, phometown, pprice,
            ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex
     from
     (
-        select *
+        select pname, pengname, ptype, phometown, to_number(PPRICE) as pprice,
+               ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex
         from product
-        order by pindex desc
+        order by pprice desc
     ) V
 ) T
-WHERE T.rno BETWEEN 1 AND 8;
+WHERE T.rno BETWEEN 9 AND 16;
 /*
     === 페이징처리의 공식 ===
     where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
