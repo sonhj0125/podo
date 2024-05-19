@@ -238,7 +238,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 
-	// 비밀번호 찾기(성명, 아이디, 이메일을 입력받아 해당 사용자가 존재하는지 여부 알아오기)
+	// 비밀번호 찾기(성명, 아이디, (휴대폰 or 이메일)을 입력받아 해당 사용자가 존재하는지 여부 알아오기)
 	@Override
 	public boolean isUserExist(Map<String, String> paraMap) throws SQLException {
 
@@ -249,14 +249,25 @@ public class MemberDAO_imple implements MemberDAO {
 
 			String sql = " select userid "
 					   + " from member "
-					   + " where memberidx = 1 and name = ? and userid = ? and email = ? ";
+					   + " where memberidx = 1 and name = ? and userid = ? ";
 
+			if(paraMap.containsKey("email")) { // '이메일 인증'일 때
+				sql += " and email = ? ";
+				
+			} else { // '휴대폰 인증'일 때
+				sql += " and phone = ? ";
+			}
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("name"));
 			pstmt.setString(2, paraMap.get("userid"));
-			pstmt.setString(3, aes.encrypt(paraMap.get("email")));
-
-			System.out.println(aes.encrypt(paraMap.get("email")));
+			
+			if(paraMap.containsKey("email")) { // '이메일 인증'일 때
+				pstmt.setString(3, aes.encrypt(paraMap.get("email")));
+				
+			} else { // '휴대폰 인증'일 때
+				pstmt.setString(3, aes.encrypt(paraMap.get("phone")));
+			}
 			
 			rs = pstmt.executeQuery();
 
@@ -305,6 +316,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 
+	// 로그 기록
 	@Override
 	public int logwrite(Map<String, String> paraMap) throws SQLException {
 		

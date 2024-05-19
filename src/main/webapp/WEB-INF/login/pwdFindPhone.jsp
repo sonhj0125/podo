@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%
     String ctxPath = request.getContextPath();
@@ -31,7 +32,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-		/* const method = "${requestScope.method}";
+		const method = "${requestScope.method}";
 		
 		if(method == "GET") {
 			$("div#div_findResult").hide();
@@ -42,10 +43,10 @@
  			$("input#userid").val("${requestScope.userid}");
 			$("input#phone").val("${requestScope.phone}");
 			
-			if(${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}) {
+			if(${requestScope.isUserExist == true && requestScope.sendSmsSuccess == true}) {
 				$("button.btn-success").hide();
 			}
-		} */
+		}
 		
 		///////////////////////////////////////
 	
@@ -89,7 +90,7 @@
 			
 			const frm = document.verifyCertificationFrm;
 			frm.userCertificationCode.value = input_confirmCode; // 입력받은 인증코드 넣기
-			frm.userid.value = $("input:text[name='userid']").val();
+			frm.userid.value = $("input#userid").val();
 			
 			frm.action = "<%=ctxPath%>/login/verifyCertification.wine";
 			frm.method = "post";
@@ -139,7 +140,7 @@
 	    const frm = document.pwdFindPhoneFrm;
 	    frm.action = "<%=ctxPath%>/login/pwdFindPhone.wine";
 	    frm.method = "post";
-//	    frm.submit();
+	    frm.submit();
 	    
 	} // end of function goPwdFindPhone() ----------------------------------------
 
@@ -182,5 +183,36 @@
 		   <button type="button" class="btn btn-secondary" onclick="history.back()">이전</button>
 		</div>
 	</form>
+		
 	
+	<div class="my-3 text-center" id="div_findResult">
+
+		<c:if test="${requestScope.isUserExist == false}">
+			<span style="color: red;">사용자 정보가 없습니다.</span>
+		</c:if>
+		
+		
+		<c:if test="${requestScope.isUserExist == true && requestScope.sendSmsSuccess == true}">
+			<span style="font-size: 10pt;">
+				인증코드가 010-${fn:substring(requestScope.phone,3,7)}-${fn:substring(requestScope.phone,7,11)}로 발송되었습니다.<br>
+				인증코드를 입력해주세요.
+			</span>
+			<br>
+			<input type="text" name="input_confirmCode" />
+			<br><br>
+			<button type="button" class="btn btn-info">인증하기</button>
+		</c:if>
+		
+		
+		<c:if test="${requestScope.isUserExist == true && requestScope.sendSmsSuccess == false}">
+			<span style="color: red;">문자 발송에 실패했습니다.</span>
+		</c:if>
+		
+	</div>
+
+<%-- 인증하기 form --%>
+<form name="verifyCertificationFrm">
+	<input type="hidden" name="userCertificationCode" />
+	<input type="hidden" name="userid" />
+</form>
 </body>

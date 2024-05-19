@@ -24,13 +24,13 @@ public class VerifyCertification extends AbstractController {
 			String msg = "";
 			String loc = "";
 			
-			if(certification_code.equals(userCertificationCode)) { // 메일로 보낸 인증코드와 사용자가 입력한 인증코드가 같다면
+			if(certification_code.equals(userCertificationCode)) { // 휴대폰 or 이메일로 보낸 인증코드와 사용자가 입력한 인증코드가 같다면
 				msg = "인증이 성공되었습니다.";
 				loc = request.getContextPath() + "/login/pwdUpdateEnd.wine?userid=" + userid;
 				
 			} else {
 				msg = "발급된 인증코드와 일치하지 않습니다.\\n인증 코드를 다시 발급받으세요!";
-				loc = request.getContextPath() + "/login/pwdFindEmail.wine";
+				loc = request.getContextPath() + "/login/pwdFind.wine";
 			}
 			
 			request.setAttribute("msg", msg);
