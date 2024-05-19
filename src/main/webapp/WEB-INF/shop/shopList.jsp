@@ -80,7 +80,6 @@ $(function() {
 	// 정렬 타입 선택한 것 유지하기
 	if("${requestScope.sortType}" != "") {
 		$("select[name='sortType']").val("${requestScope.sortType}");
-		
 	}
 	
 	// 상품 목록 정렬
@@ -91,7 +90,65 @@ $(function() {
 		
 	}); // end of $("select[name='sortType']").bind("change", function() {}) ------------------
 
+	// 스마트서치 버튼 클릭 시
+	$("button#submitSmartSearch").click(function() {
+		goSmartSearch();
+	});
 });
+
+function goSmartSearch() {
+
+	let ptype_val = $("input:checkbox[name='ptype']:checked").val();
+	let pprice_val = $("input:checkbox[name='pprice']:checked").val();
+	let phometown_val = $("input:checkbox[name='phometown']:checked").val();
+	const pbody_val = $("input:checkbox[name='pbody']:checked").val();
+	const pacid_val = $("input:checkbox[name='pacid']:checked").val();
+	const ptannin_val = $("input:checkbox[name='ptannin']:checked").val();
+	
+	const ptype_checked_length = $("input:checkbox[name='ptype']:checked").length;
+	if(ptype_checked_length == 0) {
+		ptype_val = "";
+	}
+	
+	const pprice_checked_length = $("input:checkbox[name='pprice']:checked").length;
+	if(pprice_checked_length == 0) {
+		pprice_val = "";
+	}
+	
+	const phometown_checked_length = $("input:checkbox[name='phometown']:checked").length;
+	if(phometown_checked_length == 0) {
+		phometown_val = "";
+	}
+	
+	const pbody_checked_length = $("input:checkbox[name='pbody']:checked").length;
+	if(pbody_checked_length == 0) {
+		alert("바디를 선택하세요!");
+		return;
+	}
+	
+	const pacid_checked_length = $("input:checkbox[name='pacid']:checked").length;
+	if(pacid_checked_length == 0) {
+		alert("산도를 선택하세요!");
+		return;
+	}
+	
+	const ptannin_checked_length = $("input:checkbox[name='ptannin']:checked").length;
+	if(ptannin_checked_length == 0) {
+		alert("타닌을 선택하세요!");
+		return;
+	}
+	
+	// 다 상관없음으로 선택할 때 넘어가지 않도록
+	if(ptype_val == "" && pprice_val == "" && phometown_val == "" &&
+	   pbody_val == "" && pacid_val == "" && ptannin_val == "") {
+		
+		alert("조건 한 개 이상 필수 선택해야 합니다.");
+		return;
+	}
+	
+	const frm = document.smartSearchFrm;
+	frm.submit();
+} // end of function goSmartSearch() ------------
 </script>
 
 <div class="container">
@@ -207,191 +264,191 @@ $(function() {
 	  <div class="offcanvas-header">
 	    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	  </div>
-	  <div class="offcanvas-body">
-	  	<h1 style="text-align: center; font-weight:bold; padding: 10%;">Search</h1>
-	   
-		    <div class="mt-5">
-			    <p style="font-weight:bold; font-size:14pt;">🍷와인 종류</p>
-			    <hr>
-			   
-		    	<div>
-				    <div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="red" value="" >
-					  	<label class="form-check-label" for="red">레드(Red)</label>
+		  <div class="offcanvas-body">
+			 <h1 style="text-align: center; font-weight:bold; padding: 10%;">Search</h1>
+		      <form name="smartSearchFrm">
+			    <div class="mt-5">
+				    <p style="font-weight:bold; font-size:14pt;">🍷와인 종류</p>
+				    <hr>
+				   
+			    	<div>
+					    <div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="ptype" id="red" value="레드" >
+						  	<label class="form-check-label" for="red">레드(Red)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="ptype" id="rose" value="로제">
+						  	<label class="form-check-label" for="rose">로제(Rose)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="ptype" id="white" value="화이트">
+						  	<label class="form-check-label" for="white">화이트(White)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="ptype" id="sparkling" value="스파클링">
+						  	<label class="form-check-label" for="sparkling">스파클링(Sparkling)</label>
+						</div>
 					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="rose" value="">
-					  	<label class="form-check-label" for="rose">로제(Rose)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="white" value="">
-					  	<label class="form-check-label" for="white">화이트(White)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="sparkling" value="">
-					  	<label class="form-check-label" for="sparkling">스파클링(Sparkling)</label>
-					</div>
-				</div>
-		    </div>
-		    
-		    <br>
-		    
-		    <div class="mt-5">
-			    <p style="font-weight:bold; font-size:14pt;">🍷가격</p>
-			    <hr>
-			    <div>
-				    <div class="form-check">
-					  <input class="form-check-input" type="checkbox" id="1" value="">
-					  <label class="form-check-label" for="1">
-					    ~ 10,000원
-					  </label>
-					</div>
-					<br>
-					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" id="2" value="">
-					  <label class="form-check-label" for="2">
-					    10,000원 ~ 50,000원
-					  </label>
-					</div>
-					<br>
-					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" id="3" value="">
-					  <label class="form-check-label" for="3">
-					    60,000원 ~ 150,000원
-					  </label>
-					</div>
-					<br>
-					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" id="4" value="">
-					  <label class="form-check-label" for="4">
-					    160,000원 ~ 300,000원
-					  </label>
-					</div>
-					<br>
-					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" id="5" value="">
-					  <label class="form-check-label" for="5">
-					    300,000원 ~
-					  </label>
-					</div>
-				</div>
-		    </div>
-		    
-		    <br>
-		    
-		    <div class="mt-5">
-			    <p style="font-weight:bold; font-size:14pt;">🍷원산지</p>
-			    <hr>
+			    </div>
 			    
-			    <div>
-				    <div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="Chile" value="">
-					  	<label class="form-check-label" for="Chile">칠레(Chile)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="USA" value="">
-					  	<label class="form-check-label" for="USA">미국(USA)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="Italy" value="">
-					  	<label class="form-check-label" for="Italy">이탈리아(Italy)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="France" value="">
-					  	<label class="form-check-label" for="France">프랑스(France)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="Spain" value="">
-					  	<label class="form-check-label" for="Spain">스페인(Spain)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="Australia" value="">
-					  	<label class="form-check-label" for="Australia">호주(Australia)</label>
-					</div>
-					<br>
-					<div class="form-check">
-					  	<input class="form-check-input" type="checkbox" id="NewZealand" value="">
-					  	<label class="form-check-label" for="NewZealand">뉴질랜드(NewZealand)</label>
-					</div>
-				</div>
-		    </div>
-		    
-		    <br>
-		    
-		    <div class="mt-5">
-			    <p style="font-weight:bold; font-size:14pt;">🍷바디</p>
-			    <hr>
+			    <br>
 			    
-			    <input id="slider" type="range" min="1" max="5" step="1" list="body">
-				    <datalist id="tickmarks">
-				        <option value="1">가벼움</option>
-				        <option value="2">약간가벼움</option>
-				        <option value="3">중간</option>
-				        <option value="4">약간무거움</option>
-				        <option value="5">무거움</option>
-				    </datalist>
-					<div class="form-check pt-3">
-					  	<input class="form-check-input" type="checkbox" value="" id="none1">
-					  	<label class="form-check-label" style="font-size:12pt;" for="none1">
-					    	상관없음
-					  	</label>
+			    <div class="mt-5">
+				    <p style="font-weight:bold; font-size:14pt;">🍷가격</p>
+				    <hr>
+				    <div>
+					    <div class="form-check">
+						  <input class="form-check-input" type="checkbox" name="pprice" id="1" value="1">
+						  <label class="form-check-label" for="1">
+						    ~ 10,000원
+						  </label>
+						</div>
+						<br>
+						<div class="form-check">
+						  <input class="form-check-input" type="checkbox" name="pprice" id="2" value="2">
+						  <label class="form-check-label" for="2">
+						    10,000원 ~ 50,000원
+						  </label>
+						</div>
+						<br>
+						<div class="form-check">
+						  <input class="form-check-input" type="checkbox" name="pprice" id="3" value="3">
+						  <label class="form-check-label" for="3">
+						    50,000원 ~ 150,000원
+						  </label>
+						</div>
+						<br>
+						<div class="form-check">
+						  <input class="form-check-input" type="checkbox" name="pprice" id="4" value="4">
+						  <label class="form-check-label" for="4">
+						    150,000원 ~ 300,000원
+						  </label>
+						</div>
+						<br>
+						<div class="form-check">
+						  <input class="form-check-input" type="checkbox" name="pprice" id="5" value="5">
+						  <label class="form-check-label" for="5">
+						    300,000원 ~
+						  </label>
+						</div>
 					</div>
-	    	</div>
-		    
-		    <br>
-		    
-		    <div class="mt-5">
-			    <p style="font-weight:bold; font-size:14pt;">🍷산도</p>
-			    <hr>
-			    <input id="slider" type="range" min="1" max="5" step="1" list="acid">
-				    <datalist id="tickmarks">
-				        <option value="1">낮음</option>
-				        <option value="2">약간낮음</option>
-				        <option value="3">중간</option>
-				        <option value="4">약간높음</option>
-				        <option value="5">높음</option>
-				    </datalist>
-			    	<div class="form-check pt-3">
-					  	<input class="form-check-input" type="checkbox" value="" id="none2">
-					  	<label class="form-check-label" style="font-size:12pt;" for="none2">
-					    	상관없음
-					  	</label>
+			    </div>
+			    
+			    <br>
+			    
+			    <div class="mt-5">
+				    <p style="font-weight:bold; font-size:14pt;">🍷원산지</p>
+				    <hr>
+				    
+				    <div>
+					    <div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="Chile" value="칠레">
+						  	<label class="form-check-label" for="Chile">칠레(Chile)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="USA" value="미국">
+						  	<label class="form-check-label" for="USA">미국(USA)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="Italy" value="이탈리아">
+						  	<label class="form-check-label" for="Italy">이탈리아(Italy)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="France" value="프랑스">
+						  	<label class="form-check-label" for="France">프랑스(France)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="Spain" value="스페인">
+						  	<label class="form-check-label" for="Spain">스페인(Spain)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="Australia" value="호주">
+						  	<label class="form-check-label" for="Australia">호주(Australia)</label>
+						</div>
+						<br>
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" name="phometown" id="NewZealand" value="뉴질랜드">
+						  	<label class="form-check-label" for="NewZealand">뉴질랜드(NewZealand)</label>
+						</div>
 					</div>
-		    </div>
-		    
-		    <br>
-		    
-		    <div class="mt-5">
-			    <p style="font-weight:bold; font-size:14pt;">🍷타닌</p>
-			    <hr>
-			    <input id="slider" type="range" min="1" max="5" step="1" list="tanin">
-				    <datalist id="tickmarks">
-				        <option value="1">약함</option>
-				        <option value="2">약간약함</option>
-				        <option value="3">중간</option>
-				        <option value="4">약간강함</option>
-				        <option value="5">강함</option>
-				    </datalist>
-			    	<div class="form-check pt-3">
-					  	<input class="form-check-input" type="checkbox" value="" id="none3">
-					  	<label class="form-check-label" style="font-size:12pt;" for="none3">
-					    	상관없음
-					  	</label>
-					</div>
-		    </div>
+			    </div>
+			    
+			    <br>
+			    
+			    <div class="mt-5">
+				    <p style="font-weight:bold; font-size:14pt;">🍷바디</p>
+				    <hr>
+				    
+				    <input id="slider" type="range" min="1" max="5" step="1" list="body" name="pbody">
+					    <datalist id="tickmarks">
+					        <option value="1">가벼움</option>
+					        <option value="2">약간가벼움</option>
+					        <option value="3">중간</option>
+					        <option value="4">약간무거움</option>
+					        <option value="5">무거움</option>
+					    </datalist>
+						<div class="form-check pt-3">
+						  	<input class="form-check-input" type="checkbox" name="pbody" value="" id="none1">
+						  	<label class="form-check-label" style="font-size:12pt;" for="none1">
+						    	상관없음
+						  	</label>
+						</div>
+		    	</div>
+			    
+			    <br>
+			    
+			    <div class="mt-5">
+				    <p style="font-weight:bold; font-size:14pt;">🍷산도</p>
+				    <hr>
+				    <input id="slider" type="range" name="pacid" min="1" max="5" step="1" list="acid">
+					    <datalist id="tickmarks">
+					        <option value="1">낮음</option>
+					        <option value="2">약간낮음</option>
+					        <option value="3">중간</option>
+					        <option value="4">약간높음</option>
+					        <option value="5">높음</option>
+					    </datalist>
+				    	<div class="form-check pt-3">
+						  	<input class="form-check-input" type="checkbox" name="pacid" value="" id="none2">
+						  	<label class="form-check-label" style="font-size:12pt;" for="none2">
+						    	상관없음
+						  	</label>
+						</div>
+			    </div>
+			    
+			    <br>
+			    
+			    <div class="mt-5">
+				    <p style="font-weight:bold; font-size:14pt;">🍷타닌</p>
+				    <hr>
+				    <input id="slider" type="range" name="ptannin" min="1" max="5" step="1" list="tanin">
+					    <datalist id="tickmarks">
+					        <option value="1">약함</option>
+					        <option value="2">약간약함</option>
+					        <option value="3">중간</option>
+					        <option value="4">약간강함</option>
+					        <option value="5">강함</option>
+					    </datalist>
+				    	<div class="form-check pt-3">
+						  	<input class="form-check-input" type="checkbox" name="ptannin" value="" id="none3">
+						  	<label class="form-check-label" style="font-size:12pt;" for="none3">
+						    	상관없음
+						  	</label>
+						</div>
+			    </div>
+		  	  <%-- search 제출 버튼 --%>
+			  <button type="button" id="submitSmartSearch" class="btn btn-danger mt-5">Search</button>
+		  </form>
 	  </div>
-	  
-	  	<%-- search 제출 버튼 --%>
-		<button type="button" class="btn btn-danger">Search</button>
-	  
+		  
 	</div>
 
 

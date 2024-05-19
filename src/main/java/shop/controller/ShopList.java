@@ -24,6 +24,14 @@ public class ShopList extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		String sortType = request.getParameter("sortType");
+		
+		String ptype = request.getParameter("ptype");
+		String pprice = request.getParameter("pprice");
+		String phometown = request.getParameter("phometown");
+		String pbody = request.getParameter("pbody");
+		String pacid = request.getParameter("pacid");
+		String ptannin = request.getParameter("ptannin");
+		
 		String sizePerPage = "8";
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		
@@ -115,13 +123,27 @@ public class ShopList extends AbstractController {
 
 		paraMap.put("sortType", sortType);
 		
+		paraMap.put("ptype", ptype);
+		paraMap.put("pprice", pprice);
+		paraMap.put("phometown", phometown);
+		paraMap.put("pbody", pbody);
+		paraMap.put("pacid", pacid);
+		paraMap.put("ptannin", ptannin);
+		
 		// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
 		List<ProductDTO> pdtList = pdao.selectProductPaging(paraMap);
 
 		request.setAttribute("pdtList", pdtList); // 상품 목록
 
 		request.setAttribute("sortType", sortType); // 정렬 타입
-
+		
+		request.setAttribute("ptype", ptype);
+		request.setAttribute("pprice", pprice);
+		request.setAttribute("phometown", phometown);
+		request.setAttribute("pbody", pbody);
+		request.setAttribute("pacid", pacid);
+		request.setAttribute("ptannin", ptannin);
+		
 		request.setAttribute("sizePerPage", sizePerPage); // 한 페이지당 보일 상품 개수 (8개)
 
 		request.setAttribute("pageBar", pageBar); // 페이지바
