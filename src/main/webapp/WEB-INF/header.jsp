@@ -18,14 +18,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>포도</title>
     
-    <!-- bootstrap -->
+    <%-- bootstrap --%>
     <link rel="stylesheet" href="<%=ctxPath %>/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <script type="text/javascript" src="<%=ctxPath %>/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
     
-    <!-- jQuery -->
+    <%-- jQuery --%>
 	<script src="<%=ctxPath %>/js/jquery-3.7.1.min.js"></script>
 	
-	<!-- Font -->
+	<%-- Font --%>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
@@ -36,7 +36,7 @@
 	<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/jquery-ui.min.css" />
 	<script type="text/javascript" src="<%= ctxPath%>/js/jquery-ui.min.js"></script>
 	
-	<!-- 직접만든 CSS -->
+	<%-- 직접만든 CSS --%>
     <link rel="stylesheet" href="<%=ctxPath %>/css/index/index.css">
     
     <style>
