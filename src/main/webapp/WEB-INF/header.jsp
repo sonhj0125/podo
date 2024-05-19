@@ -110,10 +110,21 @@
 			location.href="<%=ctxPath%>/shop/cart.wine";
 		});
 		
+		<%-- MyPage Click --%>
+		$("div#OrderList").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/orderList.wine";
+		});
+		
+		<%-- MyPage Click --%>
+		$("div#ReviewList").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/reviewList.wine";
+		});
+		
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
-		$("button.btn-close").click(function(){
+		$("button#btn-close").click(function(){
 			javascript:history.go(0);
 		});
+		
 		
 		$("input:text[name='memo']").hide();
 		
@@ -147,8 +158,6 @@
 		$("button#wineSearch").click(function() {
 			goSearch();
 		});
-		
-		
 		
 	} // end of window.onload
 	
@@ -240,7 +249,7 @@
 		            <div class="modal-content rounded-4 shadow">
 		                <div class="modal-header p-5 pb-4 border-bottom-0">
 		                    <h1 class="fw-bold mb-0 fs-2">PODO</h1>
-		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                    <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		                </div>
 		
 		                <div class="modal-body p-5 pt-0">
@@ -254,7 +263,7 @@
 		    </div>
 		    <%-- Sign in Modal 끝 --%>
 		    
-		     <%-- 검색 Modal --%>
+		    <%-- 검색 Modal --%>
              <form name="searchFrm">
                <div class="modal fade" id="searchModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                  <div class="modal-dialog modal-lg">
@@ -289,21 +298,23 @@
             <hr style="width: 90%; color: purple; border: solid 2px;"> 		
 	  	    <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">강민정</span>님 안녕하세요!</div>
 	  		<div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
-				<div style="margin-right: 5%;">
-	               <i class="fa-regular fa-newspaper" style="margin: 10%;"></i>
+				<div class="position-relative" style="margin-right: 5%; cursor: pointer;">
+				   <span class="position-absolute top-1 start-100 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+	               <i class="fa-regular fa-newspaper" style="margin: 10%;">
+	               </i>
 	               <br>
 	               <div style="font-weight: bold;">리뷰</div>
 	               <div style="color: purple;">2</div>
 	            </div>
-	            <div style="margin-right: 5%;">
+	            <div style="margin-right: 5%; cursor: pointer;">
 	               <i class="fa-solid fa-ticket"></i>
-	               <div style="font-weight: bold;">쿠폰</div>
+	               <div style="font-weight: bold; cursor: pointer;">쿠폰</div>
 	               <div style="color: purple;">2</div>
 	            </div>
-	            <div>
+	            <div style="cursor: pointer;">
 	               <i class="fa-solid fa-circle-dollar-to-slot"></i>
 	               <br>
-	               <div style="font-weight: bold;">적립금</div>
+	               <div style="font-weight: bold; cursor: pointer;">적립금</div>
 	               <div style="color: purple;">3,800</div>
 	            </div>
 	        </div>
@@ -313,9 +324,9 @@
 	      <h4 style="font-weight: bold; margin-top: 13%;">개인정보</h4>
 	      <hr style="width: 90%;">
 		      <div>
-		      	<div style="display: flex; margin-bottom: 2%;">회원정보 수정</div>
-		      	<div style="display: flex; margin-bottom: 2%;">비밀번호 변경</div>
-		      	<div style="display: flex; margin-bottom: 2%;">배송지 관리</div>
+		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#meberRegisterUpdateModal">회원정보 수정</div>
+		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#pwdUpdateModal">비밀번호 변경</div>
+		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addressUpdateModal">배송지 관리</div>
 		      </div>
 	    </div>
 	    
@@ -323,10 +334,10 @@
 	      <h4 style="font-weight: bold; margin-top: 13%;">쇼핑정보</h4>
 	      <hr style="width: 90%;">
 		      <div>
-		      	<div style="display: flex; margin-bottom: 2%;">주문내역조회</div>
-		      	<div style="display: flex; margin-bottom: 2%;">리뷰</div>
-		      	<div style="display: flex; margin-bottom: 2%;">쿠폰</div>
-		      	<div style="display: flex; margin-bottom: 2%;">적립금</div>
+		      	<div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역 / 리뷰작성</div>
+		      	<div id="ReviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;">리뷰 관리</div>
+		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
+		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
 		      </div>
 	    </div>
 	    
@@ -334,15 +345,77 @@
          <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
          <hr style="width: 90%;">
             <div>
-               <div style="display: flex; margin-bottom: 2%;">회원 관리</div>
-               <div style="display: flex; margin-bottom: 2%;">제품 등록</div>
-               <div style="display: flex; margin-bottom: 2%;">쿠폰 등록</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰 등록</div>
             </div>
         </div>
 	    
 	  </div>
 	  
 	</div>
+	
+	<%-- 회원정보 수정 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="meberRegisterUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		        <div class="modal-dialog">
+		            <div class="modal-content rounded-4 shadow">
+		                <div class="modal-header p-5 pb-4 border-bottom-0">
+		                    <h1 class="fw-bold mb-0 fs-2">회원정보 변경</h1>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		
+		                <div class="modal-body p-5 pt-0">
+		                    <div>
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/memberRegisterUpdate.wine">
+								</iframe>
+							</div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    <%-- 회원정보 수정 Modal 끝 --%>
+    
+    
+    <%-- 비밀번호 변경 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="pwdUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		        <div class="modal-dialog">
+		            <div class="modal-content rounded-4 shadow">
+		                <div class="modal-header p-5 pb-4 border-bottom-0">
+		                    <h1 class="fw-bold mb-0 fs-2">비밀번호 변경</h1>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		
+		                <div class="modal-body p-5 pt-0">
+		                    <div>
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/pwdUpdate.wine">
+								</iframe>
+							</div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    <%-- 비밀번호 변경 클릭시 나오는 Modal 끝 --%>
+    
+    
+    <%-- 배송지 관리 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="addressUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		        <div class="modal-dialog">
+		            <div class="modal-content rounded-4 shadow">
+		                <div class="modal-header p-5 pb-4 border-bottom-0">
+		                    <h1 class="fw-bold mb-0 fs-2">배송지 관리</h1>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		
+		                <div class="modal-body p-5 pt-0">
+		                    <div>
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/addressUpdate.wine">
+								</iframe>
+							</div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    <%-- 배송지 관리 클릭시 나오는 Modal 끝 --%>
     
     <form action="post" name="passFrm" style="display : none;">
     	<input type="text" value="${requestScope['javax.servlet.forward.request_uri']}" name="uri">
