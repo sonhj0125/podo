@@ -263,13 +263,40 @@ public class ProductDAO_imple implements ProductDAO {
 						+ "           ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex "
 						+ "    from "
 						+ "    ( "
-						+ "        select * "
-						+ "        from product "
-						+ "        order by pindex desc "
-						+ "    ) V "
-						+ ") T "
-						+ "WHERE T.rno BETWEEN ? AND ? ";
-
+						+ "        select pname, pengname, ptype, phometown, to_number(pprice) as pprice, "
+						+ "			      ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex "
+						+ "        from product ";
+			
+			String sortType = paraMap.get("sortType");
+			
+			switch (sortType) {
+			case "latest":
+				sql += " order by pindex desc ";
+				break;
+				
+			case "popular":
+				
+				break;
+				
+			case "highPrice":
+				sql += " order by pprice desc ";
+				break;
+				
+			case "lowPrice":				
+				sql += " order by pprice asc ";
+				break;
+				
+			default:
+				sql += " order by pindex desc ";
+				break;
+				
+			} // end of switch(sortType) ---------------
+			
+						
+			sql += "    ) V "
+			+ " ) T "
+			+ " WHERE T.rno BETWEEN ? AND ? ";
+			
 			pstmt = conn.prepareStatement(sql);
 
 			/*
@@ -294,7 +321,7 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPtype(rs.getString("ptype"));
 				pdto.setPhometown(rs.getString("phometown"));
 
-				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				String price = df.format(rs.getInt("pprice"));
 				pdto.setPprice(price);
 
 				pdto.setPpoint(rs.getString("ppoint"));

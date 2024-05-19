@@ -74,7 +74,25 @@ datalist > option {
 
 </style>
 
+<script type="text/javascript">
+$(function() {
+	
+	// 정렬 타입 선택한 것 유지하기
+	if("${requestScope.sortType}" != "") {
+		$("select[name='sortType']").val("${requestScope.sortType}");
+		
+	}
+	
+	// 상품 목록 정렬
+	$("select[name='sortType']").bind("change", function() {
+		
+		const frm = document.sortFrm;
+		frm.submit();
+		
+	}); // end of $("select[name='sortType']").bind("change", function() {}) ------------------
 
+});
+</script>
 
 <div class="container">
 	<%-- 상단 --%>
@@ -83,18 +101,20 @@ datalist > option {
 	</div>
 	<hr>
 	<div class="hstack gap-3 mt-3">
-		<form>
+	
+		<form name="sortFrm">
 			<div class="p-2">
 				<div class="form">
-				  <select class="form-select border border-black">
-				    <option selected>Latest</option>
-				    <option>Popular</option>
-				    <option>High price</option>
-				    <option>Low price</option>
+				  <select class="form-select border border-black" name="sortType">
+				    <option value="latest">Latest</option>
+				    <option value="popular">Popular</option>
+				    <option value="highPrice">High price</option>
+				    <option value="lowPrice">Low price</option>
 				  </select>
 				</div>
 			</div>
 		</form>
+		
 		<div class="p-2 ms-auto"></div>
 		<div class="p-2">
 			<button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
@@ -102,6 +122,7 @@ datalist > option {
 				<span style="font-size:10pt; font-weight:bold; color:black;">SMART SEARCH</span>
 			</button>
 		</div>
+		
 	</div>
 
 	<%-- 본페이지 --%>
