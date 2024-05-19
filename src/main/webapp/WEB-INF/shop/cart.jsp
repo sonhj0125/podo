@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
    String ctxPath = request.getContextPath();
@@ -127,7 +126,7 @@
 		           		<button type="button" class="btn btn-light">변경</button>
 		           </div>
 		           
-		           <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.5vw; font-weight: bold; text-align: right; color: gray;">
+		           <div style="width:10%; min-width: 10%; font-size: 1.5vw; font-weight: bold; text-align: right; color: gray;">
 		                  ${cdtolist.pdto.pprice}원
 		           </div>
 		           <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.5vw; font-weight: bold; text-align: right;">
@@ -135,7 +134,7 @@
 		           </div>
 		         </div>
 		         
-		         <div class="stack-index">
+		         <div class="cart-index">
 		         	${cdtolist.cindex}
 		         </div>
 		         
@@ -145,11 +144,14 @@
          			<div id="sumPrice" style="width:54%; min-width: 54%; font-size: 2.5vw; font-weight: bold; text-align: right; padding-right: 7%">
 		        	</div>
          		</div>
-         </c:if>
-         
+
+				         
          <form name="orderSet">
-         	<input type="text" name="Arr_cindex" value="">
+         	<input type="text" id="setCindex" name="Arr_cindex">
          </form>
+				
+
+         </c:if>
          
          <c:if test="${empty requestScope.cdtoList}">
          	<div style="width: 100%; text-align: center; font-weight: bold; padding: 70px 0; font-size: 2vw;" >
@@ -160,14 +162,13 @@
       </div>
       
       <div class="cart_footer" style="text-align: center;">
-      <div style="display:center; margin-top: 2.5%;">
-      	 <button type="button" class="btn btn-outline-secondary">선택상품 삭제</button>
-         <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/list.wine';">계속쇼핑하기</button>
-         <button type="button" class="btn btn-outline-secondary">선택상품 주문</button>
-         <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/order.wine';">전체상품 주문</button>
-      </div>   
+	      <div style="display:center; margin-top: 2.5%;">
+	      	 <button type="button" class="btn btn-outline-secondary">선택상품 삭제</button>
+	         <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/list.wine';">계속쇼핑하기</button>
+	         <button type="button" class="btn btn-outline-secondary">선택상품 주문</button>
+	         <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/order.wine';">전체상품 주문</button>
+	      </div> 
       </div>
-
    </div>
 
 <jsp:include page="../footer.jsp" />

@@ -5,7 +5,7 @@ $(function (){
 
     pricearr.forEach((item)=>{
 
-        const priceOne = Number(item.innerText.replace("원", "").replace(",", ""));
+        const priceOne = Number(item.innerText.replace("원", "").replaceAll(",", ""));
 
         sumPrice += priceOne;
 
@@ -14,6 +14,26 @@ $(function (){
     const sumPriceStr = sumPrice.toLocaleString();
 
     document.querySelector("div#sumPrice").innerText = `${sumPriceStr}원`;
+
+    const indexIn = document.querySelectorAll("div.cart-index");
+    let Arr = "";
+    let fristSet = true;
+
+
+    // 포장
+    indexIn.forEach((item)=>{
+
+        if(fristSet){
+            fristSet = false;
+            Arr += item.innerText;
+        }else{
+            Arr += ","+item.innerText;
+        }
+        
+    })
+
+    $('#setCindex').attr('value', Arr);
+    //end
 
     const cbAll = $("input#cbAll");
 
