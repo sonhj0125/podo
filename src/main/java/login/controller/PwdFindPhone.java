@@ -44,7 +44,7 @@ public class PwdFindPhone extends AbstractController {
 			// 데이터베이스에 사용자가 존재하는지 알아오기
 			boolean isUserExist = mdao.isUserExist(paraMap);
 			
-			System.out.println("isUserExist => " + isUserExist);
+//			System.out.println("isUserExist => " + isUserExist);
 			
 			////////////////////////////////////////////////
 			boolean sendSmsSuccess = false; // 문자가 정상적으로 전송되었는지 유무를 알아오기 위한 용도
@@ -69,7 +69,7 @@ public class PwdFindPhone extends AbstractController {
 					
 				} // end of for ---------------------
 
-				System.out.println("certification_code => " + certification_code);
+//				System.out.println("certification_code => " + certification_code);
 
 				// >> SMS발송 <<
 				// HashMap 에 받는사람번호, 보내는사람번호, 문자내용 등 을 저장한뒤 Coolsms 클래스의 send를 이용해 보냅니다.
@@ -128,7 +128,7 @@ public class PwdFindPhone extends AbstractController {
 				 * org.json.JSONObject 이 아니라 org.json.simple.JSONObject 이어야 한다.
 				 */
 				
-				System.out.println("json => " + jsobj.toString());
+//				System.out.println("json => " + jsobj.toString());
 				
 				if(jsobj.containsKey("success_count")) {
 					int successCount = ((Long)jsobj.get("success_count")).intValue();
@@ -143,7 +143,7 @@ public class PwdFindPhone extends AbstractController {
 				    }
 				}
 				
-				System.out.println("sendSmsSuccess => " + sendSmsSuccess);
+//				System.out.println("sendSmsSuccess => " + sendSmsSuccess);
 				
 			} // end of if(isUserExist) ---------------
 
