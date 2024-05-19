@@ -134,7 +134,7 @@
 		           </div>
 		         </div>
 		         
-		         <div class="cart-index">
+		         <div class="cart-index" style="font-size: 0;">
 		         	${cdtolist.cindex}
 		         </div>
 		         

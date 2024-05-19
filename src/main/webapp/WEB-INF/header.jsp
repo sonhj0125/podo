@@ -323,7 +323,7 @@
      <div class="offcanvas-body">
 
             <hr style="width: 90%; color: purple; border: solid 2px;">       
-            <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">강민정</span>님 안녕하세요!</div>
+            <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name }</span>님 안녕하세요!</div>
            <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
             <div class="position-relative" style="margin-right: 5%; cursor: pointer;">
                <span class="position-absolute top-1 start-100 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
@@ -342,7 +342,7 @@
                   <i class="fa-solid fa-circle-dollar-to-slot"></i>
                   <br>
                   <div style="font-weight: bold; cursor: pointer;">적립금</div>
-                  <div style="color: purple;">3,800</div>
+                  <div style="color: purple;">${sessionScope.loginUser.point }</div>
                </div>
            </div>
            <hr style="width: 90%; color: purple; border: solid 2px;">  
