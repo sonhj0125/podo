@@ -345,6 +345,15 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 	
+	// 관리자 회원관리 - 한명 조회
+	@Override
+	public MemberDTO selectOneMember(String userid) throws SQLException {
+		
+		return null;
+	}
+
+
+	
 	
 	
 }

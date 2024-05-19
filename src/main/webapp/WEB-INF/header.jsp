@@ -10,6 +10,7 @@
 		url = url + "?" + request.getQueryString();
 	}
 	
+   String uri = request.getRequestURI();
 %>
 <!DOCTYPE html>
 <html>
@@ -57,20 +58,20 @@
     }
     
     footer {
-    	padding : 0 2%;
-    	
+       padding : 0 2%;
+       
     }
     
     div#loginModal{
-    	height: 80rem;
-    	
+       height: 80rem;
+       
     }
     
     header{
-    	font-family: "PT Serif";
+       font-family: "PT Serif";
     }
     div.offcanvas{
-    	font-family: "Noto Sans KR";
+       font-family: "Noto Sans KR";
     }
     
 	</style>
@@ -154,7 +155,15 @@
 			goSearch();
 		});
 		
-		
+		<%-- 관리자 회원관리 클릭시 --%>
+      $("div#adminMember").bind('click',()=>{
+         location.href="<%=ctxPath%>/member/admin/adminMember.wine";
+      });
+      
+      <%-- 관리자 제품등록 클릭시 --%>
+      $("div#adminProduct").bind('click',()=>{
+         location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
+      });
 		
 	} // end of window.onload
 	
@@ -227,11 +236,11 @@
             </div>
             <div class="p-2 me-2 d-flex">
                 <ul class="nav">
-                	<c:if test="${empty sessionScope.loginUser}">
-                    	<li class="nav-item fw-bold"><label id="btnSignup" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</label></li>
+                   <c:if test="${empty sessionScope.loginUser}">
+                       <li class="nav-item fw-bold"><label id="btnSignup" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</label></li>
                     </c:if>
                     <c:if test="${not empty sessionScope.loginUser}">
-                    	<li class="nav-item fw-bold"><label id="btnSignout" class="nav-link link-body-emphasis px-2 curpointer">Sign out</label></li>
+                       <li class="nav-item fw-bold"><label id="btnSignout" class="nav-link link-body-emphasis px-2 curpointer">Sign out</label></li>
                     </c:if>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
@@ -242,25 +251,25 @@
             
             <%-- Sign in Modal --%>
             <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		        <div class="modal-dialog">
-		            <div class="modal-content rounded-4 shadow">
-		                <div class="modal-header p-5 pb-4 border-bottom-0">
-		                    <h1 class="fw-bold mb-0 fs-2">PODO</h1>
-		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		                </div>
-		
-		                <div class="modal-body p-5 pt-0">
-		                    <div id="login">
-								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
-								</iframe>
-							</div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		    <%-- Sign in Modal 끝 --%>
-		    
-		     <%-- 검색 Modal --%>
+              <div class="modal-dialog">
+                  <div class="modal-content rounded-4 shadow">
+                      <div class="modal-header p-5 pb-4 border-bottom-0">
+                          <h1 class="fw-bold mb-0 fs-2">PODO</h1>
+                          <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+      
+                      <div class="modal-body p-5 pt-0">
+                          <div id="login">
+                        <iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
+                        </iframe>
+                     </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <%-- Sign in Modal 끝 --%>
+          
+           <%-- 검색 Modal --%>
              <form name="searchFrm">
                <div class="modal fade" id="searchModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                  <div class="modal-dialog modal-lg">
@@ -279,71 +288,97 @@
                  </div>
                </div>
             </form>
-    	    <%-- 검색 Modal --%>
+           <%-- 검색 Modal --%>
+           
+            <%-- 관리자 쿠폰 등록 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="adminCoupon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content rounded-4 shadow">
+                      <div class="modal-header p-5 pb-4 border-bottom-0">
+                          <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/coupon.png" style="width:35px; vertical-align: text-top;">&nbsp;쿠폰 등록</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+      
+                      <div class="modal-body p-5 pt-0">
+                      	<div>
+	                       	<iframe id="iframe_coupon" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/admin/adminCoupon.wine">
+	                       	</iframe>
+                     	</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    	<%-- 관리자 쿠폰 등록 클릭시 나오는 Modal 끝 --%>
+          
     </header>
     
     <%-- 로그인 후 상단에 아이디 버튼 클릭 시 마이페이지 오프캔버스 나오기 --%>
-	<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
-	
-	  <div class="offcanvas-header">
-	    <h3 style="font-weight: bold;">마이페이지</h3>
-	    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-	  </div>
-	  
-	<div class="offcanvas-body">
+   <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+   
+     <div class="offcanvas-header">
+       <h3 style="font-weight: bold;">마이페이지</h3>
+       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+     </div>
+     
+     <div class="offcanvas-body">
 
-            <hr style="width: 90%; color: purple; border: solid 2px;"> 		
-	  	    <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name}</span>님 안녕하세요!</div>
-	  		<div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
-				<div style="margin-right: 5%;">
-	               <i class="fa-regular fa-newspaper" style="margin: 10%;"></i>
-	               <br>
-	               <div style="font-weight: bold;">리뷰</div>
-	               <div style="color: purple;">2</div>
-	            </div>
-	            <div style="margin-right: 5%;">
-	               <i class="fa-solid fa-ticket"></i>
-	               <div style="font-weight: bold;">쿠폰</div>
-	               <div style="color: purple;">2</div>
-	            </div>
-	            <div>
-	               <i class="fa-solid fa-circle-dollar-to-slot"></i>
-	               <br>
-	               <div style="font-weight: bold;">적립금</div>
-	               <div style="color: purple;">${sessionScope.loginUser.point}</div>
-	            </div>
-	        </div>
-	        <hr style="width: 90%; color: purple; border: solid 2px;">  
-	  
-	  	<div>
-	      <h4 style="font-weight: bold; margin-top: 13%;">개인정보</h4>
-	      <hr style="width: 90%;">
-		      <div>
-		      	<div style="display: flex; margin-bottom: 2%;">회원정보 수정</div>
-		      	<div style="display: flex; margin-bottom: 2%;">비밀번호 변경</div>
-		      	<div style="display: flex; margin-bottom: 2%;">배송지 관리</div>
-		      </div>
-	    </div>
-	    
-	    <div>
-	      <h4 style="font-weight: bold; margin-top: 13%;">쇼핑정보</h4>
-	      <hr style="width: 90%;">
-		      <div>
-		      	<div style="display: flex; margin-bottom: 2%;">주문내역조회</div>
-		      	<div style="display: flex; margin-bottom: 2%;">리뷰</div>
-		      	<div style="display: flex; margin-bottom: 2%;">쿠폰</div>
-		      	<div style="display: flex; margin-bottom: 2%;">적립금</div>
-		      </div>
-	    </div>
-	    
-		<div>
+            <hr style="width: 90%; color: purple; border: solid 2px;">       
+            <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">강민정</span>님 안녕하세요!</div>
+           <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
+            <div class="position-relative" style="margin-right: 5%; cursor: pointer;">
+               <span class="position-absolute top-1 start-100 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+                  <i class="fa-regular fa-newspaper" style="margin: 10%;">
+                  </i>
+                  <br>
+                  <div style="font-weight: bold;">리뷰</div>
+                  <div style="color: purple;">2</div>
+               </div>
+               <div style="margin-right: 5%; cursor: pointer;">
+                  <i class="fa-solid fa-ticket"></i>
+                  <div style="font-weight: bold; cursor: pointer;">쿠폰</div>
+                  <div style="color: purple;">2</div>
+               </div>
+               <div style="cursor: pointer;">
+                  <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                  <br>
+                  <div style="font-weight: bold; cursor: pointer;">적립금</div>
+                  <div style="color: purple;">3,800</div>
+               </div>
+           </div>
+           <hr style="width: 90%; color: purple; border: solid 2px;">  
+     
+        <div>
+         <h4 style="font-weight: bold; margin-top: 13%;">개인정보</h4>
+         <hr style="width: 90%;">
+            <div>
+               <c:if test="${not empty sessionScope.loginUser}">
+                  <div style="display: flex; margin-bottom: 2%; cursor: pointer;">회원정보 수정</div>
+               </c:if>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">비밀번호 변경</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">배송지 관리</div>
+            </div>
+       </div>
+       
+       <div>
+         <h4 style="font-weight: bold; margin-top: 13%;">쇼핑정보</h4>
+         <hr style="width: 90%;">
+            <div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">리뷰</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
+            </div>
+       </div>
+       
+      <div>
          <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
          <hr style="width: 90%;">
             <div>
-               <div style="display: flex; margin-bottom: 2%;">회원 관리</div>
-               <div style="display: flex; margin-bottom: 2%;">제품 등록</div>
-               <div style="display: flex; margin-bottom: 2%;">쿠폰 등록</div>
+               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
+               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
             </div>
+            
         </div>
 	    
 	  </div>
