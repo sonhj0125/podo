@@ -255,6 +255,11 @@ function goSmartSearch() {
 			</c:forEach>
 
 		</div>
+		
+		<%-- 페이지 이동 --%>
+		<nav aria-label="Page navigation example">
+		  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
+		</nav>
 	</c:if>
 	
 	
@@ -450,16 +455,5 @@ function goSmartSearch() {
 	  </div>
 		  
 	</div>
-
-
-	
-
-
-	<%-- 페이지 이동 --%>
-	<nav aria-label="Page navigation example">
-	  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
-	</nav>
-	
-
 
 <jsp:include page="../footer.jsp" />
