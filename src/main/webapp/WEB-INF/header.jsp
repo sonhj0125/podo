@@ -118,6 +118,11 @@
 		});
 		
 		<%-- MyPage Click --%>
+		$("div#MyInfoView").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/myinfoView.wine";
+		});
+		
+		<%-- MyPage Click --%>
 		$("div#OrderList").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/orderList.wine";
 		});
@@ -131,6 +136,8 @@
 		$("button#btn-close").click(function(){
 			javascript:history.go(0);
 		});
+		
+		
 		
 		
 		$("input:text[name='memo']").hide();
@@ -362,6 +369,9 @@
          <h4 style="font-weight: bold; margin-top: 13%;">개인정보</h4>
          <hr style="width: 90%;">
             <div>
+               <c:if test="${not empty sessionScope.loginUser}">
+                  <div id="MyInfoView" style="display: flex; margin-bottom: 2%; cursor: pointer;">내정보 열람</div>
+               </c:if>
                <c:if test="${not empty sessionScope.loginUser}">
                   <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#meberRegisterUpdateModal">회원정보 수정</div>
                </c:if>
