@@ -40,7 +40,7 @@ div.container {
 
 			<c:forEach var="pdto" items="${requestScope.wineList}">
 				<div class="col">
-					<div class="card h-100">
+					<div class="card h-100 curpointer" onclick="showProduct('${pdto.pindex}')">
 						<%-- product image --%>
 						<img src="../images/product/${pdto.pimg}" class="card-img-top" alt="...">
 						<%-- sale badge --%>

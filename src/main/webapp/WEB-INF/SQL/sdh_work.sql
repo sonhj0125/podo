@@ -18,3 +18,8 @@ select USERID,CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE from CART join PRODUCT on CAR
 select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG,CART.PINDEX as pindex, CINDEX
 from CART join PRODUCT on CART.PINDEX = PRODUCT.PINDEX
 where USERID = 'redtree2379';
+
+select *
+from
+(select pindex,count(pindex)as coun from LIKEIT group by pindex order by coun desc) l join PRODUCT on l.PINDEX=PRODUCT.PINDEX
+order by  coun desc;

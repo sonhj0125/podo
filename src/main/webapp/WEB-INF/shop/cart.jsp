@@ -62,6 +62,8 @@
          
          <c:if test="${not empty requestScope.cdtoList}">
          
+         <div style="width: 80%; margin:0 auto; padding: 0;">
+         
          <div class="hstack gap-1" style="margin-bottom: 15px">
 	      	 <input id="cbAll" class="form-check-input" type="checkbox" style="margin-right : 1%;">
 	         <div style="width: 13%; min-width: 13%;">
@@ -98,7 +100,7 @@
 		           	<img src="<%=ctxPath %>/images/product/${cdtolist.pdto.pimg}" style="width: 100%;">
 		           </div>
 		           
-		           <div class="curpointer" style="width: 28%; min-width: 28%; font-weight: bold; font-size: 1.5vw;" onclick="showProduct('${cdtolist.pdto.pindex}')">
+		           <div class="curpointer" style="width: 28%; min-width: 28%; font-weight: bold; font-size: 1.0vw;" onclick="showProduct('${cdtolist.pdto.pindex}')">
 		           		${cdtolist.pdto.pname}
 		           </div>
 		           
@@ -118,7 +120,7 @@
 		              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.phometown}</span>
 		           </div>
 		           
-		           <div style="width: 10%; min-width: 10%; text-align: center; font-size: 2vw;">
+		           <div style="width: 10%; min-width: 10%; text-align: center; font-size: 1.5vw;">
 						${cdtolist.cvolume}EA
 		           </div>
 		           
@@ -126,10 +128,10 @@
 		           		<button type="button" class="btn btn-light">변경</button>
 		           </div>
 		           
-		           <div style="width:10%; min-width: 10%; font-size: 1.5vw; font-weight: bold; text-align: right; color: gray;">
+		           <div style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right; color: gray;">
 		                  ${cdtolist.pdto.pprice}원
 		           </div>
-		           <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.5vw; font-weight: bold; text-align: right;">
+		           <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right;">
 		                  ${cdtolist.sumprice}원
 		           </div>
 		         </div>
@@ -139,9 +141,9 @@
 		         </div>
 		         
          	</c:forEach>
-         		<div class="hstack gap-1" style="border-top: solid 2px gray; padding-left: 65%; font-size: 2vw; font-weight: bold;">
+         		<div class="hstack gap-1" style="border-top: solid 2px gray; padding-left: 65%; font-size: 1.5vw; font-weight: bold;">
          			<div style="width:45%; min-width: 45%;">결제 예정금액 : </div>
-         			<div id="sumPrice" style="width:54%; min-width: 54%; font-size: 2.5vw; font-weight: bold; text-align: right; padding-right: 7%">
+         			<div id="sumPrice" style="width:54%; min-width: 54%; font-size: 1.5vw; font-weight: bold; text-align: right; padding-right: 7%">
 		        	</div>
          		</div>
 
@@ -149,7 +151,8 @@
          <form name="orderSet">
          	<input type="text" id="setCindex" name="Arr_cindex">
          </form>
-				
+		
+		</div>
 
          </c:if>
          

@@ -22,5 +22,20 @@ public interface ProductDAO {
 
 	// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
 	List<ProductDTO> selectProductPaging(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;
+
+	// 좋아요
+	int setLike(Map<String, String> paraMap) throws SQLException;
+
+	// 유저의 좋아요 여부 판단
+	boolean isLike(Map<String, String> paraMap) throws SQLException;
+
+	// 좋아요 제거
+	int setunlike(Map<String, String> paraMap) throws SQLException;
 	
+	// ** product 이미지의 상세정보 가져오기 **
+	String getProductDetailImg(int pindex) throws SQLException;
+
+	// 인기 품목 리스트 뽑아오기 DESC
+	List<ProductDTO> listPopReadDesc() throws SQLException;
+
 }

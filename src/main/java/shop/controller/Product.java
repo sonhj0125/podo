@@ -38,7 +38,8 @@ public class Product extends AbstractController {
 			if (pdto != null) {
 
 				String cartInfo = "none";
-
+				String likeIt = "none";
+				
 				request.setAttribute("pdto", pdto);
 
 				
@@ -48,15 +49,28 @@ public class Product extends AbstractController {
 				if(mdto != null) {
 					String userid = mdto.getUserid();
 					
-					Map<String,String> paraMap = new HashMap<>(); paraMap.put("userid", userid);
+					Map<String,String> paraMap = new HashMap<>(); 
+					paraMap.put("userid", userid);
 					paraMap.put("pindex", String.valueOf(pindex));
 					
 					if(cdao.isProductCartIn(paraMap)) {
 						cartInfo = "show";
 					}
+					if(pdao.isLike(paraMap)) {
+						likeIt = "show";
+					}
+					
+				}
+				
+				String pdImgName = pdao.getProductDetailImg(pindex);
+				
+				if (pdImgName != "") {
+					// 제품상세이미지가 존재할 경우
+					request.setAttribute("pdImgName", pdImgName);
 				}
 				
 				request.setAttribute("cartInfo", cartInfo);
+				request.setAttribute("likeit", likeIt);
 
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/showproduct.jsp");

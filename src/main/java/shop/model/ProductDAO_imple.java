@@ -13,6 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import oracle.net.aso.c;
 import shop.domain.ProductDTO;
 
 public class ProductDAO_imple implements ProductDAO {
@@ -502,5 +503,174 @@ public class ProductDAO_imple implements ProductDAO {
 
 		return pdtList;
 	} // end of public List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException -----------
+
+	@Override
+	public int setLike(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO Likeit (USERID, PINDEX) "
+					+ "VALUES (?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pindex"));
+			
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean isLike(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isLike = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select * from likeit where userid = ? and pindex = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pindex"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				isLike = true;
+			}
+						
+		}finally {
+			close();
+		}
+		
+		return isLike;
+	}
+
+	@Override
+	public int setunlike(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " DELETE "
+					+ " FROM LIKEIT "
+					+ " WHERE USERID = ? AND PINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pindex"));
+			
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public String getProductDetailImg(int pindex) throws SQLException {
+		
+		String pdImgName = "";
+		
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select pdImg "
+					   + " from ProductDetailImg "
+					   + " where pIndex = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, pindex);
+
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			pdImgName = rs.getString("pdImg");
+
+		} finally {
+			close();
+		}	
+		
+		return pdImgName;
+	}
+
+	@Override
+	public List<ProductDTO> listPopReadDesc() throws SQLException {
+		
+		List<ProductDTO> pdto_list = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					+ " from "
+					+ " (select pindex,count(pindex)as coun from LIKEIT group by pindex order by coun desc) l join PRODUCT on l.PINDEX=PRODUCT.PINDEX "
+					+ " order by coun desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductDTO pdto = new ProductDTO();
+				
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				
+				pdto.setPprice(price);
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPbody(rs.getString("pbody"));
+				pdto.setPacid(rs.getString("pacid"));
+				pdto.setPtannin(rs.getString("ptannin"));
+				pdto.setPacl(rs.getString("ptannin"));
+				pdto.setPdetail(rs.getString("pdetail"));
+				pdto.setPstock(rs.getString("pstock"));
+				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPimg(rs.getString("pimg"));
+				
+				pdto_list.add(pdto);
+				
+			}
+			
+			
+		}finally {
+			close();
+		}
+		
+		return pdto_list;
+	}
+
+	
+
 
 }

@@ -14,7 +14,6 @@ import common.controller.AbstractController;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
 import net.nurigo.java_sdk.api.Message;
-import util.gmail.GoogleMail;
 
 public class PwdFindPhone extends AbstractController {
 
