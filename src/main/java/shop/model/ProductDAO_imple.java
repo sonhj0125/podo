@@ -213,41 +213,120 @@ public class ProductDAO_imple implements ProductDAO {
 
 	
 	
-	// 페이징 처리를 위해 상품에 대한 총 페이지 수 알아오기 (검색 X)
+	// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
 	@Override
-	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	public int getTotalPage(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
 
-		int totalPage = 0;
+	    int totalPage = 0;
 
-		try {
+	    try {
 
-			conn = ds.getConnection();
+	        conn = ds.getConnection();
 
-			String sql = " select ceil(count(*)/?) "
-					   + " from product ";
+	        String sql = " select ceil(count(*)/?) "
+	                   + " from product "
+	                   + " where ";
 
-			pstmt = conn.prepareStatement(sql);
+	        int paramsIndex = 2; // SQL 파라미터 인덱스 초기값 설정
 
-			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
+			if(ptype_arr != null) {
+	            
+	            for(int i=0; i<ptype_arr.length; i++) {
+	            	
+	            	if(i == 0) {
+	            		sql += "ptype in(";
+	            		
+	            	}
+	            	
+	            	if(i <= ptype_arr.length - 2) {
+	            		sql += "?,";
+	            		
+	                }
+	            	
+	            	if(i == ptype_arr.length - 1) {
+	                	sql += "?) ";
+	                }
+	            }
+	        }
+	        
+	        String pprice = paraMap.get("pprice");
+	        String phometown = paraMap.get("phometown");
+	        String pbody = paraMap.get("pbody");
+	        String pacid = paraMap.get("pacid");
+	        String ptannin = paraMap.get("ptannin");
+	        
+	        if(pprice != null) {
+	            sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
+	            
+	            switch (pprice) {
+		            case "1":
+		                sql += " (to_number(pprice) < 10000) ";
+		                break;
+		                
+		            case "2":
+		                sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) ";
+		                break;
+		                
+		            case "3":
+		                sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) ";
+		                break;
+		                
+		            case "4":
+		                sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) ";
+		                break;
+		                
+		            case "5":
+		                sql += " (to_number(pprice) >= 300000) ";
+		                break;
+		                
+		            default:
+		                break;
+	            }
+	        }
 
-			rs = pstmt.executeQuery();
-			rs.next();
+	        // 조건이 추가된 경우에만 AND 붙이기
+	        if(pprice != null || ptype_arr != null) {
+	            sql += " and ";
+	        }
+	        
+	        sql += " phometown like '%' ||  ? || '%' and "
+	             + " pbody like '%' ||  ? || '%' and "
+	             + " pacid like '%' ||  ? || '%' and "
+	             + " ptannin like '%' ||  ? || '%' ";
+	        
+	        pstmt = conn.prepareStatement(sql);
 
-			totalPage = rs.getInt(1);
+	        pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));
 
-		} finally {
-			close();
-		}
+	        if(ptype_arr != null) {
+	            for(int i=0; i<ptype_arr.length; i++) {
+	                pstmt.setString(paramsIndex++, ptype_arr[i]);
+	            }
+	        }
 
-		return totalPage;
+	        pstmt.setString(paramsIndex++, phometown);
+	        pstmt.setString(paramsIndex++, pbody);
+	        pstmt.setString(paramsIndex++, pacid);
+	        pstmt.setString(paramsIndex, ptannin);
+	        
+	        rs = pstmt.executeQuery();
+	        rs.next();
+
+	        totalPage = rs.getInt(1);
+
+	    } finally {
+	        close();
+	    }
+
+	    return totalPage;
 
 	} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException -------
 
 	
 	
-	// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
+	// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
 	@Override
-	public List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException {
+	public List<ProductDTO> selectProductPaging(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
 
 		List<ProductDTO> pdtList = new ArrayList<>();
 
@@ -266,9 +345,30 @@ public class ProductDAO_imple implements ProductDAO {
 						+ "        select pname, pengname, ptype, phometown, to_number(pprice) as pprice, "
 						+ "			      ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex "
 						+ "        from product"
-						+ "		   where ptype like '%' ||  ? || '%' and ";
+						+ "		   where ";
 			
-			String ptype = paraMap.get("ptype");
+			int paramsIndex = 1; // SQL 파라미터 인덱스 초기값 설정
+			
+			if(ptype_arr != null) {
+            
+	            for(int i=0; i<ptype_arr.length; i++) {
+	            	
+	            	if(i == 0) {
+	            		sql += "ptype in(";
+	            		
+	            	}
+	            	
+	            	if(i <= ptype_arr.length - 2) {
+	            		sql += "?,";
+	            		
+	                }
+	            	
+	            	if(i == ptype_arr.length - 1) {
+	                	sql += "?) ";
+	                }
+	            }
+	        }
+			
 			String pprice = paraMap.get("pprice");
 			String phometown = paraMap.get("phometown");
 			String pbody = paraMap.get("pbody");
@@ -276,32 +376,38 @@ public class ProductDAO_imple implements ProductDAO {
 			String ptannin = paraMap.get("ptannin");
 			
 			if(pprice != null) {
+				sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
 				
 				switch (pprice) {
 				case "1":
-					sql += " to_number(pprice) < 10000 and ";
+					sql += " (to_number(pprice) < 10000) and ";
 					break;
 					
 				case "2":
-					sql += " 10000 <= to_number(pprice) and to_number(pprice) < 50000 and ";
+					sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) and ";
 					break;
 					
 				case "3":
-					sql += " 50000 <= to_number(pprice) and to_number(pprice) < 150000 and ";
+					sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) and ";
 					break;
 					
 				case "4":
-					sql += " 150000 <= to_number(pprice) and to_number(pprice) < 300000 and ";
+					sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) and ";
 					break;
 					
 				case "5":
-					sql += " to_number(pprice) >= 300000 and ";
+					sql += " (to_number(pprice) >= 300000) and ";
 					break;
 					
 				default:
 					break;
 				}
 			}
+			
+			// 조건이 추가된 경우에만 AND 붙이기
+	        if(pprice != null || ptype_arr != null) {
+	            sql += " and ";
+	        }
 			
 			sql += " phometown like '%' ||  ? || '%' and "
 				 + " pbody like '%' ||  ? || '%' and "
@@ -340,11 +446,16 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, ptype);
-			pstmt.setString(2, phometown);
-			pstmt.setString(3, pbody);
-			pstmt.setString(4, pacid);
-			pstmt.setString(5, ptannin);
+			if(ptype_arr != null) {
+	            for(int i=0; i<ptype_arr.length; i++) {
+	                pstmt.setString(paramsIndex++, ptype_arr[i]);
+	            }
+	        }
+			
+			pstmt.setString(paramsIndex++, phometown);
+			pstmt.setString(paramsIndex++, pbody);
+			pstmt.setString(paramsIndex++, pacid);
+			pstmt.setString(paramsIndex++, ptannin);
 			
 			/*
 			=== 페이징처리의 공식 ===
@@ -354,8 +465,8 @@ public class ProductDAO_imple implements ProductDAO {
 			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
 			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
 
-			pstmt.setInt(6, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
-			pstmt.setInt(7, (currentShowPageNo * sizePerPage));
+			pstmt.setInt(paramsIndex++, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+			pstmt.setInt(paramsIndex, (currentShowPageNo * sizePerPage));
 
 			rs = pstmt.executeQuery();
 
@@ -385,12 +496,7 @@ public class ProductDAO_imple implements ProductDAO {
 
 			} // end of while(rs.next()) ------------------------------------
 
-		}
-//		catch (GeneralSecurityException | UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//			
-//		}
-		finally {
+		} finally {
 			close();
 		}
 
