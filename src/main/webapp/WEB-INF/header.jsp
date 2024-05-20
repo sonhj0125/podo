@@ -117,10 +117,21 @@
 			location.href="<%=ctxPath%>/cart/cart.wine";
 		});
 		
+		<%-- MyPage Click --%>
+		$("div#OrderList").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/orderList.wine";
+		});
+		
+		<%-- MyPage Click --%>
+		$("div#ReviewList").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/reviewList.wine";
+		});
+		
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
-		$("button.btn-close").click(function(){
+		$("button#btn-close").click(function(){
 			javascript:history.go(0);
 		});
+		
 		
 		$("input:text[name='memo']").hide();
 		
@@ -364,7 +375,7 @@
          <hr style="width: 90%;">
             <div>
                <div style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">리뷰</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">리뷰관리</div>
                <div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
                <div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
             </div>
@@ -389,4 +400,66 @@
 	<form action="post" name="passFrm" style="display: none;">
     	<input type="text" value="<%= url %>" name="url">
     </form>
+
+	<%-- 회원정보 수정 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="meberRegisterUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		        <div class="modal-dialog">
+		            <div class="modal-content rounded-4 shadow">
+		                <div class="modal-header p-5 pb-4 border-bottom-0">
+		                    <h1 class="fw-bold mb-0 fs-2">회원정보 변경</h1>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		
+		                <div class="modal-body p-5 pt-0">
+		                    <div>
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/memberRegisterUpdate.wine">
+								</iframe>
+							</div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    <%-- 회원정보 수정 Modal 끝 --%>
+    
+    
+    <%-- 비밀번호 변경 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="pwdUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		        <div class="modal-dialog">
+		            <div class="modal-content rounded-4 shadow">
+		                <div class="modal-header p-5 pb-4 border-bottom-0">
+		                    <h1 class="fw-bold mb-0 fs-2">비밀번호 변경</h1>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		
+		                <div class="modal-body p-5 pt-0">
+		                    <div>
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/pwdUpdate.wine">
+								</iframe>
+							</div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    <%-- 비밀번호 변경 클릭시 나오는 Modal 끝 --%>
+    
+    
+    <%-- 배송지 관리 클릭시 나오는 Modal --%>
+            <div class="modal fade" id="addressUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		        <div class="modal-dialog">
+		            <div class="modal-content rounded-4 shadow">
+		                <div class="modal-header p-5 pb-4 border-bottom-0">
+		                    <h1 class="fw-bold mb-0 fs-2">배송지 관리</h1>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		
+		                <div class="modal-body p-5 pt-0">
+		                    <div>
+								<iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/addressUpdate.wine">
+								</iframe>
+							</div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    <%-- 배송지 관리 클릭시 나오는 Modal 끝 --%>
     
