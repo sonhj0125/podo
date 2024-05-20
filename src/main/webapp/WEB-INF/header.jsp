@@ -363,10 +363,10 @@
          <hr style="width: 90%;">
             <div>
                <c:if test="${not empty sessionScope.loginUser}">
-                  <div style="display: flex; margin-bottom: 2%; cursor: pointer;">회원정보 수정</div>
+                  <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#meberRegisterUpdateModal">회원정보 수정</div>
                </c:if>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">비밀번호 변경</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">배송지 관리</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#pwdUpdateModal">비밀번호 변경</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addressUpdateModal">배송지 관리</div>
             </div>
        </div>
        
@@ -374,8 +374,8 @@
          <h4 style="font-weight: bold; margin-top: 13%;">쇼핑정보</h4>
          <hr style="width: 90%;">
             <div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">리뷰관리</div>
+               <div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
+               <div id="ReviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;" >리뷰관리</div>
                <div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
                <div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
             </div>
