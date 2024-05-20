@@ -397,4 +397,88 @@ public class ProductDAO_imple implements ProductDAO {
 		return pdtList;
 	} // end of public List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException -----------
 
+	@Override
+	public int setLike(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO Likeit (USERID, PINDEX) "
+					+ "VALUES (?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pindex"));
+			
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean isLike(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isLike = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select * from likeit where userid = ? and pindex = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pindex"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				isLike = true;
+			}
+						
+		}finally {
+			close();
+		}
+		
+		return isLike;
+	}
+
+	@Override
+	public int setunlike(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " DELETE "
+					+ " FROM LIKEIT "
+					+ " WHERE USERID = ? AND PINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pindex"));
+			
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
 }

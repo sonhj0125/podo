@@ -37,6 +37,24 @@ $(function (){
 		
 	});
 	
+	$("#btn-like").bind("click",function(){
+		
+		const frm = document.cartin;
+		frm.method = "post";
+		frm.action ="<%=ctxPath%>/shop/likeit.wine";
+		frm.submit();
+		
+	});
+	
+	$("#btn-unlike").bind("click",function(){
+		
+		const frm = document.cartin;
+		frm.method = "post";
+		frm.action ="<%=ctxPath%>/shop/unlikeit.wine";
+		frm.submit();
+		
+	});
+	
 	
 });
 
@@ -93,12 +111,17 @@ $(function (){
 	
 	            <div class="d-flex">
 	                <form class="d-flex" method="post">
-	                    <!--
-	                    <button class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 me-3" type="submit">
-	                      <img src="../images/heart.png" style="width: 3rem;"/>
-	                    </button>
-	                     -->
-	                    <button class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="submit">
+	                	<c:if test="${requestScope.likeit == 'none'}">
+		                    <button id="btn-like" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 me-3" type="button">
+		                      <img src="../images/heart.png" style="width: 3rem;"/>
+		                    </button>
+	                    </c:if>
+	                    <c:if test="${requestScope.likeit == 'show' }">
+	                    	<button id="btn-unlike" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 me-3" type="button" style="background-color: black;">
+		                      <img src="../images/heart.png" style="width: 3rem;"/>
+		                    </button>
+	                    </c:if>
+	                    <button class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
 	                        BUY IT NOW
 	                    </button>
 	                </form>
