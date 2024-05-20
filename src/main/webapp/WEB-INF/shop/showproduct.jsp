@@ -146,10 +146,10 @@ $(function (){
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs" data-bs-theme="dark">
 	  <li class="nav-item">
-	    <a class="nav-link active" data-bs-toggle="tab" href="#info" style="font-weight: bold; font-size: 14pt;">INFO</a>
+	    <a class="nav-link active" data-bs-toggle="tab" href="#info" style="font-weight: bold; font-size: 14pt;">PRODUCT</a>
 	  </li>
 	  <li class="nav-item">
-	    <a class="nav-link" data-bs-toggle="tab" href="#product" style="font-weight: bold; font-size: 14pt;">PRODUCT</a>
+	    <a class="nav-link" data-bs-toggle="tab" href="#product" style="font-weight: bold; font-size: 14pt;">INFO</a>
 	  </li>
 	  <li class="nav-item">
 	    <a class="nav-link" data-bs-toggle="tab" href="#review" style="font-weight: bold; font-size: 14pt;">REVIEW</a>
@@ -159,7 +159,14 @@ $(function (){
 	<!-- Tab panes -->
 	<div class="tab-content pt-5 pb-5">
 	  	<div class="tab-pane container active" id="info" style="font-size: 9pt;">
-			<strong><구매예약 안내></strong><br>
+	  		<c:if test="${requestScope.pdImgName != ''}">
+	  			<img src="../images/productDetail/${requestScope.pdImgName}" class="rounded mx-auto d-block">
+	  		</c:if>
+		</div>
+		
+		<%-- 여기가 product 이미지 나오는 곳 --%>
+	  	<div class="tab-pane container fade" id="product">
+	  	<strong><구매예약 안내></strong><br>
 		    · <span style="color:red;">상품 이미지에 표시된 빈티지는 상품 이해를 돕기 위한 샘플 이미지입니다. 빈티지가 상품명에 별도 표기되지 않은 상품은 특정 빈티지로 입고되지 않습니다.</span><br>
 		    · <span style="color:red;">주류통신 판매에 대한 명령위임 고시에 따라 주류상품은 온라인 결제는 가능하나 배송은 불가합니다.</span><br>
 		    · <span style="font-weight: bold;">일부 제품의 경우 수입사의 사정에 따라 취소 및 환불처리가 될 수 있습니다.</span><br>
@@ -182,14 +189,8 @@ $(function (){
 		    · 주류상품의 교환 및 반품은 와인나라 직영 매장에서만 가능합니다.<br> 
 		    · 상품(또는 케이스) 택(tag)제거,전면부 라벨 손상(오염),개봉으로 상품 가치 훼손 시에는 상품수령후 7일 이내라도 교환 및 반품이 불가능합니다.<br>
 		    · 일부 상품은 신규 빈티지 출시, 수입 가격 변동 등 제조사 사정으로 가격이 변동될 수 있습니다.    
-		</div>
-		
-		<%-- 여기가 product 이미지 나오는 곳 --%>
-	  	<div class="tab-pane container fade" id="product">
-	  		<c:if test="${requestScope.pdImgName != ''}">
-	  			<img src="../images/productDetail/${requestScope.pdImgName}" class="rounded mx-auto d-block">
-	  		</c:if>
 	  	</div>
+	  	
 	  	<div class="tab-pane container fade" id="review">   
 	  		<strong>등록된 정보가 없습니다.</strong>
 	  	</div>

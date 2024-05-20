@@ -481,8 +481,6 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 	}
 	
-	
-	
 	@Override
 	public String getProductDetailImg(int pindex) throws SQLException {
 		
@@ -511,7 +509,7 @@ public class ProductDAO_imple implements ProductDAO {
 		}	
 		
 		return pdImgName;
-	} // end of public String getProductDetailImg(int pindex) throws SQLException ----
+	}
 
 	
 
