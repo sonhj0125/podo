@@ -32,4 +32,7 @@ public interface ProductDAO {
 	// 좋아요 제거
 	int setunlike(Map<String, String> paraMap) throws SQLException;
 	
+	// ** product 이미지의 상세정보 가져오기 **
+	String getProductDetailImg(int pindex) throws SQLException;
+	
 }

@@ -62,6 +62,13 @@ public class Product extends AbstractController {
 					
 				}
 				
+				String pdImgName = pdao.getProductDetailImg(pindex);
+				
+				if (pdImgName != "") {
+					// 제품상세이미지가 존재할 경우
+					request.setAttribute("pdImgName", pdImgName);
+				}
+				
 				request.setAttribute("cartInfo", cartInfo);
 				request.setAttribute("likeit", likeIt);
 

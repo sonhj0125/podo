@@ -480,5 +480,40 @@ public class ProductDAO_imple implements ProductDAO {
 		
 		return result;
 	}
+	
+	
+	
+	@Override
+	public String getProductDetailImg(int pindex) throws SQLException {
+		
+		String pdImgName = "";
+		
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select pdImg "
+					   + " from ProductDetailImg "
+					   + " where pIndex = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, pindex);
+
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			pdImgName = rs.getString("pdImg");
+
+		} finally {
+			close();
+		}	
+		
+		return pdImgName;
+	} // end of public String getProductDetailImg(int pindex) throws SQLException ----
+
+	
+
 
 }
