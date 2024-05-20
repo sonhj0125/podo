@@ -22,5 +22,8 @@ public interface ProductDAO {
 
 	// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
 	List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException;
+
+	// ** product 이미지의 상세정보 가져오기 **
+	String getProductDetailImg(int pindex) throws SQLException;
 	
 }

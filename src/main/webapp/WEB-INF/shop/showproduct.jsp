@@ -160,8 +160,12 @@ $(function (){
 		    · 상품(또는 케이스) 택(tag)제거,전면부 라벨 손상(오염),개봉으로 상품 가치 훼손 시에는 상품수령후 7일 이내라도 교환 및 반품이 불가능합니다.<br>
 		    · 일부 상품은 신규 빈티지 출시, 수입 가격 변동 등 제조사 사정으로 가격이 변동될 수 있습니다.    
 		</div>
+		
+		<%-- 여기가 product 이미지 나오는 곳 --%>
 	  	<div class="tab-pane container fade" id="product">
-	  		<img src="../images/product.jpg" class="rounded mx-auto d-block">
+	  		<c:if test="${requestScope.pdImgName != ''}">
+	  			<img src="../images/productDetail/${requestScope.pdImgName}" class="rounded mx-auto d-block">
+	  		</c:if>
 	  	</div>
 	  	<div class="tab-pane container fade" id="review">   
 	  		<strong>등록된 정보가 없습니다.</strong>
