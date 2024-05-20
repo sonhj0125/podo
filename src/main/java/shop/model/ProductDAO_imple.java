@@ -517,18 +517,102 @@ public class ProductDAO_imple implements ProductDAO {
 
 			conn = ds.getConnection();
 
-			String sql = " select * "
-						+ " from "
-						+ "     (select pindex, count(pindex) as popular "
-						+ "      from LIKEIT "
-						+ "      group by pindex "
-						+ "      order by popular desc "
-						+ "     ) L right join PRODUCT on L.PINDEX=PRODUCT.PINDEX "
-						+ " order by CASE "
-						+ "          WHEN popular IS NULL THEN 1 "
-						+ "          ELSE 0  "
-						+ "          END, "
-						+ "          popular desc ";
+			String sql = " SELECT rno, pindex, popular, pname, pengname, ptype, phometown, "
+					   + "       pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock "
+					   + " FROM "
+					   + " ( "
+					   + "     SELECT rownum as RNO, V1.* "
+					   + "     FROM "
+					   + "     ( "
+					   + "         WITH "
+					   + "         P AS ( "
+					   + "             select * "
+					   + "             from product"
+					   + "			   where ";
+			
+			int paramsIndex = 1; // SQL 파라미터 인덱스 초기값 설정
+			
+			if(ptype_arr != null) {
+            
+	            for(int i=0; i<ptype_arr.length; i++) {
+	            	
+	            	if(i == 0) {
+	            		sql += "ptype in(";
+	            		
+	            	}
+	            	
+	            	if(i <= ptype_arr.length - 2) {
+	            		sql += "?,";
+	            		
+	                }
+	            	
+	            	if(i == ptype_arr.length - 1) {
+	                	sql += "?) ";
+	                }
+	            }
+	        }
+			
+			String pprice = paraMap.get("pprice");
+			String phometown = paraMap.get("phometown");
+			String pbody = paraMap.get("pbody");
+			String pacid = paraMap.get("pacid");
+			String ptannin = paraMap.get("ptannin");
+			
+			if(pprice != null) {
+				sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
+				
+				switch (pprice) {
+				case "1":
+					sql += " (to_number(pprice) < 10000) and ";
+					break;
+					
+				case "2":
+					sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) and ";
+					break;
+					
+				case "3":
+					sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) and ";
+					break;
+					
+				case "4":
+					sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) and ";
+					break;
+					
+				case "5":
+					sql += " (to_number(pprice) >= 300000) and ";
+					break;
+					
+				default:
+					break;
+				}
+			}
+			
+			// 조건이 추가된 경우에만 AND 붙이기
+	        if(pprice != null || ptype_arr != null) {
+	            sql += " and ";
+	        }
+			
+			sql += " 				phometown like '%' ||  ? || '%' and "
+				 + " 				pbody like '%' ||  ? || '%' and "
+				 + " 				pacid like '%' ||  ? || '%' and "
+				 + " 				ptannin like '%' ||  ? || '%' "
+			     + "        	), "
+				 + "            L AS ( "
+				 + "                select pindex, count(pindex) as popular "
+				 + "                from likeit "
+				 + "                group by pindex "
+				 + "            ) "
+				 + "            SELECT P.*, popular "
+				 + "            FROM P LEFT JOIN L "
+				 + "            ON P.pindex = L.pindex "
+				 + "            order by CASE "
+				 + "                     WHEN popular IS NULL THEN 1 "
+				 + "                     ELSE 0 "
+				 + "                     END, "
+				 + "                     popular desc "
+				 + "        ) V1 "
+				 + " ) V2 "
+				 + " WHERE V2.rno between ? and ? ";
 				
 			pstmt = conn.prepareStatement(sql);
 

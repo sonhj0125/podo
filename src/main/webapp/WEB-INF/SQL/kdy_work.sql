@@ -63,19 +63,69 @@ where ptype in('레드', '로제') and
 
 
 
+-- 인기순 정렬 + 페이징
+SELECT rno, pindex, popular, pname, pengname, ptype, phometown,
+       pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock
+FROM
+(
+    select rownum AS RNO, pindex, popular, pname, pengname, ptype, phometown,
+           pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock
+    from
+    (
+        SELECT P.*, popular
+        FROM product P
+        LEFT JOIN
+        (select pindex, count(pindex) as popular 
+         from LIKEIT
+         group by pindex
+        ) L
+        ON L.pindex = P.pindex
+        order by CASE 
+                 WHEN popular IS NULL THEN 1 
+                 ELSE 0 
+                 END, 
+                 popular desc
+    )         
+) V
+WHERE V.rno BETWEEN 1 AND 8;
 
-select *
-from
-    (select pindex, count(pindex) as popular 
-     from LIKEIT
-     group by pindex
-     order by popular desc
-    ) l right join PRODUCT on l.PINDEX=PRODUCT.PINDEX
-order by CASE 
-         WHEN popular IS NULL THEN 1 
-         ELSE 0 
-         END, 
-         popular desc;
+
+-- 인기순 정렬 + 페이징 + 검색
+SELECT rno, pindex, popular, pname, pengname, ptype, phometown,
+       pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock
+FROM
+(
+    SELECT rownum as RNO, V1.*
+    FROM
+    (
+        WITH
+        P AS (
+            select *
+            from product
+            where ptype in('레드', '로제') and
+                  (10000 <= to_number(pprice) and to_number(pprice) < 50000) and
+                  phometown like '%' ||  '' || '%' and
+                  pbody like '%' ||  '' || '%' and
+                  pacid like '%' ||  '' || '%' and
+                  ptannin like '%' ||  '' || '%'
+        ),
+        L AS (
+            select pindex, count(pindex) as popular 
+            from likeit
+            group by pindex
+        )
+        SELECT P.*, popular
+        FROM P LEFT JOIN L
+        ON P.pindex = L.pindex
+        order by CASE 
+                 WHEN popular IS NULL THEN 1 
+                 ELSE 0 
+                 END, 
+                 popular desc
+    ) V1
+) V2
+WHERE V2.rno between 1 and 8;
+
 
 
 

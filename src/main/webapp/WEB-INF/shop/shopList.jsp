@@ -114,9 +114,21 @@ $(function() {
 
 function goSmartSearch() {
 
-	let ptype_val = $("input:checkbox[name='ptype']:checked").val();
-	let pprice_val = $("input:checkbox[name='pprice']:checked").val();
-	let phometown_val = $("input:checkbox[name='phometown']:checked").val();
+	let ptype_val = $("input:checkbox[name='ptype']").val();
+	let pprice_val = $("input:checkbox[name='pprice']").val();
+	let phometown_val = $("input:checkbox[name='phometown']").val();
+	
+	if($("input:checkbox[name='ptype']").length == 0) {
+		ptype_val = "";
+	}
+	
+	if($("input:checkbox[name='pprice']").length == 0) {
+		pprice_val = "";
+	}
+	
+	if($("input:checkbox[name='phometown']").length == 0) {
+		phometown_val = "";
+	}
 	
 	// 바디 상관없음 체크 시
 	$("input:checkbox#none1").on('change', function() {
