@@ -19,4 +19,7 @@ select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG,CART.PINDEX as pindex, CINDEX
 from CART join PRODUCT on CART.PINDEX = PRODUCT.PINDEX
 where USERID = 'redtree2379';
 
-insert into Like (userid,)
+select *
+from
+(select pindex,count(pindex)as coun from LIKEIT group by pindex order by coun desc) l join PRODUCT on l.PINDEX=PRODUCT.PINDEX
+order by  coun desc;

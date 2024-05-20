@@ -13,6 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import oracle.net.aso.c;
 import shop.domain.ProductDTO;
 
 public class ProductDAO_imple implements ProductDAO {
@@ -509,6 +510,58 @@ public class ProductDAO_imple implements ProductDAO {
 		}	
 		
 		return pdImgName;
+	}
+
+	@Override
+	public List<ProductDTO> listPopReadDesc() throws SQLException {
+		
+		List<ProductDTO> pdto_list = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					+ " from "
+					+ " (select pindex,count(pindex)as coun from LIKEIT group by pindex order by coun desc) l join PRODUCT on l.PINDEX=PRODUCT.PINDEX "
+					+ " order by coun desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductDTO pdto = new ProductDTO();
+				
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				
+				pdto.setPprice(price);
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPbody(rs.getString("pbody"));
+				pdto.setPacid(rs.getString("pacid"));
+				pdto.setPtannin(rs.getString("ptannin"));
+				pdto.setPacl(rs.getString("ptannin"));
+				pdto.setPdetail(rs.getString("pdetail"));
+				pdto.setPstock(rs.getString("pstock"));
+				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPimg(rs.getString("pimg"));
+				
+				pdto_list.add(pdto);
+				
+			}
+			
+			
+		}finally {
+			close();
+		}
+		
+		return pdto_list;
 	}
 
 	

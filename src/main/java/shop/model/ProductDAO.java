@@ -34,5 +34,8 @@ public interface ProductDAO {
 	
 	// ** product 이미지의 상세정보 가져오기 **
 	String getProductDetailImg(int pindex) throws SQLException;
+
+	// 인기 품목 리스트 뽑아오기 DESC
+	List<ProductDTO> listPopReadDesc() throws SQLException;
 	
 }
