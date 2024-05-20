@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -343,17 +345,92 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 	}
 
+	
+	
+	
+	
+	
 
+	// 관리자 회원관리 - 페이징 처리 안한 모든 회원 또는 검색한 회원 목록 보여주기
+	@Override
+	public List<MemberDTO> select_Member_nopaging(Map<String, String> paraMap) throws SQLException {
+		
+		List<MemberDTO> memberList = new ArrayList<>();
+		
+
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email, phone, gender, memberIdx "
+					   + " from member "
+					   + " where userid != 'ejss0125' ";
+			
+
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if("email".equals(colname)) {
+				// 검색 대상이 email인 경우
+				searchWord = aes.encrypt(searchWord);
+			}
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
+			
+			sql += " order by registerDay desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				pstmt.setString(1, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MemberDTO mdto = new MemberDTO();
+				
+				mdto.setUserid(rs.getString("userid"));
+				mdto.setName(rs.getString("name"));
+				mdto.setEmail(aes.decrypt(rs.getString("email")));
+				mdto.setPhone(aes.decrypt(rs.getString("phone")));
+				mdto.setGender(rs.getString("gender"));
+				mdto.setMemberIdx(rs.getString("memberidx"));
+				
+				memberList.add(mdto);
+				
+			} // end of while(rs.next()) ------------------------------------
+					   
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return memberList;
+	
+		
+	} // end of public List<MemberDTO> select_Member_nopaging(Map<String, String> paraMap) throws SQLException
+
+
+	
+	
 	
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
-		
 		return null;
-	}
-
-
-	
+		
+	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
+		
 	
 	
 }

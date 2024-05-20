@@ -21,7 +21,34 @@
       });
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
    }; // end of window.onload
+   
+   
+   function goSearch() {
+		
+		const searchType = $("select[name='searchType']").val();
+		
+		if(searchType == "") {
+			alert("검색대상을 선택하세요!");
+			return; // goSearch() 함수 종료
+		}
+		
+		const frm = document.member_search_frm;
+		frm.submit();
+		
+	} // end of function goSearch() ---------------------------
    
 </script>
 
@@ -95,9 +122,9 @@
 		
 		<input type="text" style="display: none;" />
 
-		<button type="button" class="btn btn-danger">검색</button>
+		<button type="button" class="btn btn-danger" onclick="goSearch()">검색</button>
 
-		<span style="font-size: 12pt; font-weight: bold; margin-left: 22.5%;">페이지당 회원명수&nbsp;-&nbsp;</span>
+		<span style="font-size: 12pt; font-weight: bold; margin-left: 22%;">페이지당 회원명수&nbsp;-&nbsp;</span>
 		<select name="sizePerPage">
 			<option value="10">10명</option>
 			<option value="5">5명</option>
@@ -119,44 +146,26 @@
 		</thead>
 
 		<tbody>
-			<tr id="memberDetail">
-				<td>1</td>
-				<td>test003</td>
-				<td>테스트용</td>
-				<td>test003@naver.com</td>
-				<td>010-5957-8484</td>
-				<td>남</td>
-				<td>정상</td>
-			</tr>
-			<tr id="memberDetail">
-				<td>2</td>
-				<td>test001</td>
-				<td>테스트</td>
-				<td>test001@naver.com</td>
-				<td>010-6547-2315</td>
-				<td>여</td>
-				<td>정상</td>
-			</tr>
-		<%--
+			
 			<c:if test="${not empty requestScope.member}">
-				<c:forEach var="membervo" items="${requestScope.memberList}" varStatus="status">
+				<c:forEach var="memberDTO" items="${requestScope.memberList}" varStatus="status">
 					<tr class="memberInfo">
 					
 						<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 						<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 						<td>${requestScope.totalMemberCount - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
 						
-						<td class="userid">${.userid}</td>
-						<td>${.name}</td>
-						<td>${.email}</td>
-						<td>${.phone}</td>
+						<td class="userid">${memberDTO.userid}</td>
+						<td>${memberDTO.name}</td>
+						<td>${memberDTO.email}</td>
+						<td>${memberDTO.phone}</td>
 						<td>
 							<c:choose>
-								<c:when test="${.gender == '1'}">남</c:when>
+								<c:when test="${memberDTO.gender == '1'}">남</c:when>
 								<c:otherwise>여</c:otherwise>
 							</c:choose>
 						</td>
-						<td>${.memberidx}</td>
+						<td>${memberDTO.memberidx}</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -166,7 +175,7 @@
 					<td colspan="7" style="text-align: center;">데이터가 존재하지 않습니다.</td>
 				</tr>
 			</c:if>
-		--%>
+		
 		</tbody>
 	</table>
 	

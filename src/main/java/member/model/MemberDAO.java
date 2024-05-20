@@ -1,6 +1,7 @@
 package member.model;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import member.domain.MemberDTO;
@@ -31,6 +32,13 @@ public interface MemberDAO {
 	// 로그기록
 	int logwrite(Map<String, String> paraMap) throws SQLException;
 	
+	
+	
+	
+	// 관리자 회원관리 - 페이징 처리 안한 모든 회원 또는 검색한 회원 목록 보여주기
+	List<MemberDTO> select_Member_nopaging(Map<String, String> paraMap) throws SQLException;
+
+
 	// 관리자 회원관리 - 한명 조회
 	MemberDTO selectOneMember(String userid) throws SQLException;
 
