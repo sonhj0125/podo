@@ -502,8 +502,97 @@ public class ProductDAO_imple implements ProductDAO {
 		}
 
 		return pdtList;
+		
 	} // end of public List<ProductDTO> selectProductPaging(Map<String, String> paraMap) throws SQLException -----------
 
+	
+	
+	// 페이징 처리한 검색 포함 상품 목록 인기순 정렬
+	@Override
+	public List<ProductDTO> selectProductPagingPopular(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
+
+		List<ProductDTO> pdtList = new ArrayList<>();
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select * "
+						+ " from "
+						+ "     (select pindex, count(pindex) as popular "
+						+ "      from LIKEIT "
+						+ "      group by pindex "
+						+ "      order by popular desc "
+						+ "     ) L right join PRODUCT on L.PINDEX=PRODUCT.PINDEX "
+						+ " order by CASE "
+						+ "          WHEN popular IS NULL THEN 1 "
+						+ "          ELSE 0  "
+						+ "          END, "
+						+ "          popular desc ";
+				
+			pstmt = conn.prepareStatement(sql);
+
+			if(ptype_arr != null) {
+	            for(int i=0; i<ptype_arr.length; i++) {
+	                pstmt.setString(paramsIndex++, ptype_arr[i]);
+	            }
+	        }
+			
+			pstmt.setString(paramsIndex++, phometown);
+			pstmt.setString(paramsIndex++, pbody);
+			pstmt.setString(paramsIndex++, pacid);
+			pstmt.setString(paramsIndex++, ptannin);
+			
+			/*
+			=== 페이징처리의 공식 ===
+			where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
+			*/
+
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
+
+			pstmt.setInt(paramsIndex++, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+			pstmt.setInt(paramsIndex, (currentShowPageNo * sizePerPage));
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				ProductDTO pdto = new ProductDTO();
+
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+
+				String price = df.format(rs.getInt("pprice"));
+				pdto.setPprice(price);
+
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPbody(rs.getString("pbody"));
+				pdto.setPacid(rs.getString("pacid"));
+				pdto.setPtannin(rs.getString("ptannin"));
+				pdto.setPacl(rs.getString("pacl"));
+				pdto.setPdetail(rs.getString("pdetail"));
+				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPstock(rs.getString("pstock"));
+				pdto.setPindex(rs.getInt("pindex"));
+
+				pdtList.add(pdto);
+
+			} // end of while(rs.next()) ------------------------------------
+
+		} finally {
+			close();
+		}
+
+		return pdtList;
+		
+	} // end of public List<ProductDTO> selectProductPagingPopular(String[] ptype_arr, Map<String, String> paraMap) throws SQLException ------------
+
+
+	
+	// 좋아요
 	@Override
 	public int setLike(Map<String, String> paraMap) throws SQLException {
 		
@@ -531,6 +620,9 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 	}
 
+	
+	
+	// 유저의 좋아요 여부 판단
 	@Override
 	public boolean isLike(Map<String, String> paraMap) throws SQLException {
 		
@@ -560,6 +652,9 @@ public class ProductDAO_imple implements ProductDAO {
 		return isLike;
 	}
 
+	
+	
+	// 좋아요 제거
 	@Override
 	public int setunlike(Map<String, String> paraMap) throws SQLException {
 		
@@ -588,6 +683,9 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 	}
 	
+	
+	
+	// ** product 이미지의 상세정보 가져오기 **
 	@Override
 	public String getProductDetailImg(int pindex) throws SQLException {
 		
@@ -618,6 +716,9 @@ public class ProductDAO_imple implements ProductDAO {
 		return pdImgName;
 	}
 
+	
+	
+	// 인기 품목 리스트 뽑아오기 DESC
 	@Override
 	public List<ProductDTO> listPopReadDesc() throws SQLException {
 		
@@ -671,6 +772,6 @@ public class ProductDAO_imple implements ProductDAO {
 	}
 
 	
-
+	
 
 }

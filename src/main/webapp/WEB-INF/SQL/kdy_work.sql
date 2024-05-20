@@ -64,4 +64,19 @@ where ptype in('레드', '로제') and
 
 
 
+select *
+from
+    (select pindex, count(pindex) as popular 
+     from LIKEIT
+     group by pindex
+     order by popular desc
+    ) l right join PRODUCT on l.PINDEX=PRODUCT.PINDEX
+order by CASE 
+         WHEN popular IS NULL THEN 1 
+         ELSE 0 
+         END, 
+         popular desc;
+
+
+
 

@@ -1,6 +1,7 @@
 package shop.controller;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +134,14 @@ public class ShopList extends AbstractController {
 
 		
 		// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
-		List<ProductDTO> pdtList = pdao.selectProductPaging(ptype_arr, paraMap);
+		List<ProductDTO> pdtList = new ArrayList<>();
+		
+		if("popular".equals(sortType)) {
+			pdtList = pdao.selectProductPagingPopular(ptype_arr, paraMap);
+			
+		} else {
+			pdtList = pdao.selectProductPaging(ptype_arr, paraMap);
+		}
 
 		request.setAttribute("pdtList", pdtList); // 상품 목록
 
