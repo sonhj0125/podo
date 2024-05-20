@@ -39,7 +39,7 @@
       
       <div style="width: 60%; text-align: center;">
 
-      	 <h2>리뷰작성</h2>
+      	 <h2>리뷰수정</h2>
       	 <div>
 	         <hr><br>
 	         <h5>와인을 평가해주세요</h5>
@@ -58,8 +58,9 @@
 	         </div>
 	         <hr>
       	 </div>
-      	 
-	     <button type="button" class="btn btn-secondary" style="width: 20%;">등록</button>
+	
+		 <button type="button" class="btn btn-secondary" style="width: 15%;">수정 취소</button>
+	     <button type="button" class="btn btn-secondary" style="width: 15%;">수정 완료</button>
 
       </div>
       

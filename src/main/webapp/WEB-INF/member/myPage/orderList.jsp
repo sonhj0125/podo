@@ -17,11 +17,11 @@
 
 <form>
 	<div id="container" style="width: 100%;">
-		
+		<h2 style="text-align: center;">주문내역조회</h2>
 		<div style="width: 60%;">
 			<div style="display: flex; justify-content: space-between;">
 				<div>2024.04.24</div>
-				<div style="cursor: pointer;" onclick="location.href='<%=ctxPath%>/member/orderDetail.wine'">주문상세&nbsp;<i class="fa-solid fa-chevron-right"></i></div>
+				<div style="cursor: pointer; font-weight: bold;" onclick="location.href='<%=ctxPath%>/member/orderDetail.wine'">주문상세&nbsp;<i class="fa-solid fa-chevron-right"></i></div>
 			</div>
 			
 			<div>
@@ -51,7 +51,7 @@
 	    <div style="border: solid 0px blue; width: 60%;">
 			<div style="display: flex; justify-content: space-between;">
 				<div>2024.03.05</div>
-				<div>주문상세&nbsp;<i class="fa-solid fa-chevron-right"></i></div>
+				<div style="cursor: pointer; font-weight: bold;" onclick="location.href='<%=ctxPath%>/member/orderDetail.wine'">주문상세&nbsp;<i class="fa-solid fa-chevron-right"></i></div>
 			</div>
 			
 			<div>

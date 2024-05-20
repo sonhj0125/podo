@@ -334,7 +334,7 @@
 	      <h4 style="font-weight: bold; margin-top: 13%;">쇼핑정보</h4>
 	      <hr style="width: 90%;">
 		      <div>
-		      	<div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역 / 리뷰작성</div>
+		      	<div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
 		      	<div id="ReviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;">리뷰 관리</div>
 		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
 		      	<div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>

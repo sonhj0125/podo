@@ -27,8 +27,8 @@
 	        <label for="loginUserPwdCheck">비밀번호 확인</label>
 	    </div>
 	    <div class="w-100" style="display: flex; justify-content: space-between;">
+	   		<button class="mt-2 btn btn-lg  btn-primary" type="button" id="btn-close" style="width: 45%;">취소</button>
 		    <button class="mt-2 btn btn-lg  btn-primary" type="button" id="btnSubmit" style="width: 45%;">변경하기</button>
-		    <button class="mt-2 btn btn-lg  btn-primary" type="button" id="btnSubmit" style="width: 45%;">취소</button>
 	    </div>
    </div>
 
