@@ -36,14 +36,16 @@ input.form-control, textarea.form-control {
 	margin-top: 5%;
 }
 
-form#coupon {
-	width: 100%;
+.widy{
+	width: 90%;
+	padding: 0;
+	margin: 0 auto;
 }
 
 </style>
      
 
-<div class="col-md-9">
+<div class="col-md-9 widy">
 	<form id="coupon">
 		<div class="form-group">
 			<div class="row">
@@ -70,7 +72,7 @@ form#coupon {
 				<div class="col-md-3">
 					<label for="">할인방법</label>
 				</div>
-					<div class="col-md-9">
+					<div class="col-md-9 mt-3">
 						<div class="form-check">
 						  <input class="form-check-input" type="radio" name="cotype" value="1" id="saleNat" checked>
 						  <label class="form-check-label" for="saleNat">
@@ -104,7 +106,7 @@ form#coupon {
 					<label for="couponmin">최소 주문금액</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="10,000원"/>
+					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="10000"/>
 				</div>
 			</div>	
 		</div>
