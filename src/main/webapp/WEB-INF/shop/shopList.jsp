@@ -52,7 +52,9 @@ input[type="checkbox"] {
 }
 
 <%-- 슬라이더 --%>
-#slider {
+#slider_pbody,
+#slider_pacid,
+#slider_ptannin {
 	accent-color:pink;
 	width:100%;
 	cursor: pointer;
@@ -101,6 +103,66 @@ $(function() {
 
     });
 	
+	// '상관없음' 자동 체크
+	$("input:checkbox#none1").prop("checked", true);
+	$("input:checkbox#none2").prop("checked", true);
+	$("input:checkbox#none3").prop("checked", true);
+	
+	// 바디 상관없음 체크박스 변경 이벤트 핸들러
+	$("input:checkbox#none1").bind("change", function(e) {
+		if(!$(e.target).prop("checked")) {
+			let html = `<input id="slider_pbody" name="pbody" type="range" min="1" max="5" step="1" list="tickmarks">
+					    <datalist id="tickmarks">
+					        <option value="1">가벼움</option>
+					        <option value="2">약간가벼움</option>
+					        <option value="3">중간</option>
+					        <option value="4">약간무거움</option>
+					        <option value="5">무거움</option>
+				    	</datalist>`;
+			
+			$("div#pbody_bar").append(html);
+		} else {
+			$("div#pbody_bar").empty();
+		}
+    });
+	
+	// 산도 상관없음 체크박스 변경 이벤트 핸들러
+	$("input:checkbox#none2").bind("change", function(e) {
+		if(!$(e.target).prop("checked")) {
+			let html = `<input id="slider_pacid" name="pacid" type="range" min="1" max="5" step="1" list="acid">
+					    <datalist id="tickmarks">
+					        <option value="1">낮음</option>
+					        <option value="2">약간낮음</option>
+					        <option value="3">중간</option>
+					        <option value="4">약간높음</option>
+					        <option value="5">높음</option>
+					    </datalist>`;
+			
+			$("div#pacid_bar").append(html);
+		} else {
+			$("div#pacid_bar").empty();
+		}
+    });
+	
+	// 타닌 상관없음 체크박스 변경 이벤트 핸들러
+	$("input:checkbox#none3").bind("change", function(e) {
+		if(!$(e.target).prop("checked")) {
+			let html = `<input id="slider_ptannin" name="ptannin" type="range" min="1" max="5" step="1" list="tanin">
+			    		<datalist id="tickmarks">
+					        <option value="1">약함</option>
+					        <option value="2">약간약함</option>
+					        <option value="3">중간</option>
+					        <option value="4">약간강함</option>
+					        <option value="5">강함</option>
+					    </datalist>`;
+			
+			$("div#ptannin_bar").append(html);
+		} else {
+			$("div#ptannin_bar").empty();
+		}
+    });
+	
+	
 	// 리셋 클릭 시
 	$("i#resetSmartSearch").click(function() {
 		location.href = "<%=ctxPath%>/shop/list.wine";
@@ -110,7 +172,7 @@ $(function() {
 	$("button#submitSmartSearch").click(function() {
 		goSmartSearch();
 	});
-});
+}); // end of $(function() {}) --------------------------------
 
 function goSmartSearch() {
 
@@ -130,42 +192,15 @@ function goSmartSearch() {
 		phometown_val = "";
 	}
 	
-	// 바디 상관없음 체크 시
-	$("input:checkbox#none1").on('change', function() {
-        if($(this).is(':checked')) {
-            $("input#slider[name='pbody']").removeAttr("name"); // slider의 name 속성 제거
-        } else {
-            $(this).removeAttr("name"); // '상관없음'의 name 속성 제거
-        }
-    });
-	
-	// 산도 상관없음 체크 시
-	$("input:checkbox#none2").on('change', function() {
-		if($(this).is(':checked')) {
-            $("input#slider[name='pacid']").removeAttr("name"); // slider의 name 속성 제거
-        } else {
-            $(this).removeAttr("name"); // '상관없음'의 name 속성 제거
-        }
-    });
-	
-	// 타닌 상관없음 체크 시
-	$("input:checkbox#none3").on('change', function() {
-		if($(this).is(':checked')) {
-            $("input#slider[name='ptannin']").removeAttr("name"); // slider의 name 속성 제거
-        } else {
-            $(this).removeAttr("name"); // '상관없음'의 name 속성 제거
-        }
-    });
-	
 	// 아무 것도 선택되지 않았을 때 폼이 넘어가지 않도록
-	/* if (ptype_val == null && pprice_val == null && phometown_val == null &&
-		$("input#slider[name='pbody']").val() == "" && 
-		$("input#slider[name='pacid']").val() == "" &&
-		$("input#slider[name='ptannin']").val() == "") {
+	if (ptype_val == "" && pprice_val == "" && phometown_val == "" &&
+		$("input:checkbox#none1").prop("checked") && 
+		$("input:checkbox#none2").prop("checked") &&
+		$("input:checkbox#none3").prop("checked")) {
 		
 		alert("조건 한 개 이상 필수 선택해야 합니다.");
 		return;
-	} */
+	}
 	
 	const frm = document.smartSearchFrm;
 	frm.submit();
@@ -413,20 +448,14 @@ function goSmartSearch() {
 				    <p style="font-weight:bold; font-size:14pt;">🍷바디</p>
 				    <hr>
 				    
-				    <input id="slider" type="range" min="1" max="5" step="1" list="body">
-					    <datalist id="tickmarks">
-					        <option value="1">가벼움</option>
-					        <option value="2">약간가벼움</option>
-					        <option value="3">중간</option>
-					        <option value="4">약간무거움</option>
-					        <option value="5">무거움</option>
-					    </datalist>
-						<div class="form-check pt-3">
-						  	<input class="form-check-input" type="checkbox" name="pbody" value="" id="none1">
-						  	<label class="form-check-label" style="font-size:12pt;" for="none1">
-						    	상관없음
-						  	</label>
-						</div>
+				    <div id="pbody_bar"></div>
+				    
+					<div class="form-check pt-3">
+					  	<input class="form-check-input" type="checkbox" name="pbody" value="" id="none1">
+					  	<label class="form-check-label" style="font-size:12pt;" for="none1">
+					    	상관없음
+					  	</label>
+					</div>
 		    	</div>
 			    
 			    <br>
@@ -434,20 +463,15 @@ function goSmartSearch() {
 			    <div class="mt-5">
 				    <p style="font-weight:bold; font-size:14pt;">🍷산도</p>
 				    <hr>
-				    <input id="slider" type="range" min="1" max="5" step="1" list="acid">
-					    <datalist id="tickmarks">
-					        <option value="1">낮음</option>
-					        <option value="2">약간낮음</option>
-					        <option value="3">중간</option>
-					        <option value="4">약간높음</option>
-					        <option value="5">높음</option>
-					    </datalist>
-				    	<div class="form-check pt-3">
-						  	<input class="form-check-input" type="checkbox" name="pacid" value="" id="none2">
-						  	<label class="form-check-label" style="font-size:12pt;" for="none2">
-						    	상관없음
-						  	</label>
-						</div>
+				    
+				    <div id="pacid_bar"></div>
+				    
+			    	<div class="form-check pt-3">
+					  	<input class="form-check-input" type="checkbox" name="pacid" value="" id="none2">
+					  	<label class="form-check-label" style="font-size:12pt;" for="none2">
+					    	상관없음
+					  	</label>
+					</div>
 			    </div>
 			    
 			    <br>
@@ -455,20 +479,15 @@ function goSmartSearch() {
 			    <div class="mt-5">
 				    <p style="font-weight:bold; font-size:14pt;">🍷타닌</p>
 				    <hr>
-				    <input id="slider" type="range" min="1" max="5" step="1" list="tanin">
-					    <datalist id="tickmarks">
-					        <option value="1">약함</option>
-					        <option value="2">약간약함</option>
-					        <option value="3">중간</option>
-					        <option value="4">약간강함</option>
-					        <option value="5">강함</option>
-					    </datalist>
-				    	<div class="form-check pt-3">
-						  	<input class="form-check-input" type="checkbox" name="ptannin" value="" id="none3">
-						  	<label class="form-check-label" style="font-size:12pt;" for="none3">
-						    	상관없음
-						  	</label>
-						</div>
+				    
+				    <div id="ptannin_bar"></div>
+				    
+			    	<div class="form-check pt-3">
+					  	<input class="form-check-input" type="checkbox" name="ptannin" value="" id="none3">
+					  	<label class="form-check-label" style="font-size:12pt;" for="none3">
+					    	상관없음
+					  	</label>
+					</div>
 			    </div>
 			    
 			    <div id="button" style="display: flex; align-items: center;">
