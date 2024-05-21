@@ -25,8 +25,10 @@ public class IndexController extends AbstractController {
 		try {
 			
 		List<ProductDTO> pdtoList = pdao.listReadDesc();
+		List<ProductDTO> pdtoList2 = pdao.listPopReadDesc();
 		
 		request.setAttribute("newProductList", pdtoList);
+		request.setAttribute("popProductList", pdtoList2);
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/index.jsp");

@@ -26,6 +26,8 @@
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-ui.min.js"></script>
 
 
+<script type="text/javascript" src="<%= ctxPath %>/js/admin/coupon.js"></script>
+
 <style>
 div.form-group {
 	margin-top: 5%;
@@ -35,73 +37,98 @@ input.form-control, textarea.form-control {
 	margin-top: 5%;
 }
 
-input#content {
-	height: 80px;
-}
-
-form#coupon {
+.widy{
 	width: 90%;
+	padding: 0;
+	margin: 0 auto;
 }
 
 </style>
-     
 
-<div class="col-md-9">
-	<form id="coupon">
+<div class="col-md-9 widy">
+	<form name="couponRegister">
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
-					<label for="">▶ 쿠폰 이름</label>
+					<label for="coname">쿠폰 이름</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="text" id="" placeholder="신규회원 가입 감사쿠폰" autocomplete="off" required /> 
+					<input class="form-control" type="text" id="couponname" name="coname" placeholder="신규회원 가입 감사쿠폰" autocomplete="off" /> 
 				</div>
 			</div>
 		</div>	
 		<div class="form-group">
 			<div class="row">	
 				<div class="col-md-3">
-					<label for="">▶ 쿠폰 내용</label>
+					<label for="content">쿠폰 내용</label>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" id="content" placeholder="신규회원 가입 감사쿠폰" required /></textarea>
+					<input class="form-control" type="text" id="content" name="codetail" placeholder="신규회원 가입 감사쿠폰" />
 				</div>
 			</div>	
 		</div>
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
-					<label for="">▶ 할인율/할인금액</label>
+					<label for="">할인방법</label>
 				</div>
-				<div class="col-md-9">
-					<input class="form-control" type="text" id="" placeholder="5,000원" autocomplete="off" required />
+					<div class="col-md-9 mt-3">
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="cotype" value="1" id="saleNat" checked>
+						  <label class="form-check-label" for="saleNat">
+						    할인금액
+					  	  </label>
+					</div>
+					<div class="form-check">
+						  <input class="form-check-input" type="radio" name="cotype" value="2" id="salePer">
+						  <label class="form-check-label" for="salePer">
+						    할인율
+						  </label>
+					</div>
 				</div>
 			</div>	
 		</div>
+		
+		<div class="form-group">
+			<div class="row">
+				<div class="col-md-3">
+					<label id="lab-method" for="discount">할인금액</label>
+				</div>
+				<div class="col-md-9">
+					<input class="form-control" type="text" id="discount" name="codiscount" autocomplete="off" />
+				</div>
+			</div>	
+		</div>
+		
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="">▶ 최소 주문금액</label>
+					<label for="couponmin">최소 주문금액</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="text" id="" placeholder="10,000원"/>
+					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="10000"/>
 				</div>
 			</div>	
 		</div>
+		
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="">▶ 쿠폰기한</label>
+					<label for="">쿠폰기한 (~까지)</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="date" id="" placeholder="2024-05-19"/>
+					<input class="form-control" type="date" name="codate" />
 				</div>
 			</div>	
 		</div>
+		
 		<div class="form-group custom-submit d-grid gap-2 col-6 mx-auto">
-			<input class="btn btn-danger mt-3" type="submit" value="전송">
+			<input id="btn-couponRegister" class="btn btn-danger mt-3" type="button" value="전송" />
 		</div>
 	</form>
+	
+	<div id="getPath" style="display: none;"><%=ctxPath %></div>
+	
 </div>
 			
 

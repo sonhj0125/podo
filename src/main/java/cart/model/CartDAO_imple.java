@@ -108,7 +108,7 @@ public class CartDAO_imple implements CartDAO {
 	@Override
 	public int deleteCart(CartDTO cdto) throws SQLException {
 		
-int result = 0;
+		int result = 0;
 		
 		try {
 			
@@ -190,6 +190,31 @@ int result = 0;
 		}
 		
 		return cdtoList;
+	}
+
+	@Override
+	public int deleteCartfromindex(String cindex) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " DELETE "
+					+ " FROM CART "
+					+ " where cindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cindex);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	}
 
 }

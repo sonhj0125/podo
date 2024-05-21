@@ -50,4 +50,18 @@ public boolean checkLogin(HttpServletRequest request) {
 }// end of public boolean checkLogin(HttpServletRequest request)-----------------
 	
 
+	public boolean isDir(HttpSession httpSession) {
+		
+		boolean result = false;
+		
+		MemberDTO mdto = (MemberDTO) httpSession.getAttribute("loginUser");
+		
+		if("9".equals(mdto.getMemberIdx())) {
+			result = true;
+		}
+		
+		return result;
+	
+	}
+	
 }

@@ -315,16 +315,16 @@
            
             <%-- 관리자 쿠폰 등록 클릭시 나오는 Modal --%>
             <div class="modal fade" id="adminCoupon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
                   <div class="modal-content rounded-4 shadow">
                       <div class="modal-header p-5 pb-4 border-bottom-0">
                           <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/coupon.png" style="width:35px; vertical-align: text-top;">&nbsp;쿠폰 등록</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
       
-                      <div class="modal-body p-5 pt-0">
+                      <div class="modal-body pt-0">
                       	<div>
-	                       	<iframe id="iframe_coupon" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/member/admin/adminCoupon.wine">
+	                       	<iframe id="iframe_coupon" style="border: none; width: 100%; height: 600px; margin:0 auto;" src="<%=ctxPath%>/member/admin/adminCoupon.wine">
 	                       	</iframe>
                      	</div>
                       </div>

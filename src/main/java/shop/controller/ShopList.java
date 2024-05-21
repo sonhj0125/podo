@@ -1,5 +1,7 @@
 package shop.controller;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +25,9 @@ public class ShopList extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String sortType = request.getParameter("sortType");
+		String sortType = request.getParameter("sortType");		
 		
-		String ptype = request.getParameter("ptype");
+		String[] ptype_arr = request.getParameterValues("ptype");
 		String pprice = request.getParameter("pprice");
 		String phometown = request.getParameter("phometown");
 		String pbody = request.getParameter("pbody");
@@ -49,8 +51,16 @@ public class ShopList extends AbstractController {
 		paraMap.put("currentShowPageNo", currentShowPageNo);
 		paraMap.put("sizePerPage", sizePerPage); // 한 페이지 당 보여줄 상품의 개수
 
-		// 페이징 처리를 위해 상품에 대한 총 페이지 수 알아오기 (검색 X)
-		int totalPage = pdao.getTotalPage(paraMap);
+		paraMap.put("sortType", sortType);
+		
+		paraMap.put("pprice", pprice);
+		paraMap.put("phometown", phometown);
+		paraMap.put("pbody", pbody);
+		paraMap.put("pacid", pacid);
+		paraMap.put("ptannin", ptannin);
+		
+		// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
+		int totalPage = pdao.getTotalPage(ptype_arr, paraMap);
 
 		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 totalPage 값보다 더 큰 값을 입력하여 장난친 경우
         // === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 0 또는 음수를 입력하여 장난친 경우
@@ -67,8 +77,16 @@ public class ShopList extends AbstractController {
 			paraMap.put("currentShowPageNo", currentShowPageNo);
 		}
 
+		// ptype_arr 파라미터를 URL에 포함시키기 위해 변환
+		String ptypeParam = "";
+		if (ptype_arr != null) {
+		    for (String ptype : ptype_arr) {
+		        ptypeParam += "&ptype=" + URLEncoder.encode(ptype, "UTF-8");
+		    }
+		}
+		
 		// *** ==== 페이지바 만들기 시작 ==== *** //
-		String pageBar = "";
+		StringBuilder pageBar = new StringBuilder();
 
 		int blockSize = 10;
 		// blockSize 는 블럭(토막)당 보여지는 페이지 번호의 개수이다.
@@ -81,63 +99,55 @@ public class ShopList extends AbstractController {
 		// pageNo 는 페이지바에서 보여지는 첫 번째 번호이다.
 
 
-		// *** [맨처음][이전] 만들기 *** //
-		pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo=1'>◀◀</a></li>";
+		String baseUrl = "list.wine?sizePerPage=" + sizePerPage + "&sortType=" + sortType + ptypeParam;
+		if (pprice != null) baseUrl += "&pprice=" + pprice;
+		if (phometown != null) baseUrl += "&phometown=" + phometown;
+		if (pbody != null) baseUrl += "&pbody=" + pbody;
+		if (pacid != null) baseUrl += "&pacid=" + pacid;
+		if (ptannin != null) baseUrl += "&ptannin=" + ptannin;
 
-		if(pageNo != 1) {
-			pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo="+(pageNo-1)+"'>◀</a></li>";
+		// *** [맨처음][이전] 만들기 *** //
+		pageBar.append("<li class='page-item'><a class='page-link' href='").append(baseUrl).append("&currentShowPageNo=1'>◀◀</a></li>");
+
+		if (pageNo != 1) {
+		    pageBar.append("<li class='page-item'><a class='page-link' href='").append(baseUrl).append("&currentShowPageNo=").append(pageNo - 1).append("'>◀</a></li>");
 		}
 
-
-		while( !(loop > blockSize || pageNo > totalPage) ) {
-
-			if( pageNo == Integer.parseInt(currentShowPageNo) ) {
-				pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>";
-
-			}
-			else {
-				pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sortType="+sortType+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
-			}
-
-			loop++;		// 1 2 3 4 5 6 7 8 9 10
-
-			pageNo++;	//  1  2  3  4  5  6  7  8  9 10
-						// 11 12 13 14 15 16 17 18 19 20
-						// 21 22 23 24 25 26 27 28 29 30
-						// 31 32 33 34 35 36 37 38 39 40
-						// 41 42  마지막 페이지는 42페이지
-
-		} // end of while -----------------------------------
-
+		while (!(loop > blockSize || pageNo > totalPage)) {
+		    if (pageNo == Integer.parseInt(currentShowPageNo)) {
+		        pageBar.append("<li class='page-item active'><a class='page-link' href='#'>").append(pageNo).append("</a></li>");
+		    } else {
+		        pageBar.append("<li class='page-item'><a class='page-link' href='").append(baseUrl).append("&currentShowPageNo=").append(pageNo).append("'>").append(pageNo).append("</a></li>");
+		    }
+		    loop++;
+		    pageNo++;
+		}
 
 		// *** [다음][마지막] 만들기 *** //
-
-		if( pageNo <= totalPage ) {
-			// 맨 마지막이 아닌 경우에만 다음을 넣어준다.
-			pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo="+pageNo+"'>▶</a></li>";
+		if (pageNo <= totalPage) {
+		    pageBar.append("<li class='page-item'><a class='page-link' href='").append(baseUrl).append("&currentShowPageNo=").append(pageNo).append("'>▶</a></li>");
 		}
 
-		pageBar += "<li class='page-item'><a class='page-link' href='list.wine?sizePerPage="+sizePerPage+"&sortType="+sortType+"&currentShowPageNo="+totalPage+"'>▶▶</a></li>";
+		pageBar.append("<li class='page-item'><a class='page-link' href='").append(baseUrl).append("&currentShowPageNo=").append(totalPage).append("'>▶▶</a></li>");
 
 		// *** ==== 페이지바 만들기 끝 ==== *** //
 
-		paraMap.put("sortType", sortType);
 		
-		paraMap.put("ptype", ptype);
-		paraMap.put("pprice", pprice);
-		paraMap.put("phometown", phometown);
-		paraMap.put("pbody", pbody);
-		paraMap.put("pacid", pacid);
-		paraMap.put("ptannin", ptannin);
+		// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
+		List<ProductDTO> pdtList = new ArrayList<>();
 		
-		// **** 페이징 처리를 한 모든 상품 목록 보여주기 ****
-		List<ProductDTO> pdtList = pdao.selectProductPaging(paraMap);
+		if("popular".equals(sortType)) { // 인기순 정렬일 때
+			pdtList = pdao.selectProductPagingPopular(ptype_arr, paraMap);
+			
+		} else {
+			pdtList = pdao.selectProductPaging(ptype_arr, paraMap);
+		}
 
 		request.setAttribute("pdtList", pdtList); // 상품 목록
 
 		request.setAttribute("sortType", sortType); // 정렬 타입
 		
-		request.setAttribute("ptype", ptype);
+		request.setAttribute("ptype_arr", ptype_arr); // 와인 종류 배열
 		request.setAttribute("pprice", pprice);
 		request.setAttribute("phometown", phometown);
 		request.setAttribute("pbody", pbody);
