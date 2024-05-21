@@ -136,7 +136,7 @@ public class ShopList extends AbstractController {
 		// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
 		List<ProductDTO> pdtList = new ArrayList<>();
 		
-		if("popular".equals(sortType)) {
+		if("popular".equals(sortType)) { // 인기순 정렬일 때
 			pdtList = pdao.selectProductPagingPopular(ptype_arr, paraMap);
 			
 		} else {

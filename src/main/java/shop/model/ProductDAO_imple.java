@@ -381,23 +381,23 @@ public class ProductDAO_imple implements ProductDAO {
 				
 				switch (pprice) {
 				case "1":
-					sql += " (to_number(pprice) < 10000) and ";
+					sql += " (to_number(pprice) < 10000) ";
 					break;
 					
 				case "2":
-					sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) and ";
+					sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) ";
 					break;
 					
 				case "3":
-					sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) and ";
+					sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) ";
 					break;
 					
 				case "4":
-					sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) and ";
+					sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) ";
 					break;
 					
 				case "5":
-					sql += " (to_number(pprice) >= 300000) and ";
+					sql += " (to_number(pprice) >= 300000) ";
 					break;
 					
 				default:

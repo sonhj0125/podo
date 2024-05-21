@@ -176,9 +176,9 @@ $(function() {
 
 function goSmartSearch() {
 
-	let ptype_val = $("input:checkbox[name='ptype']").val();
-	let pprice_val = $("input:checkbox[name='pprice']").val();
-	let phometown_val = $("input:checkbox[name='phometown']").val();
+	let ptype_val = $("input:checkbox[name='ptype']:checked").val();
+	let pprice_val = $("input:checkbox[name='pprice']:checked").val();
+	let phometown_val = $("input:checkbox[name='phometown']:checked").val();
 	
 	if($("input:checkbox[name='ptype']").length == 0) {
 		ptype_val = "";
@@ -193,14 +193,14 @@ function goSmartSearch() {
 	}
 	
 	// 아무 것도 선택되지 않았을 때 폼이 넘어가지 않도록
-	if (ptype_val == "" && pprice_val == "" && phometown_val == "" &&
+/* 	if (ptype_val == "" && pprice_val == "" && phometown_val == "" &&
 		$("input:checkbox#none1").prop("checked") && 
 		$("input:checkbox#none2").prop("checked") &&
 		$("input:checkbox#none3").prop("checked")) {
 		
 		alert("조건 한 개 이상 필수 선택해야 합니다.");
 		return;
-	}
+	} */
 	
 	const frm = document.smartSearchFrm;
 	frm.submit();
