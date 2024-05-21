@@ -117,7 +117,7 @@ input.form-control, textarea.form-control {
 					<label for="">쿠폰기한 (~까지)</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="date" name="codate" />
+					<input class="form-control" type="date" name="codate" id="codate" />
 				</div>
 			</div>	
 		</div>

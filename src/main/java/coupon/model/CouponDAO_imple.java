@@ -46,6 +46,7 @@ public class CouponDAO_imple implements CouponDAO {
 	}// end of private void close()
 
 
+	// 할인 쿠폰 등록(admin 만 등록 가능)
 	@Override
 	public int register(CouponDTO codto) throws SQLException {
 		
@@ -56,7 +57,7 @@ public class CouponDAO_imple implements CouponDAO {
 			conn = ds.getConnection();
 			
 			String sql = "INSERT INTO COUPON (CODISCOUNT, CONAME, CODETAIL, COTYPE, COMIN, CODATE) "
-					+ "VALUES (?, ?, ?, ?, ?, ?)";
+					   + "VALUES (?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -74,7 +75,32 @@ public class CouponDAO_imple implements CouponDAO {
 		}
 		
 		return result;
-	}
+	} // end of public int register(CouponDTO codto) throws SQLException -------
+
+
+	// 쿠폰을 삽입하기 전에 쿠폰이 이미 존재하는지 중복 검사(coname이름PK)
+	@Override
+	public boolean isCouponExist(CouponDTO codto) throws SQLException {
+		boolean isCouponExist = false;
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select CONAME " 
+					   + " from COUPON " 
+					   + " where CONAME = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, codto.getConame());
+
+			rs = pstmt.executeQuery();
+
+			isCouponExist = rs.next(); // 행이 있으면(중복된 userid) true,
+									   // 행이 없으면(사용가능한 userid) false
+		} finally {
+			close();
+		}
+		return isCouponExist;
+	} // end of public boolean isCouponExist(CouponDTO codto) throws SQLException ----
 	
 	
 }
