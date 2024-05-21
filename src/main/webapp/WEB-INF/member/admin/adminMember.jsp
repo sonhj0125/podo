@@ -13,15 +13,76 @@
 
 <script type="text/javascript">
    
-   window.onload = ()=> {
+   	window.onload = ()=> {
       
-      <%-- 회원클릭시 상세보기 페이지 --%>
-      $("tr#memberDetail").bind('click',()=>{
-         location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
-      });
-      
+	      
+		// 검색 시 검색타입, 검색 단어 그대로 유지하도록 하기
+	  	if("${requestScope.searchType}" != "" &&
+	  	   "${requestScope.searchWord}" != "") { 
+	  		
+	  		$("select[name='searchType']").val("${requestScope.searchType}");
+	  		$("input:text[name='searchWord']").val("${requestScope.searchWord}");
+	  		
+	  	}
+	  	
+	  	// 검색 시 페이지 당 회원수 선택한 것 유지하기
+	  	if("${requestScope.sizePerPage}" != "") { 
+	  		$("select[name='sizePerPage']").val("${requestScope.sizePerPage}");
+	  		
+	  	}
+	     
+	     
+	  	// searchWord 엔터 시 검색 실행
+	  	$("input:text[name='searchWord']").bind("keydown", function(e) {
+	  		
+	  		if(e.keyCode == 13) {
+	  			goSearch();
+	  		}
+	  		
+	  	}); // end of $("input:text[name='searchWord']").bind("keydown", function(e) {})
+	      
+	  	
+	 	
+		$("select[name='sizePerPage']").bind("change", function() {
+			
+			const frm = document.member_search_frm;
+			frm.submit();
+			
+		}); // end of $("select[name='sizePerPage']").bind("change", function() {}) ------------------
+		
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+
+		<%-- 회원클릭시 상세보기 페이지 --%>
+		$("tr#memberDetail").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
+		});
+		
       
    }; // end of window.onload
+   
+	
+   	// function declaration
+	function goSearch() {
+		
+		const searchType = $("select[name='searchType']").val();
+		
+		if(searchType == "") {
+			alert("검색대상을 선택하세요!");
+			return; // goSearch() 함수 종료
+		}
+		
+		const frm = document.member_search_frm;
+		frm.submit();
+		
+	} // end of function goSearch() ---------------------------
    
 </script>
 
@@ -95,9 +156,9 @@
 		
 		<input type="text" style="display: none;" />
 
-		<button type="button" class="btn btn-danger">검색</button>
+		<button type="button" class="btn btn-danger" onclick="goSearch()">검색</button>
 
-		<span style="font-size: 12pt; font-weight: bold; margin-left: 22.5%;">페이지당 회원명수&nbsp;-&nbsp;</span>
+		<span style="font-size: 12pt; font-weight: bold; margin-left: 22%;">페이지당 회원명수&nbsp;-&nbsp;</span>
 		<select name="sizePerPage">
 			<option value="10">10명</option>
 			<option value="5">5명</option>
@@ -119,44 +180,25 @@
 		</thead>
 
 		<tbody>
-			<tr id="memberDetail">
-				<td>1</td>
-				<td>test003</td>
-				<td>테스트용</td>
-				<td>test003@naver.com</td>
-				<td>010-5957-8484</td>
-				<td>남</td>
-				<td>정상</td>
-			</tr>
-			<tr id="memberDetail">
-				<td>2</td>
-				<td>test001</td>
-				<td>테스트</td>
-				<td>test001@naver.com</td>
-				<td>010-6547-2315</td>
-				<td>여</td>
-				<td>정상</td>
-			</tr>
-		<%--
-			<c:if test="${not empty requestScope.member}">
-				<c:forEach var="membervo" items="${requestScope.memberList}" varStatus="status">
+			
+			<c:if test="${not empty requestScope.memberList}">
+				<c:forEach var="mdto" items="${requestScope.memberList}" varStatus="status">
 					<tr class="memberInfo">
 					
 						<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 						<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-						<td>${requestScope.totalMemberCount - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
-						
-						<td class="userid">${.userid}</td>
-						<td>${.name}</td>
-						<td>${.email}</td>
-						<td>${.phone}</td>
+						<td>${requestScope.totalMemberCount - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td> 
+						<td class="userid">${mdto.userid}</td>
+						<td>${mdto.name}</td>
+						<td>${mdto.email}</td>
+						<td>${mdto.phone}</td>
 						<td>
 							<c:choose>
-								<c:when test="${.gender == '1'}">남</c:when>
+								<c:when test="${mdto.gender == '1'}">남</c:when>
 								<c:otherwise>여</c:otherwise>
 							</c:choose>
 						</td>
-						<td>${.memberidx}</td>
+						<td>${mdto.status}</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -166,14 +208,14 @@
 					<td colspan="7" style="text-align: center;">데이터가 존재하지 않습니다.</td>
 				</tr>
 			</c:if>
-		--%>
+		
 		</tbody>
 	</table>
 	
 	
 	<%-- 페이지 이동 --%>
 	<nav aria-label="Page navigation example">
-	  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
+	  <ul class="pagination justify-content-center" style="margin-top:7%;">${requestScope.pageBar}</ul>
 	</nav>
 	
 </div>

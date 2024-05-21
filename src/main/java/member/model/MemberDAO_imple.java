@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -344,17 +346,237 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	// 관리자 회원관리 - 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기
+	@Override
+	public List<MemberDTO> select_Member_paging(Map<String, String> paraMap) throws SQLException {
+		
+		List<MemberDTO> memberList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT rno, userid, name, email, phone, gender, status "
+					   + " FROM "
+					   + " ( "
+					   + "    select rownum AS RNO, userid, name, email, phone, gender, status "
+					   + "    from "
+					   + "    ( "
+					   + "        select userid, name, email, phone, gender, status "
+					   + "        from member join memberidx on member.memberidx = memberidx.memberidx "
+					   + "        where memberidx.memberidx != 9";
+			
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if("email".equals(colname)) {
+				// 검색 대상이 email인 경우
+				searchWord = aes.encrypt(searchWord);
+			}
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
+			
+			
+			sql += " order by registerday desc "
+				 + "    ) "
+				 + " ) T "
+				 + " WHERE T.rno BETWEEN ? AND ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(1, searchWord);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+				
+			} else {
+				// 검색이 없는 경우
+				
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MemberDTO mdto = new MemberDTO();
+				
+				mdto.setUserid(rs.getString("userid"));
+				mdto.setName(rs.getString("name"));
+				mdto.setEmail(aes.decrypt(rs.getString("email")));
+				mdto.setPhone(aes.decrypt(rs.getString("phone")));
+				mdto.setGender(rs.getString("gender"));
+				mdto.setStatus(rs.getString("status"));
+				
+				memberList.add(mdto);
+				
+			} // end of while(rs.next())
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return memberList;
+		
+	} // end of public List<MemberDTO> select_Member_paging(Map<String, String> paraMap)
 
+	
+	
+	
+
+	/* >>> 뷰단(memberList.jsp)에서 "페이징 처리 시 보여주는 순번 공식" 에서 사용하기 위해 
+	   검색이 있는 또는 검색이 없는 회원의 총 개수 알아오기 <<< */
+	@Override
+	public int getTotalMemberCount(Map<String, String> paraMap) throws SQLException {
+		int totalMemberCount = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) "
+					   + " from member join memberidx on member.memberidx = memberidx.memberidx "
+					   + " where memberidx.memberidx != 9 ";
+
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if("email".equals(colname)) {
+				// 검색 대상이 email인 경우
+				searchWord = aes.encrypt(searchWord);
+			}
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(1, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalMemberCount = rs.getInt(1);
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return totalMemberCount;
+		
+	} // end of public int getTotalMemberCount(Map<String, String> paraMap)
+
+
+
+	
+	// 관리자 회원관리 - 페이징 처리를 위한 검색이 있는 또는 검색이 없는 회원에 대한 총 페이지 수 알아오기
+		@Override
+		public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+			
+			int totalPage = 0;
+			
+			try {
+				
+				conn = ds.getConnection();
+				
+				String sql = " select ceil(count(*)/?) "
+						   + " from member "
+						   + " join memberidx "
+						   + " on member.memberidx = memberidx.memberidx "
+						   + " where memberidx.memberidx != 9 ";
+
+				String colname = paraMap.get("searchType");
+				String searchWord = paraMap.get("searchWord");
+				
+				if("email".equals(colname)) {
+					// 검색 대상이 email인 경우
+					searchWord = aes.encrypt(searchWord);
+				}
+				
+				if((colname != null && !colname.trim().isEmpty()) && 
+				   (searchWord != null && !searchWord.trim().isEmpty())) {
+					
+					sql += " and " + colname + " like '%'|| ? ||'%' ";
+				}
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
+				
+				if((colname != null && !colname.trim().isEmpty()) && 
+				   (searchWord != null && !searchWord.trim().isEmpty())) {
+					// 검색이 있는 경우
+					
+					pstmt.setString(2, searchWord);
+				}
+				
+				rs = pstmt.executeQuery();
+				rs.next();
+				
+				totalPage = rs.getInt(1);
+				
+			} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+				
+			} finally {
+				close();
+			}
+			
+			return totalPage;
+			
+		} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException
+			
+	
+
+	
+	
+	
+	
+	
 	
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
-		
 		return null;
-	}
+		
+	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
 
-	
+
 	
 	
 }

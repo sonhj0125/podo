@@ -178,15 +178,27 @@
 			goSearch();
 		});
 		
+		
+		<%-- 마이페이지 쇼핑정보 쿠폰 클릭시 --%>
+		$("div#memberCoupon").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
+		});
+		
+		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
+		$("div#memberPoint").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
+		});
+		
+		
 		<%-- 관리자 회원관리 클릭시 --%>
-      $("div#adminMember").bind('click',()=>{
-         location.href="<%=ctxPath%>/member/admin/adminMember.wine";
-      });
+        $("div#adminMember").bind('click',()=>{
+         	location.href="<%=ctxPath%>/member/admin/adminMember.wine";
+        });
       
-      <%-- 관리자 제품등록 클릭시 --%>
-      $("div#adminProduct").bind('click',()=>{
-         location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
-      });
+		<%-- 관리자 제품등록 클릭시 --%>
+		$("div#adminProduct").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
+		});
 		
 	} // end of window.onload
 	
