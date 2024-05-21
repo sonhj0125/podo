@@ -19,3 +19,13 @@ $(function() {
     })
 	
 })
+
+// 쿠폰 유효성 검사
+function couponRegister(ctxPath){
+
+    const frm = document.couponRegister;
+    frm.method = "post";
+    frm.action = ctxPath+"/coupon/couponregister.wine";
+    frm.submit();
+
+}

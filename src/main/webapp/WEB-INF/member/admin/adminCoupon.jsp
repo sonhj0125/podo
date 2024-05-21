@@ -46,7 +46,7 @@ input.form-control, textarea.form-control {
      
 
 <div class="col-md-9 widy">
-	<form id="coupon">
+	<form id="couponRegister">
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
@@ -123,7 +123,7 @@ input.form-control, textarea.form-control {
 		</div>
 		
 		<div class="form-group custom-submit d-grid gap-2 col-6 mx-auto">
-			<input id="btn-couponRegister" class="btn btn-danger mt-3" type="button" value="전송">
+			<input id="btn-couponRegister" class="btn btn-danger mt-3" type="button" value="전송" onclick="couponRegister('<%=ctxPath%>')">
 		</div>
 	</form>
 </div>
