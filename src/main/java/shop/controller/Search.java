@@ -34,6 +34,7 @@ public class Search extends AbstractController {
 		
 		request.setAttribute("searchWord", searchWord);
 		request.setAttribute("wineList", wineList);
+		request.setAttribute("count", wineList.size());
 
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/shop/wineSearchList.jsp");
