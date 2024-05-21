@@ -61,7 +61,7 @@ public class ProductDAO_imple implements ProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "SELECT * "
+			String sql = " SELECT * "
 					   + " FROM PRODUCT "
 					   + " ORDER BY PINDEX DESC ";
 			

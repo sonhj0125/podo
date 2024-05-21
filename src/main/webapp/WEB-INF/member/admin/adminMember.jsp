@@ -13,30 +13,64 @@
 
 <script type="text/javascript">
    
-   window.onload = ()=> {
+   	window.onload = ()=> {
       
-      <%-- 회원클릭시 상세보기 페이지 --%>
-      $("tr#memberDetail").bind('click',()=>{
-         location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
-      });
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+	      
+		// 검색 시 검색타입, 검색 단어 그대로 유지하도록 하기
+	  	if("${requestScope.searchType}" != "" &&
+	  	   "${requestScope.searchWord}" != "") { 
+	  		
+	  		$("select[name='searchType']").val("${requestScope.searchType}");
+	  		$("input:text[name='searchWord']").val("${requestScope.searchWord}");
+	  		
+	  	}
+	  	
+	  	// 검색 시 페이지 당 회원수 선택한 것 유지하기
+	  	if("${requestScope.sizePerPage}" != "") { 
+	  		$("select[name='sizePerPage']").val("${requestScope.sizePerPage}");
+	  		
+	  	}
+	     
+	     
+	  	// searchWord 엔터 시 검색 실행
+	  	$("input:text[name='searchWord']").bind("keydown", function(e) {
+	  		
+	  		if(e.keyCode == 13) {
+	  			goSearch();
+	  		}
+	  		
+	  	}); // end of $("input:text[name='searchWord']").bind("keydown", function(e) {})
+	      
+	  	
+	 	
+		$("select[name='sizePerPage']").bind("change", function() {
+			
+			const frm = document.member_search_frm;
+			frm.submit();
+			
+		}); // end of $("select[name='sizePerPage']").bind("change", function() {}) ------------------
+		
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+
+		<%-- 회원클릭시 상세보기 페이지 --%>
+		$("tr#memberDetail").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
+		});
+		
       
    }; // end of window.onload
    
-   
-   function goSearch() {
+	
+   	// function declaration
+	function goSearch() {
 		
 		const searchType = $("select[name='searchType']").val();
 		
@@ -147,25 +181,24 @@
 
 		<tbody>
 			
-			<c:if test="${not empty requestScope.member}">
-				<c:forEach var="memberDTO" items="${requestScope.memberList}" varStatus="status">
+			<c:if test="${not empty requestScope.memberList}">
+				<c:forEach var="mdto" items="${requestScope.memberList}" varStatus="status">
 					<tr class="memberInfo">
 					
 						<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 						<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-						<td>${requestScope.totalMemberCount - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
-						
-						<td class="userid">${memberDTO.userid}</td>
-						<td>${memberDTO.name}</td>
-						<td>${memberDTO.email}</td>
-						<td>${memberDTO.phone}</td>
+						<td>${requestScope.totalMemberCount - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td> 
+						<td class="userid">${mdto.userid}</td>
+						<td>${mdto.name}</td>
+						<td>${mdto.email}</td>
+						<td>${mdto.phone}</td>
 						<td>
 							<c:choose>
-								<c:when test="${memberDTO.gender == '1'}">남</c:when>
+								<c:when test="${mdto.gender == '1'}">남</c:when>
 								<c:otherwise>여</c:otherwise>
 							</c:choose>
 						</td>
-						<td>${memberDTO.memberidx}</td>
+						<td>${mdto.status}</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -182,7 +215,7 @@
 	
 	<%-- 페이지 이동 --%>
 	<nav aria-label="Page navigation example">
-	  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
+	  <ul class="pagination justify-content-center" style="margin-top:7%;">${requestScope.pageBar}</ul>
 	</nav>
 	
 </div>

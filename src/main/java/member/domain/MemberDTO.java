@@ -3,7 +3,15 @@ package member.domain;
 public class MemberDTO {
 
 	private String userid, pwd, name, email, phone, address, 
-	addressDetail, gender, birthday, point, registerDay, pwdUpdateDay, memberIdx;
+	addressDetail, gender, birthday, point, registerDay, pwdUpdateDay, memberIdx ,status;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getUserid() {
 		return userid;

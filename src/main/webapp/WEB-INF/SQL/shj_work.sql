@@ -9,16 +9,76 @@ from dual;
 select *
 from member;
 
-select userid, name, email, phone, gender, memberIdx 
+select *
+from memberidx;
+
+
+
+select userid, name, email, phone, gender, status
 from member 
-where name like '%'|| ? ||'%' 
-order by registerDay desc;
+join memberidx 
+on member.memberidx = memberidx.memberidx
+where memberidx.memberidx != 9 and name like '%'|| '테' ||'%' 
+order by registerday desc ;
 
 
-select userid, name, email, phone, gender, memberIdx 
-from member
-where userid != 'ejss0125' and name like '%'||'테'||'%'
-order by registerDay desc;
+select ceil(count(*)/10)
+from member 
+join memberidx 
+on member.memberidx = memberidx.memberidx
+where memberidx.memberidx != 9;
+
+
+
+select userid, name, email, phone, gender, status
+from member 
+join memberidx 
+on member.memberidx = memberidx.memberidx
+where memberidx.memberidx != 9 and name like '%'|| '테' ||'%' 
+order by registerday desc ;
+
+
+SELECT rno, userid, name, email, gender 
+FROM 
+( 
+    select rownum AS RNO, userid, name, email, gender
+    from 
+    (
+        select userid, name, email, gender
+        from member
+        where userid != 'admin' and name like '%'|| '테' ||'%'
+        order by registerday desc
+    ) V 
+) T
+WHERE T.rno BETWEEN 1 AND 10;
+
+
+
+SELECT rno, userid, name, email, phone, gender, status
+FROM 
+( 
+    select rownum AS RNO, userid, name, email, phone, gender, status
+    from 
+    (
+        select userid, name, email, phone, gender, status
+        from member join memberidx on member.memberidx = memberidx.memberidx
+        where memberidx.memberidx != 9 and name like '%'|| '테' ||'%'
+        order by registerday desc
+    ) 
+) T
+WHERE T.rno BETWEEN 1 AND 20;
+
+
+select count(*)
+from tbl_member
+where userid != 'admin'
+and name like '%'|| '아' ||'%'
+
+select count(*)
+from member join memberidx on member.memberidx = memberidx.memberidx
+where memberidx.memberidx != 9 and name like '%' || '테' || '%';
+
+
 
 
 
