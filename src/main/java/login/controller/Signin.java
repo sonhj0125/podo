@@ -121,7 +121,7 @@ public class Signin extends AbstractController {
 						msg = "로그인 오류발생 관리자에게 문의해주세요.";
 					}
 				}else { // id 없음
-					msg = "없는아이디거나 틀린 비밀번호입니다.";
+					msg = "없는 아이디거나 틀린 비밀번호입니다.";
 				}
 				
 			}
