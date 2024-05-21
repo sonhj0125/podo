@@ -26,11 +26,11 @@ div.container {
 	</div>
 	<hr>
 	<div style="display: flex;">
-		<div style="width: 30%;">
+		<div style="width: 50%;">
 			<p style="font-size: 16pt;">검색 결과 : <span style="font-weight: bold; color: #990000;">${requestScope.searchWord}</span></p>
 		</div>
 		<c:if test="${not empty requestScope.wineList}">
-			<div style="width: 30%; float: right;">
+			<div style="width: 50%; text-align: right;">
 				<p style="font-size: 16pt;"><span style="font-weight: bold;">${requestScope.count}</span>개의 상품 검색</p>
 			</div>
 		</c:if>
