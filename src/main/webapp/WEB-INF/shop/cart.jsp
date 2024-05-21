@@ -136,7 +136,7 @@
 		           </div>
 		         </div>
 		         
-		         <div class="cart-index" style="font-size: 0;">
+		         <div class="cart-index" style="font-size: 40;">
 		         	${cdtolist.cindex}
 		         </div>
 		         
@@ -150,6 +150,10 @@
 				         
          <form name="orderSet">
          	<input type="text" id="setCindex" name="Arr_cindex">
+         </form>
+		
+         <form name="orderSetOne">
+             <input type="text" id="setCindexOne" name="Arr_cindexOne">
          </form>
 		
 		</div>
