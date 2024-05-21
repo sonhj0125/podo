@@ -214,6 +214,54 @@ public class ProductDAO_imple implements ProductDAO {
 
 	
 	
+	// Search창 와인 영문 검색
+	@Override
+	public List<ProductDTO> searchWineEngName(String searchWord) throws SQLException {
+
+		List<ProductDTO> wineList = new ArrayList<>();
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select pname, pengname, ptype, phometown, pprice, pdetail, pimg, pindex "
+					   + " from product "
+					   + " where pengname like '%'|| UPPER(?) || '%' ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, searchWord);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				ProductDTO pdto = new ProductDTO();
+
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				
+				pdto.setPprice(price);
+				pdto.setPdetail(rs.getString("pdetail"));
+				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPindex(rs.getInt("pindex"));
+
+				wineList.add(pdto);
+
+			}
+
+		} finally {
+			close();
+		}
+
+		return wineList;
+
+	} // end of public List<ProductDTO> searchWineEngName(String searchWord) throws SQLException ----------------
+	
+	
 	// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
 	@Override
 	public int getTotalPage(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
@@ -854,8 +902,6 @@ public class ProductDAO_imple implements ProductDAO {
 		
 		return pdto_list;
 	}
-
-	
 	
 
 }

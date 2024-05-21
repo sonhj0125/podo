@@ -1,8 +1,13 @@
 
 -- Search창 와인 검색
-select *
+select pname, pengname, ptype, phometown, pprice, pdetail, pimg, pindex
 from product
 where pname like '%' || '빈야드' || '%';
+
+
+select pname, pengname, ptype, phometown, pprice, pdetail, pimg, pindex
+from product
+where pengname like '%' || UPPER('rose') || '%';
 
 
 -- 페이징 처리한 상품 목록 보여주기 (정렬, 검색 포함)
@@ -127,6 +132,11 @@ FROM
 WHERE V2.rno between 1 and 8;
 
 
+
+
+select *
+from log
+order by logindex desc;
 
 
 
