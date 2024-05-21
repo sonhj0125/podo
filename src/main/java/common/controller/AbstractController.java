@@ -35,18 +35,19 @@ public abstract class AbstractController implements InterCommand {
 public boolean checkLogin(HttpServletRequest request) {
 
 	HttpSession session =  request.getSession();
-	MemberDTO loginuser =  (MemberDTO) session.getAttribute("loginuser");
+	MemberDTO loginuser =  (MemberDTO) session.getAttribute("loginUser");
 	
 	if(loginuser != null) {
-	// 로그인 한 경우
-	return true;
+		// 로그인 한 경우
+		return true;
 	}
 	else {
-	// 로그인 안한 경우
-	return false;
+		// 로그인 안한 경우
+		return false;
 	}
 
 
 }// end of public boolean checkLogin(HttpServletRequest request)-----------------
 	
+
 }

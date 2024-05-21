@@ -96,6 +96,7 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	}// end of public int doRegister(MemberDTO mdto)
 
+	
 	@Override
 	public MemberDTO signin(Map<String, String> paraMap) throws SQLException {
 		
@@ -120,8 +121,8 @@ public class MemberDAO_imple implements MemberDAO {
 				
 				mdto.setUserid(rs.getString(1));
 				mdto.setName(rs.getString(2));
-				mdto.setEmail(aes.encrypt(rs.getString(3)));
-				mdto.setPhone(aes.encrypt(rs.getString(4)));
+				mdto.setEmail(aes.decrypt(rs.getString(3)));
+				mdto.setPhone(aes.decrypt(rs.getString(4)));
 				mdto.setAddress(rs.getString(5));
 				mdto.setAddressDetail(rs.getString(6));
 				mdto.setGender(rs.getString(7));

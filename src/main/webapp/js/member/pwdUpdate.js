@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
 	$("span.error").hide();
-	$("input#name").focus();
+	$("input#pwd").focus();
 	
  //	$("input#name").bind("blur", function(e){ alert("name에 있던 포커스를 잃어버렸습니다."); });
  //	$("input#name").blur(function(e){ alert("name에 있던 포커스를 잃어버렸습니다."); });

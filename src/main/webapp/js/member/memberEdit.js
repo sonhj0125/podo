@@ -5,13 +5,13 @@ let b_emailcheck_click = false;
 let b_email_change = false;
 // 이메일값을 변경했는지 여부를 알아오기 위한 용도
 
+const toastLive = document.getElementById('liveToast');
+const toastmsg = document.getElementById('toast-msg');
+
 $(document).ready(function() {
-	
-	$("span.error").hide();
-	$("input#name").focus();
-	
- //	$("input#name").bind("blur", function(e){ alert("name에 있던 포커스를 잃어버렸습니다."); });
- //	$("input#name").blur(function(e){ alert("name에 있던 포커스를 잃어버렸습니다."); });
+
+	const toastLive = document.getElementById('liveToast');
+	const toastmsg = document.getElementById('toast-msg');		
 	
 	$("input#name").blur( (e) => {
 		
@@ -26,19 +26,14 @@ $(document).ready(function() {
 			$("table#tblMemberEdit :input").prop("disabled", true);  
 			$(e.target).prop("disabled", false); 
 			
-		//	$(e.target).next().show();
-		//  또는
-		    $(e.target).parent().find("span.error").show();
-		     	
-			$(e.target).val("").focus(); 
+			toastmsg.innerText="이름은 필수입력 사항입니다.";
+			const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+			toastBootstrap.show();
 		}
 		else {
-			// 공백이 아닌 글자를 입력했을 경우
-			$("table#tblMemberEdit :input").prop("disabled", false);
-			
-			//	$(e.target).next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+
+		$("div#card-body :input").prop("disabled", false);
+
 		}
 		
 	});// 아이디가 name 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -59,25 +54,20 @@ $(document).ready(function() {
 			$("table#tblMemberEdit :input").prop("disabled", true);  
 			$(e.target).prop("disabled", false); 
 			
-		//	$(e.target).next().show();
-		//  또는
-		    $(e.target).parent().find("span.error").show();
-		     	
+			toastmsg.innerText="암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.";
+		    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+			toastBootstrap.show();
+			
 			$(e.target).val("").focus(); 
 		}
 		else {
-			// 암호가 정규표현식에 맞는 경우 
-			$("table#tblMemberEdit :input").prop("disabled", false);
-			
-			//	$(e.target).next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+			$("div#card-body :input").prop("disabled", false);		
 		}
 		
 	});// 아이디가 pwd 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
-	$("input#pwdcheck").blur( (e) => {
+	$("input#pwdCheck").blur( (e) => {
 		
 		if( $("input#pwd").val() != $(e.target).val() ) {
 			// 암호와 암호확인값이 틀린 경우 
@@ -86,22 +76,17 @@ $(document).ready(function() {
 			$("input#pwd").prop("disabled", false);
 			$(e.target).prop("disabled", false); 
 			
-		//	$(e.target).next().show();
-		//  또는
-		    $(e.target).parent().find("span.error").show();
+			toastmsg.innerText="암호가 일치하지 않습니다.";
+			const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+			toastBootstrap.show();
 		    
-			$("input#pwd").focus();
+			$("input#pwd").val("").focus();
 		}
 		else {
-			// 암호와 암호확인값이 같은 경우
-			$("table#tblMemberEdit :input").prop("disabled", false);
-			
-			//	$(e.target).next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+			$("div#card-body :input").prop("disabled", false);
 		}
 		
-	});// 아이디가 pwdcheck 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.	
+	});// 아이디가 pwdCheck 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.	
 	
 	
 	$("input#email").blur( (e) => {
@@ -119,32 +104,26 @@ $(document).ready(function() {
 			$("table#tblMemberEdit :input").prop("disabled", true);  
 			$(e.target).prop("disabled", false); 
 			
-		//	$(e.target).next().show();
-		//  또는
-		    $(e.target).parent().find("span.error").show();
+			toastmsg.innerText="이메일 형식에 맞지 않습니다.";
+			const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+			toastBootstrap.show();
 		     	
 			$(e.target).val("").focus(); 
 		}
 		else {
-			// 이메일이 정규표현식에 맞는 경우 
-			$("table#tblMemberEdit :input").prop("disabled", false);
-			
-			//	$(e.target).next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+			$("div#card-body :input").prop("disabled", false);
 		}
 		
 	});// 아이디가 email 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
-	$("input#hp2").blur( (e) => {
+	$("input#phone").blur( (e) => {
 		
 	//	const regExp_hp2 = /^[1-9][0-9]{3}$/;  
 	//  또는
-	    const regExp_hp2 = new RegExp(/^[1-9][0-9]{3}$/);  
-	    // 연락처 국번( 숫자 4자리인데 첫번째 숫자는 1-9 이고 나머지는 0-9) 정규표현식 객체 생성 
-	    
-	    const bool = regExp_hp2.test($(e.target).val());	
+	    const regExp_phone = new RegExp(/^01[016789]{1}[0-9]{3,4}[0-9]{4}$/); 
+	     
+	    const bool = regExp_phone.test($(e.target).val());	
 		
 		if(!bool) {
 			// 연락처 국번이 정규표현식에 위배된 경우 
@@ -159,12 +138,9 @@ $(document).ready(function() {
 			$(e.target).val("").focus(); 
 		}
 		else {
-			// 연락처 국번이 정규표현식에 맞는 경우 
-			$("table#tblMemberEdit :input").prop("disabled", false);
 			
-			//	$(e.target).next().next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+			$("table#tblMemberEdit :input").prop("disabled", false);
+
 		}
 		
 	});// 아이디가 hp2 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -193,12 +169,8 @@ $(document).ready(function() {
 			$(e.target).val("").focus(); 
 		}
 		else {
-			// 마지막 전화번호 4자리가 정규표현식에 맞는 경우 
-			$("table#tblMemberEdit :input").prop("disabled", false);
-			
-			//	$(e.target).next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+
+			$("div#card-body :input").prop("disabled", false);
 		}
 		
 	});// 아이디가 hp3 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -227,19 +199,14 @@ $(document).ready(function() {
 			$(e.target).val("").focus(); 
 		}
 		else {
-			// 우편번호가 정규표현식에 맞는 경우 
-			$("table#tblMemberEdit :input").prop("disabled", false);
-			
-			//	$(e.target).next().next().hide();
-		    //  또는
-		    $(e.target).parent().find("span.error").hide();
+			$("div#card-body :input").prop("disabled", false);
 		}
 		
 	});// 아이디가 postcode 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
 	// === "우편번호찾기"를 클릭했을 때 이벤트 처리하기 === //
-	$("img#zipcodeSearch").click(function(){
+	$("img#zipcodeSearch").click(function() {
 		
 		// 주소를 쓰기가능 으로 만들기
 		$("input#address").removeAttr("readonly");

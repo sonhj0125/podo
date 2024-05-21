@@ -309,7 +309,7 @@ $(function () {
 
 });
 
-function goRegister(toastLive,toastmsg){
+function goRegister(toastLive,toastmsg) {
 
     const address = $("input#address").val().trim();
     const addressDetail = $("input#addressDetail").val().trim();
