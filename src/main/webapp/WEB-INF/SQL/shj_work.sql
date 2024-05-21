@@ -79,11 +79,12 @@ from member join memberidx on member.memberidx = memberidx.memberidx
 where memberidx.memberidx != 9 and name like '%' || '테' || '%';
 
 
+update member set memberidx = 9
+where userid = 'ejss0125';
+-- 1 행 이(가) 업데이트되었습니다.
 
-
-
-
-
+commit;
+-- 커밋 완료.
 
 
 
