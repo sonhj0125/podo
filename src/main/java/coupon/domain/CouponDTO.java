@@ -2,8 +2,9 @@ package coupon.domain;
 
 public class CouponDTO {
 	
-	private String coname,codetail,codate;
+	private String coname,codetail,codate,coregisterday;
 	private int cotype,codiscount,comin;
+	
 	public String getConame() {
 		return coname;
 	}
@@ -39,6 +40,12 @@ public class CouponDTO {
 	}
 	public void setComin(int comin) {
 		this.comin = comin;
+	}
+	public String getCoregisterday() {
+		return coregisterday;
+	}
+	public void setCoregisterday(String coregisterday) {
+		this.coregisterday = coregisterday;
 	}
 	
 }

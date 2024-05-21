@@ -1,6 +1,7 @@
 $(function() {
     
     const method = document.getElementById("lab-method");
+    const ctxPath = document.getElementById("getPath").innerText;
 
     document.getElementById("saleNat").addEventListener("change",()=>{
 
@@ -17,15 +18,14 @@ $(function() {
         }
 
     })
+
+    $("#btn-couponRegister").bind("click",function(){
+
+        const frm = document.couponRegister;
+	    frm.method = "post";
+	    frm.action = `${ctxPath}/coupon/couponregister.wine`;
+	    frm.submit();
+
+    });
 	
 })
-
-// 쿠폰 유효성 검사
-function couponRegister(ctxPath){
-
-    const frm = document.couponRegister;
-    frm.method = "post";
-    frm.action = ctxPath+"/coupon/couponregister.wine";
-    frm.submit();
-
-}

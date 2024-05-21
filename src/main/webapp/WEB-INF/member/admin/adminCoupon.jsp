@@ -24,8 +24,9 @@
 <%-- jQueryUI CSS 및 JS --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/jquery-ui.min.css" />
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<%= ctxPath %>/js/admin/coupon.js"></script>
 
+
+<script type="text/javascript" src="<%= ctxPath %>/js/admin/coupon.js"></script>
 
 <style>
 div.form-group {
@@ -43,10 +44,9 @@ input.form-control, textarea.form-control {
 }
 
 </style>
-     
 
 <div class="col-md-9 widy">
-	<form id="couponRegister">
+	<form name="couponRegister">
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
@@ -123,9 +123,12 @@ input.form-control, textarea.form-control {
 		</div>
 		
 		<div class="form-group custom-submit d-grid gap-2 col-6 mx-auto">
-			<input id="btn-couponRegister" class="btn btn-danger mt-3" type="button" value="전송" onclick="couponRegister('<%=ctxPath%>')">
+			<input id="btn-couponRegister" class="btn btn-danger mt-3" type="button" value="전송" />
 		</div>
 	</form>
+	
+	<div id="getPath" style="display: none;"><%=ctxPath %></div>
+	
 </div>
 			
 

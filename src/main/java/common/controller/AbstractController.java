@@ -1,5 +1,9 @@
 package common.controller;
 
+import javax.servlet.http.HttpSession;
+
+import member.domain.MemberDTO;
+
 public abstract class AbstractController implements InterCommand {
 
 	private boolean isRedirect = false;
@@ -19,6 +23,20 @@ public abstract class AbstractController implements InterCommand {
 
 	public void setViewPage(String viewPage) {
 		this.viewPage = viewPage;
+	}
+	
+	public boolean isDir(HttpSession httpSession) {
+		
+		boolean result = false;
+		
+		MemberDTO mdto = (MemberDTO) httpSession.getAttribute("loginUser");
+		
+		if("9".equals(mdto.getMemberIdx())) {
+			result = true;
+		}
+		
+		return result;
+	
 	}
 	
 }
