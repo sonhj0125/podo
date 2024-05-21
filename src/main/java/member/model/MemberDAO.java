@@ -35,4 +35,8 @@ public interface MemberDAO {
 	MemberDTO selectOneMember(String userid) throws SQLException;
 
 	
+	// 회원의 개인 정보 변경하기 
+	int updateMember(MemberDTO member) throws SQLException;
+
+	
 }

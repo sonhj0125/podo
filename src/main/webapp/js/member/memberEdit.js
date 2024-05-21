@@ -9,7 +9,8 @@ let b_email_change = false;
 $(document).ready(function() {
 
 	const toastLive = document.getElementById('liveToast');
-	const toastmsg = document.getElementById('toast-msg');		
+	const toastmsg = document.getElementById('toast-msg');	
+	
 	
 	$("input#name").blur( (e) => {
 
@@ -182,9 +183,33 @@ $(document).ready(function() {
 	});// 아이디가 phone 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
+
+	$('input#address').click(function () {
+
+        new daum.Postcode({
+            oncomplete: function (data) {
+
+                let addr = '';
+
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                document.getElementById("address").value = addr;
+                document.getElementById("addressDetail").focus();
+
+            }
+        }).open();
+
+    });
+
 });// end of $(document).ready(function(){})----------------------
 
 
+
+	
 // Function Declaration
 // "수정하기" 버튼 클릭시 호출되는 함수 
 function goEdit(){
@@ -209,20 +234,6 @@ function goEdit(){
 	// *** 필수입력사항에 모두 입력이 되었는지 검사하기 끝 *** //
 	
 	
-	// *** 우편번호 및 주소에 값을 입력했는지 검사하기 시작 *** //
-	const postcode = $("input#postcode").val().trim();
-	const address = $("input#address").val().trim();
-	const detailAddress = $("input#detailAddress").val().trim();
-	const extraAddress = $("input#extraAddress").val().trim();
-	
-	if(postcode == "" || address == "" || detailAddress == "" || extraAddress == "") {
-		alert("우편번호 및 주소를 입력하셔야 합니다.");
-		return; // goRegister() 함수를 종료한다.
-	}
-	// *** 우편번호 및 주소에 값을 입력했는지 검사하기 끝 *** //	
-	
-	
-	//////////////////////////////////////////////////////////
 	
 	// 변경된 암호가 현재 사용중인 암호이라면 현재 사용중인 암호가 아닌 새로운 암호로 입력해야 한다.!!! 
 	let isNewPwd = true;

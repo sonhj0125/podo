@@ -16,7 +16,7 @@
 <script src="<%=ctxPath %>/js/jquery-3.7.1.min.js"></script>
 
 <!-- Main JS-->
-<script src="<%=ctxPath %>/js/member/memberEdit.js"></script>
+<script src="<%=ctxPath %>/js/member/memberRegisterUpdate.js"></script>
 
 
 <!-- DataPicker -->
