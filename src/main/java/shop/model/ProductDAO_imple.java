@@ -13,7 +13,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import oracle.net.aso.c;
 import shop.domain.ProductDTO;
 
 public class ProductDAO_imple implements ProductDAO {
