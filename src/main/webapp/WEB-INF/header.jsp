@@ -406,16 +406,17 @@
             </div>
        </div>
        
-      <div>
-         <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
-         <hr style="width: 90%;">
-            <div>
-               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
-               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
-            </div>
-            
-        </div>
+       <c:if test="${sessionScope.loginUser.memberIdx == '9'}">
+	      <div>
+	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
+	         <hr style="width: 90%;">
+	            <div>
+	               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
+	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
+	               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
+	           </div>
+	       </div>
+        </c:if>
 	    
 	  </div>
 	  

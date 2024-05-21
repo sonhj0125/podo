@@ -22,9 +22,8 @@ $(function() {
     $("#btn-couponRegister").bind("click",function(){
 
         let isSubmit = true;
-        //여기에 유효성 검사 유효성 검사 틀리면 isSubmit false로 변환하면 됨
+        // 여기에 유효성 검사 유효성 검사 틀리면 isSubmit false로 변환하면 됨
         // ex) isSubmit = false;
-
 
         if(isSubmit){
             const frm = document.couponRegister;

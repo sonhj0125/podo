@@ -35,9 +35,29 @@ $(function() {
     
     // 처음에는 #setCindex 값을 넣어주고 변경사항이 있을 경우 #setCindexOne 의 값을 넣어준다.
     
+    const dcntAll = document.querySelectorAll(".dcntAll");
+    let cnt_Arr = "";
+    let fristSetcnt = true;
+
+    dcntAll.forEach((item)=>{
+        if(fristSetcnt) {
+            fristSetcnt = false;
+            cnt_Arr += item.innerText;
+        } else {
+            cnt_Arr += "," + item.innerText;
+        }
+    });
+    $('#setcVolume').attr('value', cnt_Arr);
+    $('#setcVolumeOne').attr('value', cnt_Arr);
+
+
     // 체크된 항목의 인덱스를 로컬 스토리지에 저장하는 함수
     function saveCheckedIndexes() {
         const checkedIndexes = [];
+        $('input.cbOne:checked').each(function() {
+            const index = $(this).closest('div.hstack').next('div.cart-index').text().trim();
+            checkedIndexes.push(index);
+        });
         $('input.cbOne:checked').each(function() {
             const index = $(this).closest('div.hstack').next('div.cart-index').text().trim();
             checkedIndexes.push(index);
@@ -112,7 +132,6 @@ $(function() {
 
 
     // Link
-
     $("#btn-cartDel").bind('click',function(){
 		
 		const frm = document.orderSetOne;
@@ -122,10 +141,55 @@ $(function() {
 		
 	});
 
+    $("#Order-one").bind('click',function(){
+
+        // const frm = document.orderSetOne;
+		// frm.method = "post";
+		// frm.action = `${ctxPath}/shop/order.wine`;
+		// frm.submit();
+
+    });
+
+    $("#Order-all").bind('click',function(){
+
+        // const frm = document.orderSetOne;
+		// frm.method = "post";
+		// frm.action = `${ctxPath}/shop/order.wine`;
+		// frm.submit();
+
+    });
+
+    $(".plus_btn").on("click", function(){
+        let volume = $(this).parent().find("div#div-volume");
+        let volumeNat = $(this).parent().find("div#dcnt");
+        let cnt = Number(volume.text().replace("EA",""));
+        if (cnt<100){
+            const upcnt = cnt+1;
+            const contants = upcnt+"EA";
+
+            volume.text(contants);
+            volumeNat.text(upcnt);
+        }
+    });
+
+    $(".minus_btn").on("click", function(){
+        let volume = $(this).parent().find("div#div-volume");
+        let volumeNat = $(this).parent().find("div#dcnt");
+        let cnt = Number(volume.text().replace("EA",""));
+        if (cnt>1){
+            const upcnt = cnt-1;
+            const contants = upcnt+"EA";
+
+            volume.text(contants);
+            volumeNat.text(upcnt);
+        }
+    });
+
 });
 
 // cbAll이 변경되었을 때 결제 예정금액을 가져오는 함수
 function updateCheckedIndexes() {
+
     const checkedIndexes = [];
     $('input.cbOne:checked').each(function() {
         const index = $(this).closest('div.hstack').next('div.cart-index').text().trim();
@@ -149,15 +213,19 @@ function updateCheckedIndexes() {
     const sumPrice = calculateTotalPrice(checkedIndexes);
     const sumPriceStr = sumPrice.toLocaleString();
     document.querySelector("div#sumPrice").innerText = `${sumPriceStr}원`;
+
 }
 
 // 체크된 상품들의 총 가격을 계산하는 함수
 function calculateTotalPrice(checkedIndexes) {
+
     let sumPrice = 0;
+
     checkedIndexes.forEach(function(index) {
         const priceText = $(`div.cart-index:contains('${index}')`).prev().find('.priceOne').text().replace("원", "").replaceAll(",", "");
         const price = Number(priceText);
         sumPrice += price;
     });
+    
     return sumPrice;
 }

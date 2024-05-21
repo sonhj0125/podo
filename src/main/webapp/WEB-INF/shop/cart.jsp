@@ -78,7 +78,7 @@
                  <div style="width: 12%; min-width: 12%; text-align: center;">
                        제품종류
                  </div>
-                 <div style="width: 10%; min-width: 10%; text-align: center;">
+                 <div style="width: 8%; min-width: 8%; text-align: center;">
                        수량
                  </div>
                  <div style="width: 10%; min-width: 10%; text-align: center;">
@@ -122,25 +122,35 @@
                     <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">${cdtolist.pdto.phometown}</span>
                  </div>
                  
-                 <div style="width: 10%; min-width: 10%; text-align: center; font-size: 1.5vw;">
+                 <button type="button" class="btn btn-light minus_btn" style="width: 30px; padding: 0; text-align: center; font-size: 17pt;">-</button>
+                 <div id="div-volume" style="width: 5%; min-width: 5%; text-align: center; font-size: 1.5vw;">
                   ${cdtolist.cvolume}EA
                  </div>
+                 <button type="button" class="btn btn-light plus_btn" style="width: 30px; padding: 0; text-align: center; font-size: 17pt;">+</button>
                  
                  <div style="width: 10%; min-width: 10%; text-align: center;">
-                       <button type="button" class="btn btn-light">변경</button>
+                 	
+                 	
+                    <button type="button" class="btn btn-light" onclick="replace('${cdtolist.cindex}')">변경</button>
                  </div>
                  
                  <div style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right; color: gray;">
                         ${cdtolist.pdto.pprice}원
                  </div>
+                 
                  <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right;">
                         ${cdtolist.sumprice}원
                  </div>
+                 
+                 <div id="dcnt" class="dcntAll">${cdtolist.cvolume}</div>
+                 
                </div>
                
                <div class="cart-index" style="font-size: 0;">
                   ${cdtolist.cindex}
                </div>
+               
+               
                
             </c:forEach>
                <div class="hstack gap-1" style="border-top: solid 2px gray; padding-left: 65%; font-size: 1.5vw; font-weight: bold;">
@@ -150,14 +160,16 @@
                </div>
 
                      
-         <form name="orderSet" style="display: none;">
-            <input type="text" id="setCindex" name="Arr_cindex">
+         <form name="orderSet">
+            <input type="text" id="setCindex" name="Arr_cindexOne">
             <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
+            <input type="text" id="setcVolume" name="Arr_cvolumeOne">
          </form>
       
-         <form name="orderSetOne" style="display: none;">
+         <form name="orderSetOne">
              <input type="text" id="setCindexOne" name="Arr_cindexOne">
              <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
+             <input type="text" id="setcVolumeOne" name="Arr_cvolumeOne">
          </form>
          
          <div id="getPath" style="display:none;"><%= ctxPath%></div>
@@ -178,8 +190,8 @@
          <div style="display:center; margin-top: 2.5%;">
              <button type="button" id="btn-cartDel" class="btn btn-outline-secondary">선택상품 삭제</button>
             <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/list.wine';">계속쇼핑하기</button>
-            <button type="button" class="btn btn-outline-secondary">선택상품 주문</button>
-            <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/order.wine';">전체상품 주문</button>
+            <button type="button" id="Order-one" class="btn btn-outline-secondary">선택상품 주문</button>
+            <button type="button" id="Order-all" class="btn btn-outline-secondary">전체상품 주문</button>
          </div> 
       </div>
    </div>
