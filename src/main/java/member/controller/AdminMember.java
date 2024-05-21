@@ -26,12 +26,7 @@ public class AdminMember extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		// === 관리자(admin)로 로그인 했을 때만 회원조회 === //
-		HttpSession session = request.getSession();
-		
-		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
-		
-		if(loginUser != null && "ejss0125".equals(loginUser.getUserid())) {
+		if(super.isDir(request.getSession())) {
 			// 관리자(admin)로 로그인 했을 경우
 			
 			String searchType = request.getParameter("searchType");
