@@ -23,3 +23,9 @@ select *
 from
 (select pindex,count(pindex)as coun from LIKEIT group by pindex order by coun desc) l join PRODUCT on l.PINDEX=PRODUCT.PINDEX
 order by  coun desc;
+
+select USERID,name,EMAIL,PHONE,GENDER,STATUS
+from MEMBER join MEMBERIDX on MEMBER.MEMBERIDX = MEMBERIDX.MEMBERIDX
+where USERID='redtree2379'
+order by  REGISTERDAY desc;
+

@@ -2,6 +2,9 @@ $(function() {
     // 페이지 로드될 때 체크된 상태 업데이트
     updateCheckedIndexes();
 
+    // 패스 주소 가져오기
+    const ctxPath = document.getElementById("getPath").innerText;
+
     // 총가격 계산
     const pricearr = document.querySelectorAll(".priceOne");
     let sumPrice = 0;
@@ -28,6 +31,7 @@ $(function() {
         }
     });
     $('#setCindex').attr('value', Arr);
+    $('#setCindexOne').attr('value', Arr);
     
     // 처음에는 #setCindex 값을 넣어주고 변경사항이 있을 경우 #setCindexOne 의 값을 넣어준다.
     
@@ -105,8 +109,20 @@ $(function() {
         // 결제 예정금액에 값을 넣어준다
         updateCheckedIndexes();
     });
-}); // end of $(function() ----------------------------------------
 
+
+    // Link
+
+    $("#btn-cartDel").bind('click',function(){
+		
+		const frm = document.orderSetOne;
+		frm.method = "post";
+		frm.action = `${ctxPath}/cart/cartoutarr.wine`;
+		frm.submit();
+		
+	});
+
+});
 
 // cbAll이 변경되었을 때 결제 예정금액을 가져오는 함수
 function updateCheckedIndexes() {

@@ -20,6 +20,9 @@ public interface CartDAO {
 	// 유저의 모든 장바구니 내역 산출
 	List<CartDTO> getCartList(String userid) throws SQLException;
 
+	// 장바구니 삭제하기 (cindex)
+	int deleteCartfromindex(String cindex) throws SQLException;
+
 	
 
 }
