@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import coupon.domain.CouponDTO;
+import coupon.domain.MyCouponDTO;
 
 public class CouponDAO_imple implements CouponDAO {
 
@@ -101,6 +104,50 @@ public class CouponDAO_imple implements CouponDAO {
 		}
 		return isCouponExist;
 	} // end of public boolean isCouponExist(CouponDTO codto) throws SQLException ----
+
+
+	@Override
+	public List<MyCouponDTO> getMyList(String userid) throws SQLException {
+		
+		List<MyCouponDTO> mycodtoList = new ArrayList<>();
+				
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX "
+					+ " from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCOUPON.USERID = MEMBER.USERID "
+					+ " where MEMBER.USERID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MyCouponDTO mycodto = new MyCouponDTO();
+				
+				CouponDTO codto = new CouponDTO();
+				
+				codto.setConame(rs.getString("coname"));
+				codto.setCotype(rs.getInt("cotype"));
+				codto.setCodiscount(rs.getInt("codiscount"));
+				codto.setCodate(rs.getString("codate"));
+				codto.setCoregisterday(rs.getString("coregisterday"));
+				
+				mycodto.setCodto(codto);
+				mycodto.setCoindex(rs.getInt("COINDEX"));
+				
+				mycodtoList.add(mycodto);
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return mycodtoList;
+	}
 	
 	
 }

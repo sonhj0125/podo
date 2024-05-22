@@ -137,7 +137,9 @@
 	               <label class="col-2" style="width: 15.5%; font-weight: bold;">쿠폰 할인</label>
 	            <select class="form-select" id="" name="" style="width: 55.2%; border-color: black;">
 	              <option selected>-- 쿠폰 선택--</option>
-	              <option>배송 전에 미리 연락바랍니다.</option>
+	              <c:forEach var="mycodto" items="${requestScope.mycodtoList}">
+	              	<option>${mycodto.codto.coname}</option>
+	              </c:forEach>
 	            </select>
 	            </div>
 	            
