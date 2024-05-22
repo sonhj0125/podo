@@ -9,13 +9,12 @@
 	String ctxPath = request.getContextPath();
 %>
 
-<jsp:include page="../../header.jsp" />
+<jsp:include page="/WEB-INF/header.jsp" /> 
 
 <script type="text/javascript">
    
-   	window.onload = ()=> {
+	$(function() {
       
-	      
 		// 검색 시 검색타입, 검색 단어 그대로 유지하도록 하기
 	  	if("${requestScope.searchType}" != "" &&
 	  	   "${requestScope.searchWord}" != "") { 
@@ -51,22 +50,13 @@
 		}); // end of $("select[name='sizePerPage']").bind("change", function() {}) ------------------
 		
 	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-
 		<%-- 회원클릭시 상세보기 페이지 --%>
-		$("tr#memberDetail").bind('click',()=>{
+		$("table#memberTbl").bind('click',()=>{
 		   location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
 		});
 		
       
-   }; // end of window.onload
+   }); // end of window.onload
    
 	
    	// function declaration
@@ -149,7 +139,6 @@
 			<option value="">검색대상</option>
 			<option value="name">회원명</option>
 			<option value="userid">아이디</option>
-			<option value="email">이메일</option>
 		</select>
 		&nbsp;
 		<input type="text" name="searchWord" />
@@ -175,6 +164,7 @@
 				<th>이메일</th>
 				<th>연락처</th>
 				<th>성별</th>
+				<th>포인트</th>
 				<th>회원상태</th>
 			</tr>
 		</thead>
@@ -198,6 +188,7 @@
 								<c:otherwise>여</c:otherwise>
 							</c:choose>
 						</td>
+						<td>${mdto.point}</td>
 						<td>${mdto.status}</td>
 					</tr>
 				</c:forEach>
@@ -205,7 +196,7 @@
 			
 			<c:if test="${empty requestScope.memberList}">
 				<tr>
-					<td colspan="7" style="text-align: center;">데이터가 존재하지 않습니다.</td>
+					<td colspan="8" style="text-align: center;">데이터가 존재하지 않습니다.</td>
 				</tr>
 			</c:if>
 		
@@ -220,4 +211,4 @@
 	
 </div>
 
-<jsp:include page="../../footer.jsp" />
+<jsp:include page="/WEB-INF/footer.jsp" />  

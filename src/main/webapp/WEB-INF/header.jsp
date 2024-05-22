@@ -401,8 +401,8 @@
             <div>
                <div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
                <div id="ReviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;" >리뷰관리</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" id="memberCoupon">쿠폰</div>
+               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" id="memberPoint">적립금</div>
             </div>
        </div>
        

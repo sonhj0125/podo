@@ -363,13 +363,13 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT rno, userid, name, email, phone, gender, status "
+			String sql = " SELECT rno, userid, name, email, phone, gender, point, status "
 					   + " FROM "
 					   + " ( "
-					   + "    select rownum AS RNO, userid, name, email, phone, gender, status "
+					   + "    select rownum AS rno, userid, name, email, phone, gender, point, status "
 					   + "    from "
 					   + "    ( "
-					   + "        select userid, name, email, phone, gender, status "
+					   + "        select userid, name, email, phone, gender, point, status "
 					   + "        from member join memberidx on member.memberidx = memberidx.memberidx "
 					   + "        where memberidx.memberidx != 9";
 			
@@ -377,10 +377,6 @@ public class MemberDAO_imple implements MemberDAO {
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
-			if("email".equals(colname)) {
-				// 검색 대상이 email인 경우
-				searchWord = aes.encrypt(searchWord);
-			}
 			
 			if((colname != null && !colname.trim().isEmpty()) && 
 			   (searchWord != null && !searchWord.trim().isEmpty())) {
@@ -426,6 +422,7 @@ public class MemberDAO_imple implements MemberDAO {
 				mdto.setEmail(aes.decrypt(rs.getString("email")));
 				mdto.setPhone(aes.decrypt(rs.getString("phone")));
 				mdto.setGender(rs.getString("gender"));
+				mdto.setPoint(rs.getString("point"));
 				mdto.setStatus(rs.getString("status"));
 				
 				memberList.add(mdto);
@@ -464,10 +461,6 @@ public class MemberDAO_imple implements MemberDAO {
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
-			if("email".equals(colname)) {
-				// 검색 대상이 email인 경우
-				searchWord = aes.encrypt(searchWord);
-			}
 			
 			if((colname != null && !colname.trim().isEmpty()) && 
 			   (searchWord != null && !searchWord.trim().isEmpty())) {
@@ -489,7 +482,7 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			totalMemberCount = rs.getInt(1);
 			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			
 		} finally {
@@ -522,10 +515,6 @@ public class MemberDAO_imple implements MemberDAO {
 				String colname = paraMap.get("searchType");
 				String searchWord = paraMap.get("searchWord");
 				
-				if("email".equals(colname)) {
-					// 검색 대상이 email인 경우
-					searchWord = aes.encrypt(searchWord);
-				}
 				
 				if((colname != null && !colname.trim().isEmpty()) && 
 				   (searchWord != null && !searchWord.trim().isEmpty())) {
@@ -549,7 +538,7 @@ public class MemberDAO_imple implements MemberDAO {
 				
 				totalPage = rs.getInt(1);
 				
-			} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				
 			} finally {
@@ -562,17 +551,50 @@ public class MemberDAO_imple implements MemberDAO {
 			
 	
 
-	
-	
-	
-	
-	
-	
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
-		return null;
 		
+		MemberDTO member = null;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql =  " select userid, name, email, phone, address, addressdetail, gender "
+	                  + "      , birthday, point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
+	                  + " from member "
+	                  + " where status = 1 and userid = ? ";
+	                     
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, userid);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	            member = new MemberDTO();
+	            
+	            member.setUserid(rs.getString(1));
+	            member.setName(rs.getString(2));
+	            member.setEmail( aes.decrypt(rs.getString(3)) );  // 복호화
+	            member.setPhone( aes.decrypt(rs.getString(4)) ); // 복호화
+	            member.setAddress(rs.getString(5));
+	            member.setAddressDetail(rs.getString(6));
+	            member.setGender(rs.getString(7));
+	            member.setBirthday(rs.getString(8));
+	            member.setPoint(rs.getString(9));
+	            member.setRegisterDay(rs.getString(10));
+	            
+	         } // end of if(rs.next())
+	         
+	      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+	      return member;
+	      
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
 

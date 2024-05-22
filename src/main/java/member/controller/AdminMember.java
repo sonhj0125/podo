@@ -35,8 +35,7 @@ public class AdminMember extends AbstractController {
 			
 			if(searchType == null || 
 			   (!"name".equals(searchType) &&
-				!"userid".equals(searchType) &&
-				!"email".equals(searchType))) {
+				!"userid".equals(searchType))) {
 				
 				searchType = "";
 			}
@@ -139,8 +138,7 @@ public class AdminMember extends AbstractController {
 			
 			if(searchType != null && 
 			   ("name".equals(searchType) ||
-				"userid".equals(searchType) ||
-				"email".equals(searchType))) {
+				"userid".equals(searchType))) {
 				
 				request.setAttribute("searchType", searchType);
 			}
@@ -151,9 +149,7 @@ public class AdminMember extends AbstractController {
 			}
 					
 			request.setAttribute("sizePerPage", sizePerPage);
-			
 			request.setAttribute("pageBar", pageBar);
-			
 			request.setAttribute("currentURL", currentURL);
 			
 			
@@ -172,18 +168,17 @@ public class AdminMember extends AbstractController {
 
 		}
 		else {
-			// 로그인 하지 않거나, 관리자가 아닌 경우
-			String message = "관리자만 접근이 가능합니다.";
+			// 관리자가 아닌 경우
+			String msg = "관리자만 접근이 가능합니다.";
 			String loc = "javascript:history.back()";
 			
-			request.setAttribute("message", message);
+			request.setAttribute("msg", msg);
 			request.setAttribute("loc", loc);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/msg.jsp");
 			
 		} // end of if(loginuser != null && "ejss0125".equals(loginuser.getUserid()))
-		
 		
 		
 	} // end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception
