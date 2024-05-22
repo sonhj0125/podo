@@ -29,3 +29,5 @@ from MEMBER join MEMBERIDX on MEMBER.MEMBERIDX = MEMBERIDX.MEMBERIDX
 where USERID='redtree2379'
 order by  REGISTERDAY desc;
 
+select *
+from CART where CINDEX IN (26, 27, 28);

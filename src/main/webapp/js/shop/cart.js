@@ -152,10 +152,10 @@ $(function() {
 
     $("#Order-all").bind('click',function(){
 
-        // const frm = document.orderSetOne;
-		// frm.method = "post";
-		// frm.action = `${ctxPath}/shop/order.wine`;
-		// frm.submit();
+        const frm = document.orderSet;
+		frm.method = "post";
+		frm.action = `${ctxPath}/shop/order.wine`;
+		frm.submit();
 
     });
 

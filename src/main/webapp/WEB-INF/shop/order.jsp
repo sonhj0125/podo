@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
    String ctxPath = request.getContextPath();
 %>
@@ -42,24 +43,41 @@
          </div>
       </div>
       
-      <div style="width: 85%;">
-      <div class="cart_body_1">
-         <hr>
-         <div class="hstack gap-3" style="border: solid 3px black; border-width: 0 0 3px; border-style: solid; margin-bottom: 3%; padding: 2% 0;">
-           <img src="<%=ctxPath %>/images/product/1.png" style="width: 100px; height: 100px;">
-           <h5 style="font-weight: bold; margin-right: 1%;">디아블로데블 카나발카베르네</h5>
-           <div style="margin-right: 49%;">
-              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">레드</span>
-              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">칠레산</span>
-              <span class="badge rounded-pill p-2" style="background-color: #b3b3ff;">카베르네 소비뇽</span>
-            </div>
-            <div style="display:flex;">
-            <div style="font-size: 13pt; font-weight: bold;">14,900원</div>
-            <div class="mx-2">|</div>
-            <div style="font-size: 13pt;">1EA</div>
-            </div>
-         </div>
+      <div style="padding: 0; width: 80%; margin: 0 auto;"> 
+      <c:forEach var="cdtolist" items="${requestScope.cdtoList}">
+      		   <hr>
+               <div class="hstack">
+                 
+                 <div style="width: 8%; min-width: 8%;">
+                    <img src="<%=ctxPath %>/images/product/${cdtolist.pdto.pimg}" style="width: 100%;">
+                 </div>
+                 
+                 <div class="curpointer" style="width: 28%; min-width: 28%; font-weight: bold; font-size: 1.0vw;" onclick="showProduct('${cdtolist.pdto.pindex}')">
+                       ${cdtolist.pdto.pname}
+                 </div>
+                 
+                 
+                 <div id="div-volume" style="width: 5%; min-width: 5%; text-align: center; font-size: 1.5vw;">
+                  ${cdtolist.cvolume}EA
+                 </div>
+                 
+                 <div style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right; color: gray;">
+                        ${cdtolist.pdto.pprice}원
+                 </div>
+                 
+                 <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right;">
+                        ${cdtolist.sumprice}원
+                 </div>
+                 
+               <div class="cart-index" style="font-size: 0;">${cdtolist.cindex}</div>  
+                 
+               <div id="dcnt" class="dcntAll">${cdtolist.cvolume}</div>
+                 
+               </div>
+      </c:forEach>
+      <hr style="border: solid 2px black; margin-bottom: 50px;">
       </div>
+      
       
       <div class="cart_body_2" style="margin: 0 auto; display: flex;">
       
@@ -88,10 +106,11 @@
             <div class="form-group row" style="margin-bottom: 1.8%;">
                <label class="col-2" style="width: 14%; font-weight: bold;">주소</label>
                <div class="col-sm-7">
-                  <input type="text" name="mobile" class="form-control" style="border-color: black;"/>
-                  <input type="text" name="mobile" class="form-control mt-1" placeholder="상세주소" style="border-color: black;"/>
+                  <input type="text" name="address" class="form-control" style="border-color: black;"/>
+                  <input type="text" name="addressDetail" class="form-control mt-1" placeholder="상세주소" style="border-color: black;"/>
                </div>
             </div>
+            
             <div class="form-group row" style="margin-bottom: 1.8%;">
                <label class="col-2" style="width: 15.5%; font-weight: bold;">배송메시지</label>
             <select class="form-select" id="order_msg" name="order_msg" style="width: 55.2%; border-color: black;">
@@ -113,9 +132,13 @@
             
             <h3>주문 계산서</h3>
             <hr style="width: 100%;">
-            <div style="font-size: 11pt; font-weight: bold; margin-top: 3%;">총 상품가격  14,900원</div>
-            <br>
-            <br>
+	            <div class="form-group row" style="margin-bottom: 1.8%;">
+	               <label class="col-2" style="width: 15.5%; font-weight: bold;">쿠폰 할인</label>
+	            <select class="form-select" id="" name="" style="width: 55.2%; border-color: black;">
+	              <option selected>-- 쿠폰 선택--</option>
+	              <option>배송 전에 미리 연락바랍니다.</option>
+	            </select>
+	            </div>
             <h4>결제정보</h4>
             <div style="border:solid 1px black; height: 250px; margin-top: 3%;">
                <br>
