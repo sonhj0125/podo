@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import shop.domain.ProductDTO;
+import shop.domain.ReviewDTO;
 
 public interface ProductDAO {
 
@@ -43,5 +44,8 @@ public interface ProductDAO {
 
 	// 인기 품목 리스트 뽑아오기 DESC
 	List<ProductDTO> listPopReadDesc() throws SQLException;
+
+	// [리뷰 관리] 회원이 주문한 상품 중 배송완료인 상품 목록 띄우기
+	List<ReviewDTO> selectProductReviewList(String userid) throws SQLException;
 	
 }
