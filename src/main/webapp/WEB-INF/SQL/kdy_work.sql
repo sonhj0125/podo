@@ -139,4 +139,24 @@ from log
 order by logindex desc;
 
 
+-- 리뷰 관리 페이지 : 배송완료인 상품 목록 띄우기
+SELECT R.pindex, pname, pengname, pprice, ostatus, odate, rindex
+FROM
+(
+    select pname, pengname, to_number(pprice) as pprice, P.pindex, 
+           ostatus, odate
+    from product P JOIN orders O
+    ON P.pindex = O.pindex
+    where O.userid = 'test002' and O.ostatus = 4
+) V
+LEFT JOIN REVIEW R
+ON V.pindex = R.pindex;
+
+
+
+
+
+
+
+
 
