@@ -14,10 +14,7 @@ public class Order extends AbstractController {
 		
 		if("POST".equalsIgnoreCase(method)) {
 			
-			String cvloumeArr = request.getParameter("")
-			
 		}
-		
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/shop/order.jsp");
