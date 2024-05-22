@@ -39,7 +39,7 @@ public class PwdUpdateEnd extends AbstractController {
 			
 			try {
 				n = mdao.pwdUpdate(paraMap);
-				
+				]
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -425,5 +425,13 @@ public class MemberDAO_imple implements MemberDAO {
 	      
 	}// end of public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException-----
 
+
+	// 마이페이지 비밀번호 변경 비밀번호 변경
+	@Override
+	public int pwdUpdate2(Map<String, String> paraMap) {
+		
+		return 0;
+	}
+
 	
 }

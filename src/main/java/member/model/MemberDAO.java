@@ -41,4 +41,8 @@ public interface MemberDAO {
 	boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException;
 
 	
+	// 마이페이지 비밀번호 변경 비밀번호 변경
+	int pwdUpdate2(Map<String, String> paraMap);
+
+	
 }
