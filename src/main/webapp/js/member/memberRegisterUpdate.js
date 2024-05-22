@@ -1,13 +1,20 @@
+// 내가 하는 거
 $(function () {
+
+    $(document).ajaxStart(function () {
+        console.log("start");
+    });
+  
+     $(document).ajaxStop(function () {
+        console.log("stop");
+    });
+  
 
     const toastLive = document.getElementById('liveToast');
     const toastmsg = document.getElementById('toast-msg');
     let checkName = false;
-    let checkPwd = false;
-    let checkPwdCheck = false;
     let checkEmail = false;
     let checkPhone = false;
-
 
     $('input#address').click(function () {
 
@@ -23,28 +30,38 @@ $(function () {
                 }
 
                 document.getElementById("address").value = addr;
+                // document.getElementById("addressDetail").val("");
                 document.getElementById("addressDetail").focus();
+                
 
             }
         }).open();
+
+        
+        
+        
 
     });
 
 
     // 유효성 검사
     // 이름
-    $("input#name").blur( (e) => {
+    $("input#name").bind("change",function (e){
+
+        const name = $(e.target).val().trim();
+        const tag = $('input#name');
 
         const regExp_name = new RegExp(/^[가-힣]{2,10}$/); 
         const bool = regExp_name.test($(e.target).val());
 
-        if(name == ""){
-            toastmsg.innerText="이름을 입력해주세요";
+        if(name == "") {
+            toastmsg.innerText="이름은 필수입력사항입니다.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
             checkName = false;
             tag.removeClass("status-g");
             tag.addClass("status-ng");
+
         }else if(!bool){
             toastmsg.innerText="올바른 이름이 아닙니다.";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
@@ -60,55 +77,6 @@ $(function () {
 
     });
 
-    // 비밀번호
-    $("input#pwd").blur( (e) => {
-    
-        const pwd = $(e.target).val().trim();
-        const tag = $('input#pwd');
-
-        const regExp_pwd = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g); 
-        // 숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
-        const bool = regExp_pwd.test($(e.target).val());
-
-        if(pwd == "") {
-			pwd.val("${sessionScope.loginUser.pwd}")
-
-        }else if (!bool) {
-            toastmsg.innerHTML="비밀번호은 숫자/문자/특수문자 포함하여<br>8~15자리 이내로 작성해주세요.";
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-            toastBootstrap.show();
-            checkPwd = false;
-            tag.removeClass("status-g");
-            tag.addClass("status-ng");
-        }else{
-			checkPwd = true;
-            tag.addClass("status-g");
-            tag.removeClass("status-ng");
-		}
-    
-    });
-
-    // 비밀번호 확인
-    $("input#pwdCheck").blur( (e) => {
-    
-        const pwd = $('input#pwd').val();
-        const pwdCheck = $(e.target).val().trim();
-        const tag = $('input#pwdCheck');
-    
-        if(pwd != pwdCheck){
-            toastmsg.innerText="비밀번호가 일치하지 않습니다";
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-            toastBootstrap.show();
-            checkPwdCheck = false;
-            tag.removeClass("status-g");
-            tag.addClass("status-ng");
-        }else{
-            checkPwdCheck = true;
-            tag.addClass("status-g");
-            tag.removeClass("status-ng");
-        }
-
-    });
 
     let isEmailDuplicate; // 이메일 중복 확인용
 
@@ -122,20 +90,25 @@ $(function () {
 	    const bool = regExp_email.test($(e.target).val());
 
         // === 이메일 중복 확인 ===
-        $.ajax({
-            url: "emailDuplicateCheck.wine",
-            data: {"email":$(e.target).val()},
+        $.ajax({ 
+            url: "emailDuplicateCheck2.wine",
+            data:{"email":$("input#email").val()
+			     ,"userid":$("input:hidden[name='userid']").val()},
             type: "post",
             async : false,
             dataType : "json",
             success : function(json) {
                 
-                if(json.isExist) {
+                if(json.isExists) {
                     // 입력한 email이 이미 사용 중인 경우 (중복 O)
                     isEmailDuplicate = true;
+
+                    console.log(isEmailDuplicate);
                     
                 } else {
                     isEmailDuplicate = false;
+
+                    console.log(isEmailDuplicate);
                 }
             },
             error: function(request, status, error) {
@@ -176,7 +149,7 @@ $(function () {
     });
 
     // 연락처 확인
-    $("input#phone").blur( (e) =>{
+    $("input#phone").bind("change",function (e){
 
         const phone = $(e.target).val().trim();
         const tag = $('input#phone');
@@ -208,8 +181,8 @@ $(function () {
 
     $("#register").bind("click",()=>{
 		
-        if(checkUserid && checkName && checkPwd && checkPwdCheck && checkEmail && checkPhone){
-            goRegister(toastLive,toastmsg);
+        if(checkName && checkPwd && checkPwdCheck && checkEmail && checkPhone){
+            goEdit(toastLive,toastmsg);
         }else{
             toastmsg.innerHTML="올바르게 입력하세요";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
@@ -220,19 +193,11 @@ $(function () {
 
 });
 
-function goRegister(toastLive,toastmsg) {
+function goEdit(toastLive,toastmsg) {
 
     const address = $("input#address").val().trim();
     const addressDetail = $("input#addressDetail").val().trim();
-    const birthday = $("input#birthday").val().trim();
-    const birthdaySplit = birthday.split("-");
 
-    const today = new Date();
-    const birthDate = new Date(birthdaySplit[0], birthdaySplit[1], birthdaySplit[2]);
-
-    let age = today.getFullYear()
-            - birthDate.getFullYear()
-            + 1;
 
     if(address == ""){
         toastmsg.innerHTML="주소를 입력하세요";
@@ -241,16 +206,6 @@ function goRegister(toastLive,toastmsg) {
         return;
     }else if(addressDetail == ""){
         toastmsg.innerHTML="상세주소를 입력하세요";
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-        toastBootstrap.show();
-        return;
-    }else if(birthday == ""){
-        toastmsg.innerHTML="생년월일을 입력하세요";
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-        toastBootstrap.show();
-        return;
-    }else if(age<20){
-        toastmsg.innerHTML="20세 미만은 가입할수 없습니다";
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
         toastBootstrap.show();
         return;

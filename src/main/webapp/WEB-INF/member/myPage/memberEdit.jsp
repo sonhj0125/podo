@@ -69,22 +69,9 @@
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
+                        	<input type="hidden" name="userid" value="${sessionScope.loginUser.userid}" />
                             <label class="label">이름<span class="star">*</span></label>
                             <input class="input--style-4 requiredInfo" type="text" id="name" name="name" value="${sessionScope.loginUser.name}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row row-space">
-                    <div class="col-2">
-                        <div class="input-group">
-                            <label class="label">비밀번호</label>
-                            <input class="input--style-4" type="password" id="pwd" name="pwd">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="input-group">
-                            <label class="label">비밀번호 확인</label>
-                            <input class="input--style-4" type="password" id="pwdCheck">
                         </div>
                     </div>
                 </div>

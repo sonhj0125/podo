@@ -33,10 +33,12 @@ public interface MemberDAO {
 	
 	// 관리자 회원관리 - 한명 조회
 	MemberDTO selectOneMember(String userid) throws SQLException;
-
 	
 	// 회원의 개인 정보 변경하기 
 	int updateMember(MemberDTO member) throws SQLException;
+
+	// 회원정보 수정시 email 중복검사
+	boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException;
 
 	
 }

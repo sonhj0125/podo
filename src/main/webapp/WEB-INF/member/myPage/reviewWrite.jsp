@@ -41,20 +41,40 @@
 
       	 <h2>리뷰작성</h2>
       	 <div>
-	         <hr><br>
-	         <h5>와인을 평가해주세요</h5>
-	         <div class="star-rating" style="margin:0 auto; width:100%; justify-content:center;">
-			    <input type="radio" class="star" value="1" style="text-align: center;">
-			    <input type="radio" class="star" value="2" style="text-align: center;">
-			    <input type="radio" class="star" value="3" style="text-align: center;">
-			    <input type="radio" class="star" value="4" style="text-align: center;">
-			    <input type="radio" class="star" value="5" style="text-align: center;">
-	         </div>
-	         <br><br><br>
-	         <h5>사진과 후기를 남겨주세요</h5>
+				<hr>
+				 <div style="display: flex; border: solid 0px red; margin: 6% 2%;">
+				 <div style="width: 50%; ">
+					<div style="display: flex; justify-content: space-between; padding: 0 2%;">
+		
+							<div style="display: flex; width: 100%; justify-content: space-between;">
+							
+								<img src="<%=ctxPath %>/images/product/1.png" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
+								<div style="margin: auto 1%; text-align: right;">
+										<div>디아블로데블 카나발카베르네</div>
+										<div>14,900원</div>
+								</div>
+								
+						    </div>
+					</div>
+				
+				 </div>
+		         <br>
+		         <div style="width: 50%; border-left: solid 1px black; margin: 0 2%;">
+			         <h5>와인을 평가해주세요</h5>
+			         <div class="star-rating" style="margin:0 auto; width:100%; justify-content:center;">
+					    <input type="radio" class="star" value="1" style="text-align: center;">
+					    <input type="radio" class="star" value="2" style="text-align: center;">
+					    <input type="radio" class="star" value="3" style="text-align: center;">
+					    <input type="radio" class="star" value="4" style="text-align: center;">
+					    <input type="radio" class="star" value="5" style="text-align: center;">
+			         </div>
+		         </div>
+	      		 </div>
+	      		 
+	         <br><br>
+	         <h5>후기를 남겨주세요</h5>
 	         <div style="display: flex;">
-	         	<input type="text" class="form-control" style="width: 30%; margin-right: 3%;">
-				<textarea class="form-control h-25" id="exampleFormControlTextarea1" rows="8" placeholder="만족도에 대한 후기를 남겨주세요"></textarea>
+				<textarea class="form-control h-25" id="exampleFormControlTextarea1" rows="8" placeholder="만족도에 대한 후기를 남겨주세요" style="background-color: #f2f2f2;"></textarea>
 	         </div>
 	         <hr>
       	 </div>

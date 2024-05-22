@@ -364,23 +364,20 @@ public class MemberDAO_imple implements MemberDAO {
 	          conn = ds.getConnection();
 		
         String sql = " update member set name = ? "
-                + "                     , pwd = ? "
-                + "                     , email = ? "
-                + "                     , phone = ? "
-                + "                     , address = ? "
-                + "                     , addressdetail = ? "
-                + "                     , pwdupdateday = sysdate "
-                + " where userid = ? ";
+                   + "                   , email = ? "
+                   + "                   , phone = ? "
+                   + "                   , address = ? "
+                   + "                   , addressdetail = ? "
+                   + " where userid = ? ";
                 
        pstmt = conn.prepareStatement(sql);
        
        pstmt.setString(1, member.getName());
-       pstmt.setString(2, Sha256.encrypt(member.getPwd()) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
-       pstmt.setString(3, aes.encrypt(member.getEmail()) );  // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
-       pstmt.setString(4, aes.encrypt(member.getPhone()) ); // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다. 
-       pstmt.setString(5, member.getAddress());
-       pstmt.setString(6, member.getAddressDetail());
-       pstmt.setString(7, member.getUserid());
+       pstmt.setString(2, aes.encrypt(member.getEmail()) );  // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
+       pstmt.setString(3, aes.encrypt(member.getPhone()) ); // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다. 
+       pstmt.setString(4, member.getAddress());
+       pstmt.setString(5, member.getAddressDetail());
+       pstmt.setString(6, member.getUserid());
                 
        result = pstmt.executeUpdate();
        
@@ -394,5 +391,39 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;    
 		
 	}// end of public int updateMember(MemberDTO member) throws SQLException-----
+
+
+	// 회원정보 수정시 email 중복검사
+	@Override
+    public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException {
+
+      boolean isExists = false;
+      
+      try {
+         conn = ds.getConnection();
+         
+         String sql = " select email "
+                    + " from member "
+                    + " where userid != ? and email = ? ";
+         
+         pstmt = conn.prepareStatement(sql); 
+         pstmt.setString(1, paraMap.get("userid"));
+         pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+         
+         rs = pstmt.executeQuery();
+         
+         isExists = rs.next(); // 행이 있으면(중복된 email) true,
+                               // 행이 없으면(사용가능한 email) false
+         
+      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+         e.printStackTrace();
+      } finally {
+         close();
+      }
+      		
+      return isExists;      
+	      
+	}// end of public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException-----
+
 	
 }

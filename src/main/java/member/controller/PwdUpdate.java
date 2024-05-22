@@ -1,0 +1,101 @@
+package member.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import common.controller.AbstractController;
+import member.domain.MemberDTO;
+import member.model.MemberDAO;
+import member.model.MemberDAO_imple;
+
+public class PwdUpdate extends AbstractController {
+	
+	private MemberDAO mdao = null;
+	
+	public PwdUpdate() {
+		mdao = new MemberDAO_imple();
+	}
+
+	@Override
+	   public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+			String method =  request.getMethod();
+			
+			if("get".equalsIgnoreCase(method)) {
+	      
+			      // 내정보(회원정보)를 수정하기 위한 전제조건은 먼저 로그인을 해야 하는 것이다. 
+			      if(super.checkLogin(request)) {
+			         // 로그인을 했으면 
+			         
+			         String userid = request.getParameter("userid");
+			         
+			         HttpSession session = request.getSession();
+			         MemberDTO loginuser = (MemberDTO) session.getAttribute("loginUser"); 
+			         
+			         if(loginuser.getUserid().equals(userid)) {
+			            // 로그인한 사용자가 자신의 정보를 수정하는 경우 
+			            
+			            super.setRedirect(false);
+			            super.setViewPage("/WEB-INF/member/myPage/pwdUpdate.jsp");
+			            
+			         }
+			         else {
+			            // 로그인한 사용자가 다른 사용자의 정보를 수정하려고 시도하는 경우 
+			            String msg = "다른 사용자의 정보 변경은 불가합니다!!";
+			            String loc = "javascript:history.back()";
+			            
+			            request.setAttribute("msg", msg);
+			            request.setAttribute("loc", loc);
+			            
+			            super.setRedirect(false);
+			            super.setViewPage("/WEB-INF/msg.jsp");
+			         }
+			         
+			      }
+			      
+			      else {
+			         // 로그인을 안했으면 
+			         String msg = "회원정보를 수정하기 위해서는 먼저 로그인을 하세요!!";
+			         String loc = "/WEB-INF/login/login.jsp";
+			         
+			         request.setAttribute("msg", msg);
+			         request.setAttribute("loc", loc);
+			         
+			      //   super.setRedirect(false);
+			         super.setViewPage("/WEB-INF/msg.jsp");
+			      }
+	      
+			}
+			else { // "post" 방식일 때
+				
+				String userid = request.getParameter("userid");
+
+					
+				String new_pwd = request.getParameter("pwd");
+				
+				Map<String, String> paraMap = new HashMap<>();
+				paraMap.put("userid", userid);
+				paraMap.put("new_pwd", new_pwd);
+				
+				int n = 0;
+				
+				try {
+					n = mdao.pwdUpdate2(paraMap);
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+				request.setAttribute("n", n);
+				
+				
+			}
+	      
+	   }
+
+}

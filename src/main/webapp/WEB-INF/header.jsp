@@ -128,6 +128,11 @@
 		});
 		
 		<%-- MyPage Click --%>
+		$("div#PwdUpdate").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/pwdUpdate.wine?userid=${sessionScope.loginUser.userid}";
+		});
+		
+		<%-- MyPage Click --%>
 		$("div#OrderList").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/orderList.wine";
 		});
@@ -137,14 +142,18 @@
 			location.href="<%=ctxPath%>/member/reviewList.wine";
 		});
 		
+		<%-- MyPage Click --%>
+		$("div#PwdUpdate").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/pwdUpdate.wine?userid=${sessionScope.loginUser.userid}";
+		});
+		
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
 		$("button#btn-close").click(function(){
 			javascript:history.go(0);
 		});
 		
 		
-		
-		
+	
 		$("input:text[name='memo']").hide();
 		
 		$('#order_msg').change(function() {
@@ -313,7 +322,7 @@
             </form>
            <%-- 검색 Modal --%>
            
-            <%-- 관리자 쿠폰 등록 클릭시 나오는 Modal --%>
+           <%-- 관리자 쿠폰 등록 클릭시 나오는 Modal --%>
             <div class="modal fade" id="adminCoupon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                   <div class="modal-content rounded-4 shadow">
@@ -332,7 +341,7 @@
               </div>
           </div>
     	<%-- 관리자 쿠폰 등록 클릭시 나오는 Modal 끝 --%>
-          
+      
     </header>
     
     <%-- 로그인 후 상단에 아이디 버튼 클릭 시 마이페이지 오프캔버스 나오기 --%>
@@ -379,6 +388,9 @@
                </c:if>
                <c:if test="${not empty sessionScope.loginUser}">
                   <div id="MemberEdit" style="display: flex; margin-bottom: 2%; cursor: pointer;">내정보 수정</div>
+               </c:if>
+               <c:if test="${not empty sessionScope.loginUser}">
+                  <div id="PwdUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;">비밀번호 변경</div>
                </c:if>
             </div>
        </div>

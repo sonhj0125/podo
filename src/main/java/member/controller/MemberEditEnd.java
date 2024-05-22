@@ -30,7 +30,6 @@ public class MemberEditEnd extends AbstractController {
 		
 		   String userid = request.getParameter("userid");	
 		   String name = request.getParameter("name");
-		   String pwd = request.getParameter("pwd");
 		   String email = request.getParameter("email");
     	   String phone = request.getParameter("phone");
 		   String address = request.getParameter("address");
@@ -38,7 +37,6 @@ public class MemberEditEnd extends AbstractController {
 			
 		   MemberDTO member = new MemberDTO();
 		   member.setUserid(userid);
-		   member.setPwd(pwd);
 		   member.setName(name);
 		   member.setEmail(email);
 		   member.setPhone(phone);
@@ -50,6 +48,7 @@ public class MemberEditEnd extends AbstractController {
 		   String loc = "";
 			
 			try {
+				
 				int n = mdao.updateMember(member); 
 				
 				if(n==1) {
@@ -59,25 +58,23 @@ public class MemberEditEnd extends AbstractController {
 					MemberDTO loginuser = (MemberDTO) session.getAttribute("loginUser");
 					
 					loginuser.setName(name);
-					loginuser.setPwd(pwd);
 					loginuser.setEmail(email);
 					loginuser.setPhone(phone);
 					loginuser.setAddress(address);
 					loginuser.setAddressDetail(addressDetail);
 					
 					msg = "회원정보 수정 성공!";
-					loc = request.getContextPath()+"/index.up"; // 시작페이지로 이동한다.
+					loc = request.getContextPath()+"/index.wine"; // 시작페이지로 이동한다.
 				}
+				
 			} catch(SQLException e) {
 				msg = "SQL구문 에러발생";
 				loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동하는 것. 
 				e.printStackTrace();
 			}
 			
-			request.setAttribute("message", msg);
+			request.setAttribute("msg", msg);
 			request.setAttribute("loc", loc);
-			
-			request.setAttribute("memberEditEnd", true);
 			
 		//	super.setRedirect(false); 
 			super.setViewPage("/WEB-INF/msg.jsp");
