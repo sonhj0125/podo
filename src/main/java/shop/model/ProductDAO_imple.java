@@ -941,6 +941,8 @@ public class ProductDAO_imple implements ProductDAO {
 				ReviewDTO rdto = new ReviewDTO();
 				
 				pdto = new ProductDTO();
+				odto = new OrderDTO();
+				
 				pdto.setPindex(rs.getInt("pindex"));
 				pdto.setPname(rs.getString("pname"));
 				pdto.setPengname(rs.getString("pengname"));
@@ -948,9 +950,8 @@ public class ProductDAO_imple implements ProductDAO {
 				String price = df.format(rs.getInt("pprice"));
 				pdto.setPprice(price);
 
-				rdto.setPdto(pdto);
+				odto.setPdto(pdto);
 				
-				odto = new OrderDTO();
 				odto.setOstatus(rs.getInt("oindex"));
 				odto.setOdate(rs.getString("odate"));
 				

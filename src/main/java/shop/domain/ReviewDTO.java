@@ -7,7 +7,6 @@ public class ReviewDTO {
 	private String rdate;
 	
 	private OrderDTO odto;
-	private ProductDTO pdto;
 
 	
 	public int getRindex() {
@@ -49,13 +48,5 @@ public class ReviewDTO {
 	public void setOdto(OrderDTO odto) {
 		this.odto = odto;
 	}
-
-	public ProductDTO getPdto() {
-		return pdto;
-	}
-
-	public void setPdto(ProductDTO pdto) {
-		this.pdto = pdto;
-	}
-
+	
 }

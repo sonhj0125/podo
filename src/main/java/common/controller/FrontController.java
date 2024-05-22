@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 		description = "*.wine 을 했을 경우 응답.",
 		urlPatterns = {"*.wine"},
 		initParams = { 
-		      @WebInitParam(name = "propertyConfig", value = "C:/NCS/podo/src/main/webapp/WEB-INF/Command.properties", description = "*.wine Mapping prop")  
+		      @WebInitParam(name = "propertyConfig", value = "/Users/allzero/Desktop/NCS/podo/src/main/webapp/WEB-INF/Command.properties", description = "*.wine Mapping prop")  
 		})
 public class FrontController extends HttpServlet {
 
