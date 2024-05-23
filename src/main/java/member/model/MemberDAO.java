@@ -47,7 +47,6 @@ public interface MemberDAO {
 	int getTotalMemberCount(Map<String, String> paraMap) throws SQLException;
 
 	
-
 	// 관리자 회원관리 - 한명 조회
 	MemberDTO selectOneMember(String userid) throws SQLException;
 

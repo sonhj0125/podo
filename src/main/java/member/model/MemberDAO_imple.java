@@ -70,9 +70,9 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "INSERT INTO MEMBER "
-					+ " (USERID, PWD, NAME, EMAIL, PHONE, ADDRESS, ADDRESSDETAIL, GENDER, BIRTHDAY) "
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = " INSERT INTO MEMBER "
+					   + " (USERID, PWD, NAME, EMAIL, PHONE, ADDRESS, ADDRESSDETAIL, GENDER, BIRTHDAY) "
+					   + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			

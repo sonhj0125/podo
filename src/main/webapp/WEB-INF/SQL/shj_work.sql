@@ -138,5 +138,30 @@ from member join memberidx on member.memberidx = memberidx.memberidx
 where memberidx.memberidx = 1 and userid = 'test002'
 
 
+select *
+from log;
+
+select *
+from coupon;
+
+select *
+from mycoupon;
+
+
+insert into mycoupon(coindex, userid, coname, costatus) values('503', 'kmj0228', '무료로 드립니다 [100% 쿠폰]', '1');
+
+commit;
+
+
+select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX, costatus
+from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCOUPON.USERID = MEMBER.USERID
+where MEMBER.USERID = 'kmj0228'
+
+
+select coupon.coname AS coname
+from coupon 
+join mycoupon on coupon.coname = mycoupon.coname
+join member on mycoupon.userid = member.userid
+where member.userid = 'kmj0228';
 
 

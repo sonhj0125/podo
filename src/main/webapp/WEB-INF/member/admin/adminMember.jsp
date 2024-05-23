@@ -52,7 +52,7 @@
 	  	
 		
 		// **** 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다. **** //
-		$("table#memberTbl").click( e => {
+		$("tbody#memberContents").click( e => {
 			
 			const userid = $(e.target).parent().children(".userid").text();
 			// alert(userid);
@@ -179,7 +179,7 @@
 			</tr>
 		</thead>
 
-		<tbody>
+		<tbody id="memberContents">
 			
 			<c:if test="${not empty requestScope.memberList}">
 				<c:forEach var="mdto" items="${requestScope.memberList}" varStatus="status">
