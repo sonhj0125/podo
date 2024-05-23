@@ -1,8 +1,10 @@
 package coupon.model;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import coupon.domain.CouponDTO;
+import coupon.domain.MyCouponDTO;
 
 public interface CouponDAO {
 
@@ -11,4 +13,7 @@ public interface CouponDAO {
 
 	// 쿠폰을 삽입하기 전에 쿠폰이 이미 존재하는지 중복 검사(coname이름PK)
 	boolean isCouponExist(CouponDTO codto) throws SQLException;
+
+	// 내 쿠폰 리스트 불러오기
+	List<MyCouponDTO> getMyList(String userid) throws SQLException;
 }

@@ -6,18 +6,25 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import cart.domain.CartDTO;
 import cart.model.CartDAO;
 import cart.model.CartDAO_imple;
 import common.controller.AbstractController;
+import coupon.domain.MyCouponDTO;
+import coupon.model.CouponDAO;
+import coupon.model.CouponDAO_imple;
+import member.domain.MemberDTO;
 
 public class Order extends AbstractController {
 
 	CartDAO cdao = null;
+	CouponDAO codao = null;
 	
 	public Order() {
 		cdao = new CartDAO_imple();
+		codao = new CouponDAO_imple();
 	}
 	
 	@Override
@@ -67,9 +74,14 @@ public class Order extends AbstractController {
 			
 			if(nextStep) { // 정상
 				
+				HttpSession session = request.getSession();
+				MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
+				
 				List<CartDTO> cdtoList = cdao.getList(cindexArr);
+				List<MyCouponDTO> mycodtoList = codao.getMyList(mdto.getUserid());
 				
 				request.setAttribute("cdtoList", cdtoList);
+				request.setAttribute("mycodtoList", mycodtoList);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/order.jsp");

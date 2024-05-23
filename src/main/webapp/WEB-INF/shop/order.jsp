@@ -86,28 +86,28 @@
             
             <hr style="width: 90%;">
             <div class="form-group row my-4">
-               <label class="col-2" style="width: 14%; font-weight: bold;">이름</label>
+               <label class="col-2"  style="width: 14%; font-weight: bold;">이름</label>
                <div class="col-sm-7">
-                  <input type="text" name="name" class="form-control" placeholder="이름을 입력해주세요." style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.name}" name="name" class="form-control" placeholder="이름을 입력해주세요." style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row  my-4">
                <label class="col-2" style="width: 14%; font-weight: bold;">이메일</label>
                <div class="col-sm-7">
-                  <input type="text" name="email" class="form-control" placeholder="이메일을 입력해주세요." style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.email}" name="email" class="form-control" placeholder="이메일을 입력해주세요." style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row  my-4">
                <label class="col-2" style="width: 14%; font-weight: bold;">연락처</label>
                <div class="col-sm-7">
-                  <input type="text" name="mobile" class="form-control" placeholder='"-"를 제외한 숫자만 입력해주세요.' style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.phone}" name="mobile" class="form-control" placeholder='"-"를 제외한 숫자만 입력해주세요.' style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row" style="margin-bottom: 1.8%;">
                <label class="col-2" style="width: 14%; font-weight: bold;">주소</label>
                <div class="col-sm-7">
-                  <input type="text" name="address" class="form-control" style="border-color: black;"/>
-                  <input type="text" name="addressDetail" class="form-control mt-1" placeholder="상세주소" style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.address}" name="address" class="form-control" style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.addressDetail}" name="addressDetail" class="form-control mt-1" placeholder="상세주소" style="border-color: black;"/>
                </div>
             </div>
             
@@ -137,12 +137,14 @@
 	               <label class="col-2" style="width: 15.5%; font-weight: bold;">쿠폰 할인</label>
 	            <select class="form-select" id="" name="" style="width: 55.2%; border-color: black;">
 	              <option selected>-- 쿠폰 선택--</option>
-	              <option>배송 전에 미리 연락바랍니다.</option>
+	              <c:forEach var="mycodto" items="${requestScope.mycodtoList}">
+	              	<option>${mycodto.codto.coname}</option>
+	              </c:forEach>
 	            </select>
 	            </div>
 	            
 	            <div class="form-group row  my-4">
-               <label class="col-2" style="width: 25%; font-weight: bold;">포인트사용 <br><span>20,000</span>P 사용가능</label>
+               <label class="col-2" style="width: 25%; font-weight: bold;">포인트사용 <br><span>${sessionScope.loginUser.point}</span>P 사용가능</label>
                <div class="col-sm-7">
                   <input type="text" name="point" class="form-control" placeholder="입력" style="border-color: black; width: 40%"/>
                </div>
@@ -189,7 +191,13 @@
          <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/shop/orderEnd.wine';">주문하기</button>
       </div>
 
-   </div>
-    </div>
+   		</div>
+   		
+   		<div>
+   			<c:forEach var="mycodto" items="${requestScope.mycodtoList}">
+   				<div id="" class="cotype">${mycodto.codto.cotype}</div>
+   				<div id="" class="codiscount">${mycodto.codto.codiscount}</div>
+   			</c:forEach>
+   		</div>
 
 <jsp:include page="../footer.jsp" />
