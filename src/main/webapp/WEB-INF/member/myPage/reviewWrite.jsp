@@ -20,7 +20,7 @@
       color: purple;
       font-size: 50px;
     }
-
+	
     .star:hover::after,
     .star:has(~ .star:hover)::after,
     .star:checked::after,
@@ -33,9 +33,19 @@
     }
 </style>
 
+<script type="text/javascript">
+
+	// 등록하기 버튼 클릭 시 리뷰 작성
+	function reviewWrite() {
+		const frm = document.reviewWriteForm;
+		frm.method = "post";
+		frm.submit();
+	}
+</script>
+
 <jsp:include page="../../header.jsp" />
 
-<form>
+<form name="reviewWriteForm">
    <div id="container" style="width: 100%;">
       
       <div style="width: 60%; text-align: center;">
@@ -63,11 +73,11 @@
                <div style="width: 50%; border-left: solid 1px black; margin: 0 2%;">
                   <h5>와인을 평가해주세요</h5>
                   <div class="star-rating" style="margin:0 auto; width:100%; justify-content:center;">
-                   <input type="radio" class="star" value="1" style="text-align: center;">
-                   <input type="radio" class="star" value="2" style="text-align: center;">
-                   <input type="radio" class="star" value="3" style="text-align: center;">
-                   <input type="radio" class="star" value="4" style="text-align: center;">
-                   <input type="radio" class="star" value="5" style="text-align: center;">
+                   <input type="radio" name="rstar" class="star" value="1" style="text-align: center;">
+                   <input type="radio" name="rstar" class="star" value="2" style="text-align: center;">
+                   <input type="radio" name="rstar" class="star" value="3" style="text-align: center;">
+                   <input type="radio" name="rstar" class="star" value="4" style="text-align: center;">
+                   <input type="radio" name="rstar" class="star" value="5" style="text-align: center;">
                   </div>
                </div>
                 </div>
@@ -75,12 +85,12 @@
             <br><br>
             <h5>후기를 남겨주세요</h5>
             <div style="display: flex;">
-            <textarea class="form-control h-25" id="exampleFormControlTextarea1" rows="8" placeholder="만족도에 대한 후기를 남겨주세요" style="background-color: #f2f2f2;"></textarea>
+            <textarea class="form-control h-25" id="exampleFormControlTextarea1" name="rdetail" rows="8" placeholder="만족도에 대한 후기를 남겨주세요" style="background-color: #f2f2f2;"></textarea>
             </div>
             <hr>
           </div>
           
-        <button type="button" class="btn btn-secondary" style="width: 20%;">등록</button>
+        <button type="button" class="btn btn-secondary" style="width: 20%;" onclick="reviewWrite()">등록</button>
 
       </div>
       

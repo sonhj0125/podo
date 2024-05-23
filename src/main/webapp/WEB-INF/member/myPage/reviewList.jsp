@@ -59,8 +59,9 @@
 											</div>
 										</c:when>
 										<c:otherwise>
-											<div style="margin: auto 0;">
+											<div style="margin: auto 0; text-align: right;">
 												<input type="hidden" name="rindex" value="${rvo.rindex}">
+												<div class="mb-2" style="font-size: 10pt;">${rvo.rdate} 작성</div>
 												<button type="button" class="btn btn-secondary" onclick="location.href='<%=ctxPath%>/member/reviewUpdate.wine'">리뷰 수정</button>
 											</div>
 										</c:otherwise>

@@ -155,7 +155,7 @@ commit;
 
 
 -- 리뷰 관리 페이지 : 배송완료인 상품 목록 띄우기
-SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex
+SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex, rdate
 FROM
 (
     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, 

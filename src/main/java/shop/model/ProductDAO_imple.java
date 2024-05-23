@@ -916,7 +916,7 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex "
+			String sql = " SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex, rdate "
 					   + " FROM "
 					   + " ( "
 					   + "     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, "
@@ -958,6 +958,7 @@ public class ProductDAO_imple implements ProductDAO {
 				rdto.setOdto(odto);
 				
 				rdto.setRindex(rs.getInt("rindex"));
+				rdto.setRdate(rs.getString("rdate"));
 				
 				resultList.add(rdto);
 			}
@@ -974,7 +975,7 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	// [리뷰 작성] 주문 인덱스에 대한 상품 정보 받아오기
 	@Override
-	public ProductDTO getProductByOindex(int oindex) throws SQLException {
+	public ProductDTO getProductByOindex(String oindex) throws SQLException {
 
 		ProductDTO pdto = null;
 		
@@ -988,7 +989,7 @@ public class ProductDAO_imple implements ProductDAO {
 					   + " where oindex = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, oindex);
+			pstmt.setString(1, oindex);
 			
 			rs = pstmt.executeQuery();
 			
@@ -1017,6 +1018,36 @@ public class ProductDAO_imple implements ProductDAO {
 		return pdto;
 		
 	} // end of public ProductDTO getProductByOindex(String oindex) throws SQLException --------------------
+
+	
+	
+	// [리뷰 작성] 리뷰 작성하기
+	@Override
+	public int addReview(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " insert into review(rindex, rstar, rdetail, rdate, oindex) "
+					   + " values(seq_rIdx.nextval, ?, ?, to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'), ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("rstar"));
+			pstmt.setString(2, paraMap.get("rdetail"));
+			pstmt.setString(3, paraMap.get("oindex"));
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int addReview(Map<String, String> paraMap) throws SQLException -----------------
 	
 
 }
