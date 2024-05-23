@@ -149,7 +149,7 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPbody(rs.getString("pbody"));
 				pdto.setPacid(rs.getString("pacid"));
 				pdto.setPtannin(rs.getString("ptannin"));
-				pdto.setPacl(rs.getString("ptannin"));
+				pdto.setPacl(rs.getString("pacl"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
 				pdto.setPindex(rs.getInt("pindex"));
@@ -916,32 +916,29 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT R.pindex, pname, pengname, pprice, ostatus, odate, rindex "
+			String sql = " SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex "
 					   + " FROM "
 					   + " ( "
-					   + "     select pname, pengname, to_number(pprice) as pprice, P.pindex, "
-					   + "            ostatus, odate "
+					   + "     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, "
+					   + "            ostatus, odate, oindex "
 					   + "     from product P JOIN orders O "
 					   + "     ON P.pindex = O.pindex "
 					   + "     where O.userid = ? and O.ostatus = 4 "
 					   + " ) V "
 					   + " LEFT JOIN REVIEW R "
-					   + " ON V.pindex = R.pindex ";
+					   + " ON V.oindex = R.oindex"
+					   + " ORDER BY oindex desc ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
 			
 			rs = pstmt.executeQuery();
 			
-			ProductDTO pdto = null;
-			OrderDTO odto = null;
-			
 			while(rs.next()) {
 				
 				ReviewDTO rdto = new ReviewDTO();
-				
-				pdto = new ProductDTO();
-				odto = new OrderDTO();
+				ProductDTO pdto = new ProductDTO();
+				OrderDTO odto = new OrderDTO();
 				
 				pdto.setPindex(rs.getInt("pindex"));
 				pdto.setPname(rs.getString("pname"));
@@ -949,10 +946,13 @@ public class ProductDAO_imple implements ProductDAO {
 				
 				String price = df.format(rs.getInt("pprice"));
 				pdto.setPprice(price);
+				
+				pdto.setPimg(rs.getString("pimg"));
 
 				odto.setPdto(pdto);
 				
-				odto.setOstatus(rs.getInt("oindex"));
+				odto.setOindex(rs.getInt("oindex"));
+				odto.setOstatus(rs.getInt("ostatus"));
 				odto.setOdate(rs.getString("odate"));
 				
 				rdto.setOdto(odto);
@@ -969,6 +969,54 @@ public class ProductDAO_imple implements ProductDAO {
 		return resultList;
 		
 	} // end of public List<ReviewDTO> selectProductReviewList(String userid) throws SQLException -------------
+
+	
+	
+	// [리뷰 작성] 주문 인덱스에 대한 상품 정보 받아오기
+	@Override
+	public ProductDTO getProductByOindex(int oindex) throws SQLException {
+
+		ProductDTO pdto = null;
+		
+		try {
+		
+			conn = ds.getConnection();
+			
+			String sql = " select P.* "
+					   + " from product P JOIN orders O "
+					   + " ON P.pindex = O.pindex "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				pdto = new ProductDTO();
+				
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				pdto.setPprice(price);
+				
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPimg(rs.getString("pimg"));
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return pdto;
+		
+	} // end of public ProductDTO getProductByOindex(String oindex) throws SQLException --------------------
 	
 
 }

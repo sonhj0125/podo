@@ -47,5 +47,9 @@ public interface ProductDAO {
 
 	// [리뷰 관리] 회원이 주문한 상품 중 배송완료인 상품 목록 띄우기
 	List<ReviewDTO> selectProductReviewList(String userid) throws SQLException;
+
+	// [리뷰 작성] 주문 인덱스에 대한 상품 정보 받아오기
+	ProductDTO getProductByOindex(int oindex) throws SQLException;
+
 	
 }
