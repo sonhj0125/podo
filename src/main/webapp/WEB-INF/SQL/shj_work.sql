@@ -132,5 +132,11 @@ commit;
 
 
 
+select userid, name, email, phone, address, addressdetail, gender
+ , birthday, point, registerday, memberidx.status
+from member join memberidx on member.memberidx = memberidx.memberidx
+where memberidx.memberidx = 1 and userid = 'test002'
+
+
 
 

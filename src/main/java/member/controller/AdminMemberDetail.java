@@ -21,10 +21,6 @@ public class AdminMemberDetail extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
 		// === 관리자(admin)로 로그인 했을때만 조회가 가능하도록 한다. === //
-		HttpSession session = request.getSession();
-		
-		MemberDTO loginuser = (MemberDTO)session.getAttribute("loginuser");
-		
 		if(super.isDir(request.getSession())) {
 			// 관리자(admin)로 로그인 했을 경우
 			
@@ -42,7 +38,7 @@ public class AdminMemberDetail extends AbstractController {
 				request.setAttribute("goBackURL", goBackURL);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/member/admin/memberOneDetail.jsp");
+				super.setViewPage("/WEB-INF/member/admin/adminMemberDetail.jsp");
 				
 			}
 			

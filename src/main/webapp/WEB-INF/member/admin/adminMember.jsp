@@ -50,11 +50,21 @@
 		}); // end of $("select[name='sizePerPage']").bind("change", function() {}) ------------------
 		
 	  	
-		<%-- 회원클릭시 상세보기 페이지 --%>
-		$("table#memberTbl").bind('click',()=>{
-		   location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
-		});
 		
+		// **** 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다. **** //
+		$("table#memberTbl").click( e => {
+			
+			const userid = $(e.target).parent().children(".userid").text();
+			// alert(userid);
+			
+			const frm = document.adminMemberDetail_frm;
+			frm.userid.value = userid;
+			
+			frm.action = "<%= ctxPath%>/member/admin/adminMemberDetail.wine";
+			frm.method = "post";
+			frm.submit();
+			
+		});
       
    }); // end of window.onload
    
@@ -202,6 +212,13 @@
 		
 		</tbody>
 	</table>
+	
+	
+<form name="adminMemberDetail_frm">
+	<input type="hidden" name="userid" />
+	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}" />
+</form>
+	
 	
 	
 	<%-- 페이지 이동 --%>

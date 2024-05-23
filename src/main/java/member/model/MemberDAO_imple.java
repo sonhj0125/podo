@@ -551,19 +551,21 @@ public class MemberDAO_imple implements MemberDAO {
 			
 	
 
+		
+		
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
 		
-		MemberDTO member = null;
+		MemberDTO mdto = null;
 	      
 	      try {
 	         conn = ds.getConnection();
 	         
 	         String sql =  " select userid, name, email, phone, address, addressdetail, gender "
-	                  + "      , birthday, point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
-	                  + " from member "
-	                  + " where status = 1 and userid = ? ";
+	         			 + " , birthday, point, registerday, memberidx.status "
+	         			 + " from member join memberidx on member.memberidx = memberidx.memberidx "
+	         			 + " where memberidx.memberidx = 1 and userid = ? ";
 	                     
 	         pstmt = conn.prepareStatement(sql);
 	         
@@ -572,28 +574,30 @@ public class MemberDAO_imple implements MemberDAO {
 	         rs = pstmt.executeQuery();
 	         
 	         if(rs.next()) {
-	            member = new MemberDTO();
+	        	 
+	        	 mdto = new MemberDTO();
 	            
-	            member.setUserid(rs.getString(1));
-	            member.setName(rs.getString(2));
-	            member.setEmail( aes.decrypt(rs.getString(3)) );  // 복호화
-	            member.setPhone( aes.decrypt(rs.getString(4)) ); // 복호화
-	            member.setAddress(rs.getString(5));
-	            member.setAddressDetail(rs.getString(6));
-	            member.setGender(rs.getString(7));
-	            member.setBirthday(rs.getString(8));
-	            member.setPoint(rs.getString(9));
-	            member.setRegisterDay(rs.getString(10));
-	            
+	        	 mdto.setUserid(rs.getString("userid"));
+	        	 mdto.setName(rs.getString("name"));
+	        	 mdto.setEmail(aes.decrypt(rs.getString("email")));
+	        	 mdto.setPhone(aes.decrypt(rs.getString("phone")));
+	        	 mdto.setAddress(rs.getString("address"));
+	        	 mdto.setAddressDetail(rs.getString("addressdetail"));
+	        	 mdto.setGender(rs.getString("gender"));
+	        	 mdto.setBirthday(rs.getString("birthday"));
+	        	 mdto.setPoint(rs.getString("point"));
+	        	 mdto.setRegisterDay(rs.getString("registerday"));
+	        	 mdto.setStatus(rs.getString("status"));
+	        	 
 	         } // end of if(rs.next())
 	         
-	      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	      } catch(Exception e) {
 	         e.printStackTrace();
 	      } finally {
 	         close();
 	      }
 	      
-	      return member;
+	      return mdto;
 	      
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
