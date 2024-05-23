@@ -428,9 +428,59 @@ public class MemberDAO_imple implements MemberDAO {
 
 	// 마이페이지 비밀번호 변경 비밀번호 변경
 	@Override
-	public int pwdUpdate2(Map<String, String> paraMap) {
+	public int pwdUpdate2(Map<String, String> paraMap) throws SQLException {
 		
-		return 0;
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update member set pwd = ?, pwdupdateday = to_char(sysdate, 'yyyy-mm-dd') "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd"))); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			pstmt.setString(2, paraMap.get("userid"));
+	        
+	        result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		System.out.println(result);
+		
+		return result;
+	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
+
+
+	// 비밀번호 변경시 현재 사용중인 비밀번호인지 아닌지 알아오기(현재 사용중인 비밀번호 이라면 true, 새로운 비밀번호이라면 false)
+	@Override
+	public boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+	          conn = ds.getConnection();
+	          
+	          String sql = " select pwd "
+	                     + " from member "
+	                     + " where userid = ? and pwd = ? ";
+	          
+	          pstmt = conn.prepareStatement(sql); 
+	          pstmt.setString(1, paraMap.get("userid"));
+	          pstmt.setString(2, Sha256.encrypt(paraMap.get("new_pwd")));
+	          
+	          rs = pstmt.executeQuery();
+	          
+	          isExists = rs.next(); // 행이 있으면(현재 사용중인 비밀번호) true,
+	                                // 행이 없으면(새로운 비밀번호) false
+	          
+	       } finally {
+	          close();
+	       }
+		
+		return isExists;
 	}
 
 	
