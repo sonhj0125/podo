@@ -217,4 +217,88 @@ public class CartDAO_imple implements CartDAO {
 		return result;
 	}
 
+	@Override
+	public int modifyVolume(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE CART SET CVOLUME = ? WHERE CINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("cvolume"));
+			pstmt.setString(2, paraMap.get("cindex"));
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<CartDTO> getList(String cindexArr) throws SQLException {
+		
+		List<CartDTO> cdtoList = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select CVOLUME,PNAME,PTYPE,PHOMETOWN,PPRICE,PIMG,cart.PINDEX as pindex,cindex "
+					+ " from CART join PRODUCT on CART.PINDEX = PRODUCT.PINDEX "
+					+ " where CINDEX IN ("+ cindexArr +")";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			boolean target = true;
+			
+			while(rs.next()) {
+				
+				if(target) {
+					cdtoList = new ArrayList<>();
+					target = false;
+				}
+				
+				CartDTO cdto = new CartDTO();
+				cdto.setCvolume(rs.getString("CVOLUME"));
+				cdto.setCindex(rs.getInt("cindex"));;
+				
+				ProductDTO pdto = new ProductDTO();
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPindex(rs.getInt("pindex"));
+				
+				int sumpriceInt = Integer.parseInt(rs.getString("pprice"))*Integer.parseInt(rs.getString("CVOLUME"));
+				
+				String sumprice = df.format(sumpriceInt);
+				
+				cdto.setSumprice(sumprice);
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				
+				pdto.setPprice(price);
+				
+				cdto.setPdto(pdto);
+				
+				cdtoList.add(cdto);
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return cdtoList;
+	}
+
 }

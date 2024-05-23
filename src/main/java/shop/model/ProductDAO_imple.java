@@ -13,7 +13,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
+import shop.domain.ReviewDTO;
 
 public class ProductDAO_imple implements ProductDAO {
 
@@ -901,6 +903,71 @@ public class ProductDAO_imple implements ProductDAO {
 		
 		return pdto_list;
 	}
+
+	
+	
+	// [리뷰 관리] 회원이 주문한 상품 중 배송완료인 상품 목록 띄우기
+	@Override
+	public List<ReviewDTO> selectProductReviewList(String userid) throws SQLException {
+
+		List<ReviewDTO> resultList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT R.pindex, pname, pengname, pprice, ostatus, odate, rindex "
+					   + " FROM "
+					   + " ( "
+					   + "     select pname, pengname, to_number(pprice) as pprice, P.pindex, "
+					   + "            ostatus, odate "
+					   + "     from product P JOIN orders O "
+					   + "     ON P.pindex = O.pindex "
+					   + "     where O.userid = ? and O.ostatus = 4 "
+					   + " ) V "
+					   + " LEFT JOIN REVIEW R "
+					   + " ON V.pindex = R.pindex ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			ProductDTO pdto = null;
+			OrderDTO odto = null;
+			
+			while(rs.next()) {
+				
+				ReviewDTO rdto = new ReviewDTO();
+				
+				pdto = new ProductDTO();
+				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				
+				String price = df.format(rs.getInt("pprice"));
+				pdto.setPprice(price);
+
+				rdto.setPdto(pdto);
+				
+				odto = new OrderDTO();
+				odto.setOstatus(rs.getInt("oindex"));
+				odto.setOdate(rs.getString("odate"));
+				
+				rdto.setOdto(odto);
+				
+				rdto.setRindex(rs.getInt("rindex"));
+				
+				resultList.add(rdto);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return resultList;
+		
+	} // end of public List<ReviewDTO> selectProductReviewList(String userid) throws SQLException -------------
 	
 
 }

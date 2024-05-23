@@ -127,7 +127,7 @@ div#salepercent {
 					<label for="" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 기한 (~까지)</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="date" name="codate" />
+					<input class="form-control" type="date" name="codate" id="codate" />
 				</div>
 			</div>	
 		</div>
