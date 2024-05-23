@@ -139,20 +139,43 @@ from log
 order by logindex desc;
 
 
+-- 주문번호 500 주문상태 '배송완료'로 바꾸기
+update orders set ostatus = 4
+where oindex = 500;
+update orders set oardate = '2024-05-23 14:26:00'
+where oindex = 500;
+commit;
+
+
+-- 주문 값 임의로 넣기
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(501, '45000', '2250', '2024-05-22 19:15:00', 4, '2024-05-23 14:26:00', 1, 'test002', 29);
+commit;
+
+
+
 -- 리뷰 관리 페이지 : 배송완료인 상품 목록 띄우기
-SELECT R.pindex, pname, pengname, pprice, ostatus, odate, rindex
+SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex
 FROM
 (
-    select pname, pengname, to_number(pprice) as pprice, P.pindex, 
-           ostatus, odate
+    select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, 
+           ostatus, odate, oindex
     from product P JOIN orders O
     ON P.pindex = O.pindex
     where O.userid = 'test002' and O.ostatus = 4
 ) V
 LEFT JOIN REVIEW R
-ON V.pindex = R.pindex;
+ON V.oindex = R.oindex
+ORDER BY oindex desc;
 
 
+
+
+-- 리뷰 작성 페이지 : 주문 인덱스에 대한 상품 정보 받아오기
+select P.*
+from product P JOIN orders O
+ON P.pindex = O.pindex
+where oindex = 501;
 
 
 

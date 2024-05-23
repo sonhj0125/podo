@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
    String ctxPath = request.getContextPath();
 %>
@@ -39,21 +40,22 @@
       
       <div style="width: 60%; text-align: center;">
 
-          <h2>리뷰작성</h2>
+          <h2>리뷰 작성</h2>
           <div>
             <hr>
              <div style="display: flex; border: solid 0px red; margin: 6% 2%;">
              <div style="width: 50%;">
                <div style="display: flex; justify-content: space-between; padding: 0 2%;">
-      
-                     <div style="display: flex; width: 100%; justify-content: space-between;">
-                     
-                        <img src="<%=ctxPath %>/images/product/1.png" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
-                        <div style="margin: auto 1%; text-align: right;">
-                              <div>디아블로데블 카나발카베르네</div>
-                              <div>14,900원</div>
-                        </div>
-                      </div>
+      				<c:if test="${not empty requestScope.pdto}">
+	                 <div style="display: flex; width: 100%; justify-content: space-between;">
+	                 
+	                    <img src="<%=ctxPath%>/images/product/${pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
+	                    <div style="margin: auto 1%; text-align: right;">
+	                          <div>${pdto.pname}</div>
+	                          <div>${pdto.pprice}원</div>
+	                    </div>
+	                 </div>
+      				</c:if>		
                </div>
             
              </div>
