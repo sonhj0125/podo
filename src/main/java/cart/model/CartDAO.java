@@ -29,6 +29,10 @@ public interface CartDAO {
 	// 유저의 선택된 index 장바구니 내역 산출
 	List<CartDTO> getList(String cindexArr) throws SQLException;
 
+	// cindex로 제품정보 뽑아오기
+	CartDTO getProuctinfo(String string) throws SQLException;
+
+
 	
 
 }

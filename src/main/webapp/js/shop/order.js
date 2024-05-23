@@ -87,4 +87,27 @@ $(function() {
 
     });
 
+    let indexArr = [];
+
+    $(".indexAll").each(function(){
+
+        let index = $(this).text();
+        indexArr.push(index);
+
+    });
+
+    const indexjoinArr = indexArr.join(",");
+    $("input#idxArrjoin").val(indexjoinArr);
+
+    $("#btn-doorder").bind("click",function(){
+
+        const ctxPath = $("div#getctxPath").text();
+
+        const frm = document.orderfrm;
+        frm.method = "post";
+        frm.action = `${ctxPath}/shop/orderEnd.wine`;
+        frm.submit();
+
+    });
+    
 })

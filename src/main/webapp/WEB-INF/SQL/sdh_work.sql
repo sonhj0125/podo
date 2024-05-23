@@ -38,3 +38,7 @@ where MEMBER.USERID = 'redtree2379';
 
 select COTYPE,CODISCOUNT
 from COUPON where coname = ?;
+
+select CVOLUME, PPOINT, PPRICE, USERID
+from cart join PRODUCT on cart.PINDEX = PRODUCT.PINDEX
+where CINDEX = 61;

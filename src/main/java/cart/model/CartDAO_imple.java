@@ -14,6 +14,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import cart.domain.CartDTO;
+import member.domain.MemberDTO;
 import shop.domain.ProductDTO;
 
 public class CartDAO_imple implements CartDAO {
@@ -299,6 +300,50 @@ public class CartDAO_imple implements CartDAO {
 		}
 		
 		return cdtoList;
+	}
+
+	@Override
+	public CartDTO getProuctinfo(String string) throws SQLException {
+		
+		CartDTO cdto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select CVOLUME, PPOINT, PPRICE, USERID, PINDEX "
+					+ " from cart join PRODUCT on cart.PINDEX = PRODUCT.PINDEX "
+					+ " where CINDEX = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, string);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				cdto = new CartDTO();
+				
+				cdto.setCvolume(rs.getString("CVOLUME"));
+				
+				ProductDTO pdto = new ProductDTO();
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPprice(rs.getString("pprice"));
+				pdto.setPindex(rs.getInt("pindex"));
+				
+				MemberDTO mdto = new MemberDTO();
+				mdto.setUserid(rs.getString("userid"));
+				
+				cdto.setMdto(mdto);
+				cdto.setPdto(pdto);
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return cdto;
 	}
 
 }
