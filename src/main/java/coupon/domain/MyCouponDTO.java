@@ -4,7 +4,7 @@ import member.domain.MemberDTO;
 
 public class MyCouponDTO {
 	
-	private int coindex;
+	private int coindex, costatus;
 	private MemberDTO mdto;
 	private CouponDTO codto;
 	
@@ -25,6 +25,12 @@ public class MyCouponDTO {
 	}
 	public void setCodto(CouponDTO codto) {
 		this.codto = codto;
+	}
+	public int getCostatus() {
+		return costatus;
+	}
+	public void setCostatus(int costatus) {
+		this.costatus = costatus;
 	}
 
 }

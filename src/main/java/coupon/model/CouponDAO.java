@@ -16,4 +16,7 @@ public interface CouponDAO {
 
 	// 내 쿠폰 리스트 불러오기
 	List<MyCouponDTO> getMyList(String userid) throws SQLException;
+
+	// 쿠폰 정보 불러오기
+	CouponDTO getcouponinfo(String coname) throws SQLException;
 }

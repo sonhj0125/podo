@@ -6,6 +6,7 @@
 %>
 
 <jsp:include page="../header.jsp" />
+<script type="text/javascript" src="<%=ctxPath%>/js/shop/order.js"></script>
 
    <div id="container">
       
@@ -135,18 +136,20 @@
 	            
 	            <div class="form-group row" style="margin-bottom: 1.8%;">
 	               <label class="col-2" style="width: 15.5%; font-weight: bold;">쿠폰 할인</label>
-	            <select class="form-select" id="" name="" style="width: 55.2%; border-color: black;">
-	              <option selected>-- 쿠폰 선택--</option>
-	              <c:forEach var="mycodto" items="${requestScope.mycodtoList}">
-	              	<option>${mycodto.codto.coname}</option>
-	              </c:forEach>
+	            <select class="form-select" id="select-coupon" style="width: 55.2%; border-color: black;">
+	              <option selected>-- 쿠폰 선택 --</option>
+	              <c:if test="${not empty requestScope.mycodtoList}">
+		              <c:forEach var="mycodto" items="${requestScope.mycodtoList}">
+		              	<option>${mycodto.codto.coname}</option>
+		              </c:forEach>
+	              </c:if>
 	            </select>
 	            </div>
 	            
 	            <div class="form-group row  my-4">
                <label class="col-2" style="width: 25%; font-weight: bold;">포인트사용 <br><span>${sessionScope.loginUser.point}</span>P 사용가능</label>
                <div class="col-sm-7">
-                  <input type="text" name="point" class="form-control" placeholder="입력" style="border-color: black; width: 40%"/>
+                  <input id="pointuse" type="text" name="point" class="form-control" placeholder="입력" style="border-color: black; width: 40%"/>
                </div>
             </div>
 	            
@@ -155,17 +158,17 @@
                <br>
                <div style="width: 90%; display:flex; justify-content: space-between; margin: 0 auto;">
                   <div>총 구매금액</div>
-                  <div style="font-weight: bold;">14,900원</div>
+                  <div id="sumPrice" style="font-weight: bold;"></div>
                </div>
                <br>
                <div style="width: 90%; display:flex; justify-content: space-between; margin: 0 auto;">
                   <div>쿠폰할인</div>
-                  <div style="font-weight: bold;">-2,000원</div>
+                  <div id="couponsale" style="font-weight: bold;">0원</div>
                </div>
                <br>
                <div style="width: 90%; display:flex; justify-content: space-between; margin: 0 auto;">
                   <div>포인트사용</div>
-                  <div style="font-weight: bold;">-2,000원</div>
+                  <div id="pointsale" style="font-weight: bold;">0원</div>
                </div>
                <br>
                <div style="width: 90%; display:flex; justify-content: space-between; margin: 0 auto;">
@@ -177,7 +180,7 @@
                <br>
                <div style="width: 90%; display:flex; justify-content: space-between; margin: 0 auto;">
                   <div style="margin-top: 1%;">최종결제금액</div>
-                  <div style="font-weight: bold; font-size: 20pt;">15,900원</div>
+                  <div id="totalPrice" style="font-weight: bold; font-size: 20pt;"></div>
                </div>
                
             </div>

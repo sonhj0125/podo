@@ -81,9 +81,6 @@
                  <div style="width: 8%; min-width: 8%; text-align: center;">
                        수량
                  </div>
-                 <div style="width: 10%; min-width: 10%; text-align: center;">
-                       수량변경
-                 </div>
                  <div style="width:10%; min-width: 10%;  text-align: center; color: gray;">
                   개당가격
                  </div>
@@ -128,11 +125,6 @@
                  </div>
                  <button type="button" class="btn btn-light plus_btn" style="width: 30px; padding: 0; text-align: center; font-size: 17pt;">+</button>
                  
-                 <div style="width: 10%; min-width: 10%; text-align: center;">
-                 	
-                 	
-                    <button type="button" class="btn btn-light" onclick="replace('${cdtolist.cindex}')">변경</button>
-                 </div>
                  
                  <div style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right; color: gray;">
                         ${cdtolist.pdto.pprice}원

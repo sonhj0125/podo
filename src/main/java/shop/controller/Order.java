@@ -78,10 +78,13 @@ public class Order extends AbstractController {
 				MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
 				
 				List<CartDTO> cdtoList = cdao.getList(cindexArr);
-				List<MyCouponDTO> mycodtoList = codao.getMyList(mdto.getUserid());
 				
+				try {
+					List<MyCouponDTO> mycodtoList = codao.getMyList(mdto.getUserid());
+					request.setAttribute("mycodtoList", mycodtoList);
+				}catch (Exception e) {
+				}
 				request.setAttribute("cdtoList", cdtoList);
-				request.setAttribute("mycodtoList", mycodtoList);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/order.jsp");

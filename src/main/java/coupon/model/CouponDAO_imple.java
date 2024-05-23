@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.Context;
@@ -13,6 +16,7 @@ import javax.sql.DataSource;
 
 import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
+import oracle.net.aso.c;
 
 public class CouponDAO_imple implements CouponDAO {
 
@@ -115,7 +119,7 @@ public class CouponDAO_imple implements CouponDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX "
+			String sql = " select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX, costatus "
 					+ " from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCOUPON.USERID = MEMBER.USERID "
 					+ " where MEMBER.USERID = ? ";
 			
@@ -126,28 +130,90 @@ public class CouponDAO_imple implements CouponDAO {
 			
 			while(rs.next()) {
 				
-				MyCouponDTO mycodto = new MyCouponDTO();
+				if(rs.getInt("costatus")==1) {
+					
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					String codate = rs.getString("codate");
+					
+					Date now = new Date();
+					Date finshLine = format.parse(codate);
+				    now = format.parse(format.format(now));
+				    
+					if(now.compareTo(finshLine)>0) {
+						
+						int coindex = rs.getInt("COINDEX");
+						
+						sql = " UPDATE MYCOUPON SET COSTATUS = 3 WHERE COINDEX = ?";
+						
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, coindex);
+						
+						if(1!=pstmt.executeUpdate()) {
+							System.out.println("쿠폰기간 처리중 오류 발생");
+						}
+						
+					}else {
+						MyCouponDTO mycodto = new MyCouponDTO();
+						
+						CouponDTO codto = new CouponDTO();
+						
+						codto.setConame(rs.getString("coname"));
+						codto.setCotype(rs.getInt("cotype"));
+						codto.setCodiscount(rs.getInt("codiscount"));
+						codto.setCodate(rs.getString("codate"));
+						codto.setCoregisterday(rs.getString("coregisterday"));
+						
+						mycodto.setCodto(codto);
+						mycodto.setCoindex(rs.getInt("COINDEX"));
+						
+						mycodtoList.add(mycodto);
+					}
 				
-				CouponDTO codto = new CouponDTO();
+				}
 				
-				codto.setConame(rs.getString("coname"));
-				codto.setCotype(rs.getInt("cotype"));
-				codto.setCodiscount(rs.getInt("codiscount"));
-				codto.setCodate(rs.getString("codate"));
-				codto.setCoregisterday(rs.getString("coregisterday"));
-				
-				mycodto.setCodto(codto);
-				mycodto.setCoindex(rs.getInt("COINDEX"));
-				
-				mycodtoList.add(mycodto);
 			}
 			
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}finally {
 			close();
 		}
 		
 		return mycodtoList;
 	}
-	
+
+
+	@Override
+	public CouponDTO getcouponinfo(String coname) throws SQLException {
+		
+		CouponDTO codto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select COTYPE,CODISCOUNT from COUPON where coname = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, coname);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				codto = new CouponDTO();
+				
+				codto.setCotype(rs.getInt("COTYPE"));
+				codto.setCodiscount(rs.getInt("CODISCOUNT"));
+				
+			}
+			
+			
+		}finally {
+			close();
+		}
+		
+		return codto;
+	}
 	
 }
