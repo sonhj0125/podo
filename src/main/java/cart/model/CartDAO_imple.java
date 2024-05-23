@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import cart.domain.CartDTO;
 import member.domain.MemberDTO;
+import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 
 public class CartDAO_imple implements CartDAO {
@@ -311,7 +312,7 @@ public class CartDAO_imple implements CartDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select CVOLUME, PPOINT, PPRICE, USERID, PINDEX "
+			String sql = " select CVOLUME, PPOINT, PPRICE, USERID, cart.PINDEX as pindex "
 					+ " from cart join PRODUCT on cart.PINDEX = PRODUCT.PINDEX "
 					+ " where CINDEX = ? ";
 			
@@ -344,6 +345,41 @@ public class CartDAO_imple implements CartDAO {
 		}
 		
 		return cdto;
+	}
+
+	@Override
+	public int orderone(OrderDTO odto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " INSERT INTO ORDERS (OINDEX, OTOTALPRICE, OPOINT, OVOLUME, USERID, PINDEX) "
+					+ " VALUES (SEQ_OINDEX, ?, ?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			System.out.println(odto.getOtotalprice());
+			System.out.println(odto.getOpoint());
+			System.out.println(odto.getOvolume());
+			System.out.println(odto.getMdto().getUserid());
+			System.out.println(odto.getPdto().getPindex());
+			
+			pstmt.setString(1, odto.getOtotalprice());
+			pstmt.setString(2, odto.getOpoint());
+			pstmt.setString(3, odto.getOvolume());
+			pstmt.setString(4, odto.getMdto().getUserid());
+			pstmt.setInt(5, odto.getPdto().getPindex());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	}
 
 }
