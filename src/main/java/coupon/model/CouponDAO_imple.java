@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 
 import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
-import oracle.net.aso.c;
 
 public class CouponDAO_imple implements CouponDAO {
 
@@ -214,6 +213,33 @@ public class CouponDAO_imple implements CouponDAO {
 		}
 		
 		return codto;
+	}
+
+	@Override
+	public int useCoupon(MyCouponDTO mycodto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MYCOUPON "
+					+ " SET COSTATUS = 2 "
+					+ " WHERE CONAME = ? and userid = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, mycodto.getCodto().getConame());
+			pstmt.setString(2, mycodto.getMdto().getUserid());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	}
 	
 }

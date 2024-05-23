@@ -348,11 +348,6 @@ public class MemberDAO_imple implements MemberDAO {
 
 	
 	
-	
-	
-	
-	
-	
 	// 관리자 회원관리 - 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기
 	@Override
 	public List<MemberDTO> select_Member_paging(Map<String, String> paraMap) throws SQLException {
@@ -443,9 +438,6 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	} // end of public List<MemberDTO> select_Member_paging(Map<String, String> paraMap)
 
-	
-	
-	
 
 	/* >>> 뷰단(memberList.jsp)에서 "페이징 처리 시 보여주는 순번 공식" 에서 사용하기 위해 
 	   검색이 있는 또는 검색이 없는 회원의 총 개수 알아오기 <<< */
@@ -500,80 +492,229 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	} // end of public int getTotalMemberCount(Map<String, String> paraMap)
 
-
-
 	
 	// 관리자 회원관리 - 페이징 처리를 위한 검색이 있는 또는 검색이 없는 회원에 대한 총 페이지 수 알아오기
-		@Override
-		public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
 			
-			int totalPage = 0;
+			conn = ds.getConnection();
 			
-			try {
-				
-				conn = ds.getConnection();
-				
-				String sql = " select ceil(count(*)/?) "
-						   + " from member "
-						   + " join memberidx "
-						   + " on member.memberidx = memberidx.memberidx "
-						   + " where memberidx.memberidx != 9 ";
+			String sql = " select ceil(count(*)/?) "
+					   + " from member "
+					   + " join memberidx "
+					   + " on member.memberidx = memberidx.memberidx "
+					   + " where memberidx.memberidx != 9 ";
 
-				String colname = paraMap.get("searchType");
-				String searchWord = paraMap.get("searchWord");
-				
-				if("email".equals(colname)) {
-					// 검색 대상이 email인 경우
-					searchWord = aes.encrypt(searchWord);
-				}
-				
-				if((colname != null && !colname.trim().isEmpty()) && 
-				   (searchWord != null && !searchWord.trim().isEmpty())) {
-					
-					sql += " and " + colname + " like '%'|| ? ||'%' ";
-				}
-				
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
-				
-				if((colname != null && !colname.trim().isEmpty()) && 
-				   (searchWord != null && !searchWord.trim().isEmpty())) {
-					// 검색이 있는 경우
-					
-					pstmt.setString(2, searchWord);
-				}
-				
-				rs = pstmt.executeQuery();
-				rs.next();
-				
-				totalPage = rs.getInt(1);
-				
-			} catch (GeneralSecurityException | UnsupportedEncodingException e) {
-				e.printStackTrace();
-				
-			} finally {
-				close();
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if("email".equals(colname)) {
+				// 검색 대상이 email인 경우
+				searchWord = aes.encrypt(searchWord);
 			}
 			
-			return totalPage;
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
 			
-		} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException
+			pstmt = conn.prepareStatement(sql);
 			
-	
-
-	
-	
-	
-	
-	
-	
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(2, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+		
+	} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException
+			
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
 		return null;
 		
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
+
+	@Override
+	public int pointUp(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " UPDATE MEMBER "
+					+ " SET POINT = point + ? "
+					+ " WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int pointWrite(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL)"
+					+ " VALUES (?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("point"));
+			pstmt.setString(3, paraMap.get("podetail"));
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public int getPointRange(MemberDTO mdto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select POINT from MEMBER where userid = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mdto.getUserid());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				String pointStr = rs.getString("point");
+				
+				result = Integer.parseInt(pointStr);
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int pointuse(Map<String, String> paraMapPoint) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " UPDATE MEMBER "
+					+ " SET POINT = point - ? "
+					+ " WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMapPoint.get("point"));
+			pstmt.setString(2, paraMapPoint.get("userid"));
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public MemberDTO refreshSingin(String userid) {
+		
+		MemberDTO mdto = new MemberDTO();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email, phone, address, addressdetail, gender, birthday, point, registerday, pwdupdateday, memberidx "
+					+ " from MEMBER where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				mdto = new MemberDTO();
+				
+				mdto.setUserid(rs.getString(1));
+				mdto.setName(rs.getString(2));
+				mdto.setEmail(aes.decrypt(rs.getString(3)));
+				mdto.setPhone(aes.decrypt(rs.getString(4)));
+				mdto.setAddress(rs.getString(5));
+				mdto.setAddressDetail(rs.getString(6));
+				mdto.setGender(rs.getString(7));
+				mdto.setBirthday(rs.getString(8));
+				mdto.setPoint(rs.getString(9));
+				mdto.setRegisterDay(rs.getString(10));
+				mdto.setPwdUpdateDay(rs.getString(11));
+				mdto.setMemberIdx(rs.getString(12));
+				
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return mdto;
+	}
 
 
 

@@ -3,10 +3,14 @@ package common.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import member.domain.MemberDTO;
+import member.model.MemberDAO;
+import member.model.MemberDAO_imple;
 
 
 public abstract class AbstractController implements InterCommand {
 
+	private MemberDAO mdao;
+	
 	private boolean isRedirect = false;
 	private String viewPage;
 
@@ -40,11 +44,6 @@ public abstract class AbstractController implements InterCommand {
 	
 	}
 	
-	
-	
-	//////////////////////////////////////////////////////
-	// 로그인 유무를 검사해서 로그인 했으면 true 를 리턴해주고
-	// 로그인 안했으면 false 를 리턴해주도록 한다.
 	public boolean checkLogin(HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
@@ -59,7 +58,19 @@ public abstract class AbstractController implements InterCommand {
 			return false;
 		}
 		
-	} // end of public boolean checkLogin(HttpServletRequest request) ---------------
+	} // end of public boolean checkLogin(HttpServletRequest request)
 	
+	public void sessionRefresh(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
+		String userid = mdto.getUserid();
+		session.invalidate();
+		mdao = new MemberDAO_imple();
+		MemberDTO loginUser = mdao.refreshSingin(userid);
+		session.setAttribute("loginUser", loginUser);
+		mdao = null;
+		
+	}
 
 }

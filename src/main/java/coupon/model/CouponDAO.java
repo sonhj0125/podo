@@ -19,4 +19,8 @@ public interface CouponDAO {
 
 	// 쿠폰 정보 불러오기
 	CouponDTO getcouponinfo(String coname) throws SQLException;
+
+	// 쿠폰 사용
+	int useCoupon(MyCouponDTO mycodto) throws SQLException;
+	
 }

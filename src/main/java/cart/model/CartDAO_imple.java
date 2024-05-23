@@ -312,7 +312,7 @@ public class CartDAO_imple implements CartDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select CVOLUME, PPOINT, PPRICE, USERID, cart.PINDEX as pindex "
+			String sql = " select CVOLUME, PPOINT, PPRICE, USERID, cart.PINDEX as pindex, pname "
 					+ " from cart join PRODUCT on cart.PINDEX = PRODUCT.PINDEX "
 					+ " where CINDEX = ? ";
 			
@@ -331,6 +331,7 @@ public class CartDAO_imple implements CartDAO {
 				pdto.setPpoint(rs.getString("ppoint"));
 				pdto.setPprice(rs.getString("pprice"));
 				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPname(rs.getString("pname"));
 				
 				MemberDTO mdto = new MemberDTO();
 				mdto.setUserid(rs.getString("userid"));
@@ -357,15 +358,9 @@ public class CartDAO_imple implements CartDAO {
 			conn = ds.getConnection();
 			
 			String sql = " INSERT INTO ORDERS (OINDEX, OTOTALPRICE, OPOINT, OVOLUME, USERID, PINDEX) "
-					+ " VALUES (SEQ_OINDEX, ?, ?, ?, ?, ?) ";
+					+ " VALUES (SEQ_OINDEX.nextval, ?, ?, ?, ?, ?) ";
 			
 			pstmt = conn.prepareStatement(sql);
-			
-			System.out.println(odto.getOtotalprice());
-			System.out.println(odto.getOpoint());
-			System.out.println(odto.getOvolume());
-			System.out.println(odto.getMdto().getUserid());
-			System.out.println(odto.getPdto().getPindex());
 			
 			pstmt.setString(1, odto.getOtotalprice());
 			pstmt.setString(2, odto.getOpoint());

@@ -42,3 +42,9 @@ from COUPON where coname = ?;
 select CVOLUME, PPOINT, PPRICE, USERID
 from cart join PRODUCT on cart.PINDEX = PRODUCT.PINDEX
 where CINDEX = 61;
+
+UPDATE MEMBER
+SET POINT = point + 100
+WHERE USERID = 'redtree2379';
+
+select POINT from MEMBER where userid = 'redtree';
