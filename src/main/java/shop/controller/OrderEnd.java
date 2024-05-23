@@ -167,7 +167,7 @@ public class OrderEnd extends AbstractController{
 					
 				} // end of for
 				
-				super.sessionRefresh(request);
+				super.sessionRefresh(request); // session 내용 수정해야함
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
 				
