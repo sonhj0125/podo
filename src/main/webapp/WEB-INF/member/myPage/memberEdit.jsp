@@ -16,13 +16,13 @@
 <script src="<%=ctxPath %>/js/jquery-3.7.1.min.js"></script>
 
 <!-- Main JS-->
-<script src="<%=ctxPath %>/js/member/memberRegisterUpdate.js"></script>
-
+<script src="<%=ctxPath %>/js/member/memberEdit.js"></script>
 
 <!-- DataPicker -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
 <style>
 
@@ -58,6 +58,22 @@
     }
     
 </style>
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+	
+		$("button#btnClose").bind('click', ()=>{
+			
+			javascript:history.go(0);
+			location.href="<%=ctxPath%>/index.wine";
+		
+		});
+	
+	});
+	
+</script>
      
  <div class="wrapper wrapper--w680" style="margin-bottom: 80px">
     <div class="card card-4">
@@ -105,7 +121,7 @@
                 </div> 
 
 			    <div class="w-100" style="display: flex; justify-content: space-between;">
-				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btn-close" style="width: 45%;">취소</button>
+				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnClose" style="width: 45%;">취소</button>
 				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;" onclick="goEdit()">변경하기</button>
 			    </div>
             </form>

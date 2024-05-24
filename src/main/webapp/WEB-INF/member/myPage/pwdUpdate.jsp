@@ -25,6 +25,22 @@
     }
     
 </style>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	$("button#btnClose").bind('click',()=>{
+		
+		$("input#pwd").val("");
+		$("input#pwd2").val("");
+		
+		location.href="<%=ctxPath%>/index.wine";
+	});
+
+});
+
+</script>
      
  <div class="wrapper wrapper--w680" style="margin-bottom: 80px">
     <div class="card card-4">
@@ -52,7 +68,7 @@
 				</div>
 
 			    <div class="w-100" style="display: flex; justify-content: center;">
-				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btn-close" style="width: 30%; margin-right: 1%;">취소</button>
+				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnClose" style="width: 30%; margin-right: 1%;">취소</button>
 				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 30%; margin-left: 1%;" onclick="goPwdUpdate()">변경하기</button>
 			    </div>
 			    
