@@ -151,7 +151,15 @@ commit;
 insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
 values(501, '45000', '2250', '2024-05-22 19:15:00', 4, '2024-05-23 14:26:00', 1, 'test002', 29);
 commit;
-
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(502, '190000', '9500', '2024-05-23 11:02:38', 4, '2024-05-24 08:13:28', 1, 'test002', 15);
+commit;
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(503, '12900', '645', '2024-05-23 11:02:38', 4, '2024-05-24 08:13:28', 1, 'test002', 7);
+commit;
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(504, '29000', '1450', '2024-05-23 14:02:38', 4, '2024-05-24 11:13:28', 1, 'test002', 46);
+commit;
 
 
 -- 리뷰 관리 페이지 : 배송완료인 상품 목록 띄우기
@@ -175,8 +183,18 @@ ORDER BY oindex desc;
 select P.*
 from product P JOIN orders O
 ON P.pindex = O.pindex
-where oindex = 501;
+where oindex = 501 and userid = 'test002';
 
+-- 리뷰 작성 페이지 : oindex에 대한 리뷰가 존재하는지 확인하기
+select *
+from review
+where oindex = 502;
+
+/*
+update member
+set point = point + 500
+where userid = 'test002';
+*/
 
 
 

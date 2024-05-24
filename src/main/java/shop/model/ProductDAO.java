@@ -49,10 +49,13 @@ public interface ProductDAO {
 	List<ReviewDTO> selectProductReviewList(String userid) throws SQLException;
 
 	// [리뷰 작성] 주문 인덱스에 대한 상품 정보 받아오기
-	ProductDTO getProductByOindex(String oindex) throws SQLException;
+	ProductDTO getProductByOindex(Map<String, String> paraMap) throws SQLException;
 
 	// [리뷰 작성] 리뷰 작성하기
 	int addReview(Map<String, String> paraMap) throws SQLException;
 
+	// [리뷰 작성] oindex에 대한 리뷰가 존재하는지 확인
+	boolean isExistReview(String oindex) throws SQLException;
+	
 	
 }

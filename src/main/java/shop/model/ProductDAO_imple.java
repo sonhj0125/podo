@@ -975,7 +975,7 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	// [리뷰 작성] 주문 인덱스에 대한 상품 정보 받아오기
 	@Override
-	public ProductDTO getProductByOindex(String oindex) throws SQLException {
+	public ProductDTO getProductByOindex(Map<String, String> paraMap) throws SQLException {
 
 		ProductDTO pdto = null;
 		
@@ -986,10 +986,11 @@ public class ProductDAO_imple implements ProductDAO {
 			String sql = " select P.* "
 					   + " from product P JOIN orders O "
 					   + " ON P.pindex = O.pindex "
-					   + " where oindex = ? ";
+					   + " where oindex = ? and userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, oindex);
+			pstmt.setString(1, paraMap.get("oindex"));
+			pstmt.setString(2, paraMap.get("userid"));
 			
 			rs = pstmt.executeQuery();
 			
@@ -1039,7 +1040,21 @@ public class ProductDAO_imple implements ProductDAO {
 			pstmt.setString(2, paraMap.get("rdetail"));
 			pstmt.setString(3, paraMap.get("oindex"));
 			
-			result = pstmt.executeUpdate();
+			int n = pstmt.executeUpdate();
+			
+			if(n == 1) {
+				
+				sql = " update member "
+					+ " set point = point + 500 "
+					+ " where userid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				
+				result = pstmt.executeUpdate();
+				
+			}
+			
 			
 		} finally {
 			close();
@@ -1048,6 +1063,36 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 		
 	} // end of public int addReview(Map<String, String> paraMap) throws SQLException -----------------
-	
 
+	
+	
+	// [리뷰 작성] oindex에 대한 리뷰가 존재하는지 확인
+	@Override
+	public boolean isExistReview(String oindex) throws SQLException {
+		
+		boolean isExistReview = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					   + " from review "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			isExistReview = rs.next();
+			
+		} finally {
+			close();
+		}
+		
+		return isExistReview;
+		
+	} // end of public boolean isUploadedReview(Map<String, String> paraMap) throws SQLException -----------
+	
 }

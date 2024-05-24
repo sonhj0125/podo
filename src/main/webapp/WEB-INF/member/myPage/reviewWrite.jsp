@@ -59,10 +59,11 @@
       				<c:if test="${not empty requestScope.pdto}">
 	                 <div style="display: flex; width: 100%; justify-content: space-between;">
 	                 
-	                    <img src="<%=ctxPath%>/images/product/${pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
+	                    <img src="<%=ctxPath%>/images/product/${pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 150px;">
 	                    <div style="margin: auto 1%; text-align: right;">
 	                          <div>${pdto.pname}</div>
 	                          <div>${pdto.pprice}원</div>
+	                          <div></div>
 	                    </div>
 	                 </div>
       				</c:if>		
@@ -70,7 +71,7 @@
             
              </div>
                <br>
-               <div style="width: 50%; border-left: solid 1px black; margin: 0 2%;">
+               <div class="pt-4" style="width: 50%; border-left: solid 1px black; margin: 0 2%;">
                   <h5>와인을 평가해주세요</h5>
                   <div class="star-rating" style="margin:0 auto; width:100%; justify-content:center;">
                    <input type="radio" name="rstar" class="star" value="1" style="text-align: center;">
