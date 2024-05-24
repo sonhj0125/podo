@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -240,6 +241,35 @@ public class CouponDAO_imple implements CouponDAO {
 		}
 		
 		return result;
+	}
+
+
+	@Override
+	public boolean isCoupon(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+		
+			conn = ds.getConnection();
+			
+			String sql = "select * from MYCOUPON where USERID = ? and CONAME = ? and COSTATUS = 1";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("coname"));
+			
+			rs = pstmt.executeQuery();
+			
+			result = rs.next();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	
 	}
 	
 }

@@ -27,6 +27,8 @@ $(function() {
     //"전체 선택" 체크박스 변경 시 모든 개별 체크박스의 상태를 변경
     cbAll.on('change', function() {
         $('input.cbOne').prop('checked', $(this).prop('checked'));
+        updateone();
+        sumAll();
     });
 
     // 개별 체크박스 변경 시 "전체 선택" 체크박스 상태를 업데이트
@@ -48,6 +50,7 @@ $(function() {
         }
 
         updateone();
+        sumAll();
 
     });
 

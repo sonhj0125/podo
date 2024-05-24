@@ -48,3 +48,8 @@ SET POINT = point + 100
 WHERE USERID = 'redtree2379';
 
 select POINT from MEMBER where userid = 'redtree';
+
+select *
+from MYCOUPON where USERID = ? and CONAME = ? and COSTATUS = 1;
+
+select point from MEMBER where userid = 'redtree2379';

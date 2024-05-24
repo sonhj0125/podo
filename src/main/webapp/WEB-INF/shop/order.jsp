@@ -101,7 +101,7 @@
             <div class="form-group row  my-4">
                <label class="col-2" style="width: 14%; font-weight: bold;">연락처</label>
                <div class="col-sm-7">
-                  <input type="text" value="${sessionScope.loginUser.phone}" name="mobile" class="form-control" placeholder='"-"를 제외한 숫자만 입력해주세요.' style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.phone}" name="phone" class="form-control" placeholder='"-"를 제외한 숫자만 입력해주세요.' style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row" style="margin-bottom: 1.8%;">
@@ -115,7 +115,7 @@
             <div class="form-group row" style="margin-bottom: 1.8%;">
                <label class="col-2" style="width: 15.5%; font-weight: bold;">배송메시지</label>
             <select class="form-select" id="order_msg" name="order_msg" style="width: 55.2%; border-color: black;">
-              <option selected>-- 메시지 선택--</option>
+              <option selected>-- 메시지 선택 --</option>
               <option>배송 전에 미리 연락바랍니다.</option>
               <option>부재 시 경비실에 맡겨주세요.</option>
               <option>부재 시 문 앞에 놓아주세요.</option>
@@ -147,9 +147,9 @@
 	            </div>
 	            
 	            <div class="form-group row  my-4">
-               <label class="col-2" style="width: 25%; font-weight: bold;">포인트사용 <br><span>${sessionScope.loginUser.point}</span>P 사용가능</label>
+               <label class="col-2" style="width: 25%; font-weight: bold;">포인트사용 <br><span id="myPoint">${sessionScope.loginUser.point}</span>P 사용가능</label>
                <div class="col-sm-7">
-                  <input id="pointuse" type="text" name="point" class="form-control" placeholder="입력" style="border-color: black; width: 40%"/>
+                  <input id="pointuse" type="text" name="point" class="form-control" value="0" style="border-color: black; width: 40%"/>
                </div>
             </div>
             
@@ -190,12 +190,12 @@
         
       </div>
       
-
-      
       <div class="cart_footer" style="text-align: center; margin-top: 4%; margin-bottom: 4%;">
          <button id="" type="button" class="btn btn-outline-secondary">취소</button>
          <button id="btn-doorder" type="button" class="btn btn-outline-secondary">주문하기</button>
       </div>
+      
+      <input type="text" name="userid" value="${sessionScope.loginUser.userid}" style="display: none;" />
 	</form> 
    	</div>
    	

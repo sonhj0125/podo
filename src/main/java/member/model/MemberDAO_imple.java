@@ -587,59 +587,6 @@ public class MemberDAO_imple implements MemberDAO {
 	      
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
-	@Override
-	public int pointUp(Map<String, String> paraMap) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = " UPDATE MEMBER "
-					+ " SET POINT = point + ? "
-					+ " WHERE USERID = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, paraMap.get("point"));
-			pstmt.setString(2, paraMap.get("userid"));
-			
-			result = pstmt.executeUpdate();
-			
-		}finally {
-			close();
-		}
-		
-		return result;
-	}
-
-	@Override
-	public int pointWrite(Map<String, String> paraMap) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL)"
-					+ " VALUES (?, ?, ?)";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("userid"));
-			pstmt.setString(2, paraMap.get("point"));
-			pstmt.setString(3, paraMap.get("podetail"));
-			
-			result = pstmt.executeUpdate();
-			
-		}finally {
-			close();
-		}
-		
-		return result;
-	}
-
 
 	// 회원의 개인 정보 변경하기 
 	@Override
@@ -773,74 +720,15 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 	@Override
-	public int getPointRange(MemberDTO mdto) throws SQLException {
+	public int pointread(String userid) throws SQLException {
 		
-		int result = 0;
-		
-		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = "select POINT from MEMBER where userid = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mdto.getUserid());
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				
-				String pointStr = rs.getString("point");
-				
-				result = Integer.parseInt(pointStr);
-				
-			}
-			
-		}finally {
-			close();
-		}
-		
-		return result;
-	}
-
-	@Override
-	public int pointuse(Map<String, String> paraMapPoint) throws SQLException {
-		
-		int result = 0;
+		int mypoint = 0;
 		
 		try {
 			
 			conn = ds.getConnection();
 			
-			String sql = " UPDATE MEMBER "
-					+ " SET POINT = point - ? "
-					+ " WHERE USERID = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, paraMapPoint.get("point"));
-			pstmt.setString(2, paraMapPoint.get("userid"));
-			
-			result = pstmt.executeUpdate();
-			
-		}finally {
-			close();
-		}
-		
-		return result;
-	}
-
-	@Override
-	public MemberDTO refreshSingin(String userid) {
-		
-		MemberDTO mdto = new MemberDTO();
-		
-		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = " select userid, name, email, phone, address, addressdetail, gender, birthday, point, registerday, pwdupdateday, memberidx "
-					+ " from MEMBER where userid = ? ";
+			String sql = " select point from MEMBER where userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
@@ -848,32 +736,21 @@ public class MemberDAO_imple implements MemberDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
+				String pointStr = rs.getString("point");
 				
-				mdto = new MemberDTO();
-				
-				mdto.setUserid(rs.getString(1));
-				mdto.setName(rs.getString(2));
-				mdto.setEmail(aes.decrypt(rs.getString(3)));
-				mdto.setPhone(aes.decrypt(rs.getString(4)));
-				mdto.setAddress(rs.getString(5));
-				mdto.setAddressDetail(rs.getString(6));
-				mdto.setGender(rs.getString(7));
-				mdto.setBirthday(rs.getString(8));
-				mdto.setPoint(rs.getString(9));
-				mdto.setRegisterDay(rs.getString(10));
-				mdto.setPwdUpdateDay(rs.getString(11));
-				mdto.setMemberIdx(rs.getString(12));
+				try {
+					mypoint = Integer.parseInt(pointStr);
+				}catch (Exception e) {
+					mypoint = -1;
+				}
 				
 			}
 			
-			
-		}catch (Exception e) {
-			e.printStackTrace();
 		}finally {
 			close();
 		}
 		
-		return mdto;
+		return mypoint;
 	}
 
 	

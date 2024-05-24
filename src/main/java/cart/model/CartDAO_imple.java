@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 
 import cart.domain.CartDTO;
 import member.domain.MemberDTO;
-import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 
 public class CartDAO_imple implements CartDAO {
@@ -348,33 +347,5 @@ public class CartDAO_imple implements CartDAO {
 		return cdto;
 	}
 
-	@Override
-	public int orderone(OrderDTO odto) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = " INSERT INTO ORDERS (OINDEX, OTOTALPRICE, OPOINT, OVOLUME, USERID, PINDEX) "
-					+ " VALUES (SEQ_OINDEX.nextval, ?, ?, ?, ?, ?) ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, odto.getOtotalprice());
-			pstmt.setString(2, odto.getOpoint());
-			pstmt.setString(3, odto.getOvolume());
-			pstmt.setString(4, odto.getMdto().getUserid());
-			pstmt.setInt(5, odto.getPdto().getPindex());
-			
-			result = pstmt.executeUpdate();
-			
-		}finally {
-			close();
-		}
-		
-		return result;
-	}
-
+	
 }

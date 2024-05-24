@@ -30,74 +30,75 @@ public class Order extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		
 		String method = request.getMethod();
 		
 		if("POST".equalsIgnoreCase(method)) {
 			
-			String cindexArr = request.getParameter("Arr_cindexOne");
-			String cvolumeArr = request.getParameter("Arr_cvolumeOne");
-			
-			boolean nullFlag = false;
-			
-			try {
-				if(cindexArr.isBlank()) {
-					nullFlag = true;
-				}
-			}catch (NullPointerException e) {
-				nullFlag = true;
-			}
-			
-			if(nullFlag) {
-				super.setRedirect(true);
-				super.setViewPage(request.getContextPath()+"/index.wine");
-				return;
-			}
-			
-			String cindex[] = cindexArr.split("[,]");
-			String volumeArr[] = cvolumeArr.split("[,]");
-			
-			boolean nextStep = true;
-			
-			for(int i=0; i<cindex.length;i++) {
+			if(super.checkLogin(request)) {
+				String cindexArr = request.getParameter("Arr_cindexOne");
+				String cvolumeArr = request.getParameter("Arr_cvolumeOne");
 				
-				Map<String, String> paraMap = new HashMap<>();
-				
-				paraMap.put("cindex", cindex[i]);
-				paraMap.put("cvolume", volumeArr[i]);
-				
-				if(cdao.modifyVolume(paraMap)!=1) {
-					nextStep = false;
-				}
-				
-			}
-			
-			if(nextStep) { // 정상
-				
-				HttpSession session = request.getSession();
-				MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
-				
-				List<CartDTO> cdtoList = cdao.getList(cindexArr);
+				boolean nullFlag = false;
 				
 				try {
-					List<MyCouponDTO> mycodtoList = codao.getMyList(mdto.getUserid());
-					request.setAttribute("mycodtoList", mycodtoList);
-				}catch (Exception e) {
+					if(cindexArr.isBlank()) {
+						nullFlag = true;
+					}
+				}catch (NullPointerException e) {
+					nullFlag = true;
 				}
-				request.setAttribute("cdtoList", cdtoList);
 				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/shop/order.jsp");
+				if(nullFlag) {
+					super.setRedirect(true);
+					super.setViewPage(request.getContextPath()+"/index.wine");
+					return;
+				}
 				
-			}else { // 오류
+				String cindex[] = cindexArr.split("[,]");
+				String volumeArr[] = cvolumeArr.split("[,]");
 				
-				request.setAttribute("msg", "알수없는 오류 발생");
-				request.setAttribute("loc", request.getContextPath()+"/index.wine");
+				boolean nextStep = true;
 				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");
+				for(int i=0; i<cindex.length;i++) {
+					
+					Map<String, String> paraMap = new HashMap<>();
+					
+					paraMap.put("cindex", cindex[i]);
+					paraMap.put("cvolume", volumeArr[i]);
+					
+					if(cdao.modifyVolume(paraMap)!=1) {
+						nextStep = false;
+					}
+					
+				}
+				
+				if(nextStep) { // 정상
+					
+					HttpSession session = request.getSession();
+					MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
+					
+					List<CartDTO> cdtoList = cdao.getList(cindexArr);
+					
+					try {
+						List<MyCouponDTO> mycodtoList = codao.getMyList(mdto.getUserid());
+						request.setAttribute("mycodtoList", mycodtoList);
+					}catch (Exception e) {
+					}
+					request.setAttribute("cdtoList", cdtoList);
+					
+					super.setRedirect(false);
+					super.setViewPage("/WEB-INF/shop/order.jsp");
+					return;
+					
+				}
 				
 			}
+			
+			request.setAttribute("msg", "알수없는 오류 발생");
+			request.setAttribute("loc", request.getContextPath()+"/index.wine");
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/msg.jsp");
 			
 		}else {
 			
@@ -105,7 +106,6 @@ public class Order extends AbstractController {
 			super.setViewPage(request.getContextPath()+"/index.wine");
 			
 		}
-		
 		
 
 	}

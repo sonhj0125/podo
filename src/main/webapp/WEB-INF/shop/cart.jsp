@@ -150,13 +150,13 @@
                </div>
 
                      
-         <form name="orderSet" style="display: none;">
+         <form name="orderSet" >
             <input type="text" id="setCindex" name="Arr_cindexOne">
             <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
             <input type="text" id="setcVolume" name="Arr_cvolumeOne">
          </form>
       
-         <form name="orderSetOne" style="display: none;">
+         <form name="orderSetOne" >
              <input type="text" id="setCindexOne" name="Arr_cindexOne">
              <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
              <input type="text" id="setcVolumeOne" name="Arr_cvolumeOne">

@@ -57,20 +57,9 @@ public interface MemberDAO {
 	// 비밀번호 변경시 현재 사용중인 비밀번호인지 아닌지 알아오기(현재 사용중인 비밀번호 이라면 true, 새로운 비밀번호이라면 false)
 	boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException;
 
-	// 포인트 조절(적립) (유저아이디, 포인트)
-	int pointUp(Map<String,String> paraMap) throws SQLException;
-	
-	// 포인트 조절(차감)
-	int pointuse(Map<String, String> paraMapPoint) throws SQLException;
+	// 내 포인트 검색
+	int pointread(String userid) throws SQLException;
 
-	// 포인트 로그 작성
-	int pointWrite(Map<String, String> paraMap) throws SQLException;
-
-	// 내 포인트 조회
-	int getPointRange(MemberDTO mdto) throws SQLException;
-
-	// 리프래시용 로그인 throws 금지
-	MemberDTO refreshSingin(String userid);
 
 	
 

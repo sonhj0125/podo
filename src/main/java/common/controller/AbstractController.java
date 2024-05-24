@@ -59,18 +59,5 @@ public abstract class AbstractController implements InterCommand {
 		}
 		
 	} // end of public boolean checkLogin(HttpServletRequest request)
-	
-	public void sessionRefresh(HttpServletRequest request) {
-		
-		HttpSession session = request.getSession();
-		MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
-		String userid = mdto.getUserid();
-		session.invalidate();
-		mdao = new MemberDAO_imple();
-		MemberDTO loginUser = mdao.refreshSingin(userid);
-		session.setAttribute("loginUser", loginUser);
-		mdao = null;
-		
-	}
 
 }
