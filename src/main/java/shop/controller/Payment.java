@@ -175,7 +175,21 @@ public class Payment extends AbstractController {
 						
 					}
 					
+					sumPrice = sumPrice - discount;
+					
 				}
+				
+				//4. 포인트 보유시
+				
+				if(havePoint) {
+					
+					sumPrice = sumPoint - Integer.parseInt(point);
+					
+				}
+				
+				//5. 제품명 만들기
+				
+				
 				
 				// 전부 성공시
 				return;
