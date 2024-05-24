@@ -127,19 +127,19 @@
 	<table class="table">
 		<thead>
 			<tr>
-			  	<th scope="col">LogIndex</th>
 			  	<th scope="col">UserId</th>
 			  	<th scope="col">LoginDate</th>
 			  	<th scope="col">IdAddress</th>
 			</tr>
 		</thead>
 	  	<tbody>
-			<tr>
-				<th scope="row">LogIndex</th>
-				<td>UserId</td>
-				<td>LoginDate</td>
-				<td>IdAddress</td>
-	    	</tr>
+		  	<c:forEach var="list" items="${requestScope.ldtoList}">
+				<tr>
+					<th scope="row">${list.userid}</th>
+					<td>${list.logindate}</td>
+					<td>${list.ipaddress}</td>
+		    	</tr>
+		    </c:forEach>
 	  	</tbody>
 	</table>
 		

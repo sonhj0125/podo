@@ -147,6 +147,8 @@ from coupon;
 select *
 from mycoupon;
 
+select *
+from member;
 
 insert into mycoupon(coindex, userid, coname, costatus) values('503', 'kmj0228', '무료로 드립니다 [100% 쿠폰]', '1');
 
@@ -158,10 +160,14 @@ from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCO
 where MEMBER.USERID = 'kmj0228'
 
 
-select coupon.coname AS coname
-from coupon 
-join mycoupon on coupon.coname = mycoupon.coname
-join member on mycoupon.userid = member.userid
-where member.userid = 'kmj0228';
 
-
+select logindex, userid, logindate, ipaddress
+from 
+(
+    select log.logindex AS logindex, member.userid AS userid, logindate, ipaddress
+    from log 
+    join member on log.userid = member.userid
+    where member.userid = 'kmj0228'
+    order by logindate desc
+) T
+WHERE rownum <= 5;

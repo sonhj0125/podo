@@ -54,7 +54,7 @@ public class AdminMemberDetail extends AbstractController {
 				request.setAttribute("mycodtoList", mycodtoList);
 				
 				List<LogDTO> ldtoList = ldao.getMyLog(userid);
-				
+				request.setAttribute("ldtoList", ldtoList);
 			
 				
 				

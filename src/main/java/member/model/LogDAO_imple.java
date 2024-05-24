@@ -1,28 +1,19 @@
 package member.model;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import coupon.domain.CouponDTO;
-import coupon.domain.MyCouponDTO;
 import member.domain.LogDTO;
-import member.domain.MemberDTO;
 import util.security.AES256;
 import util.security.SecretMykey;
-import util.security.Sha256;
 
 public class LogDAO_imple implements LogDAO {
 	
@@ -31,16 +22,12 @@ public class LogDAO_imple implements LogDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
-	private AES256 aes;
-	
 	public LogDAO_imple() {
 		
 		try {
 			Context initContext = new InitialContext();
 			Context envContext = (Context)initContext.lookup("java:/comp/env");
 			ds = (DataSource)envContext.lookup("jdbc/semioracle");
-			
-			aes = new AES256(SecretMykey.KEY);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,7 +51,7 @@ public class LogDAO_imple implements LogDAO {
 
 	
 	
-	// 내 로그 기록 가져오기
+	// 관리자 - 유저 로그 기록 가져오기
 	@Override
 	public List<LogDTO> getMyLog(String userid) throws SQLException {
 		
@@ -74,7 +61,35 @@ public class LogDAO_imple implements LogDAO {
 			
 		conn = ds.getConnection();
 		
+		String sql = " select logindex, userid, logindate, ipaddress "
+				   + " from "
+				   + " ( "
+				   + "    select log.logindex AS logindex, member.userid AS userid, logindate, ipaddress "
+				   + "    from log "
+				   + "    join member on log.userid = member.userid "
+				   + "    where member.userid = ? "
+				   + "    order by logindate desc "
+				   + " ) T "
+				   + " WHERE rownum <= 5 ";
 		
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setString(1, userid);
+		
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			
+			LogDTO lodto = new LogDTO();
+			
+			lodto.setLoginidx(rs.getString("logindex"));
+			lodto.setUserid(rs.getString("userid"));
+			lodto.setLogindate(rs.getString("logindate"));
+			lodto.setIpaddress(rs.getString("ipaddress"));
+			
+			ldtoList.add(lodto);
+			
+		}
 			
 	} catch (Exception e) {
 		e.printStackTrace();
