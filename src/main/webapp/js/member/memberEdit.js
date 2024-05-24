@@ -28,16 +28,12 @@ $(function () {
             }
         }).open();
 
-        
-        
-        
-
     });
 
 
     // 유효성 검사
     // 이름
-    $("input#name").bind("change",function (e){
+    $("input#name").bind("change",function (e) {
 
         const name = $(e.target).val().trim();
         const tag = $('input#name');
@@ -93,13 +89,9 @@ $(function () {
                 if(json.isExists) {
                     // 입력한 email이 이미 사용 중인 경우 (중복 O)
                     isEmailDuplicate = true;
-
-                    console.log(isEmailDuplicate);
                     
                 } else {
                     isEmailDuplicate = false;
-
-                    console.log(isEmailDuplicate);
                 }
             },
             error: function(request, status, error) {
@@ -132,6 +124,7 @@ $(function () {
             tag.addClass("status-ng");
 
         } else{
+
             checkEmail = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
@@ -170,14 +163,16 @@ $(function () {
 
     });
 
-    $("#register").bind("click",()=>{
+    $("button#btnSubmit").bind("click",()=>{
 		
-        if(checkName && checkPwd && checkPwdCheck && checkEmail && checkPhone){
+        if(checkName && checkEmail && checkPhone) {
             goEdit(toastLive,toastmsg);
-        }else{
+
+        } else {
             toastmsg.innerHTML="올바르게 입력하세요";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
+            return;
         }
 
 	});

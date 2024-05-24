@@ -66,33 +66,36 @@ $("input#pwd2").blur( (e) => {
 
 function goPwdUpdate() {
 
-	let isNewPwd = true;
-	$.ajax({
-		url: "duplicatePwdCheck.wine",
-		data: {"pwd":$("input#pwd").val()},
-		type: "post",
-		async : false,
-		dataType : "json",
-		success : function(json) {
+		let isNewPwd = true;
+		
+		$.ajax({
+			url: "duplicatePwdCheck.wine",
+			data: {"pwd":$("input#pwd").val()
+				,"userid":$("input:hidden[name='userid']").val()},
+			type: "post",
+			async : false,
+			dataType : "json",
+			success : function(json) {
 
-			if(json.isExists) {
-
-				isNewPwd = false;
+				if(json.isExists) {
+					// 입력한 암호가 이미 사용중이라면
+					alert("현재 사용중인 비밀번호로 비밀번호 변경은 불가합니다.");
+					isNewPwd = false;
+				}
+			},
+			error: function(request, status, error) {
+				alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
 			}
-		},
-		error: function(request, status, error) {
-			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
-		}
-	});
+		});
 
-	if(isNewPwd) { // 변경한 암호가 새로운 암호일 경우
- 
-		const frm = document.pwdUpdatefrm;
-		frm.action = "pwdUpdateEnd2.wine";
-		frm.method = "post";
-		frm.submit();
-        
-	}
+		if(isNewPwd) { // 변경한 암호가 새로운 암호일 경우
+	
+			const frm = document.pwdUpdatefrm;
+			frm.action = "pwdUpdateEnd2.wine";
+			frm.method = "post";
+			frm.submit();
+			
+		}
 
 }
 

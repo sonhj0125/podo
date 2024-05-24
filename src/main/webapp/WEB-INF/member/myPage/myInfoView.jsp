@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+    
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -71,6 +74,7 @@
                         <div class="input-group">
                             <label class="label">생년월일</label>
                             <div class="input-group-icon">
+                            	<input class="input--style-4" type="text" name="birthday" id="birthday" value="${sessionScope.loginUser.gender}" disabled>
                                 <input class="input--style-4 datepicker" type="text" name="birthday" id="birthday" value="${sessionScope.loginUser.birthday}" disabled>
                                 <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                             </div>
@@ -80,15 +84,26 @@
                         <div class="input-group">
                             <label class="label">성별</label>
                             <div class="pt-3">
-                            
+                            <c:if test="${requestScope.loginUser.gender=='1'}">
                                 <label class="radio-container m-r-45">남자
-                                    <input type="radio" checked="checked" name="gender" value="1">
+                                    <input type="radio" checked="checked" name="gender" value="1" >
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="radio-container" style="margin-left: 5%;">여자
-                                    <input type="radio" name="gender" value="2">
+                                    <input type="radio" name="gender" value="2" >
                                     <span class="checkmark"></span>
                                 </label>
+                            </c:if>
+                            <c:if test="${requestScope.loginUser.gender=='2'}">
+                                <label class="radio-container m-r-45">남자
+                                    <input type="radio" name="gender" value="1" >
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container" style="margin-left: 5%;">여자
+                                    <input type="radio" checked="checked" name="gender" value="2" >
+                                    <span class="checkmark"></span>
+                                </label>
+                            </c:if>  
                             </div>
                         </div>
                     </div>

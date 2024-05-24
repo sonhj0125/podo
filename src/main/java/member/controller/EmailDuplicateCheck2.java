@@ -37,8 +37,6 @@ public class EmailDuplicateCheck2 extends AbstractController {
 			
 			boolean isExists = mdao.emailDuplicateCheck2(paraMap); 
 			
-			System.out.println("~~~ 확인용 isExists => " + isExists);
-			
 			JSONObject jsonObj = new JSONObject(); // {}
 			jsonObj.put("isExists", isExists);     // {"isExists":true} 또는 {"isExists":false} 으로 만들어준다. 
 			

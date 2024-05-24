@@ -464,8 +464,8 @@ public class MemberDAO_imple implements MemberDAO {
 	          conn = ds.getConnection();
 	          
 	          String sql = " select pwd "
-	                     + " from member "
-	                     + " where userid = ? and pwd = ? ";
+	          		     + " from member "
+	          		     + " where userid = ? and pwd = ? ";
 	          
 	          pstmt = conn.prepareStatement(sql); 
 	          pstmt.setString(1, paraMap.get("userid"));
@@ -479,9 +479,10 @@ public class MemberDAO_imple implements MemberDAO {
 	       } finally {
 	          close();
 	       }
-		
+
 		return isExists;
-	}
+		
+	}// end of public boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException-----------
 
 	
 }
