@@ -46,7 +46,14 @@ from dual;
 
 select *
 from member
-where userid ='test002'
+where userid ='kmj0228';
+
+
+select email
+from member
+where userid != kmj0228 and email = ?
+
+
 
 
 

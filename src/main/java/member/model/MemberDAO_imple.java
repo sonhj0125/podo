@@ -611,113 +611,134 @@ public class MemberDAO_imple implements MemberDAO {
 	}
 
 
-
+	// 회원의 개인 정보 변경하기 
 	@Override
-	public int getPointRange(MemberDTO mdto) throws SQLException {
+	public int updateMember(MemberDTO member) throws SQLException {
 		
 		int result = 0;
 		
 		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = "select POINT from MEMBER where userid = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mdto.getUserid());
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				
-				String pointStr = rs.getString("point");
-				
-				result = Integer.parseInt(pointStr);
-				
-			}
-			
-		}finally {
-			close();
-		}
+	          conn = ds.getConnection();
 		
-		return result;
-	}
+        String sql = " update member set name = ? "
+                   + "                   , email = ? "
+                   + "                   , phone = ? "
+                   + "                   , address = ? "
+                   + "                   , addressdetail = ? "
+                   + " where userid = ? ";
+                
+       pstmt = conn.prepareStatement(sql);
+       
+       pstmt.setString(1, member.getName());
+       pstmt.setString(2, aes.encrypt(member.getEmail()) );  // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
+       pstmt.setString(3, aes.encrypt(member.getPhone()) ); // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다. 
+       pstmt.setString(4, member.getAddress());
+       pstmt.setString(5, member.getAddressDetail());
+       pstmt.setString(6, member.getUserid());
+                
+       result = pstmt.executeUpdate();
+       
+    } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+       e.printStackTrace();
+    }
+     finally {
+       close();
+    }
+    
+		return result;    
+		
+	}// end of public int updateMember(MemberDTO member) throws SQLException-----
 
+
+	// 회원정보 수정시 email 중복검사
 	@Override
-	public int pointuse(Map<String, String> paraMapPoint) throws SQLException {
+    public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException {
+
+      boolean isExists = false;
+      
+      try {
+         conn = ds.getConnection();
+         
+         String sql = " select email "
+                    + " from member "
+                    + " where userid != ? and email = ? ";
+         
+         pstmt = conn.prepareStatement(sql); 
+         pstmt.setString(1, paraMap.get("userid"));
+         pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+         
+         rs = pstmt.executeQuery();
+         
+         isExists = rs.next(); // 행이 있으면(중복된 email) true,
+                               // 행이 없으면(사용가능한 email) false
+         
+      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+         e.printStackTrace();
+      } finally {
+         close();
+      }
+      		
+      return isExists;      
+	      
+	}// end of public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException-----
+
+
+	// 마이페이지 비밀번호 변경 비밀번호 변경
+	@Override
+	public int pwdUpdate2(Map<String, String> paraMap) throws SQLException {
 		
 		int result = 0;
 		
 		try {
-			
 			conn = ds.getConnection();
 			
-			String sql = " UPDATE MEMBER "
-					+ " SET POINT = point - ? "
-					+ " WHERE USERID = ?";
+			String sql = " update member set pwd = ?, pwdupdateday = to_char(sysdate, 'yyyy-mm-dd') "
+					   + " where userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, paraMapPoint.get("point"));
-			pstmt.setString(2, paraMapPoint.get("userid"));
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd"))); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			pstmt.setString(2, paraMap.get("userid"));
+	        
+	        result = pstmt.executeUpdate();
 			
-			result = pstmt.executeUpdate();
-			
-		}finally {
+		} finally {
 			close();
 		}
+		System.out.println(result);
 		
 		return result;
-	}
+	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
 
+
+	// 비밀번호 변경시 현재 사용중인 비밀번호인지 아닌지 알아오기(현재 사용중인 비밀번호 이라면 true, 새로운 비밀번호이라면 false)
 	@Override
-	public MemberDTO refreshSingin(String userid) {
+	public boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException {
 		
-		MemberDTO mdto = new MemberDTO();
+		boolean isExists = false;
 		
 		try {
-			
-			conn = ds.getConnection();
-			
-			String sql = " select userid, name, email, phone, address, addressdetail, gender, birthday, point, registerday, pwdupdateday, memberidx "
-					+ " from MEMBER where userid = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				
-				mdto = new MemberDTO();
-				
-				mdto.setUserid(rs.getString(1));
-				mdto.setName(rs.getString(2));
-				mdto.setEmail(aes.decrypt(rs.getString(3)));
-				mdto.setPhone(aes.decrypt(rs.getString(4)));
-				mdto.setAddress(rs.getString(5));
-				mdto.setAddressDetail(rs.getString(6));
-				mdto.setGender(rs.getString(7));
-				mdto.setBirthday(rs.getString(8));
-				mdto.setPoint(rs.getString(9));
-				mdto.setRegisterDay(rs.getString(10));
-				mdto.setPwdUpdateDay(rs.getString(11));
-				mdto.setMemberIdx(rs.getString(12));
-				
-			}
-			
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close();
-		}
+	          conn = ds.getConnection();
+	          
+	          String sql = " select pwd "
+	                     + " from member "
+	                     + " where userid = ? and pwd = ? ";
+	          
+	          pstmt = conn.prepareStatement(sql); 
+	          pstmt.setString(1, paraMap.get("userid"));
+	          pstmt.setString(2, Sha256.encrypt(paraMap.get("new_pwd")));
+	          
+	          rs = pstmt.executeQuery();
+	          
+	          isExists = rs.next(); // 행이 있으면(현재 사용중인 비밀번호) true,
+	                                // 행이 없으면(새로운 비밀번호) false
+	          
+	       } finally {
+	          close();
+	       }
 		
-		return mdto;
+		return isExists;
 	}
 
-
-
-	
 	
 }

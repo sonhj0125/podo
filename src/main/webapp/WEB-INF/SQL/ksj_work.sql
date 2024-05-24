@@ -148,3 +148,8 @@ nocache;
 commit;
 --커밋 완료.
 
+
+
+select *
+from member;
+

@@ -16,7 +16,7 @@
 <script src="<%=ctxPath %>/js/jquery-3.7.1.min.js"></script>
 
 <!-- Main JS-->
-<script src="<%=ctxPath %>/js/member/memberEdit.js"></script>
+<script src="<%=ctxPath %>/js/member/memberRegisterUpdate.js"></script>
 
 
 <!-- DataPicker -->
@@ -69,30 +69,17 @@
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
+                        	<input type="hidden" name="userid" value="${sessionScope.loginUser.userid}" />
                             <label class="label">이름<span class="star">*</span></label>
-                            <input class="input--style-4" type="text" id="name" name="name" value="${sessionScope.loginUser.name}">
+                            <input class="input--style-4 requiredInfo" type="text" id="name" name="name" value="${sessionScope.loginUser.name}">
                         </div>
                     </div>
                 </div>
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
-                            <label class="label">비밀번호</label>
-                            <input class="input--style-4" type="password" id="pwd" name="pwd">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="input-group">
-                            <label class="label">비밀번호 확인</label>
-                            <input class="input--style-4" type="password" id="pwdCheck">
-                        </div>
-                    </div>
-                </div>
-                <div class="row row-space">
-                    <div class="col-2">
-                        <div class="input-group">
-                            <label class="label">이메일</label>
-                            <input class="input--style-4" type="email" name="email" id ="email" value="${sessionScope.loginUser.email}">
+                            <label class="label">이메일<span class="star">*</span></label>
+                            <input class="input--style-4 requiredInfo" type="email" name="email" id ="email" value="${sessionScope.loginUser.email}">
                         </div>
                     </div>
                     <div class="col-2">
@@ -119,7 +106,7 @@
 
 			    <div class="w-100" style="display: flex; justify-content: space-between;">
 				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btn-close" style="width: 45%;">취소</button>
-				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;">변경하기</button>
+				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;" onclick="goEdit()">변경하기</button>
 			    </div>
             </form>
         </div>

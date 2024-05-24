@@ -117,9 +117,6 @@ $(function () {
     // 이름
     $("input#name").blur( (e) => {
 
-        const name = $(e.target).val().trim();
-        const tag = $('input#name');
-
         const regExp_name = new RegExp(/^[가-힣]{2,10}$/); 
         const bool = regExp_name.test($(e.target).val());
 
@@ -145,6 +142,7 @@ $(function () {
 
     });
 
+    
     // 비밀번호
     $("input#pwd").blur( (e) => {
     

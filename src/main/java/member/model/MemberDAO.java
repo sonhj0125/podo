@@ -44,6 +44,18 @@ public interface MemberDAO {
 
 	// 관리자 회원관리 - 한명 조회
 	MemberDTO selectOneMember(String userid) throws SQLException;
+	
+	// 회원의 개인 정보 변경하기 
+	int updateMember(MemberDTO member) throws SQLException;
+
+	// 회원정보 수정시 email 중복검사
+	boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException;
+
+	// 마이페이지 비밀번호 변경
+	int pwdUpdate2(Map<String, String> paraMap) throws SQLException;
+
+	// 비밀번호 변경시 현재 사용중인 비밀번호인지 아닌지 알아오기(현재 사용중인 비밀번호 이라면 true, 새로운 비밀번호이라면 false)
+	boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException;
 
 	// 포인트 조절(적립) (유저아이디, 포인트)
 	int pointUp(Map<String,String> paraMap) throws SQLException;
