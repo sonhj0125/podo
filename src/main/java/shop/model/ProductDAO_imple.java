@@ -916,11 +916,12 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex, rdate "
+			String sql = " SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ototalprice,"
+					   + " ostatus, odate, ovolume, NVL(rindex, 0) AS rindex, rdate "
 					   + " FROM "
 					   + " ( "
 					   + "     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, "
-					   + "            ostatus, odate, oindex "
+					   + "            to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex "
 					   + "     from product P JOIN orders O "
 					   + "     ON P.pindex = O.pindex "
 					   + "     where O.userid = ? and O.ostatus = 4 "
@@ -948,13 +949,16 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPprice(price);
 				
 				pdto.setPimg(rs.getString("pimg"));
-
 				odto.setPdto(pdto);
 				
 				odto.setOindex(rs.getInt("oindex"));
+				
+				String ototalprice = df.format(rs.getInt("ototalprice"));
+				odto.setOtotalprice(ototalprice);
+				
 				odto.setOstatus(rs.getInt("ostatus"));
 				odto.setOdate(rs.getString("odate"));
-				
+				odto.setOvolume(rs.getString("ovolume"));
 				rdto.setOdto(odto);
 				
 				rdto.setRindex(rs.getInt("rindex"));
@@ -1022,6 +1026,37 @@ public class ProductDAO_imple implements ProductDAO {
 
 	
 	
+	// [리뷰 작성] oindex에 대한 리뷰가 존재하는지 확인
+	@Override
+	public boolean isExistReviewByOindex(String oindex) throws SQLException {
+		
+		boolean isExistReview = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					   + " from review "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			isExistReview = rs.next();
+			
+		} finally {
+			close();
+		}
+		
+		return isExistReview;
+		
+	} // end of public boolean isUploadedReview(Map<String, String> paraMap) throws SQLException -----------
+
+	
+	
 	// [리뷰 작성] 리뷰 작성하기
 	@Override
 	public int addReview(Map<String, String> paraMap) throws SQLException {
@@ -1066,33 +1101,90 @@ public class ProductDAO_imple implements ProductDAO {
 
 	
 	
-	// [리뷰 작성] oindex에 대한 리뷰가 존재하는지 확인
+	// [리뷰 수정] rindex에 대한 리뷰가 존재하는지 확인하기
 	@Override
-	public boolean isExistReview(String oindex) throws SQLException {
+	public ReviewDTO getReviewByRindex(Map<String, String> paraMap) throws SQLException {
 		
-		boolean isExistReview = false;
+		ReviewDTO rdto = null;
 		
 		try {
 			
 			conn = ds.getConnection();
 			
 			String sql = " select * "
-					   + " from review "
-					   + " where oindex = ? ";
+					   + " from review R JOIN orders O "
+					   + " on R.oindex = O.oindex "
+					   + " JOIN product P "
+					   + " ON O.pindex = P.pindex "
+					   + " where R.rindex = ? and O.userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, oindex);
+			pstmt.setString(1, paraMap.get("rindex"));
+			pstmt.setString(2, paraMap.get("userid"));
 			
 			rs = pstmt.executeQuery();
 			
-			isExistReview = rs.next();
+			if(rs.next()) {
+				rdto = new ReviewDTO();
+				
+				rdto.setRindex(rs.getInt("rindex"));
+				rdto.setRstar(rs.getString("rstar"));
+				rdto.setRdetail(rs.getString("rdetail"));
+				rdto.setRdate(rs.getString("rdate"));
+				
+				OrderDTO odto = new OrderDTO();
+				ProductDTO pdto = new ProductDTO();
+				
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				
+				String price = df.format(Integer.parseInt(rs.getString("pprice")));
+				pdto.setPprice(price);
+				
+				pdto.setPimg(rs.getString("pimg"));
+				
+				odto.setPdto(pdto);
+				rdto.setOdto(odto);
+				
+			}
 			
 		} finally {
 			close();
 		}
 		
-		return isExistReview;
+		return rdto;
 		
-	} // end of public boolean isUploadedReview(Map<String, String> paraMap) throws SQLException -----------
+	} // end of public boolean isExistReviewByRindex(Map<String, String> paraMap) throws SQLException -----------
+
+	
+	
+	// [리뷰 수정] 리뷰 수정하기
+	@Override
+	public int updateReview(ReviewDTO rdto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " update review "
+					   + " set rstar = ?, rdetail = ?, rdate = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss') "
+					   + " where rindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, rdto.getRstar());
+			pstmt.setString(2, rdto.getRdetail());
+			pstmt.setInt(3, rdto.getRindex());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int updateReview(ReviewDTO rdto) throws SQLException ----------------------
 	
 }

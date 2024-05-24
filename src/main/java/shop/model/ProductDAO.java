@@ -55,7 +55,13 @@ public interface ProductDAO {
 	int addReview(Map<String, String> paraMap) throws SQLException;
 
 	// [리뷰 작성] oindex에 대한 리뷰가 존재하는지 확인
-	boolean isExistReview(String oindex) throws SQLException;
+	boolean isExistReviewByOindex(String oindex) throws SQLException;
+
+	// [리뷰 수정] rindex에 대한 리뷰가 존재하는지 확인하기
+	ReviewDTO getReviewByRindex(Map<String, String> paraMap) throws SQLException;
+
+	// [리뷰 수정] 리뷰 수정하기
+	int updateReview(ReviewDTO rdto) throws SQLException;
 	
 	
 }

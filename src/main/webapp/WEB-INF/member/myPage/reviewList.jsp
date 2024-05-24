@@ -7,6 +7,8 @@
    String ctxPath = request.getContextPath();
 %>
 
+<jsp:include page="../../header.jsp" />    
+
 <style>
   .my-hr3 {
     border: 0;
@@ -16,14 +18,23 @@
 </style>
 
 <script type="text/javascript">
-	function goReviewWrite() {
-		const oindex = $("input[name='oindex']").val();
-		location.href = "<%=ctxPath%>/member/reviewWrite.wine?oindex=" + oindex;
-	}
+
+	$(document).ready(function() {
+		
+		<%-- 리뷰 작성 클릭 시 --%>
+		$("button#btnReviewWrite").click(function(e) {
+			const oindex = $(e.target).next().val();
+			location.href = "<%=ctxPath%>/member/reviewWrite.wine?oindex=" + oindex;
+		});
+		
+		<%-- 리뷰 수정 클릭 시 --%>
+		$("button#btnReviewUpdate").click(function(e) {
+			const rindex = $(e.target).next().val();
+			location.href = "<%=ctxPath%>/member/reviewUpdate.wine?rindex=" + rindex;
+		});
+		
+	});
 </script>
-
-
-<jsp:include page="../../header.jsp" />    
 
 <form>
 	<div id="container" style="width: 100%; margin-bottom: 5%;">
@@ -32,7 +43,7 @@
 		<%-- 값이 있을 때 시작 --%>
 		<c:if test="${not empty requestScope.reviewPdtList}">
 			<div style="width: 60%;">
-				<c:forEach var="rvo" items="${requestScope.reviewPdtList}" varStatus="status">
+				<c:forEach var="rdto" items="${requestScope.reviewPdtList}" varStatus="status">
 						<div>
 							<c:choose>
 								<c:when test="${status.index == 0}">
@@ -44,25 +55,27 @@
 							</c:choose>
 							<div style="display: flex; justify-content: space-between;">
 							
-								<img src="<%=ctxPath%>/images/product/${rvo.odto.pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
-									<div style="display: flex; width: 90%; justify-content: space-between;">
-									<div style="margin: auto 0%;">
-											<div>${rvo.odto.pdto.pname}</div>
-											<div>${rvo.odto.pdto.pprice}원</div>
-											<div class="mt-2" style="font-size: 10pt;">주문일자 ${rvo.odto.odate}</div>
+								<img src="<%=ctxPath%>/images/product/${rdto.odto.pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 120px;">
+								<div style="display: flex; width: 90%; margin-left: 2%; justify-content: space-between;">
+									<div style="margin: auto 0%; padding-bottom: 1%;">
+											<div style="font-weight: bold;">${rdto.odto.pdto.pname}</div>
+											<div>${rdto.odto.ototalprice}원</div>
+											<div style="font-size: 10pt;">${rdto.odto.ovolume}개 주문</div>
+											<div class="mt-1" style="font-size: 10pt; color: #990000;">주문일자 ${rdto.odto.odate}</div>
 									</div>
 									<c:choose>
-										<c:when test="${rvo.rindex == ''}">
+										<c:when test="${rdto.rindex == 0}">
 											<div style="margin: auto 0;">
-												<input type="hidden" name="oindex" value="${rvo.odto.oindex}">
-												<button type="button" class="btn btn-primary" onclick="goReviewWrite()">리뷰 작성</button>
+												<button id="btnReviewWrite" type="button" class="btn btn-primary">리뷰 작성</button>
+												<input type="hidden" name="oindex" value="${rdto.odto.oindex}">
 											</div>
 										</c:when>
 										<c:otherwise>
 											<div style="margin: auto 0; text-align: right;">
-												<input type="hidden" name="rindex" value="${rvo.rindex}">
-												<div class="mb-2" style="font-size: 10pt;">${rvo.rdate} 작성</div>
-												<button type="button" class="btn btn-secondary" onclick="location.href='<%=ctxPath%>/member/reviewUpdate.wine'">리뷰 수정</button>
+												
+												<div class="mb-2" style="font-size: 10pt;">${rdto.rdate} 작성</div>
+												<button id="btnReviewUpdate" type="button" class="btn btn-secondary">리뷰 수정</button>
+												<input type="hidden" name="rindex" value="${rdto.rindex}">
 											</div>
 										</c:otherwise>
 									</c:choose>

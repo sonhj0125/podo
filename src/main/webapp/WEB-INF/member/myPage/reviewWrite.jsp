@@ -37,7 +37,26 @@
 
 	// 등록하기 버튼 클릭 시 리뷰 작성
 	function reviewWrite() {
-		const frm = document.reviewWriteForm;
+		
+		const rstar_len = $("input[name='rstar']:checked").length;
+		
+		if(rstar_len == 0) {
+			alert("평가 점수를 선택해주세요!");
+	        return false;
+		}
+		
+		const rdetail = $("textarea").val().trim();
+		
+		if(rdetail.length == 0) {
+			alert("후기를 입력해주세요!");
+			return false;
+			
+		} else if(rdetail.length < 5) {
+			alert("후기를 5글자 이상 입력해주세요!");
+			return false;
+		}
+		
+		const frm = document.reviewWriteFrm;
 		frm.method = "post";
 		frm.submit();
 	}
@@ -45,7 +64,7 @@
 
 <jsp:include page="../../header.jsp" />
 
-<form name="reviewWriteForm">
+<form name="reviewWriteFrm">
    <div id="container" style="width: 100%;">
       
       <div style="width: 60%; text-align: center;">
@@ -59,9 +78,9 @@
       				<c:if test="${not empty requestScope.pdto}">
 	                 <div style="display: flex; width: 100%; justify-content: space-between;">
 	                 
-	                    <img src="<%=ctxPath%>/images/product/${pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 150px;">
+	                    <img src="<%=ctxPath%>/images/product/${pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 120px;">
 	                    <div style="margin: auto 1%; text-align: right;">
-	                          <div>${pdto.pname}</div>
+	                          <div class="mb-2" style="font-size: 14pt;">${pdto.pname}</div>
 	                          <div>${pdto.pprice}원</div>
 	                          <div></div>
 	                    </div>
@@ -86,7 +105,7 @@
             <br><br>
             <h5>후기를 남겨주세요</h5>
             <div style="display: flex;">
-            <textarea class="form-control h-25" id="exampleFormControlTextarea1" name="rdetail" rows="8" placeholder="만족도에 대한 후기를 남겨주세요" style="background-color: #f2f2f2;"></textarea>
+            <textarea class="form-control h-25" id="exampleFormControlTextarea1" name="rdetail" rows="8" placeholder="만족도에 대한 후기를 5글자 이상 남겨주세요" style="background-color: #f2f2f2;"></textarea>
             </div>
             <hr>
           </div>

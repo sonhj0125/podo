@@ -57,7 +57,7 @@ public class ReviewWrite extends AbstractController {
 				ProductDTO pdto = pdao.getProductByOindex(paraMap);
 				
 				// oindex에 대한 리뷰가 존재하는지 확인
-				boolean isExistReview = pdao.isExistReview(oindex);
+				boolean isExistReview = pdao.isExistReviewByOindex(oindex);
 				
 				if(pdto == null || isExistReview) {
 					// url에 다른 사용자의 oindex를 넣거나 이미 작성된 리뷰의 oindex를 넣는 경우
