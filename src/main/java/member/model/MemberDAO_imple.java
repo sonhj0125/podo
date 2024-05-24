@@ -70,9 +70,9 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "INSERT INTO MEMBER "
-					+ " (USERID, PWD, NAME, EMAIL, PHONE, ADDRESS, ADDRESSDETAIL, GENDER, BIRTHDAY) "
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = " INSERT INTO MEMBER "
+					   + " (USERID, PWD, NAME, EMAIL, PHONE, ADDRESS, ADDRESSDETAIL, GENDER, BIRTHDAY) "
+					   + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -358,13 +358,13 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT rno, userid, name, email, phone, gender, status "
+			String sql = " SELECT rno, userid, name, email, phone, gender, point, status "
 					   + " FROM "
 					   + " ( "
-					   + "    select rownum AS RNO, userid, name, email, phone, gender, status "
+					   + "    select rownum AS rno, userid, name, email, phone, gender, point, status "
 					   + "    from "
 					   + "    ( "
-					   + "        select userid, name, email, phone, gender, status "
+					   + "        select userid, name, email, phone, gender, point, status "
 					   + "        from member join memberidx on member.memberidx = memberidx.memberidx "
 					   + "        where memberidx.memberidx != 9";
 			
@@ -372,10 +372,6 @@ public class MemberDAO_imple implements MemberDAO {
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
-			if("email".equals(colname)) {
-				// 검색 대상이 email인 경우
-				searchWord = aes.encrypt(searchWord);
-			}
 			
 			if((colname != null && !colname.trim().isEmpty()) && 
 			   (searchWord != null && !searchWord.trim().isEmpty())) {
@@ -421,6 +417,7 @@ public class MemberDAO_imple implements MemberDAO {
 				mdto.setEmail(aes.decrypt(rs.getString("email")));
 				mdto.setPhone(aes.decrypt(rs.getString("phone")));
 				mdto.setGender(rs.getString("gender"));
+				mdto.setPoint(rs.getString("point"));
 				mdto.setStatus(rs.getString("status"));
 				
 				memberList.add(mdto);
@@ -456,10 +453,6 @@ public class MemberDAO_imple implements MemberDAO {
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
-			if("email".equals(colname)) {
-				// 검색 대상이 email인 경우
-				searchWord = aes.encrypt(searchWord);
-			}
 			
 			if((colname != null && !colname.trim().isEmpty()) && 
 			   (searchWord != null && !searchWord.trim().isEmpty())) {
@@ -481,7 +474,7 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			totalMemberCount = rs.getInt(1);
 			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			
 		} finally {
@@ -512,10 +505,6 @@ public class MemberDAO_imple implements MemberDAO {
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
-			if("email".equals(colname)) {
-				// 검색 대상이 email인 경우
-				searchWord = aes.encrypt(searchWord);
-			}
 			
 			if((colname != null && !colname.trim().isEmpty()) && 
 			   (searchWord != null && !searchWord.trim().isEmpty())) {
@@ -539,7 +528,7 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			totalPage = rs.getInt(1);
 			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			
 		} finally {
@@ -553,8 +542,49 @@ public class MemberDAO_imple implements MemberDAO {
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
-		return null;
 		
+		MemberDTO mdto = null;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql =  " select userid, name, email, phone, address, addressdetail, gender "
+	         			 + " , birthday, point, registerday, memberidx.status "
+	         			 + " from member join memberidx on member.memberidx = memberidx.memberidx "
+	         			 + " where memberidx.memberidx = 1 and userid = ? ";
+	                     
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, userid);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	        	 
+	        	 mdto = new MemberDTO();
+	            
+	        	 mdto.setUserid(rs.getString("userid"));
+	        	 mdto.setName(rs.getString("name"));
+	        	 mdto.setEmail(aes.decrypt(rs.getString("email")));
+	        	 mdto.setPhone(aes.decrypt(rs.getString("phone")));
+	        	 mdto.setAddress(rs.getString("address"));
+	        	 mdto.setAddressDetail(rs.getString("addressdetail"));
+	        	 mdto.setGender(rs.getString("gender"));
+	        	 mdto.setBirthday(rs.getString("birthday"));
+	        	 mdto.setPoint(rs.getString("point"));
+	        	 mdto.setRegisterDay(rs.getString("registerday"));
+	        	 mdto.setStatus(rs.getString("status"));
+	        	 
+	         } // end of if(rs.next())
+	         
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+	      return mdto;
+	      
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
 	@Override

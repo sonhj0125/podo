@@ -33,14 +33,23 @@ div.form-group {
 	margin-top: 5%;
 }
 
-input.form-control, textarea.form-control {
-	margin-top: 5%;
+input.form-control, div#saleMethod {
+	margin-top: 3%;
 }
 
 .widy{
 	width: 90%;
 	padding: 0;
 	margin: 0 auto;
+}
+
+div#saleprice {
+	width: 20%;
+}
+
+
+div#salepercent {
+	width: 20%;
 }
 
 </style>
@@ -50,7 +59,7 @@ input.form-control, textarea.form-control {
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
-					<label for="coname">쿠폰 이름</label>
+					<label for="coname" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 이름</label>
 				</div>
 				<div class="col-md-9">
 					<input class="form-control" type="text" id="couponname" name="coname" placeholder="신규회원 가입 감사쿠폰" autocomplete="off" /> 
@@ -60,7 +69,7 @@ input.form-control, textarea.form-control {
 		<div class="form-group">
 			<div class="row">	
 				<div class="col-md-3">
-					<label for="content">쿠폰 내용</label>
+					<label for="content" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 내용</label>
 				</div>
 				<div class="col-md-9">
 					<input class="form-control" type="text" id="content" name="codetail" placeholder="신규회원 가입 감사쿠폰" />
@@ -70,20 +79,21 @@ input.form-control, textarea.form-control {
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
-					<label for="">할인방법</label>
+					<label for="" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;할인 방법</label>
 				</div>
-					<div class="col-md-9 mt-3">
-						<div class="form-check">
-						  <input class="form-check-input" type="radio" name="cotype" value="1" id="saleNat" checked>
-						  <label class="form-check-label" for="saleNat">
-						    할인금액
-					  	  </label>
+				<div id="saleMethod" style="display:flex;" >
+					<div class="form-check" id="saleprice" >
+					  <input class="form-check-input" type="radio" name="cotype" value="1" id="saleNat" checked>
+					  <label class="form-check-label" for="saleNat">
+					    할인금액
+				  	  </label>
 					</div>
-					<div class="form-check">
-						  <input class="form-check-input" type="radio" name="cotype" value="2" id="salePer">
-						  <label class="form-check-label" for="salePer">
-						    할인율
-						  </label>
+					
+					<div class="form-check" id="salepercent">
+					  <input class="form-check-input" type="radio" name="cotype" value="2" id="salePer">
+					  <label class="form-check-label" for="salePer">
+					    할인율
+					  </label>
 					</div>
 				</div>
 			</div>	
@@ -92,7 +102,7 @@ input.form-control, textarea.form-control {
 		<div class="form-group">
 			<div class="row">
 				<div class="col-md-3">
-					<label id="lab-method" for="discount">할인금액</label>
+					<label id="lab-method" for="discount" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;할인금액</label>
 				</div>
 				<div class="col-md-9">
 					<input class="form-control" type="text" id="discount" name="codiscount" autocomplete="off" />
@@ -103,7 +113,7 @@ input.form-control, textarea.form-control {
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="couponmin">최소 주문금액</label>
+					<label for="couponmin" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;최소 주문금액</label>
 				</div>
 				<div class="col-md-9">
 					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="10000"/>
@@ -114,13 +124,25 @@ input.form-control, textarea.form-control {
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="">쿠폰기한 (~까지)</label>
+					<label for="" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 기한 (~까지)</label>
 				</div>
 				<div class="col-md-9">
 					<input class="form-control" type="date" name="codate" id="codate" />
 				</div>
 			</div>	
 		</div>
+		
+		<div class="form-group">
+		    <div class="row">
+				<div class="col-md-3">
+					<label for="couponmin" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 코드</label>
+				</div>
+				<div class="col-md-9">
+					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="쿠폰 코드"/>
+				</div>
+			</div>	
+		</div>
+		
 		
 		<div class="form-group custom-submit d-grid gap-2 col-6 mx-auto">
 			<input id="btn-couponRegister" class="btn btn-danger mt-3" type="button" value="전송" />

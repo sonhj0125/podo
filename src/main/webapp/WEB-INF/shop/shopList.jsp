@@ -492,9 +492,9 @@ function goSmartSearch() {
 			    
 			    <div id="button" style="display: flex; align-items: center;">
 			  	  <%-- search 제출 버튼 --%>
-				  <button type="button" id="submitSmartSearch" class="btn btn-danger mt-5">Search</button>
+				  <button type="button" id="submitSmartSearch" class="btn btn-danger btn-lg mt-5 d-grid gap-2 col-6 mx-auto">Search</button>
 				  <%-- 검색 조건 reset --%>
-				  <i class="fa-solid fa-arrows-rotate" id="resetSmartSearch" style="margin-left: 10px;"></i>
+				  <i class="fa-solid fa-arrows-rotate fa-2x" id="resetSmartSearch" style="margin-top:13%; margin-right:2%;"></i>
 			    </div>
 		  </form>
 	  </div>

@@ -79,11 +79,12 @@ from member join memberidx on member.memberidx = memberidx.memberidx
 where memberidx.memberidx != 9 and name like '%' || '테' || '%';
 
 
+update member set memberidx = 9
+where userid = 'ejss0125';
+-- 1 행 이(가) 업데이트되었습니다.
 
-
-
-
-
+commit;
+-- 커밋 완료.
 
 
 
@@ -131,5 +132,36 @@ commit;
 
 
 
+select userid, name, email, phone, address, addressdetail, gender
+ , birthday, point, registerday, memberidx.status
+from member join memberidx on member.memberidx = memberidx.memberidx
+where memberidx.memberidx = 1 and userid = 'test002'
+
+
+select *
+from log;
+
+select *
+from coupon;
+
+select *
+from mycoupon;
+
+
+insert into mycoupon(coindex, userid, coname, costatus) values('503', 'kmj0228', '무료로 드립니다 [100% 쿠폰]', '1');
+
+commit;
+
+
+select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX, costatus
+from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCOUPON.USERID = MEMBER.USERID
+where MEMBER.USERID = 'kmj0228'
+
+
+select coupon.coname AS coname
+from coupon 
+join mycoupon on coupon.coname = mycoupon.coname
+join member on mycoupon.userid = member.userid
+where member.userid = 'kmj0228';
 
 

@@ -9,13 +9,12 @@
 	String ctxPath = request.getContextPath();
 %>
 
-<jsp:include page="../../header.jsp" />
+<jsp:include page="/WEB-INF/header.jsp" /> 
 
 <script type="text/javascript">
    
-   	window.onload = ()=> {
+	$(function() {
       
-	      
 		// 검색 시 검색타입, 검색 단어 그대로 유지하도록 하기
 	  	if("${requestScope.searchType}" != "" &&
 	  	   "${requestScope.searchWord}" != "") { 
@@ -51,22 +50,23 @@
 		}); // end of $("select[name='sizePerPage']").bind("change", function() {}) ------------------
 		
 	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-	  	
-
-		<%-- 회원클릭시 상세보기 페이지 --%>
-		$("tr#memberDetail").bind('click',()=>{
-		   location.href="<%=ctxPath%>/member/admin/adminMemberDetail.wine";
-		});
 		
+		// **** 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다. **** //
+		$("tbody#memberContents").click( e => {
+			
+			const userid = $(e.target).parent().children(".userid").text();
+			// alert(userid);
+			
+			const frm = document.adminMemberDetail_frm;
+			frm.userid.value = userid;
+			
+			frm.action = "<%= ctxPath%>/member/admin/adminMemberDetail.wine";
+			frm.method = "post";
+			frm.submit();
+			
+		});
       
-   }; // end of window.onload
+   }); // end of window.onload
    
 	
    	// function declaration
@@ -149,7 +149,6 @@
 			<option value="">검색대상</option>
 			<option value="name">회원명</option>
 			<option value="userid">아이디</option>
-			<option value="email">이메일</option>
 		</select>
 		&nbsp;
 		<input type="text" name="searchWord" />
@@ -175,11 +174,12 @@
 				<th>이메일</th>
 				<th>연락처</th>
 				<th>성별</th>
+				<th>포인트</th>
 				<th>회원상태</th>
 			</tr>
 		</thead>
 
-		<tbody>
+		<tbody id="memberContents">
 			
 			<c:if test="${not empty requestScope.memberList}">
 				<c:forEach var="mdto" items="${requestScope.memberList}" varStatus="status">
@@ -198,6 +198,7 @@
 								<c:otherwise>여</c:otherwise>
 							</c:choose>
 						</td>
+						<td>${mdto.point}</td>
 						<td>${mdto.status}</td>
 					</tr>
 				</c:forEach>
@@ -205,12 +206,19 @@
 			
 			<c:if test="${empty requestScope.memberList}">
 				<tr>
-					<td colspan="7" style="text-align: center;">데이터가 존재하지 않습니다.</td>
+					<td colspan="8" style="text-align: center;">데이터가 존재하지 않습니다.</td>
 				</tr>
 			</c:if>
 		
 		</tbody>
 	</table>
+	
+	
+<form name="adminMemberDetail_frm">
+	<input type="hidden" name="userid" />
+	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}" />
+</form>
+	
 	
 	
 	<%-- 페이지 이동 --%>
@@ -220,4 +228,4 @@
 	
 </div>
 
-<jsp:include page="../../footer.jsp" />
+<jsp:include page="/WEB-INF/footer.jsp" />  
