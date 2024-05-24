@@ -740,5 +740,111 @@ public class MemberDAO_imple implements MemberDAO {
 		return isExists;
 	}
 
+
+
+	@Override
+	public int getPointRange(MemberDTO mdto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select POINT from MEMBER where userid = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mdto.getUserid());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				String pointStr = rs.getString("point");
+				
+				result = Integer.parseInt(pointStr);
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int pointuse(Map<String, String> paraMapPoint) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " UPDATE MEMBER "
+					+ " SET POINT = point - ? "
+					+ " WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMapPoint.get("point"));
+			pstmt.setString(2, paraMapPoint.get("userid"));
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public MemberDTO refreshSingin(String userid) {
+		
+		MemberDTO mdto = new MemberDTO();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email, phone, address, addressdetail, gender, birthday, point, registerday, pwdupdateday, memberidx "
+					+ " from MEMBER where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				mdto = new MemberDTO();
+				
+				mdto.setUserid(rs.getString(1));
+				mdto.setName(rs.getString(2));
+				mdto.setEmail(aes.decrypt(rs.getString(3)));
+				mdto.setPhone(aes.decrypt(rs.getString(4)));
+				mdto.setAddress(rs.getString(5));
+				mdto.setAddressDetail(rs.getString(6));
+				mdto.setGender(rs.getString(7));
+				mdto.setBirthday(rs.getString(8));
+				mdto.setPoint(rs.getString(9));
+				mdto.setRegisterDay(rs.getString(10));
+				mdto.setPwdUpdateDay(rs.getString(11));
+				mdto.setMemberIdx(rs.getString(12));
+				
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return mdto;
+	}
+
 	
 }
