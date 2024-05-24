@@ -150,6 +150,7 @@
 		<%-- 모달창을 끄면 모달창을 새로고침--%>
 		$("button#btn-close").click(function(){
 			javascript:history.go(0);
+		
 		});
 		
 		
