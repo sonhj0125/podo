@@ -127,7 +127,7 @@ function reviewUpdate() {
 	      	 </div>
       	 </c:if>
 		 
-		 <button type="button" class="btn btn-primary" onclick="reviewUpdate()">수정 완료</button>
+		 <button type="button" class="btn btn-primary" onclick="reviewUpdate()">수정하기</button>
 	     <button type="button" class="btn btn-secondary">수정 취소</button>
 
       </div>
