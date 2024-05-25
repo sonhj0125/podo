@@ -189,6 +189,15 @@ public class Payment extends AbstractController {
 				
 				//5. 제품명 만들기
 				
+				String finalproductName = "";
+				
+				if(pname.length>1) {
+					
+					
+					
+				}else {
+					
+				}
 				
 				
 				// 전부 성공시
