@@ -362,7 +362,7 @@
            <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
             <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
             	<c:if test="${sessionScope.reviewCnt != 0}">
-               		<span class="position-absolute top-1 start-100 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+               		<span class="position-absolute top-1 ms-4 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
             	</c:if>
                   <i class="fa-regular fa-newspaper" style="margin: 10%;">
                   </i>
