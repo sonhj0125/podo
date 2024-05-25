@@ -227,7 +227,7 @@ where P.pindex = 15
 order by rindex desc;
 
 
-
+-- 마이페이지 : 작성할 리뷰 개수 알아오기
 SELECT count(*) as CNT
 FROM
 (
