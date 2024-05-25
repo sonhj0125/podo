@@ -51,6 +51,10 @@ public interface MemberDAO {
 	// 관리자 회원관리 - 한명 조회
 	MemberDTO selectOneMember(String userid) throws SQLException;
 
+	
+	// [마이페이지] 작성할 리뷰 개수 알아오기
+	int getReviewCnt(String userid) throws SQLException;
+
 
 	
 }

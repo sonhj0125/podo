@@ -223,11 +223,22 @@ from product P JOIN orders O
 ON P.pindex = O.pindex
 JOIN review R
 ON O.oindex = R.oindex
-where P.pindex = 29
+where P.pindex = 15
 order by rindex desc;
 
 
 
-
+SELECT count(*) as CNT
+FROM
+(
+    select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg,
+           to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex
+    from product P JOIN orders O
+    ON P.pindex = O.pindex
+    where O.userid = 'test002' and O.ostatus = 4
+) V
+LEFT JOIN REVIEW R
+ON V.oindex = R.oindex
+where rindex is null;
 
 
