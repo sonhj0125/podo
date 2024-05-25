@@ -62,6 +62,9 @@ public interface ProductDAO {
 
 	// [리뷰 수정] 리뷰 수정하기
 	int updateReview(ReviewDTO rdto) throws SQLException;
+
+	// [shop] pindex에 대한 리뷰 목록 불러오기
+	List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException;
 	
 	
 }

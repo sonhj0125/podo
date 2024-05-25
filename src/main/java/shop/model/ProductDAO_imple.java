@@ -1186,5 +1186,60 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 		
 	} // end of public int updateReview(ReviewDTO rdto) throws SQLException ----------------------
+
+	
+	
+	// [shop] pindex에 대한 리뷰 목록 불러오기
+	@Override
+	public List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException {
+
+		List<ReviewDTO> reviewList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select R.*, O.userid, P.pindex "
+					   + " from product P JOIN orders O "
+					   + " ON P.pindex = O.pindex "
+					   + " JOIN review R "
+					   + " ON O.oindex = R.oindex "
+					   + " where P.pindex = ? "
+					   + " order by rindex desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pindex);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ReviewDTO rdto = new ReviewDTO();
+				OrderDTO odto = new OrderDTO();
+				ProductDTO pdto = new ProductDTO();
+				
+				rdto.setRindex(rs.getInt("rindex"));
+				rdto.setRstar(rs.getString("rstar"));
+				rdto.setRdetail(rs.getString("rdetail"));
+				rdto.setRdate(rs.getString("rdate"));
+				rdto.setOindex(rs.getInt("oindex"));
+				
+				odto.setUserid(rs.getString("userid"));
+				
+				pdto.setPindex(rs.getInt("pindex"));
+				odto.setPdto(pdto);
+				
+				rdto.setOdto(odto);
+				
+				reviewList.add(rdto);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return reviewList;
+		
+	} // end of public List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException --------
 	
 }

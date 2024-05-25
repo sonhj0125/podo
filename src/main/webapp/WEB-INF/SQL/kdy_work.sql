@@ -217,3 +217,17 @@ where rindex = ?;
 
 
 
+-- shop 페이지 리뷰 바 : pindex에 대한 리뷰 목록 불러오기
+select R.*, O.userid, P.pindex
+from product P JOIN orders O
+ON P.pindex = O.pindex
+JOIN review R
+ON O.oindex = R.oindex
+where P.pindex = 29
+order by rindex desc;
+
+
+
+
+
+
