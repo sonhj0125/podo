@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class MemberDAO_imple implements MemberDAO {
 	private ResultSet rs;
 	
 	private AES256 aes;
+	
+	private DecimalFormat df = new DecimalFormat("#,###");
 	
 	public MemberDAO_imple() {
 		
@@ -129,7 +132,10 @@ public class MemberDAO_imple implements MemberDAO {
 				mdto.setAddressDetail(rs.getString(6));
 				mdto.setGender(rs.getString(7));
 				mdto.setBirthday(rs.getString(8));
-				mdto.setPoint(rs.getString(9));
+				
+				String point = df.format(Integer.parseInt(rs.getString(9)));
+				mdto.setPoint(point);
+				
 				mdto.setRegisterDay(rs.getString(10));
 				mdto.setPwdUpdateDay(rs.getString(11));
 				mdto.setMemberIdx(rs.getString(12));
@@ -678,11 +684,47 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(2, paraMap.get("userid"));
 	        
 	        result = pstmt.executeUpdate();
+		finally {
+		close();
+	}
+	
+	return result;
+}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
+
+	
+	// [마이페이지] 작성할 리뷰 개수 알아오기
+	@Override
+	public int getReviewCnt(String userid) throws SQLException {
+		
+		int cnt = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT count(*) as CNT "
+					   + " FROM "
+					   + " ( "
+					   + "     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, "
+					   + "            to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex "
+					   + "     from product P JOIN orders O "
+					   + "     ON P.pindex = O.pindex "
+					   + "     where O.userid = ? and O.ostatus = 4 "
+					   + " ) V "
+					   + " LEFT JOIN REVIEW R "
+					   + " ON V.oindex = R.oindex "
+					   + " where rindex is null ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			cnt = rs.getInt(1);
 			
 		} finally {
 			close();
 		}
-		System.out.println(result);
 		
 		return result;
 	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
@@ -716,8 +758,6 @@ public class MemberDAO_imple implements MemberDAO {
 		
 		return isExists;
 	}
-
-
 
 	@Override
 	public int pointread(String userid) throws SQLException {

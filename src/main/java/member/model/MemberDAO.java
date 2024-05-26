@@ -60,8 +60,9 @@ public interface MemberDAO {
 	// 내 포인트 검색
 	int pointread(String userid) throws SQLException;
 
+	// [마이페이지] 작성할 리뷰 개수 알아오기
+	int getReviewCnt(String userid) throws SQLException;
 
-	
 
 	
 }

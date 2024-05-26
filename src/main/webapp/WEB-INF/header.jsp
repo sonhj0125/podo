@@ -138,7 +138,7 @@
 		});
 		
 		<%-- MyPage Click --%>
-		$("div#ReviewList").bind('click',()=>{
+		$("div.reviewList").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/reviewList.wine";
 		});
 		
@@ -305,9 +305,9 @@
       
                       <div class="modal-body p-5 pt-0">
                           <div id="login">
-                        <iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
-                        </iframe>
-                     </div>
+	                        <iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
+	                        </iframe>
+                     	  </div>
                       </div>
                   </div>
               </div>
@@ -370,25 +370,27 @@
             <hr style="width: 90%; color: purple; border: solid 2px;">       
             <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name}</span>님 안녕하세요!</div>
            <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
-            <div class="position-relative" style="margin-right: 5%; cursor: pointer;">
-               <span class="position-absolute top-1 start-100 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+            <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
+            	<c:if test="${sessionScope.reviewCnt != 0}">
+               		<span class="position-absolute top-1 ms-4 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+            	</c:if>
                   <i class="fa-regular fa-newspaper" style="margin: 10%;">
                   </i>
                   <br>
                   <div style="font-weight: bold;">리뷰</div>
-                  <div style="color: purple;">2</div>
-               </div>
-               <div style="margin-right: 5%; cursor: pointer;">
-                  <i class="fa-solid fa-ticket"></i>
-                  <div style="font-weight: bold; cursor: pointer;">쿠폰</div>
-                  <div style="color: purple;">2</div>
-               </div>
-               <div style="cursor: pointer;">
-                  <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                  <br>
-                  <div style="font-weight: bold; cursor: pointer;">적립금</div>
-                  <div style="color: purple;">${sessionScope.loginUser.point }</div>
-               </div>
+                  <div style="color: purple;">${sessionScope.reviewCnt}</div>
+            </div>
+            <div style="margin-right: 5%; cursor: pointer;">
+               <i class="fa-solid fa-ticket"></i>
+               <div style="font-weight: bold; cursor: pointer;">쿠폰</div>
+               <div style="color: purple;">2</div>
+            </div>
+            <div style="cursor: pointer;">
+               <i class="fa-solid fa-circle-dollar-to-slot"></i>
+               <br>
+               <div style="font-weight: bold; cursor: pointer;">적립금</div>
+               <div style="color: purple;">${sessionScope.loginUser.point}</div>
+            </div>
            </div>
            <hr style="width: 90%; color: purple; border: solid 2px;">  
      
@@ -413,9 +415,9 @@
          <hr style="width: 90%;">
             <div>
                <div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
-               <div id="ReviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;" >리뷰관리</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" id="memberCoupon">쿠폰</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" id="memberPoint">적립금</div>
+               <div id="reviewPage" class="reviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;" >리뷰관리</div>
+               <div id="memberCoupon" style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
+               <div id="memberPoint" style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
             </div>
        </div>
        

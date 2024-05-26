@@ -151,15 +151,27 @@ commit;
 insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
 values(501, '45000', '2250', '2024-05-22 19:15:00', 4, '2024-05-23 14:26:00', 1, 'test002', 29);
 commit;
-
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(502, '190000', '9500', '2024-05-23 11:02:38', 4, '2024-05-24 08:13:28', 1, 'test002', 15);
+commit;
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(503, '12900', '645', '2024-05-23 11:02:38', 4, '2024-05-24 08:13:28', 1, 'test002', 7);
+commit;
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(504, '29000', '1450', '2024-05-23 14:02:38', 4, '2024-05-24 11:13:28', 1, 'test002', 46);
+commit;
+insert into orders(oindex, ototalprice, opoint, odate, ostatus, oardate, ovolume, userid, pindex)
+values(505, '190000', '9500', '2024-05-23 14:02:38', 4, '2024-05-24 11:13:28', 1, 'test002', 15);
+commit;
 
 
 -- 리뷰 관리 페이지 : 배송완료인 상품 목록 띄우기
-SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ostatus, odate, rindex
+SELECT pindex, pname, pengname, pprice, pimg, V.oindex, ototalprice,
+       ostatus, odate, ovolume, NVL(rindex, 0) AS rindex, rdate
 FROM
 (
-    select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, 
-           ostatus, odate, oindex
+    select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg,
+           to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex
     from product P JOIN orders O
     ON P.pindex = O.pindex
     where O.userid = 'test002' and O.ostatus = 4
@@ -175,11 +187,58 @@ ORDER BY oindex desc;
 select P.*
 from product P JOIN orders O
 ON P.pindex = O.pindex
-where oindex = 501;
+where oindex = 501 and userid = 'test002';
+
+-- 리뷰 작성 페이지 : oindex에 대한 리뷰가 존재하는지 확인하기
+select *
+from review
+where oindex = 502;
+
+/*
+update member
+set point = point + 500
+where userid = 'test002';
+*/
+
+-- 리뷰 수정 페이지 : rindex에 대한 리뷰가 존재하는지 확인하기
+select *
+from review R JOIN orders O
+on R.oindex = O.oindex
+JOIN product P
+ON O.pindex = P.pindex
+where R.rindex = 50 and O.userid = 'test002';
+
+/*
+update review
+set rstar = ?, rdetail = ?, rdate = to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+where rindex = ?;
+*/
 
 
 
 
+-- shop 페이지 리뷰 바 : pindex에 대한 리뷰 목록 불러오기
+select R.*, O.userid, P.pindex
+from product P JOIN orders O
+ON P.pindex = O.pindex
+JOIN review R
+ON O.oindex = R.oindex
+where P.pindex = 15
+order by rindex desc;
 
+
+-- 마이페이지 : 작성할 리뷰 개수 알아오기
+SELECT count(*) as CNT
+FROM
+(
+    select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg,
+           to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex
+    from product P JOIN orders O
+    ON P.pindex = O.pindex
+    where O.userid = 'test002' and O.ostatus = 4
+) V
+LEFT JOIN REVIEW R
+ON V.oindex = R.oindex
+where rindex is null;
 
 

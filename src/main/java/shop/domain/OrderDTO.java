@@ -11,6 +11,8 @@ public class OrderDTO {
 	private int ostatus;
 	private String odate;
 	private String oardate;
+	private String userid;
+	private int pindex;
 	
 	private ProductDTO pdto;
 	private MemberDTO mdto;
@@ -86,5 +88,21 @@ public class OrderDTO {
 	public void setMdto(MemberDTO mdto) {
 		this.mdto = mdto;
 	}
-	
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public int getPindex() {
+		return pindex;
+	}
+
+	public void setPindex(int pindex) {
+		this.pindex = pindex;
+	}
+
 }
