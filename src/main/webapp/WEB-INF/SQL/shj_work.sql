@@ -171,3 +171,22 @@ from
     order by logindate desc
 ) T
 WHERE rownum <= 5;
+
+
+update member
+set memberidx = '1'
+where userid = 'auto007' and memberidx = '3';
+
+
+update member
+set memberidx = '1'
+where memberidx = '3';
+
+
+commit;
+
+select *
+from member;
+
+select *
+from review;

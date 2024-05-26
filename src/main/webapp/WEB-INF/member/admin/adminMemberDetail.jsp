@@ -11,32 +11,139 @@
 
 <jsp:include page="/WEB-INF/header.jsp" />
 
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	<%-- 
+	// 관리자 회원정지 //
+	$("input#submit").click(function({
+		
+	
+	
+	$.ajax({
+		url:"adminMemberDetail.jsp",
+		type:"get",
+	    data:dataObj,
+	    dataType:"json",
+		success:function(json){
+			if(json.success_count == 1){
+				$("input#submit").html("<span style='color:red; font-weight:bold;'>성공되었습니다.</span>");
+			}
+			else if(json.error_count != 0) {
+				$("input#submit").html("<span style='color:red; font-weight:bold;'>실패되었습니다.</span>");
+			}
+		}
+		},
+		error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		}
+		
+		
+		
+		
+		
+	});
+	--%>
+
+	
+    
+    
+}); // end of $(document).ready(function(){})
+
+
+
+
+
+
+
+
+
+</script>
+
 <style type="text/css">
    
-	<%-- 페이지 이동 --%>
+	
 	.page-link {
-	  color: #000; 
-	  background-color: #fff;
-	  border: 1px solid #ccc; 
+	  	color: #000; 
+	  	background-color: #fff;
+	  	border: 1px solid #ccc; 
 	}
 	
 	.page-item.active .page-link {
-	 z-index: 1;
-	 color: #555;
-	 font-weight:bold;
-	 background-color: #f1f1f1;
-	 border-color: #ccc;
+	 	z-index: 1;
+	 	color: #555;
+	 	font-weight:bold;
+	 	background-color: #f1f1f1;
+	 	border-color: #ccc;
 	 
 	}
 	
 	.page-link:focus, .page-link:hover {
-	  color: #000;
-	  background-color: #fafafa; 
-	  border-color: #ccc;
+	  	color: #000;
+	  	background-color: #fafafa; 
+	  	border-color: #ccc;
+	}
+	
+	input#submit {
+	  	border:none;
+	  	background: #ff5050;
+	  	border-radius: 5px; 
+	  	color:white;
+	}
+	
+	input#submit:hover {
+		border:none;
+	  	background: silver;
 	}
  
- 
 </style>
+
+
+<%-- 관리자 포인트 내역 클릭시 나오는 Modal --%>
+<div class="modal fade" id="adminPoint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+              <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/point.png" style="width:35px; vertical-align: text-top;">&nbsp;포인트 내역</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body pt-0">
+          	<div>
+            	<iframe id="iframe_point" style="border: none; width: 100%; height: 600px; margin:0 auto;" src="<%=ctxPath%>/member/admin/adminPoint.wine">
+              	</iframe>
+           	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 포인트 내역 클릭시 나오는 Modal 끝 --%>
+
+
+
+
+<%-- 관리자 리뷰 내역 클릭시 나오는 Modal --%>
+<div class="modal fade" id="adminReview" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+              <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/adminreview.png" style="width:35px; vertical-align: text-top;">&nbsp;리뷰 내역</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body pt-0">
+          	<div>
+            	<iframe id="iframe_review" style="border: none; width: 100%; height: 600px; margin:0 auto;" src="<%=ctxPath%>/member/admin/adminReview.wine">
+              	</iframe>
+           	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 리뷰 내역 클릭시 나오는 Modal 끝 --%>
+
+
 
 
 <div class="container" style="padding: 3% 0;">
@@ -61,7 +168,7 @@
 		         </tr>
 		         <tr>
 		            <td>회원명</td>
-		            <td>${requestScope.mdto.name} <button type="button" class="btn btn-warning btn-sm" onclick="">리뷰내역</button></td>
+		            <td>${requestScope.mdto.name} <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminReview" >리뷰내역</button></td>
 		         </tr>
 		         <tr>
 		            <td>이메일</td>
@@ -95,8 +202,10 @@
 		         	<td>포인트/쿠폰</td>
 		            <td>
                			<fmt:formatNumber value="${requestScope.mdto.point}" pattern="###,###" />&nbsp;POINT
-               			<button type="button" class="btn btn-warning btn-sm" onclick="">포인트내역</button>
-               			<button type="button" class="btn btn-warning btn-sm" onclick="">쿠폰넣기</button>
+               			
+               			<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminPoint">포인트내역</button>
+               			
+               			<button type="button" class="btn btn-warning btn-sm">쿠폰넣기</button>
                		</td>
 		         </tr>
 		         <tr>
@@ -107,7 +216,8 @@
 		            <td>회원상태</td>
 		            <td>
 		            	${requestScope.mdto.status}
-		            	<button type="button" class="btn btn-warning btn-sm" onclick="">정지</button>
+		            	<input type="button" class="submit" value="정지">
+		            	<input type="text" id="submit">
 		            </td>
 		         </tr>
 			</table>

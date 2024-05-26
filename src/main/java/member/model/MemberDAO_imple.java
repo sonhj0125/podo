@@ -602,6 +602,38 @@ public class MemberDAO_imple implements MemberDAO {
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
 
+	
+	
+	/*
+	// 관리자 회원관리 - 해당 유저 정지시키기
+	@Override
+	public int disableMember(String userid) throws SQLException {
+		
+		int result = 0;
+	     
+		
+		try {
+			conn = ds.getConnection();
+     
+			String sql =  " update member "
+						+ " set memberidx = 3 "
+						+ " where userid = ? and memberidx = 1 ";
+             
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+ 
+			result = pstmt.executeUpdate();
+ 
+		} finally {
+			close();
+		}
+	      
+	      return result;
+	      
+	} // end of public MemberDTO disableMember(String userid) throws SQLException
+*/
+
 
 	
 	

@@ -1,13 +1,11 @@
 package admin.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import common.controller.AbstractController;
-import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
 import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
@@ -56,8 +54,11 @@ public class AdminMemberDetail extends AbstractController {
 				List<LogDTO> ldtoList = ldao.getMyLog(userid);
 				request.setAttribute("ldtoList", ldtoList);
 			
-				
-				
+				/*
+				int mdto2 = mdao.disableMember(userid);
+				request.setAttribute("mdto2", mdto2);
+				*/
+			
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/member/admin/adminMemberDetail.jsp");
 				
