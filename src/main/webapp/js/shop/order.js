@@ -116,8 +116,17 @@ $(function() {
 
         const ctxPath = $("div#getctxPath").text();
 
+        const width = 1000;
+        const height = 600;
+
+        const left = Math.ceil( (window.screen.width - width)/2 );
+        const top = Math.ceil( (window.screen.height - height)/2 );
+        
+        window.open("", "PODO결제하기", `left=${left}, top=${top}, width=${width}, height=${height}`) ;
+
         const frm = document.orderfrm;
         frm.method = "post";
+        frm.target = "PODO결제하기";
         frm.action = `${ctxPath}/shop/patment.wine`;
         frm.submit();
 
@@ -127,14 +136,25 @@ $(function() {
 
 function totalSet(){
 
-    const totalplace = $("#totalPrice").text().replace("원","").replaceAll(",","");
+    const totalprice = $("#sumPrice").text().replace("원","").replaceAll(",","");
+    const couponprice = $("#couponsale").text().replace("-","").replace("원","").replaceAll(",","");
     const pointdiscount = $("#pointsale").text().replace("-","").replace("원","").replaceAll(",","");
 
-    const totalplaceNum = Number(totalplace);
+    const totalplaceNum = Number(totalprice);
+    const couponplaceNum = Number(couponprice);
     const pointdiscountNum = Number(pointdiscount);
 
-    const finalPrice = totalplaceNum - pointdiscountNum;
+    const finalPrice = totalplaceNum - couponplaceNum - pointdiscountNum + 3000;
 
     $("#totalPrice").text(finalPrice.toLocaleString()+"원");
+
+}
+
+function paymentcomplete(){
+
+    const frm = document.orderfrm;
+    frm.method = "post";
+    frm.action = `${ctxPath}/shop/orderend.wine`;
+    frm.submit();
 
 }

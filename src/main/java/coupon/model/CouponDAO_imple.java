@@ -262,7 +262,9 @@ public class CouponDAO_imple implements CouponDAO {
 			
 			rs = pstmt.executeQuery();
 			
-			result = rs.next();
+			if(rs.next()) {
+				result = true;
+			}
 			
 		}finally {
 			close();
@@ -270,6 +272,34 @@ public class CouponDAO_imple implements CouponDAO {
 		
 		return result;
 	
+	}
+
+
+	@Override
+	public boolean delCoupon(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " UPDATE MYCOUPON SET COSTATUS = 2 WHERE CONAME = ? and USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("coname"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	}
 	
 }

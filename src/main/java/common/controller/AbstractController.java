@@ -3,13 +3,9 @@ package common.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import member.domain.MemberDTO;
-import member.model.MemberDAO;
-import member.model.MemberDAO_imple;
 
 
 public abstract class AbstractController implements InterCommand {
-
-	private MemberDAO mdao;
 	
 	private boolean isRedirect = false;
 	private String viewPage;
@@ -58,6 +54,6 @@ public abstract class AbstractController implements InterCommand {
 			return false;
 		}
 		
-	} // end of public boolean checkLogin(HttpServletRequest request)
+	}
 
 }

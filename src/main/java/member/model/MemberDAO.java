@@ -63,6 +63,18 @@ public interface MemberDAO {
 	// [마이페이지] 작성할 리뷰 개수 알아오기
 	int getReviewCnt(String userid) throws SQLException;
 
+	// 포인트 차감
+	boolean delPoint(Map<String, String> paraMap) throws SQLException;
+
+	// 포인트 사용 로그 작성
+	boolean writePointDown(Map<String, String> paraMap) throws SQLException;
+
+	// 포인트 적립
+	boolean addPoint(Map<String, String> paraMap) throws SQLException;
+
+	// 포인트 적립 로그 작성
+	boolean writePointUp(Map<String, String> paraMap) throws SQLException;
+
 
 	
 }

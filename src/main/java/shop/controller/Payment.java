@@ -149,7 +149,7 @@ public class Payment extends AbstractController {
 				
 				// 2. 가격,적립포인트 계산 (총 가격 + 배달비)
 				
-				int sumPrice = 3000;
+				int sumPrice = 0;
 				int sumPoint = 0;
 				
 				for(int i=0;i<pprice.length;i++) {
@@ -183,9 +183,11 @@ public class Payment extends AbstractController {
 				
 				if(havePoint) {
 					
-					sumPrice = sumPoint - Integer.parseInt(point);
+					sumPrice = sumPrice - Integer.parseInt(point);
 					
 				}
+				
+				sumPrice += 3000;
 				
 				//5. 제품명 만들기
 				
@@ -193,17 +195,31 @@ public class Payment extends AbstractController {
 				
 				if(pname.length>1) {
 					
-					
+					finalproductName = pname[0]+"외 "+(pname.length-1)+"개의 상품";
 					
 				}else {
 					
+					finalproductName = pname[0];
+					
 				}
 				
+				request.setAttribute("price", sumPrice);
+				request.setAttribute("productName", finalproductName);
+				request.setAttribute("email", demail);
+				request.setAttribute("name", dname);
+				request.setAttribute("moblie", dphone);
+				request.setAttribute("address", daddress);
+				request.setAttribute("addressDeatail", daddressdeatil);
+				request.setAttribute("sumpoint", sumPoint);
+				request.setAttribute("cinedxjoinarr", cinedxjoinarr);
+				request.setAttribute("msg", dmsg);
+				request.setAttribute("point", point);
 				
 				// 전부 성공시
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/shop/paymentGateway.jsp");
 				return;
-				// super.setRedirect(false);
-				// super.setViewPage("/WEB-INF/member/paymentGateway.jsp");
 				
 			}else {
 				errsend(request);
@@ -218,6 +234,7 @@ public class Payment extends AbstractController {
 	}
 	
 	private void errsend(HttpServletRequest request) {
+		
 		String message = "잘못된 접근입니다.";
         String loc = "javascript:history.back()";
          
@@ -227,6 +244,7 @@ public class Payment extends AbstractController {
         super.setRedirect(false);
         super.setViewPage("/WEB-INF/msg.jsp");
         return;
+        
 	}
 	
 }

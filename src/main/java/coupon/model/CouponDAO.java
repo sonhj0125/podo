@@ -26,5 +26,8 @@ public interface CouponDAO {
 
 	// 쿠폰 유효여부
 	boolean isCoupon(Map<String, String> paraMap) throws SQLException;
+
+	// 쿠폰 사용
+	boolean delCoupon(Map<String, String> paraMap) throws SQLException;
 	
 }

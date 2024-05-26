@@ -18,7 +18,11 @@
 <jsp:include page="../header.jsp" />
 <script type="text/javascript">
 
+
 </script>
+
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+
 <script type="text/javascript" src="<%=ctxPath %>/js/shop/cart.js"></script>
 
    <div id="container">
@@ -150,13 +154,13 @@
                </div>
 
                      
-         <form name="orderSet" >
+         <form name="orderSet" style="display: none;">
             <input type="text" id="setCindex" name="Arr_cindexOne">
             <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
             <input type="text" id="setcVolume" name="Arr_cvolumeOne">
          </form>
       
-         <form name="orderSetOne" >
+         <form name="orderSetOne" style="display: none;">
              <input type="text" id="setCindexOne" name="Arr_cindexOne">
              <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
              <input type="text" id="setcVolumeOne" name="Arr_cvolumeOne">

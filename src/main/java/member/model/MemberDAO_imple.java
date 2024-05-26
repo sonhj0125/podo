@@ -684,12 +684,13 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(2, paraMap.get("userid"));
 	        
 	        result = pstmt.executeUpdate();
-		finally {
+		}finally {
 		close();
-	}
+		}
 	
-	return result;
-}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
+		return result;
+	
+	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
 
 	
 	// [마이페이지] 작성할 리뷰 개수 알아오기
@@ -726,7 +727,8 @@ public class MemberDAO_imple implements MemberDAO {
 			close();
 		}
 		
-		return result;
+		return cnt;
+		
 	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
 
 
@@ -791,6 +793,131 @@ public class MemberDAO_imple implements MemberDAO {
 		}
 		
 		return mypoint;
+	}
+
+
+
+	@Override
+	public boolean delPoint(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MEMBER SET POINT = POINT - ? WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public boolean writePointDown(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 구입 차감";
+			String point = "-"+paraMap.get("point");
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, point);
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public boolean addPoint(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MEMBER SET POINT = POINT + ? WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+		
+	}
+
+
+	@Override
+	public boolean writePointUp(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 구매 적립";
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("point"));
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		return result;
+		
 	}
 
 	
