@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -13,6 +16,53 @@
 
 </style>
 
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	
+
+});
+
+function couponRegistration() {
+	const cocode = $("input:text[name='couponCode']").val();
+	//alert("cocode" + cocode);
+	
+	if(cocode == "") {
+		alert("쿠폰번호를 입력해주세요.");
+	}
+	else {
+  		$.ajax({
+			url:"<%= ctxPath%>/myCouponRegistration.wine",
+			type:"POST",
+			data:{"cocode":cocode},
+	        dataType:"json",
+	        success:function(json) {
+	        	console.log("~~~ 확인용 ", JSON.stringify(json));
+				// ~~~ 확인용 {"n":1}
+				
+				if(json.isExists) {
+					// 입력한 값(cocode)이 쿠폰코드가 맞다면 
+					location.href = "<%= ctxPath%>/mypageShopCoupon.wine"; // 지금 페이지로 간다.
+				}
+				else {
+					// 입력한 쿠폰코드가 없는 경우
+					alert("존재하지 않는 쿠폰번호입니다.");
+					return;
+				}
+				
+	        },
+	        error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+  		}); 
+		
+	}
+
+}
+
+</script>
+
 <div class="container" style="padding: 3% 0;">
 	<h2 style="font-weight:bold; margin-bottom:2%; text-align:center;"><img src="<%=ctxPath%>/images/coupon.png" style="width:35px; vertical-align: text-top;">&nbsp;마이페이지</h2>
 	<hr>
@@ -20,7 +70,7 @@
 	<table class="table" style="width:50;">
 	  <thead>
 	    <tr>
-	      <th scope="col" style="font-size:16pt"><span style="font-weight:bold; font-size:20pt; color:#ff6666;"><img src="<%=ctxPath%>/images/mypageP.png" style="width:35px; vertical-align: text-top;">&nbsp;손혜정</span>님</th>
+	      <th scope="col" style="font-size:16pt"><span style="font-weight:bold; font-size:20pt; color:#ff6666;"><img src="<%=ctxPath%>/images/mypageP.png" style="width:35px; vertical-align: text-top;">&nbsp;${sessionScope.loginUser.name}</span>님</th>
 	    </tr>
 	  </thead>
 	  <tbody class="table-group-divider" style="text-align:center;">
@@ -30,17 +80,30 @@
 	      <th>가용 쿠폰 수</th>
 	    </tr>
 	    <tr class="table-group-divider">
-	      <td>3</td>
-	      <td>2</td>
-	      <td>1</td>
+	      <c:if test="${requestScope.myCouponList == null}">
+	          <tr>
+	              	<td>0</td>
+	      	  		<td>0</td>
+	      	  		<td>0</td>
+	          </tr>
+	      </c:if>
+	      
+		 <c:if test="${requestScope.myCouponList != null}">
+				 <tr>
+				 	 <td>${requestScope.totalCoupon}</td>
+				     <td>${requestScope.usedCoupon}</td>
+					 <td>${requestScope.availableCoupons}</td>
+				 </tr>
+		 </c:if>
+
 	    </tr>
 	  </tbody>
 	</table>
 	
 	
 	<div class="input-group mb-3" style="width:40%; margin-left:30%; margin-top:5%;">
-	  	<input type="text" class="form-control" placeholder="쿠폰번호를 입력해주세요." aria-label="Recipient's username" aria-describedby="button-addon2">
-	  	<button class="btn btn-outline-danger" type="button" id="">등록하기</button>
+	  	<input type="text" name="couponCode" class="form-control" placeholder="쿠폰번호를 입력해주세요." aria-label="Recipient's username" aria-describedby="button-addon2">
+	  	<button class="btn btn-outline-danger" type="button" onclick="couponRegistration()">등록하기</button>
 	</div>
 	
 	
@@ -48,60 +111,92 @@
 		<span style="font-weight:bold; font-size:16pt;">나의 쿠폰</span>
 	<div class="vr" style="border:solid 1px blue; height:20px;"></div>
 	
-	<hr style="border:solid 1px black; margin-top:5;">
-	<div style="display:flex; margin-top:3%;">
-		<div style="margin-right:20%; margin-left:10%;">
-			<img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
-		</div>
-		<div>
-			<span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >신규회원 가입 감사쿠폰</span><br>
-			할인율/할인금액 : 5,000원<br>
-			최소 주문금액 : 50,000원<br>
-			2024-05-19 ~ 2024-08-18
-		</div>
-		<div style="margin-left:40%; margin-top:3%;">
-			<span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
-		</div>
-	</div>
-	<hr style="border:solid 1px black; margin-top:3%;">
 	
-	<hr style="border:solid 1px black; margin-top:5;">
-	<div style="display:flex; margin-top:3%;">
-		<div style="margin-right:20%; margin-left:10%;">
-			<img src="<%=ctxPath%>/images/salecoupon/registersale.png" style="width:80px; vertical-align: middle;">&nbsp;
-		</div>
-		<div>
-			<span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >신규회원 가입 감사쿠폰</span><br>
-			할인율/할인금액 : 5,000원<br>
-			최소 주문금액 : 50,000원<br>
-			2024-05-19 ~ 2024-08-18
-		</div>
-		<div style="margin-left:40%; margin-top:3%;">
-			<span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
-		</div>
-	</div>
-	<hr style="border:solid 1px black; margin-top:3%;">
+	<c:if test="${empty requestScope.myCouponList}">
+				<hr style="border:solid 1px black; margin-top:5;">
+				<div style="display:flex; margin-top:3%;">
+					<div style="margin-right:20%; margin-left:10%;">
+						<img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
+					</div>
+					<div style="font-weight:bold; font-size:20pt; text-align:right; margin:auto 2%">
+						할인쿠폰이 없습니다.
+					</div>
+				</div>
+				<hr style="border:solid 1px black; margin-top:3%;">    
+	</c:if>
 	
 	
-
-
-
-
-
-
-
-
+	<!-- 여기가 할인율 c:if -->
+	
+    <c:if test="${not empty requestScope.myCouponList}">
+       <c:forEach var="mycodto" items="${requestScope.myCouponList}">
+       
+       		<%-- cotype == 1 할인금액  --%>
+       		<c:if test="${codto.cotype == 1}">
+				<hr style="border:solid 1px black; margin-top:5;">
+				<div style="display:flex; margin-top:3%;">
+					<div style="margin-right:20%; margin-left:10%;">
+						<img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
+					</div>
+					<div>
+						<span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
+						할인금액 : <fmt:formatNumber value="${mycodto.codto.coname}" pattern="###,###" /> 원<br>
+						~ ${mycodto.codto.Codate}
+					</div>
+					<div style="margin-left:40%; margin-top:3%;">
+						<%-- 1사용가능  --%>
+						<c:if test="${codto.costatus == 1}">
+							<span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
+						</c:if>
+						<%-- 2사용완료 --%>
+						<c:if test="${codto.costatus == 2}">
+							<span style="font-weight:bold; font-size:14pt; color:green;">사용완료</span>
+						</c:if>
+						<%-- 3기간만료 --%>
+						<c:if test="${codto.costatus == 3}">
+							<span style="font-weight:bold; font-size:14pt; color:green;">기간만료</span>
+						</c:if>
+					</div>
+				</div>
+				<hr style="border:solid 1px black; margin-top:3%;">       			
+       		</c:if>
+       		
+       		
+       		<%-- cotype == 2 할인율  --%>
+       		<c:if test="${codto.cotype == 2}">
+				<hr style="border:solid 1px black; margin-top:5;">
+				<div style="display:flex; margin-top:3%;">
+					<div style="margin-right:20%; margin-left:10%;">
+						<img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
+					</div>
+					<div>
+						<span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
+						할인금액 : <fmt:formatNumber value="${mycodto.codto.coname}" pattern="###,###" /> 원<br>
+						~ ${mycodto.codto.Codate}
+					</div>
+					<div style="margin-left:40%; margin-top:3%;">
+						<%-- 1사용가능  --%>
+						<c:if test="${codto.costatus == 1}">
+							<span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
+						</c:if>
+						<%-- 2사용완료 --%>
+						<c:if test="${codto.costatus == 2}">
+							<span style="font-weight:bold; font-size:14pt; color:green;">사용완료</span>
+						</c:if>
+						<%-- 3기간만료 --%>
+						<c:if test="${codto.costatus == 3}">
+							<span style="font-weight:bold; font-size:14pt; color:green;">기간만료</span>
+						</c:if>
+					</div>
+				</div>
+				<hr style="border:solid 1px black; margin-top:3%;">       			
+       		</c:if>       		
+       		
+       </c:forEach>
+    </c:if>
+	
 
 </div>
-
-
-
-
-
-
-
-
-
 
 
 <jsp:include page="/WEB-INF/footer.jsp" /> 

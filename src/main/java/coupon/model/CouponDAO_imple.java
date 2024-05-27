@@ -165,6 +165,7 @@ public class CouponDAO_imple implements CouponDAO {
 						
 						mycodto.setCodto(codto);
 						mycodto.setCoindex(rs.getInt("COINDEX"));
+						mycodto.setCostatus(rs.getInt("costatus"));
 						
 						mycodtoList.add(mycodto);
 					}
