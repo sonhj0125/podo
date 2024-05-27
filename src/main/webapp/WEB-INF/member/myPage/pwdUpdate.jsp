@@ -37,6 +37,20 @@ $(document).ready(function(){
 		
 		location.href="<%=ctxPath%>/index.wine";
 	});
+	
+
+	$("button#btnSubmit").click(function(){
+		goPwdUpdate();
+
+	});
+
+	$("input#pwd2").bind("keydown", function(e){
+	        if(e.keyCode == 13) { 
+	        	goPwdUpdate(); 
+	        }
+	});
+
+	
 
 });
 
@@ -62,6 +76,7 @@ $(document).ready(function(){
 				      <div class="input-group">
                            <label class="label">비밀번호 확인</label>
                            <input class="input--style-4" type="password" id="pwd2">
+                           <input type="hidden" name="userid" value="${sessionScope.loginUser.userid}" />
 	                  </div>
 				    </div>
 				  </div>

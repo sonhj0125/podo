@@ -122,7 +122,7 @@
 
 			    <div class="w-100" style="display: flex; justify-content: space-between;">
 				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnClose" style="width: 45%;">취소</button>
-				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;" onclick="goEdit()">변경하기</button>
+				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;">변경하기</button>
 			    </div>
             </form>
         </div>

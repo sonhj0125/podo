@@ -10,18 +10,18 @@ $(function () {
     let checkPhone = false;
     
     $('.datepicker').daterangepicker({
-		singleDatePicker: true,
-    	locale: {
-		    "format": 'YYYY-MM-DD',
-		    "applyLabel": "확인",
-		    "cancelLabel": "취소",
-		    "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
-		    "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-	    },
-		showDropdowns: true,
-		minYear: 1900,
-    	maxYear: 2025
-	});
+      singleDatePicker: true,
+       locale: {
+          "format": 'YYYY-MM-DD',
+          "applyLabel": "확인",
+          "cancelLabel": "취소",
+          "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+          "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+       },
+      showDropdowns: true,
+      minYear: 1900,
+       maxYear: 2025
+   });
 
     $('input#address').click(function () {
 
@@ -107,15 +107,18 @@ $(function () {
             tag.removeClass("status-g");
             tag.addClass("status-ng");
         } else {
-			checkUserid = true;
+         checkUserid = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
-		}
+      }
     
     });
 
     // 이름
     $("input#name").blur( (e) => {
+
+        const name = $(e.target).val().trim();
+        const tag = $('input#name');
 
         const regExp_name = new RegExp(/^[가-힣]{2,10}$/); 
         const bool = regExp_name.test($(e.target).val());
@@ -142,7 +145,6 @@ $(function () {
 
     });
 
-    
     // 비밀번호
     $("input#pwd").blur( (e) => {
     
@@ -168,10 +170,10 @@ $(function () {
             tag.removeClass("status-g");
             tag.addClass("status-ng");
         }else{
-			checkPwd = true;
+         checkPwd = true;
             tag.addClass("status-g");
             tag.removeClass("status-ng");
-		}
+      }
     
     });
 
@@ -206,7 +208,7 @@ $(function () {
         const tag = $('input#email');
 
         const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
-	    const bool = regExp_email.test($(e.target).val());
+       const bool = regExp_email.test($(e.target).val());
 
         // === 이메일 중복 확인 ===
         $.ajax({
@@ -294,7 +296,7 @@ $(function () {
     });
 
     $("#register").bind("click",()=>{
-		
+      
         if(checkUserid && checkName && checkPwd && checkPwdCheck && checkEmail && checkPhone){
             goRegister(toastLive,toastmsg);
         }else{
@@ -303,7 +305,7 @@ $(function () {
             toastBootstrap.show();
         }
 
-	});
+   });
 
 });
 
