@@ -29,5 +29,11 @@ public interface CouponDAO {
 
 	// 쿠폰 사용
 	boolean delCoupon(Map<String, String> paraMap) throws SQLException;
+
+	// 쿠폰등록 (쿠폰번호가 있으면 true 없으면 false 로 해서 값 반환한다.)
+	boolean CouponRegistration(Map<String, String> paraMap) throws SQLException;
+
+	// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
+	List<MyCouponDTO> getMyCouponList(String userid) throws SQLException;
 	
 }

@@ -1,5 +1,8 @@
 package member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,12 +37,27 @@ public class MyCouponRegistration extends AbstractController{
 
 			
 			String cocode = request.getParameter("cocode");
+			String userid = loginUser.getUserid();
+			// 쿠폰등록 (쿠폰번호가 있으면 true 없으면 false 로 해서 값 반환한다.)
 			
-			// boolean isExists = codao.isCoupon(cocode); 이렇게해서 쿠폰이 있는지 확인한 후에 있으면 true 없으면 false 로 해서 값 반환한다. 
-			boolean isExists = codao.isCoupon(null);
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("cocode", cocode);
+			paraMap.put("userid", userid);
+			
+			boolean result = false;
+			boolean isExists = false;
 			
 			JSONObject jsonObj = new JSONObject(); // js 의 표현기법으로 넘겨줘야한다. [{},{}] 이렇게 하려면 lib 가 존재해야한다.
+			
+			result = codao.isCoupon(paraMap);  // 이미 있으면 true 없으면 false
+			
+			if(!result) {
+				// 이미 등록된 쿠폰이 아닐경우
+				isExists = codao.CouponRegistration(paraMap);  // 등록됐으면 true 안됐으면 false
+			}
+			
 			jsonObj.put("isExists", isExists);
+			jsonObj.put("result", result);
 			
 			String json = jsonObj.toString();
 			

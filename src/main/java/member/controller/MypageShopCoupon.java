@@ -37,8 +37,8 @@ public class MypageShopCoupon extends AbstractController {
 			
 			String userid = loginUser.getUserid();
 			
-			// 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
-			List<MyCouponDTO> myCouponList = codao.getMyList(userid);
+			// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
+			List<MyCouponDTO> myCouponList = codao.getMyCouponList(userid);
 			
 			int totalCoupon = 0;
 			int usedCoupon = 0;

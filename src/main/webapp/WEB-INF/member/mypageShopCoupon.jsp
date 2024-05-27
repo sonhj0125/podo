@@ -20,9 +20,8 @@
 
 $(document).ready(function() {
 	
-	
-
 });
+
 
 function couponRegistration() {
 	const cocode = $("input:text[name='couponCode']").val();
@@ -33,17 +32,18 @@ function couponRegistration() {
 	}
 	else {
   		$.ajax({
-			url:"<%= ctxPath%>/myCouponRegistration.wine",
+			url:"<%= ctxPath%>/member/myCouponRegistration.wine",
 			type:"POST",
 			data:{"cocode":cocode},
 	        dataType:"json",
 	        success:function(json) {
-	        	console.log("~~~ 확인용 ", JSON.stringify(json));
-				// ~~~ 확인용 {"n":1}
+	        	//console.log("~~~ 확인용 ", JSON.stringify(json));
+				// ~~~ 확인용  {"result":false,"isExists":false}
 				
-				if(json.isExists) {
+				if(json.isExists === true && json.result === false) {
 					// 입력한 값(cocode)이 쿠폰코드가 맞다면 
-					location.href = "<%= ctxPath%>/mypageShopCoupon.wine"; // 지금 페이지로 간다.
+					alert("쿠폰이 등록되었습니다..");
+					location.href = "<%= ctxPath%>/member/mypageShopCoupon.wine"; // 지금 페이지로 간다.
 				}
 				else {
 					// 입력한 쿠폰코드가 없는 경우
@@ -58,7 +58,6 @@ function couponRegistration() {
   		}); 
 		
 	}
-
 }
 
 </script>
@@ -128,72 +127,90 @@ function couponRegistration() {
 	
 	<!-- 여기가 할인율 c:if -->
 	
+	
     <c:if test="${not empty requestScope.myCouponList}">
        <c:forEach var="mycodto" items="${requestScope.myCouponList}">
        
-       		<%-- cotype == 1 할인금액  --%>
-       		<c:if test="${codto.cotype == 1}">
-				<hr style="border:solid 1px black; margin-top:5;">
-				<div style="display:flex; margin-top:3%;">
-					<div style="margin-right:20%; margin-left:10%;">
-						<img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
-					</div>
-					<div>
-						<span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
-						할인금액 : <fmt:formatNumber value="${mycodto.codto.coname}" pattern="###,###" /> 원<br>
-						~ ${mycodto.codto.Codate}
-					</div>
-					<div style="margin-left:40%; margin-top:3%;">
-						<%-- 1사용가능  --%>
-						<c:if test="${codto.costatus == 1}">
-							<span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
-						</c:if>
-						<%-- 2사용완료 --%>
-						<c:if test="${codto.costatus == 2}">
-							<span style="font-weight:bold; font-size:14pt; color:green;">사용완료</span>
-						</c:if>
-						<%-- 3기간만료 --%>
-						<c:if test="${codto.costatus == 3}">
-							<span style="font-weight:bold; font-size:14pt; color:green;">기간만료</span>
-						</c:if>
-					</div>
-				</div>
-				<hr style="border:solid 1px black; margin-top:3%;">       			
-       		</c:if>
+			<%-- cotype == 1 할인율  --%>
+			<c:if test="${mycodto.codto.cotype == 1}">
+			    <hr style="border:solid 1px black; margin-top:5;">
+			    <div class="container">
+			        <div class="row">
+			            <div class="col-2 d-flex justify-content-end align-items-center">
+			                <div>
+			                    <img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
+			                </div>
+			            </div>
+			            <div class="col-8 d-flex justify-content-center align-items-center">
+			                <div>
+			                    <span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
+			                    할인금액 : <fmt:formatNumber value="${mycodto.codto.codiscount}" pattern="###,###" /> 원<br>
+			                    ~ ${mycodto.codto.codate}
+			                </div>
+			            </div>
+			            <div class="col-2 d-flex justify-content-end align-items-center">
+			                <div>
+			                    <%-- 1사용가능  --%>
+			                    <c:if test="${mycodto.costatus == 1}">
+			                        <span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
+			                    </c:if>
+			                    <%-- 2사용완료 --%>
+			                    <c:if test="${mycodto.costatus == 2}">
+			                        <span style="font-weight:bold; font-size:14pt; color:red;">사용완료</span>
+			                    </c:if>
+			                    <%-- 3기간만료 --%>
+			                    <c:if test="${mycodto.costatus == 3}">
+			                        <span style="font-weight:bold; font-size:14pt; color:gray;">기간만료</span>
+			                    </c:if>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <hr style="border:solid 1px black; margin-top:3%;">       			
+			</c:if> 		
        		
        		
-       		<%-- cotype == 2 할인율  --%>
-       		<c:if test="${codto.cotype == 2}">
-				<hr style="border:solid 1px black; margin-top:5;">
-				<div style="display:flex; margin-top:3%;">
-					<div style="margin-right:20%; margin-left:10%;">
-						<img src="<%=ctxPath%>/images/salecoupon/sale.png" style="width:80px; vertical-align: middle;">&nbsp;
-					</div>
-					<div>
-						<span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
-						할인금액 : <fmt:formatNumber value="${mycodto.codto.coname}" pattern="###,###" /> 원<br>
-						~ ${mycodto.codto.Codate}
-					</div>
-					<div style="margin-left:40%; margin-top:3%;">
-						<%-- 1사용가능  --%>
-						<c:if test="${codto.costatus == 1}">
-							<span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
-						</c:if>
-						<%-- 2사용완료 --%>
-						<c:if test="${codto.costatus == 2}">
-							<span style="font-weight:bold; font-size:14pt; color:green;">사용완료</span>
-						</c:if>
-						<%-- 3기간만료 --%>
-						<c:if test="${codto.costatus == 3}">
-							<span style="font-weight:bold; font-size:14pt; color:green;">기간만료</span>
-						</c:if>
-					</div>
-				</div>
-				<hr style="border:solid 1px black; margin-top:3%;">       			
-       		</c:if>       		
+			<%-- cotype == 2 할인율  --%>
+			<c:if test="${mycodto.codto.cotype == 2}">
+			    <hr style="border:solid 1px black; margin-top:5;">
+			    <div class="container">
+			        <div class="row">
+			            <div class="col-2 d-flex justify-content-end align-items-center">
+			                <div>
+			                    <img src="<%=ctxPath%>/images/salecoupon/registersale.png" style="width:80px; vertical-align: middle;">&nbsp;
+			                </div>
+			            </div>
+			            <div class="col-8 d-flex justify-content-center align-items-center">
+			                <div>
+			                    <span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
+			                    할인율 : ${mycodto.codto.codiscount} %<br>
+			                    ~ ${mycodto.codto.codate}
+			                </div>
+			            </div>
+			            <div class="col-2 d-flex justify-content-end align-items-center">
+			                <div>
+			                    <%-- 1사용가능  --%>
+			                    <c:if test="${mycodto.costatus == 1}">
+			                        <span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
+			                    </c:if>
+			                    <%-- 2사용완료 --%>
+			                    <c:if test="${mycodto.costatus == 2}">
+			                        <span style="font-weight:bold; font-size:14pt; color:red;">사용완료</span>
+			                    </c:if>
+			                    <%-- 3기간만료 --%>
+			                    <c:if test="${mycodto.costatus == 3}">
+			                        <span style="font-weight:bold; font-size:14pt; color:gray;">기간만료</span>
+			                    </c:if>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <hr style="border:solid 1px black; margin-top:3%;">       			
+			</c:if>      		
        		
        </c:forEach>
     </c:if>
+	
 	
 
 </div>

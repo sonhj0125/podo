@@ -302,5 +302,93 @@ public class CouponDAO_imple implements CouponDAO {
 		
 		return result;
 	}
+
+
+	// 쿠폰등록 (쿠폰번호가 있으면 true 없으면 false 로 해서 값 반환한다.)
+	@Override
+	public boolean CouponRegistration(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS)  "
+					   + " SELECT SEQ_COINDEX.nextval, ?, C.CONAME, 1  "
+					   + " FROM coupon C  "
+					   + " WHERE C.COCODE = ? "
+					   + " AND TO_DATE(C.CODATE, 'YYYY-MM-DD') >= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') "
+					   + " AND NOT EXISTS (  "
+					   + "             SELECT 1  "
+					   + "             FROM mycoupon MC  "
+					   + "             WHERE MC.CONAME = C.CONAME AND MC.USERID = ? "
+					   + " ) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("cocode"));
+			pstmt.setString(3, paraMap.get("userid"));
+			
+			int n = pstmt.executeUpdate();
+			if(n == 1) {
+				isExists = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return isExists;
+	} // end of public boolean CouponRegistration(String cocode) --------
+
+
+	
+	
+	@Override
+	public List<MyCouponDTO> getMyCouponList(String userid) throws SQLException {
+			
+		List<MyCouponDTO> mycodtoList = new ArrayList<>();
+				
+			try {
+				
+				conn = ds.getConnection();
+				
+				String sql = " select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX, costatus "
+						+ " from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCOUPON.USERID = MEMBER.USERID "
+						+ " where MEMBER.USERID = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+	
+					MyCouponDTO mycodto = new MyCouponDTO();
+					
+					CouponDTO codto = new CouponDTO();
+					
+					codto.setConame(rs.getString("coname"));
+					codto.setCotype(rs.getInt("cotype"));
+					codto.setCodiscount(rs.getInt("codiscount"));
+					codto.setCodate(rs.getString("codate"));
+					codto.setCoregisterday(rs.getString("coregisterday"));
+					
+					mycodto.setCodto(codto);
+					mycodto.setCoindex(rs.getInt("COINDEX"));
+					mycodto.setCostatus(rs.getInt("costatus"));
+					
+					mycodtoList.add(mycodto);
+			
+				}
+				
+			}
+			finally {
+				close();
+			}
+		return mycodtoList;
+	} // end of public List<MyCouponDTO> getMyCouponList(String userid) throws SQLException -----
 	
 }

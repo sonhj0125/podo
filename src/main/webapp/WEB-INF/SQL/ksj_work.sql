@@ -182,3 +182,106 @@ SELECT NVL(SUM(TO_NUMBER(POINCOME)), '0') AS AvailablePoints
 FROM point 
 WHERE USERID = 'ksj1024sj'
 
+select CODISCOUNT, CONAME, CODETAIL, COTYPE, CODATE, COREGISTERDAY
+from coupon 
+where COCODE = 'QXWRTYPLMNZA'
+
+select COINDEX, USERID, CONAME, COSTATUS
+from mycoupon 
+where userid = 'ksj1024sj'
+
+    update coupon set cocode = 'QXWRTYPLMNZA'
+    where userid = 'ksj1024sj';
+
+desc coupon;
+
+desc mycoupon;
+
+ select *
+ from user_sequences
+
+    update coupon set COCODE = 'VHNFGXZLOUAW'
+    where codate = '2024-12-31'
+    
+    commit;
+
+
+ select last_number  -- 다음번에 들어올 시퀀스 값을 미리 알려주는 것이다.
+ from user_sequences
+ where sequence_name = 'SEQ_COINDEX';
+
+
+INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS)
+SELECT SEQ_COINDEX.nextval, 'ksj1024sj', CONAME, 1
+FROM coupon
+WHERE COCODE = 'QXWRTYPLMNZA';
+
+select *
+from coupon
+
+
+
+INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS)
+SELECT SEQ_COINDEX.nextval, 'ksj1024sj', CONAME, 1
+FROM coupon c
+WHERE c.COCODE = 'QXWRTYPLMNZA'
+AND NOT EXISTS (
+    SELECT 1
+    FROM mycoupon mc
+    WHERE mc.CONAME = c.CONAME
+);
+
+select COINDEX, USERID, CONAME, COSTATUS
+from mycoupon 
+where userid = 'ksj1024sj'
+
+select *
+from coupon 
+
+select CODISCOUNT, CONAME, CODETAIL, COTYPE, CODATE, COREGISTERDAY
+from coupon 
+where COCODE = 'QXWRTYPLMNZA'
+
+delete from mycoupon
+where userid = 'ksj1024sj'
+commit;
+
+
+select *
+from coupon
+
+
+
+select TRUNC(SYSDATE)
+from dual
+
+select COINDEX, USERID, CONAME, COSTATUS
+from mycoupon 
+where userid = 'ksj1024sj'
+
+
+INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS) 
+SELECT SEQ_COINDEX.nextval, 'ksj1024sj', C.CONAME, 1 
+FROM coupon C 
+WHERE C.COCODE = 'QXWRTYPLMNZA'
+AND TO_DATE(C.CODATE, 'YYYY-MM-DD') >= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+AND NOT EXISTS ( 
+             SELECT 1 
+             FROM mycoupon MC 
+             WHERE MC.CONAME = C.CONAME AND MC.USERID = 'ksj1024sj'
+);
+
+
+SELECT *
+FROM coupon
+WHERE COCODE = 'QXWRTYPLMNZA' AND TO_DATE(CODATE, 'YYYY-MM-DD') <= TRUNC(SYSDATE);
+
+
+
+SELECT *
+FROM coupon
+WHERE COCODE = 'QXWRTYPLMNZA' AND TO_DATE(CODATE, 'YYYY-MM-DD') >= TRUNC(SYSDATE);
+
+
+
+VHNFGXZLOUAW
