@@ -9,6 +9,38 @@
 
 <jsp:include page="../../header.jsp" />
 
+<style type="text/css">
+img#pimg,
+div#pname,
+div#pengname {
+	cursor: pointer;
+}
+</style>
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	$("img#pimg").click(function() {
+		showProduct();
+	});
+	
+	$("div#pname").click(function() {
+		showProduct();
+	});
+	
+	$("div#pengname").click(function() {
+		showProduct();
+	});
+
+	function showProduct() {
+		location.href = "<%=ctxPath%>/shop/product.wine?pindex=" + ${requestScope.ddto.odto.pdto.pindex};
+	}
+});
+
+</script>
+
 <form>
    <div id="container" style="width: 100%;">
       
@@ -18,11 +50,11 @@
       	 <h2 style="text-align: center;">주문상세</h2>
          <hr>
          <div class="hstack gap-3" style="padding: 2% 0;">
-           <img src="<%=ctxPath %>/images/product/${requestScope.ddto.odto.pdto.pimg}" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
+           <img src="<%=ctxPath %>/images/product/${requestScope.ddto.odto.pdto.pimg}" id="pimg" style="border: solid 1px black; border-radius: 15px; width: 100px; height: 100px;">
            <div style="display: flex; justify-content: space-between; width: 90%;">
 	           <div>
-	           		<div style="margin-bottom: 1%; font-weight: bold;">${requestScope.ddto.odto.pdto.pname}</div>
-	           		<div style="margin-bottom: 1%; font-size: 10pt;">${requestScope.ddto.odto.pdto.pengname}</div>
+	           		<div id="pname" style="margin-bottom: 1%; font-weight: bold;">${requestScope.ddto.odto.pdto.pname}</div>
+	           		<div id="pengname" style="margin-bottom: 1%; font-size: 10pt;">${requestScope.ddto.odto.pdto.pengname}</div>
 	           		<div>
 	           			<c:if test="${requestScope.ddto.odto.pdto.ptype == '레드'}">
 	           				<span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
@@ -116,6 +148,7 @@
 	               </div>
 	            </div>
             </c:if>
+            <hr>
             <br><br><br>
          </div>
          
@@ -127,6 +160,7 @@
                   <div style="margin-top: 1%;">최종결제금액</div>
                   <div style="font-weight: bold; font-size: 20pt;"><fmt:formatNumber value="${requestScope.ddto.odto.ototalprice}" pattern="###,###" />원</div>
                </div>
+            <hr>
          </div>
       </div>
       
