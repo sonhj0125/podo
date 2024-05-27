@@ -26,22 +26,30 @@ public class MypageShopPoint extends AbstractController {
 		String method = request.getMethod();
 
 		HttpSession session = request.getSession();
-		MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");
+		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
-		if (mdto != null) {
+		
+		if (loginUser != null) {
 			// 로그인을 했을 경우
 
-			String userid = mdto.getUserid();
+			request.setAttribute("loginUser", loginUser);
+			
+			String userid = loginUser.getUserid();
 			request.setAttribute("userid", userid);
 
-			// 아이디, 이름, 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
+			// 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
 			PointDTO podto = podao.getUserPointDetails(userid);
 			
+			// 유저가 적립한 포인트 로그 가져오기
+			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
+			
+			/*
 			// 유저가 적립한 포인트 로그 가져오기
 			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
 
 			// 유저가 사용한 포인트 로그 가져오기
 			List<PointDTO> pointUsedHistoryList = podao.getUserPointUsedHistoryList(userid);
+			*/
 			
 			/*
 			// 소멸예정 적립금 리스트 가져오기 (소멸예정 적립금, 날짜, 남은일자)
@@ -73,11 +81,13 @@ public class MypageShopPoint extends AbstractController {
 			request.setAttribute("expiringPoints", expiringPoints);
 			request.setAttribute("pointHistoryList", pointHistoryList);
 			request.setAttribute("hasPoStatus2", hasPoStatus2);
+			
+			request.setAttribute("pointUsedHistoryList", pointUsedHistoryList);
 			*/
 			
 			request.setAttribute("podto", podto);
 			request.setAttribute("pointHistoryList", pointHistoryList);
-			request.setAttribute("pointUsedHistoryList", pointUsedHistoryList);
+			
 
 			
 			super.setRedirect(false);

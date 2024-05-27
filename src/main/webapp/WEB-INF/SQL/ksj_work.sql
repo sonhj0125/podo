@@ -153,3 +153,32 @@ commit;
 select *
 from member;
 
+
+desc point;
+
+select *
+from point
+order by podate desc;
+
+
+select R.*, O.userid, P.pindex 
+from product P JOIN orders O 
+ON P.pindex = O.pindex 
+JOIN review R 
+ON O.oindex = R.oindex 
+where P.pindex = '20'
+order by rindex desc
+
+
+SELECT POINCOME, PODETAIL, PODATE 
+FROM POINT 
+WHERE USERID = 'ksj1024sj' 
+ORDER BY PODATE DESC
+
+
+SELECT NVL(SUM(TO_NUMBER(POINCOME)), '0') AS AvailablePoints 
+     , NVL(SUM(TO_NUMBER(POINCOME)), '0') AS UsedPoints 
+	 , NVL(SUM(TO_NUMBER(POINCOME)), '0') + NVL(SUM(TO_NUMBER(POINCOME)), '0') AS TotalPoints 
+FROM point 
+WHERE USERID = 'ksj1024sj'
+

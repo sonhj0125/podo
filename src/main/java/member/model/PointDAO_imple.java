@@ -170,51 +170,9 @@ public class PointDAO_imple implements PointDAO {
 	*/
 
 	
-	// 아이디, 이름, 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
-	@Override
-	public PointDTO getUserPointDetails(String userid) throws SQLException {
-		
-		PointDTO podto = null;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " SELECT m.NAME "
-					   + "      , p.UserID "
-					   + "      , SUM(CASE WHEN p.PODETAIL LIKE '%주문' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) AS AvailablePoints "
-					   + "      , SUM(CASE WHEN p.PODETAIL LIKE '%상품구입' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) AS UsedPoints "
-					   + "      , SUM(CASE WHEN p.PODETAIL LIKE '%주문' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) + "
-					   + "        SUM(CASE WHEN p.PODETAIL LIKE '%상품구입' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) AS TotalPoints "
-					   + " FROM point p "
-					   + " JOIN member m ON p.USERID = m.USERID "
-					   + " WHERE (p.PODETAIL LIKE '%주문' OR p.PODETAIL LIKE '%상품구입') AND p.USERID = ? "
-					   + " GROUP BY m.NAME, p.USERID ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
-			rs = pstmt.executeQuery();
-			
-            if (rs.next()) {
-                podto = new PointDTO();
-                podto.setUserID(rs.getString("UserID"));
-                
-                MemberDTO mdto = new MemberDTO();
-                mdto.setName(rs.getString("Name"));
-                podto.setMdto(mdto);
-                
-                podto.setAvailablePoints(rs.getString("AvailablePoints")); // 사용가능포인트
-                podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
-                podto.setTotalPoints(rs.getString("TotalPoints"));         // 누적포인트
-            }
-			
-		} finally {
-			close();
-		}
-		
-		return podto;
-	} // end of public PointDTO getUserPointDetails(String userid) throws SQLException
-	
 
+	
+	/*
 	// 유저가 적립한 포인트 로그 가져오기
 	@Override
 	public List<PointDTO> getUserPointHistoryList(String userid) throws SQLException {
@@ -299,5 +257,88 @@ public class PointDAO_imple implements PointDAO {
 		
 		return pointUsedHistoryList;
 	} // end of public List<PointDTO> getUserPointUsedHistoryList(String userid) ------
+	*/
+
+
+	
+	// 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
+	@Override
+	public PointDTO getUserPointDetails(String userid) throws SQLException {
+		
+		PointDTO podto = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT NVL(SUM(TO_NUMBER(POINCOME)), '0') AS AvailablePoints "
+					   + "      , NVL(SUM(TO_NUMBER(POINCOME)), '0') AS UsedPoints "
+					   + "      , NVL(SUM(TO_NUMBER(POINCOME)), '0') + NVL(SUM(TO_NUMBER(POINCOME)), '0') AS TotalPoints "
+					   + " FROM point "
+					   + " WHERE USERID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+            if (rs.next()) {
+                podto = new PointDTO();
+                
+                podto.setAvailablePoints(rs.getString("AvailablePoints")); // 사용가능포인트
+                podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
+                podto.setTotalPoints(rs.getString("TotalPoints"));         // 누적포인트
+            }
+			
+		} finally {
+			close();
+		}
+		
+		return podto;
+	} // end of public PointDTO getUserPointDetails(String userid) throws SQLException
+	
+	
+	
+	// 유저가 적립한 포인트 로그 가져오기
+	@Override
+	public List<PointDTO> getUserPointHistoryList(String userid) throws SQLException {
+		List<PointDTO> pointHistoryList = null;
+		boolean isSearch = true;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT POINCOME, PODETAIL, PODATE "
+					   + " FROM POINT "
+					   + " WHERE USERID = ? "
+				   	   + " ORDER BY PODATE DESC ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				if(isSearch) {
+					pointHistoryList = new ArrayList<>();
+					isSearch = false;
+				}
+				
+				PointDTO podto = new PointDTO();
+				
+				podto.setPoIncome(rs.getString("POINCOME"));   	// 변동 포인트
+				podto.setPoDetail(rs.getString("PODETAIL")); 	// 적립내용
+				podto.setPoDate(rs.getString("PODATE"));		// 적립날짜
+				
+				pointHistoryList.add(podto);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return pointHistoryList;
+	} // end of public List<PointDTO> getUserPointDetailsList(String userid) throws SQLException ---
+
+	
 	
 }
