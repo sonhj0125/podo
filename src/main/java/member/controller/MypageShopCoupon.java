@@ -36,6 +36,37 @@ public class MypageShopCoupon extends AbstractController {
 			request.setAttribute("loginUser", loginUser);
 			
 			String userid = loginUser.getUserid();
+
+            // 현재 페이지 번호
+            int currentShowPageNo = 1;
+            String pageNo = request.getParameter("pageNo");
+            if (pageNo != null && !pageNo.trim().isEmpty()) {
+                try {
+                    currentShowPageNo = Integer.parseInt(pageNo);
+                } catch (NumberFormatException e) {
+                    currentShowPageNo = 1;
+                }
+            }
+
+            // 페이지당 보여줄 쿠폰 개수
+            int sizePerPage = 5;
+
+            // 총 쿠폰 개수
+            int totalMyCouponCount = codao.getTotalMyCouponCount(userid);
+
+            // 총 페이지 수
+            int totalPage = codao.getTotalPage(userid);
+
+            // 시작 레코드 번호와 끝 레코드 번호 계산
+            int startRno = ((currentShowPageNo - 1) * sizePerPage) + 1;
+            int endRno = startRno + sizePerPage - 1;
+			
+			
+			
+            request.setAttribute("totalPage", totalPage);
+            request.setAttribute("currentShowPageNo", currentShowPageNo);
+            request.setAttribute("totalMyCouponCount", totalMyCouponCount);
+			
 			
 			// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
 			List<MyCouponDTO> myCouponList = codao.getMyCouponList(userid);

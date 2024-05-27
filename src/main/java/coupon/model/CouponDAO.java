@@ -35,5 +35,12 @@ public interface CouponDAO {
 
 	// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
 	List<MyCouponDTO> getMyCouponList(String userid) throws SQLException;
+
+	
+	// 쿠폰의 총개수 알아오기
+	int getTotalMyCouponCount(String userid) throws SQLException;
+	
+	// 쿠폰의 총 페이지 수 알아오기
+	int getTotalPage(String userid) throws SQLException;
 	
 }

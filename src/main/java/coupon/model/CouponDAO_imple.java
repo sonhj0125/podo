@@ -1,5 +1,7 @@
 package coupon.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -390,5 +392,64 @@ public class CouponDAO_imple implements CouponDAO {
 			}
 		return mycodtoList;
 	} // end of public List<MyCouponDTO> getMyCouponList(String userid) throws SQLException -----
+
+
+	
+	// 내 쿠폰의 총개수 알아오기
+	@Override
+	public int getTotalMyCouponCount(String userid) throws SQLException {
+		int totalMyCouponCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select count(*) "
+						+ " from mycoupon "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+						
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalMyCouponCount = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalMyCouponCount;
+	}// end of public int getTotalMyCouponCount(String userid) throws SQLException ---
+
+
+	// 내 쿠폰의 총 페이지 수 알아오기
+	@Override
+	public int getTotalPage(String userid) throws SQLException {
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select ceil(count(*)/5) "
+						+ " from mycoupon "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;	
+	}
 	
 }
