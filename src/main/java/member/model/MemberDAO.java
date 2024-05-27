@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import member.domain.MemberDTO;
+import member.domain.PointDTO;
 
 public interface MemberDAO {
 
@@ -49,6 +50,10 @@ public interface MemberDAO {
 	
 	// 관리자 회원관리 - 한명 조회
 	MemberDTO selectOneMember(String userid) throws SQLException;
+
+	
+	// 관리자 회원관리 - 포인트 내역 조회
+	List<PointDTO> getMyPoint(String userid) throws SQLException;
 
 	/*
 	// 관리자 회원관리 - 해당 유저 정지시키기

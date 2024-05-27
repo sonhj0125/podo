@@ -11,6 +11,7 @@ import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
 import member.domain.LogDTO;
 import member.domain.MemberDTO;
+import member.domain.PointDTO;
 import member.model.LogDAO;
 import member.model.LogDAO_imple;
 import member.model.MemberDAO;
@@ -53,6 +54,10 @@ public class AdminMemberDetail extends AbstractController {
 				
 				List<LogDTO> ldtoList = ldao.getMyLog(userid);
 				request.setAttribute("ldtoList", ldtoList);
+				
+				List<PointDTO> pdtoList = mdao.getMyPoint(userid);
+				request.setAttribute("pdtoList", pdtoList);
+				
 			
 				/*
 				int mdto2 = mdao.disableMember(userid);

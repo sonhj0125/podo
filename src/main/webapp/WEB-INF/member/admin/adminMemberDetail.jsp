@@ -108,11 +108,29 @@ $(document).ready(function() {
               <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/point.png" style="width:35px; vertical-align: text-top;">&nbsp;포인트 내역</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-
-          <div class="modal-body pt-0">
+          <div class="modal-body">
           	<div>
-            	<iframe id="iframe_point" style="border: none; width: 100%; height: 600px; margin:0 auto;" src="<%=ctxPath%>/member/admin/adminPoint.wine">
-              	</iframe>
+            	<table class="table" style="text-align:center;">
+					<thead>
+						<tr>
+						  	<th scope="col">회원아이디</th>
+						  	<th scope="col">변동포인트</th>
+						  	<th scope="col">변동내역</th>
+						  	<th scope="col">변동일자</th>
+						</tr>
+					</thead>
+					
+				  	<tbody>
+				  	<c:forEach var="pointList" items="${requestScope.pdtoList}">
+						<tr>
+							<th scope="row">${pointList.userid}</th>
+							<td>${pointList.poincome}</td>
+							<td>${pointList.podetail}</td>
+							<td>${pointList.podate}</td>
+				    	</tr>
+				    </c:forEach>
+				 	</tbody>
+				</table>
            	</div>
             </div>
         </div>
@@ -134,8 +152,27 @@ $(document).ready(function() {
 
           <div class="modal-body pt-0">
           	<div>
-            	<iframe id="iframe_review" style="border: none; width: 100%; height: 600px; margin:0 auto;" src="<%=ctxPath%>/member/admin/adminReview.wine">
-              	</iframe>
+            	<table class="table" style="text-align:center;">
+					<thead>
+						<tr>
+						  	<th scope="col">회원아이디</th>
+						  	<th scope="col">변동포인트</th>
+						  	<th scope="col">변동내역</th>
+						  	<th scope="col">변동일자</th>
+						</tr>
+					</thead>
+					
+				  	<tbody>
+				  	<c:forEach var="pointList" items="${requestScope.pdtoList}">
+						<tr>
+							<th scope="row">${pointList.userid}</th>
+							<td>${pointList.poincome}</td>
+							<td>${pointList.podetail}</td>
+							<td>${pointList.podate}</td>
+				    	</tr>
+				    </c:forEach>
+				 	</tbody>
+				</table>
            	</div>
             </div>
         </div>

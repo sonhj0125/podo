@@ -190,3 +190,26 @@ from member;
 
 select *
 from review;
+
+select *
+from point;
+
+
+select member.userid AS userid, poincome, podetail, podate
+from point
+join member on point.userid = member.userid
+where member.userid = 'admin_1'
+order by podate desc;
+
+
+insert into point(userid, poincome, podetail, podate) values('admin_1', 1000, '상품 구매 적립', '2024-05-27 15:16:00');
+insert into point(userid, poincome, podetail, podate) values('admin_1', 1450, '상품 구매 적립', '2024-05-27 15:10:00');
+insert into point(userid, poincome, podetail, podate) values('admin_1', 12850, '이벤트 적립', '2024-05-27 14:05:00');
+
+
+
+commit;
+
+
+
+

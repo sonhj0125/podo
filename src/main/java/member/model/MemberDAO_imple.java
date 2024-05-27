@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import member.domain.MemberDTO;
+import member.domain.PointDTO;
 import util.security.AES256;
 import util.security.SecretMykey;
 import util.security.Sha256;
@@ -602,6 +603,59 @@ public class MemberDAO_imple implements MemberDAO {
 	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
 
+	
+	
+	
+	
+	// 관리자 회원관리 - 포인트 내역 조회
+	@Override
+	public List<PointDTO> getMyPoint(String userid) throws SQLException {
+		
+		List<PointDTO> pdtoList = new ArrayList<>();
+	      
+	    try {
+	    	conn = ds.getConnection();
+ 
+	    	String sql =  " select member.userid AS userid, poincome, podetail, podate "
+	    				+ " from point "
+	    				+ " join member on point.userid = member.userid "
+	    				+ " where member.userid = ? "
+	    				+ " order by podate desc ";
+             
+	    	pstmt = conn.prepareStatement(sql);
+ 
+	    	pstmt.setString(1, userid);
+ 
+	    	rs = pstmt.executeQuery();
+ 
+	    	while(rs.next()) {
+				
+	    		PointDTO pdto = new PointDTO();
+	    		pdto.setUserid(rs.getString("userid"));
+	    		pdto.setPoincome(rs.getString("poincome"));
+	    		pdto.setPodetail(rs.getString("podetail"));
+	    		pdto.setPodate(rs.getString("podate"));
+	    		
+	    		pdtoList.add(pdto);
+				
+			}
+				
+	         
+	    } catch(Exception e) {
+	         e.printStackTrace();
+	    } finally {
+	         close();
+	    }
+	      
+	      return pdtoList;
+	} // end of public List<PointDTO> getMyPoint(String userid) throws SQLException
+
+
+	
+	
+	
+	
+	
 	
 	
 	/*
