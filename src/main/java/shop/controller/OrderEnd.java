@@ -169,21 +169,24 @@ public class OrderEnd extends AbstractController{
 							System.out.println("장바구니 삭제 실패");
 						}
 						
-						// 세션 재입력
-						loginuser = mdao.selectOneMember(userid);
-						session.setAttribute("loginUser", loginuser);
 						
-					}
+					}// end of for
 				}catch (Exception e) {
+					
 				}
+				
+				String newpoint = mdao.getMyPoint(userid);
+				// 세션 재입력
+				
+				loginuser.setPoint(newpoint);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
 				return;
 				
-			}
+			}// 유효성
 			
-		}
+		}// Post
 		
 		super.setRedirect(true);
 		super.setViewPage(request.getContextPath()+"/index.wine");

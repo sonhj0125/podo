@@ -15,12 +15,9 @@
 
 <script type="text/javascript">
 
-$(function() {
-	//	여기 링크를 꼭 참고하세용 http://www.iamport.kr/getstarted
-   var IMP = window.IMP;     // 생략가능
+window.onload = () => {
+   var IMP = window.IMP;
    IMP.init('imp83065850');  // 중요!!  아임포트에 가입시 부여받은 "가맹점 식별코드". 
-	
-   // 결제요청하기
    IMP.request_pay({
        pg : 'html5_inicis',
        pay_method : 'card',
@@ -45,11 +42,10 @@ $(function() {
 
    });
 
-});
+};
 
 </script>
 </head>	
 <body>
-
 </body>
 </html>

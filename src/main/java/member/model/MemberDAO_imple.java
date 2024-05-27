@@ -921,5 +921,34 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	}
 
+
+
+	@Override
+	public String getMyPoint(String userid) throws SQLException {
+		
+		String point = "0";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select point from MEMBER where USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				point = df.format(Integer.parseInt(rs.getString(9)));
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return point;
+	}
+
 	
 }

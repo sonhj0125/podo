@@ -54,4 +54,6 @@ UPDATE MEMBER SET POINT = POINT - ? WHERE USERID = 'redtree2379';
 select oindex from orders where USERID = '' and PINDEX = ? order by oindex desc;
 
 INSERT INTO DELIVERY (DINDEX, DNAME, DEMAIL, DPHONE, DMSG, OINDEX, DADDRESS, DADDRESSDETAIL)
-VALUES (SEQ_DINDEX.nextval, ?, ?, ?, ?, ?, ?, ?)
+VALUES (SEQ_DINDEX.nextval, ?, ?, ?, ?, ?, ?, ?);
+
+select point from MEMBER where USERID = 'redtree2379';
