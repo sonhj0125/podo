@@ -154,7 +154,6 @@ function paymentcomplete(){
 
     const ctxPath = $("div#getCtxPath").text();
 
-    window.opener.close();
     const frm = document.orderfrm;
     frm.method = "post";
     frm.action = `${ctxPath}/shop/orderend.wine`;

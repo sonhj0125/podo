@@ -940,7 +940,7 @@ public class MemberDAO_imple implements MemberDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				point = df.format(Integer.parseInt(rs.getString(9)));
+				point = df.format(Integer.parseInt(rs.getString("point")));
 			}
 			
 		}finally {
