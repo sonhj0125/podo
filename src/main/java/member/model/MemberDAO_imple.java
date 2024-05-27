@@ -17,6 +17,9 @@ import javax.sql.DataSource;
 
 import member.domain.MemberDTO;
 import member.domain.PointDTO;
+import shop.domain.OrderDTO;
+import shop.domain.ProductDTO;
+import shop.domain.ReviewDTO;
 import util.security.AES256;
 import util.security.SecretMykey;
 import util.security.Sha256;
@@ -603,7 +606,7 @@ public class MemberDAO_imple implements MemberDAO {
 	@Override
 	public List<PointDTO> getMyPoint(String userid) throws SQLException {
 		
-		List<PointDTO> pdtoList = new ArrayList<>();
+		List<PointDTO> podtoList = new ArrayList<>();
 	      
 	    try {
 	    	conn = ds.getConnection();
@@ -622,13 +625,14 @@ public class MemberDAO_imple implements MemberDAO {
  
 	    	while(rs.next()) {
 				
-	    		PointDTO pdto = new PointDTO();
-	    		pdto.setUserid(rs.getString("userid"));
-	    		pdto.setPoincome(rs.getString("poincome"));
-	    		pdto.setPodetail(rs.getString("podetail"));
-	    		pdto.setPodate(rs.getString("podate"));
+	    		PointDTO podto = new PointDTO();
+
+	    		podto.setUserID(rs.getString("userid"));
+	    		podto.setPoIncome(rs.getString("poincome"));
+	    		podto.setPoDetail(rs.getString("podetail"));
+	    		podto.setPoDate(rs.getString("podate"));
 	    		
-	    		pdtoList.add(pdto);
+	    		podtoList.add(podto);
 				
 			}
 				
@@ -639,7 +643,7 @@ public class MemberDAO_imple implements MemberDAO {
 	         close();
 	    }
 	      
-	      return pdtoList;
+	      return podtoList;
 	} // end of public List<PointDTO> getMyPoint(String userid) throws SQLException
 
 
@@ -1006,6 +1010,50 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 		
 	}
+
+
+	// 관리자 회원관리 - 리뷰 내역 조회
+	@Override
+	public List<ReviewDTO> getMyReview(String userid) throws SQLException {
+		
+		List<ReviewDTO> adminReviewList = new ArrayList<>();
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select review.rindex AS rindex, review.rstar AS rstar, review.rdetail AS rdetail, review.rdate AS rdate "
+					   + " from review join orders on review.oindex = orders.oindex "
+					   + " join member on orders.userid = member.userid "
+					   + " where member.userid = ? "
+					   + " order by odate desc ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				ReviewDTO redto = new ReviewDTO();
+				redto.setRindex(rs.getInt("rindex"));
+				redto.setRstar(rs.getString("rstar"));
+				redto.setRdetail(rs.getString("rdetail"));
+				redto.setRdate(rs.getString("rdate"));
+				
+				
+				adminReviewList.add(redto);
+				
+
+			}
+
+		} finally {
+			close();
+		}
+
+		return adminReviewList;
+		
+	} // end of public List<ReviewDTO> getMyReview(String userid) throws SQLException
 
 	
 }

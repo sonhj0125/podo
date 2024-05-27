@@ -60,6 +60,35 @@ public class LogDAO_imple implements LogDAO {
 			
 		conn = ds.getConnection();
 		
+		String sql = " select logindex, userid, logindate, ipaddress "
+				   + " from "
+				   + " ( "
+				   + "    select log.logindex AS logindex, member.userid AS userid, logindate, ipaddress "
+				   + "    from log "
+				   + "    join member on log.userid = member.userid "
+				   + "    where member.userid = ? "
+				   + "    order by logindate desc "
+				   + " ) T "
+				   + " WHERE rownum <= 5 ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setString(1, userid);
+		
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			
+			LogDTO lodto = new LogDTO();
+			
+			lodto.setLoginidx(rs.getString("logindex"));
+			lodto.setUserid(rs.getString("userid"));
+			lodto.setLogindate(rs.getString("logindate"));
+			lodto.setIpaddress(rs.getString("ipaddress"));
+			
+			ldtoList.add(lodto);
+			
+		}
 		
 			
 	} catch (Exception e) {

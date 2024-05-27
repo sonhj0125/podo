@@ -212,4 +212,18 @@ commit;
 
 
 
+select review.rindex, review.rstar, review.rdetail, review.rdate
+from review join orders on review.oindex = orders.oindex
+join member on orders.userid = member.userid
+where member.userid = 'admin_1'
+order by odate desc;
+
+
+
+
+
+
+
+
+
 

@@ -16,6 +16,7 @@ import member.model.LogDAO;
 import member.model.LogDAO_imple;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
+import shop.domain.ReviewDTO;
 
 public class AdminMemberDetail extends AbstractController {
 
@@ -55,8 +56,11 @@ public class AdminMemberDetail extends AbstractController {
 				List<LogDTO> ldtoList = ldao.getMyLog(userid);
 				request.setAttribute("ldtoList", ldtoList);
 				
-				List<PointDTO> pdtoList = mdao.getMyPoint(userid);
-				request.setAttribute("pdtoList", pdtoList);
+				List<PointDTO> podtoList = mdao.getMyPoint(userid);
+				request.setAttribute("podtoList", podtoList);
+				
+				List<ReviewDTO> adminReviewList = mdao.getMyReview(userid);
+				request.setAttribute("adminReviewList", adminReviewList);
 				
 			
 				/*

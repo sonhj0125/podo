@@ -96,7 +96,14 @@ $(document).ready(function() {
 		border:none;
 	  	background: silver;
 	}
- 
+	
+	div#modal-body {
+		width: 90%;
+		align: center;
+		margin-left : 3%;
+	}
+	
+	
 </style>
 
 
@@ -121,14 +128,14 @@ $(document).ready(function() {
 					</thead>
 					
 				  	<tbody>
-				  	<c:forEach var="pointList" items="${requestScope.pdtoList}">
+				  	<c:forEach var="pointList" items="${requestScope.podtoList}">
 						<tr>
-							<th scope="row">${pointList.userid}</th>
-							<td>${pointList.poincome}</td>
-							<td>${pointList.podetail}</td>
-							<td>${pointList.podate}</td>
+							<th scope="row">${pointList.userID}</th>
+							<td>${pointList.poIncome}</td>
+							<td>${pointList.poDetail}</td>
+							<td>${pointList.poDate}</td>
 				    	</tr>
-				    </c:forEach>
+				    </c:forEach> 
 				 	</tbody>
 				</table>
            	</div>
@@ -155,31 +162,62 @@ $(document).ready(function() {
             	<table class="table" style="text-align:center;">
 					<thead>
 						<tr>
-						  	<th scope="col">회원아이디</th>
-						  	<th scope="col">변동포인트</th>
-						  	<th scope="col">변동내역</th>
-						  	<th scope="col">변동일자</th>
+						  	<th scope="col">리뷰번호</th>
+						  	<th scope="col">별점</th>
+						  	<th scope="col">리뷰내용</th>
+						  	<th scope="col">작성일자</th>
 						</tr>
 					</thead>
 					
 				  	<tbody>
-				  	<c:forEach var="pointList" items="${requestScope.pdtoList}">
+				  	<c:forEach var="reviewList" items="${requestScope.adminReviewList}">
 						<tr>
-							<th scope="row">${pointList.userid}</th>
-							<td>${pointList.poincome}</td>
-							<td>${pointList.podetail}</td>
-							<td>${pointList.podate}</td>
+							<th scope="row">${reviewList.rindex}</th>
+							<td>${reviewList.rstar}</td>
+							<td>${reviewList.rdetail}</td>
+							<td>${reviewList.rdate}</td>
 				    	</tr>
-				    </c:forEach>
+				    </c:forEach> 
 				 	</tbody>
 				</table>
-           	</div>
+           		</div>
             </div>
         </div>
     </div>
 </div>
 <%-- 관리자 리뷰 내역 클릭시 나오는 Modal 끝 --%>
 
+
+<%-- 관리자 쿠폰 넣기 클릭시 나오는 Modal --%>
+<div class="modal fade" id="adminCouponIn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+              <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/salecoupon/registersale.png" style="width:35px; vertical-align: text-top;">&nbsp;쿠폰 넣기</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body pt-0" id="modal-body">
+          	<div>
+            	<div class="input-group mb-3">
+					<label class="input-group-text" for="pHomeTown">쿠폰</label>
+					<select class="form-select" id="pHomeTown">
+						<option selected>선택하세요.</option>
+						<option value="1">이벤트 신규회원 가입 쿠폰</option>
+						<option value="2">무료로 드립니다 [100% 쿠폰]</option>
+						<option value="3">신규회원 가입 감사쿠폰</option>
+						<option value="4">테스트 할인쿠폰</option>
+					</select>
+					<div class="form-group" style="margin-left:5%;">
+						<input id="btn-couponRegister" class="btn btn-danger ml-4" type="button" value="등록" />
+					</div>
+				</div>
+           	</div>
+          </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 리뷰 내역 클릭시 나오는 Modal 끝 --%>
 
 
 
@@ -239,10 +277,8 @@ $(document).ready(function() {
 		         	<td>포인트/쿠폰</td>
 		            <td>
                			<fmt:formatNumber value="${requestScope.mdto.point}" pattern="###,###" />&nbsp;POINT
-               			
                			<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminPoint">포인트내역</button>
-               			
-               			<button type="button" class="btn btn-warning btn-sm">쿠폰넣기</button>
+               			<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminCouponIn">쿠폰넣기</button>
                		</td>
 		         </tr>
 		         <tr>
