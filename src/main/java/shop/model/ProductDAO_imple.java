@@ -855,6 +855,112 @@ public class ProductDAO_imple implements ProductDAO {
 		return pdto_list;
 	}
 
+	// 제품번호 채번 해오기
+	@Override
+	public int getPnumOfProduct() throws SQLException {
+		
+	      int pindex = 0;
+	         
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " select SEQ_PINDEX.nextval AS pindex "
+	            		   + " from dual ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            rs = pstmt.executeQuery();
+	            
+	               rs.next();
+	               pindex = rs.getInt(1);
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return pindex;
+	       
+	}// end of public int getPnumOfProduct() throws SQLException-----------------
+
+	
+	// 제품설명이미지 채번 해오기
+	@Override
+	public int getpdindexOfProduct() throws SQLException {
+		
+		int pdindex = 0;
+        
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " select SEQ_PDINDEX.nextval AS pdindex "
+	            		   + " from dual ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            rs = pstmt.executeQuery();
+	            
+	               rs.next();
+	               pdindex = rs.getInt(1);
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return pdindex;
+	}// end of public int getpdindexOfProduct() throws SQLException---------
+
+	
+	// product 테이블에 제품정보 insert 하기
+	@Override
+	public int productInsert(ProductDTO pdto) throws SQLException {
+		
+	      int result = 0;
+	         
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " insert into product(pname, pengname, ptype, phometown, pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex) "
+	                       + " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, pdto.getPname());
+	            pstmt.setString(2, pdto.getPengname());
+	            pstmt.setString(3, pdto.getPtype());    
+	            pstmt.setString(4, pdto.getPhometown()); 
+	            pstmt.setString(5, pdto.getPprice());    
+	            pstmt.setString(6, pdto.getPpoint()); 
+	            pstmt.setString(7, pdto.getPbody()); 
+	            pstmt.setString(8, pdto.getPacid());
+	            pstmt.setString(9, pdto.getPtannin());
+	            pstmt.setString(10, pdto.getPacl());
+	            pstmt.setString(11, pdto.getPdetail());
+	            pstmt.setString(12, pdto.getPimg());
+	            pstmt.setString(13, pdto.getPstock());
+	            pstmt.setInt(14, pdto.getPindex());
+	            
+	            result = pstmt.executeUpdate();
+	            
+	            if(result == 1) { 
+	            	
+	            	sql = " insert into productdetailimg(pdimg, pdindex) "
+		                + " values(?,?) ";
+	            	
+	            	pstmt = conn.prepareStatement(sql);
+		            
+		            pstmt.setString(1, pdto.getPdimg());
+		            pstmt.setInt(2, pdto.getPdindex());
+		            
+		            result = pstmt.executeUpdate();
+	            	
+	            }
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return result;
+	       
+	}// end of public int productInsert(ProductDTO pdto) throws SQLException--------------
+
 	
 	
 

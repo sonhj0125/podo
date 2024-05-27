@@ -41,4 +41,13 @@ public interface ProductDAO {
 	// 인기 품목 리스트 뽑아오기 DESC
 	List<ProductDTO> listPopReadDesc() throws SQLException;
 
+	// 제품번호 채번 해오기
+	int getPnumOfProduct() throws SQLException;
+
+	// 제품설명이미지 채번 해오기
+	int getpdindexOfProduct() throws SQLException;
+
+	// product 테이블에 제품정보 insert 하기
+	int productInsert(ProductDTO pdto) throws SQLException;
+
 }
