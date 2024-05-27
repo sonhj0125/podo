@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	String ctxPath = request.getContextPath();
 
@@ -191,8 +192,36 @@ $(function (){
 		    · 일부 상품은 신규 빈티지 출시, 수입 가격 변동 등 제조사 사정으로 가격이 변동될 수 있습니다.    
 	  	</div>
 	  	
-	  	<div class="tab-pane container fade" id="review">   
-	  		<strong>등록된 정보가 없습니다.</strong>
+	  	<div class="tab-pane container fade" id="review">
+	  		<c:if test="${empty requestScope.reviewList}">
+	  			<strong>등록된 정보가 없습니다.</strong>
+	  		</c:if>
+	  		
+	  		<c:if test="${not empty requestScope.reviewList}">
+	  			<div>
+	  				<hr>
+		  			<c:forEach var="rdto" items="${requestScope.reviewList}">
+						<div>
+							<div>
+								<div style="display: flex; justify-content: space-between;">
+								
+									<div style="display: flex; width: 90%; margin-left: 3%; justify-content: space-between;">
+										<div style="margin: auto 0%; padding-bottom: 1%;">
+											<div>${fn:substring(rdto.odto.userid, 0, 3)}*** 님</div>
+											<div style="font-weight: bold;">${rdto.rdetail}</div>
+											<div class="mt-1" style="font-size: 10pt; color:rgba(59, 59, 59, 0.877)">${rdto.rdate}</div>
+										</div>
+											<div style="margin: auto 0;">
+												<span style="font-size: 14pt; color: #990000;">★ ${rdto.rstar}</span>
+											</div>
+									</div>
+								</div>
+							</div>
+							<hr class="my-hr3" style="background-color: #000000;">
+						</div>
+		  			</c:forEach>
+	  			</div>
+	  		</c:if>
 	  	</div>
 	</div>
 		

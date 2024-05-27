@@ -94,5 +94,7 @@ $(function() {
             frm.action = `${ctxPath}/coupon/couponregister.wine`;
             frm.submit();
         }
-    }); // end of $("#btn-couponRegister").bind("click", function() ------
+        
+    }); // end of $("#btn-couponRegister").bind("click", function()
+
 });

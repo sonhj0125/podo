@@ -18,7 +18,11 @@
 <jsp:include page="../header.jsp" />
 <script type="text/javascript">
 
+
 </script>
+
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+
 <script type="text/javascript" src="<%=ctxPath %>/js/shop/cart.js"></script>
 
    <div id="container">
@@ -67,7 +71,7 @@
          <div style="width: 80%; margin:0 auto; padding: 0;">
          
          <div class="hstack gap-1" style="margin-bottom: 15px">
-             <input id="cbAll" class="form-check-input" type="checkbox" style="margin-right : 1%;">
+            <input id="cbAll" class="form-check-input" type="checkbox" style="margin-right : 1%;">
             <div style="width: 13%; min-width: 13%;">
                     전체선택
            </div>
@@ -126,21 +130,19 @@
                  <button type="button" class="btn btn-light plus_btn" style="width: 30px; padding: 0; text-align: center; font-size: 17pt;">+</button>
                  
                  
-                 <div style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right; color: gray;">
-                        ${cdtolist.pdto.pprice}원
-                 </div>
+                 <div id="dprice" style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right; color: gray;">${cdtolist.pdto.pprice}원</div>
                  
-                 <div class="priceOne" style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right;">
+                 <div id="dpriceSum" class="priceOne" style="width:10%; min-width: 10%; font-size: 1.0vw; font-weight: bold; text-align: right;">
                         ${cdtolist.sumprice}원
                  </div>
                  
-                 <div id="dcnt" class="dcntAll">${cdtolist.cvolume}</div>
+                 <div id="dcnt" class="dcntAll" style="display: none;">${cdtolist.cvolume}</div>
+                 
+                 <div id="didx" class="cart-index" style="display: none;">${cdtolist.cindex}</div>
                  
                </div>
                
-               <div class="cart-index" style="font-size: 0;">
-                  ${cdtolist.cindex}
-               </div>
+               
                
                
                
@@ -152,13 +154,13 @@
                </div>
 
                      
-         <form name="orderSet">
+         <form name="orderSet" style="display: none;">
             <input type="text" id="setCindex" name="Arr_cindexOne">
             <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
             <input type="text" id="setcVolume" name="Arr_cvolumeOne">
          </form>
       
-         <form name="orderSetOne">
+         <form name="orderSetOne" style="display: none;">
              <input type="text" id="setCindexOne" name="Arr_cindexOne">
              <input type="text" name="userid" value="${sessionScope.loginUser.userid}">
              <input type="text" id="setcVolumeOne" name="Arr_cvolumeOne">

@@ -1,5 +1,6 @@
 package member.model;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +13,6 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import member.domain.LogDTO;
-import util.security.AES256;
-import util.security.SecretMykey;
 
 public class LogDAO_imple implements LogDAO {
 	
@@ -51,7 +50,7 @@ public class LogDAO_imple implements LogDAO {
 
 	
 	
-	// 관리자 - 유저 로그 기록 가져오기
+	// 내 로그 기록 가져오기
 	@Override
 	public List<LogDTO> getMyLog(String userid) throws SQLException {
 		
@@ -61,35 +60,7 @@ public class LogDAO_imple implements LogDAO {
 			
 		conn = ds.getConnection();
 		
-		String sql = " select logindex, userid, logindate, ipaddress "
-				   + " from "
-				   + " ( "
-				   + "    select log.logindex AS logindex, member.userid AS userid, logindate, ipaddress "
-				   + "    from log "
-				   + "    join member on log.userid = member.userid "
-				   + "    where member.userid = ? "
-				   + "    order by logindate desc "
-				   + " ) T "
-				   + " WHERE rownum <= 5 ";
 		
-		pstmt = conn.prepareStatement(sql);
-		
-		pstmt.setString(1, userid);
-		
-		rs = pstmt.executeQuery();
-		
-		while(rs.next()) {
-			
-			LogDTO lodto = new LogDTO();
-			
-			lodto.setLoginidx(rs.getString("logindex"));
-			lodto.setUserid(rs.getString("userid"));
-			lodto.setLogindate(rs.getString("logindate"));
-			lodto.setIpaddress(rs.getString("ipaddress"));
-			
-			ldtoList.add(lodto);
-			
-		}
 			
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -100,12 +71,6 @@ public class LogDAO_imple implements LogDAO {
 	return ldtoList;
 		
 	} // end of public LogDTO getMyLog(String userid) throws SQLException
-	
-	
-	
-	
-	
-	
 	
 	
 }

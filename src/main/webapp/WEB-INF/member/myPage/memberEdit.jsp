@@ -18,11 +18,11 @@
 <!-- Main JS-->
 <script src="<%=ctxPath %>/js/member/memberEdit.js"></script>
 
-
 <!-- DataPicker -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
 <style>
 
@@ -58,6 +58,22 @@
     }
     
 </style>
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+	
+		$("button#btnClose").bind('click', ()=>{
+			
+			javascript:history.go(0);
+			location.href="<%=ctxPath%>/index.wine";
+		
+		});
+	
+	});
+	
+</script>
      
  <div class="wrapper wrapper--w680" style="margin-bottom: 80px">
     <div class="card card-4">
@@ -69,30 +85,17 @@
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
+                        	<input type="hidden" name="userid" value="${sessionScope.loginUser.userid}" />
                             <label class="label">이름<span class="star">*</span></label>
-                            <input class="input--style-4" type="text" id="name" name="name" value="${sessionScope.loginUser.name}">
+                            <input class="input--style-4 requiredInfo" type="text" id="name" name="name" value="${sessionScope.loginUser.name}">
                         </div>
                     </div>
                 </div>
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
-                            <label class="label">비밀번호</label>
-                            <input class="input--style-4" type="password" id="pwd" name="pwd">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="input-group">
-                            <label class="label">비밀번호 확인</label>
-                            <input class="input--style-4" type="password" id="pwdCheck">
-                        </div>
-                    </div>
-                </div>
-                <div class="row row-space">
-                    <div class="col-2">
-                        <div class="input-group">
-                            <label class="label">이메일</label>
-                            <input class="input--style-4" type="email" name="email" id ="email" value="${sessionScope.loginUser.email}">
+                            <label class="label">이메일<span class="star">*</span></label>
+                            <input class="input--style-4 requiredInfo" type="email" name="email" id ="email" value="${sessionScope.loginUser.email}">
                         </div>
                     </div>
                     <div class="col-2">
@@ -118,7 +121,7 @@
                 </div> 
 
 			    <div class="w-100" style="display: flex; justify-content: space-between;">
-				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btn-close" style="width: 45%;">취소</button>
+				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnClose" style="width: 45%;">취소</button>
 				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;">변경하기</button>
 			    </div>
             </form>

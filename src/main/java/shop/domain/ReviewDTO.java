@@ -5,9 +5,9 @@ public class ReviewDTO {
 	private String rstar;
 	private String rdetail;
 	private String rdate;
+	private int oindex;
 	
 	private OrderDTO odto;
-	private ProductDTO pdto;
 
 	
 	public int getRindex() {
@@ -50,12 +50,12 @@ public class ReviewDTO {
 		this.odto = odto;
 	}
 
-	public ProductDTO getPdto() {
-		return pdto;
+	public int getOindex() {
+		return oindex;
 	}
 
-	public void setPdto(ProductDTO pdto) {
-		this.pdto = pdto;
+	public void setOindex(int oindex) {
+		this.oindex = oindex;
 	}
 
 }

@@ -46,8 +46,16 @@ from dual;
 
 select *
 from member
-where userid ='test002'
+where userid ='kmj0228';
 
 
+select email
+from member
+where userid != kmj0228 and email = ?;
+
+
+select pwd
+from member
+where userid = 'kmj0228' and pwd = '1fb5a7508bdf2a76e5b7f0ec8be6dda74816f32bbf5542721f4802f3859a414d';
 
 

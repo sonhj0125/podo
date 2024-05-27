@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class MemberDAO_imple implements MemberDAO {
 	private ResultSet rs;
 	
 	private AES256 aes;
+	
+	private DecimalFormat df = new DecimalFormat("#,###");
 	
 	public MemberDAO_imple() {
 		
@@ -130,7 +133,10 @@ public class MemberDAO_imple implements MemberDAO {
 				mdto.setAddressDetail(rs.getString(6));
 				mdto.setGender(rs.getString(7));
 				mdto.setBirthday(rs.getString(8));
-				mdto.setPoint(rs.getString(9));
+				
+				String point = df.format(Integer.parseInt(rs.getString(9)));
+				mdto.setPoint(point);
+				
 				mdto.setRegisterDay(rs.getString(10));
 				mdto.setPwdUpdateDay(rs.getString(11));
 				mdto.setMemberIdx(rs.getString(12));
@@ -349,11 +355,6 @@ public class MemberDAO_imple implements MemberDAO {
 
 	
 	
-	
-	
-	
-	
-	
 	// 관리자 회원관리 - 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기
 	@Override
 	public List<MemberDTO> select_Member_paging(Map<String, String> paraMap) throws SQLException {
@@ -441,9 +442,6 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	} // end of public List<MemberDTO> select_Member_paging(Map<String, String> paraMap)
 
-	
-	
-	
 
 	/* >>> 뷰단(memberList.jsp)에서 "페이징 처리 시 보여주는 순번 공식" 에서 사용하기 위해 
 	   검색이 있는 또는 검색이 없는 회원의 총 개수 알아오기 <<< */
@@ -494,66 +492,60 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	} // end of public int getTotalMemberCount(Map<String, String> paraMap)
 
-
-
 	
 	// 관리자 회원관리 - 페이징 처리를 위한 검색이 있는 또는 검색이 없는 회원에 대한 총 페이지 수 알아오기
-		@Override
-		public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
 			
-			int totalPage = 0;
+			conn = ds.getConnection();
 			
-			try {
-				
-				conn = ds.getConnection();
-				
-				String sql = " select ceil(count(*)/?) "
-						   + " from member "
-						   + " join memberidx "
-						   + " on member.memberidx = memberidx.memberidx "
-						   + " where memberidx.memberidx != 9 ";
+			String sql = " select ceil(count(*)/?) "
+					   + " from member "
+					   + " join memberidx "
+					   + " on member.memberidx = memberidx.memberidx "
+					   + " where memberidx.memberidx != 9 ";
 
-				String colname = paraMap.get("searchType");
-				String searchWord = paraMap.get("searchWord");
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
 				
-				
-				if((colname != null && !colname.trim().isEmpty()) && 
-				   (searchWord != null && !searchWord.trim().isEmpty())) {
-					
-					sql += " and " + colname + " like '%'|| ? ||'%' ";
-				}
-				
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
-				
-				if((colname != null && !colname.trim().isEmpty()) && 
-				   (searchWord != null && !searchWord.trim().isEmpty())) {
-					// 검색이 있는 경우
-					
-					pstmt.setString(2, searchWord);
-				}
-				
-				rs = pstmt.executeQuery();
-				rs.next();
-				
-				totalPage = rs.getInt(1);
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-				
-			} finally {
-				close();
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
 			}
 			
-			return totalPage;
+			pstmt = conn.prepareStatement(sql);
 			
-		} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
 			
-	
-
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(2, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
 		
+		return totalPage;
 		
+	} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException
+			
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
@@ -688,7 +680,332 @@ public class MemberDAO_imple implements MemberDAO {
 	} // end of public MemberDTO disableMember(String userid) throws SQLException
 */
 
+	// 회원의 개인 정보 변경하기 
+	@Override
+	public int updateMember(MemberDTO member) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+	          conn = ds.getConnection();
+		
+        String sql = " update member set name = ? "
+                   + "                   , email = ? "
+                   + "                   , phone = ? "
+                   + "                   , address = ? "
+                   + "                   , addressdetail = ? "
+                   + " where userid = ? ";
+                
+       pstmt = conn.prepareStatement(sql);
+       
+       pstmt.setString(1, member.getName());
+       pstmt.setString(2, aes.encrypt(member.getEmail()) );  // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
+       pstmt.setString(3, aes.encrypt(member.getPhone()) ); // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다. 
+       pstmt.setString(4, member.getAddress());
+       pstmt.setString(5, member.getAddressDetail());
+       pstmt.setString(6, member.getUserid());
+                
+       result = pstmt.executeUpdate();
+       
+    } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+       e.printStackTrace();
+    }
+     finally {
+       close();
+    }
+    
+		return result;    
+		
+	}// end of public int updateMember(MemberDTO member) throws SQLException-----
+
+
+	// 회원정보 수정시 email 중복검사
+	@Override
+    public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException {
+
+      boolean isExists = false;
+      
+      try {
+         conn = ds.getConnection();
+         
+         String sql = " select email "
+                    + " from member "
+                    + " where userid != ? and email = ? ";
+         
+         pstmt = conn.prepareStatement(sql); 
+         pstmt.setString(1, paraMap.get("userid"));
+         pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+         
+         rs = pstmt.executeQuery();
+         
+         isExists = rs.next(); // 행이 있으면(중복된 email) true,
+                               // 행이 없으면(사용가능한 email) false
+         
+      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+         e.printStackTrace();
+      } finally {
+         close();
+      }
+      		
+      return isExists;      
+	      
+	}// end of public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException-----
+
+
+	// 마이페이지 비밀번호 변경 비밀번호 변경
+	@Override
+	public int pwdUpdate2(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update member set pwd = ?, pwdupdateday = to_char(sysdate, 'yyyy-mm-dd') "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd"))); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			pstmt.setString(2, paraMap.get("userid"));
+	        
+	        result = pstmt.executeUpdate();
+		}finally {
+		close();
+		}
+	
+		return result;
+	
+	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
 
 	
+	// [마이페이지] 작성할 리뷰 개수 알아오기
+	@Override
+	public int getReviewCnt(String userid) throws SQLException {
+		
+		int cnt = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT count(*) as CNT "
+					   + " FROM "
+					   + " ( "
+					   + "     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, "
+					   + "            to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex "
+					   + "     from product P JOIN orders O "
+					   + "     ON P.pindex = O.pindex "
+					   + "     where O.userid = ? and O.ostatus = 4 "
+					   + " ) V "
+					   + " LEFT JOIN REVIEW R "
+					   + " ON V.oindex = R.oindex "
+					   + " where rindex is null ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			cnt = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return cnt;
+		
+	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
+
+
+	// 비밀번호 변경시 현재 사용중인 비밀번호인지 아닌지 알아오기(현재 사용중인 비밀번호 이라면 true, 새로운 비밀번호이라면 false)
+	@Override
+	public boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+	          conn = ds.getConnection();
+	          
+	          String sql = " select pwd "
+	          		     + " from member "
+	          		     + " where userid = ? and pwd = ? ";
+	          
+	          pstmt = conn.prepareStatement(sql); 
+	          pstmt.setString(1, paraMap.get("userid"));
+	          pstmt.setString(2, Sha256.encrypt(paraMap.get("new_pwd")));
+	          
+	          rs = pstmt.executeQuery();
+	          
+	          isExists = rs.next(); // 행이 있으면(현재 사용중인 비밀번호) true,
+	                                // 행이 없으면(새로운 비밀번호) false
+	          
+	       } finally {
+	          close();
+	       }
+
+		return isExists;
+		
+	}// end of public boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException-----------
+
+	@Override
+	public int pointread(String userid) throws SQLException {
+		
+		int mypoint = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select point from MEMBER where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String pointStr = rs.getString("point");
+				
+				try {
+					mypoint = Integer.parseInt(pointStr);
+				}catch (Exception e) {
+					mypoint = -1;
+				}
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return mypoint;
+	}
+
+
+
+	@Override
+	public boolean delPoint(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MEMBER SET POINT = POINT - ? WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public boolean writePointDown(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 구입 차감";
+			String point = "-"+paraMap.get("point");
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, point);
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public boolean addPoint(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MEMBER SET POINT = POINT + ? WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+		
+	}
+
+
+	@Override
+	public boolean writePointUp(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 구매 적립";
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("point"));
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		return result;
+		
+	}
+
 	
 }

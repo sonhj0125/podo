@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,7 +17,6 @@ import javax.sql.DataSource;
 
 import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
-import oracle.net.aso.c;
 
 public class CouponDAO_imple implements CouponDAO {
 
@@ -216,7 +216,90 @@ public class CouponDAO_imple implements CouponDAO {
 		return codto;
 	}
 
+	@Override
+	public int useCoupon(MyCouponDTO mycodto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MYCOUPON "
+					+ " SET COSTATUS = 2 "
+					+ " WHERE CONAME = ? and userid = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, mycodto.getCodto().getConame());
+			pstmt.setString(2, mycodto.getMdto().getUserid());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public boolean isCoupon(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+		
+			conn = ds.getConnection();
+			
+			String sql = "select * from MYCOUPON where USERID = ? and CONAME = ? and COSTATUS = 1";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("coname"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	
-	
+	}
+
+
+	@Override
+	public boolean delCoupon(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " UPDATE MYCOUPON SET COSTATUS = 2 WHERE CONAME = ? and USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("coname"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
 	
 }

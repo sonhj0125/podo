@@ -2,6 +2,7 @@ package coupon.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
@@ -20,6 +21,13 @@ public interface CouponDAO {
 	// 쿠폰 정보 불러오기
 	CouponDTO getcouponinfo(String coname) throws SQLException;
 
-	
+	// 쿠폰 사용
+	int useCoupon(MyCouponDTO mycodto) throws SQLException;
+
+	// 쿠폰 유효여부
+	boolean isCoupon(Map<String, String> paraMap) throws SQLException;
+
+	// 쿠폰 사용
+	boolean delCoupon(Map<String, String> paraMap) throws SQLException;
 	
 }

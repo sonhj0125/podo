@@ -6,7 +6,7 @@ import member.domain.MemberDTO;
 
 
 public abstract class AbstractController implements InterCommand {
-
+	
 	private boolean isRedirect = false;
 	private String viewPage;
 
@@ -40,11 +40,6 @@ public abstract class AbstractController implements InterCommand {
 	
 	}
 	
-	
-	
-	//////////////////////////////////////////////////////
-	// 로그인 유무를 검사해서 로그인 했으면 true 를 리턴해주고
-	// 로그인 안했으면 false 를 리턴해주도록 한다.
 	public boolean checkLogin(HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
@@ -59,7 +54,6 @@ public abstract class AbstractController implements InterCommand {
 			return false;
 		}
 		
-	} // end of public boolean checkLogin(HttpServletRequest request) ---------------
-	
+	}
 
 }

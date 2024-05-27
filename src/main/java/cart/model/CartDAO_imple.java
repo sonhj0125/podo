@@ -14,6 +14,9 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import cart.domain.CartDTO;
+import cart.domain.DeliveryDTO;
+import member.domain.MemberDTO;
+import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 
 public class CartDAO_imple implements CartDAO {
@@ -301,4 +304,139 @@ public class CartDAO_imple implements CartDAO {
 		return cdtoList;
 	}
 
+	@Override
+	public CartDTO getProuctinfo(String string) throws SQLException {
+		
+		CartDTO cdto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select CVOLUME, PPOINT, PPRICE, USERID, cart.PINDEX as pindex, pname "
+					+ " from cart join PRODUCT on cart.PINDEX = PRODUCT.PINDEX "
+					+ " where CINDEX = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, string);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				cdto = new CartDTO();
+				
+				cdto.setCvolume(rs.getString("CVOLUME"));
+				
+				ProductDTO pdto = new ProductDTO();
+				pdto.setPpoint(rs.getString("ppoint"));
+				pdto.setPprice(rs.getString("pprice"));
+				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPname(rs.getString("pname"));
+				
+				MemberDTO mdto = new MemberDTO();
+				mdto.setUserid(rs.getString("userid"));
+				
+				cdto.setMdto(mdto);
+				cdto.setPdto(pdto);
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return cdto;
+	}
+
+	@Override
+	public int setOrder(OrderDTO odto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			String sql = "INSERT INTO ORDERS (OINDEX, OTOTALPRICE, OPOINT, OVOLUME, USERID, PINDEX) "
+					+ "VALUES (SEQ_OINDEX.nextval, ?, ?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odto.getOtotalprice());
+			pstmt.setString(2, odto.getOpoint());
+			pstmt.setString(3, odto.getOvolume());
+			pstmt.setString(4, odto.getUserid());
+			pstmt.setInt(5, odto.getPindex());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int getOindex(OrderDTO odto) throws SQLException {
+		
+		int oindex = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select oindex from orders where USERID = ? and PINDEX = ? order by oindex desc";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odto.getUserid());
+			pstmt.setInt(2, odto.getPindex());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				oindex = rs.getInt("oindex");
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return oindex;
+	}
+
+	@Override
+	public boolean setDelivery(DeliveryDTO ddto) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO DELIVERY (DINDEX, DNAME, DEMAIL, DPHONE, DMSG, OINDEX, DADDRESS, DADDRESSDETAIL) "
+					+ " VALUES (SEQ_DINDEX.nextval, ?, ?, ?, ?, ?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, ddto.getDname());
+			pstmt.setString(2, ddto.getDemail());
+			pstmt.setString(3, ddto.getDphone());
+			pstmt.setString(4, ddto.getDmsg());
+			pstmt.setInt(5, ddto.getOindex());
+			pstmt.setString(6, ddto.getDaddress());
+			pstmt.setString(7, ddto.getDaddressdetail());
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+		
+	}
+
+	
 }
