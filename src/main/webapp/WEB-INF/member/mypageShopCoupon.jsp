@@ -205,37 +205,15 @@
         </c:forEach>
     </c:if>
     
-<!-- 페이지바 -->
-<div id="pageBar">
-    <nav>
-        <ul class="pagination">
-            <!-- Previous -->
-            <c:if test="${requestScope.currentShowPageNo > 1}">
-                <li class="page-item">
-                    <a class="page-link" href="mypageShopCoupon.wine?page=${requestScope.currentShowPageNo - 1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            </c:if>
+	<!-- 페이지바 -->
+	<div id="pageBar">
+	    <nav>
+	        <ul class="pagination">
+	            ${requestScope.pageBar}
+	        </ul>
+	    </nav>
+	</div>
 
-            <!-- Page numbers -->
-            <c:forEach var="i" begin="1" end="${requestScope.totalPage}">
-                <li class="page-item <c:if test='${i eq requestScope.currentShowPageNo}'>active</c:if>'">
-                    <a class="page-link" href="mypageShopCoupon.wine?page=${i}">${i}</a>
-                </li>
-            </c:forEach>
-
-            <!-- Next -->
-            <c:if test="${requestScope.currentShowPageNo < requestScope.totalPage}">
-                <li class="page-item">
-                    <a class="page-link" href="mypageShopCoupon.wine?page=${requestScope.currentShowPageNo + 1}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </c:if>
-        </ul>
-    </nav>
-</div>
 
 </div>
 <jsp page="/WEB-INF/footer.jsp" />

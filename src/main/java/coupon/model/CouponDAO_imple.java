@@ -451,5 +451,56 @@ public class CouponDAO_imple implements CouponDAO {
 		
 		return totalPage;	
 	}
+
+
+	// **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
+	@Override
+	public List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) throws SQLException {
+		List<MyCouponDTO> MyCouponpagingList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT rno, COINDEX, USERID, CONAME, COSTATUS "
+					   + " FROM  "
+					   + " ( "
+					   + "     select rownum as rno, COINDEX, USERID, CONAME, COSTATUS "
+					   + "     from   "
+					   + "     (  "
+					   + "      select COINDEX, USERID, CONAME, COSTATUS "
+					   + "      from mycoupon "
+					   + "      where userid = ? "
+					   + "     ) V "
+					   + " ) T  "
+					   + " WHERE T.rno BETWEEN ? AND ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt( paraMap.get("currentShowPageNo") ); 
+			int sizePerPage = Integer.parseInt( paraMap.get("sizePerPage") );
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); // 공식
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MyCouponDTO mcdto = new MyCouponDTO();
+				mcdto.setCoindex(rs.getInt("COINDEX"));
+				mcdto.setCostatus(rs.getInt("COSTATUS"));
+				
+				CouponDTO cdto = new CouponDTO();
+				cdto.setConame(rs.getString("CONAME"));
+				mcdto.setCodto(cdto);
+				
+				MyCouponpagingList.add(mcdto);
+			}// end of while(rs.next())---------------------
+		} finally {
+			close();
+		}
+		return MyCouponpagingList;
+	} // end of public List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) -----
 	
 }

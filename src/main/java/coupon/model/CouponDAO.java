@@ -42,5 +42,8 @@ public interface CouponDAO {
 	
 	// 쿠폰의 총 페이지 수 알아오기
 	int getTotalPage(String userid) throws SQLException;
+
+	// **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
+	List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) throws SQLException ;
 	
 }
