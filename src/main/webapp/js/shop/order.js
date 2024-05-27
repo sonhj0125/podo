@@ -114,7 +114,7 @@ $(function() {
 
     $("#btn-doorder").bind("click",function(){
 
-        const ctxPath = $("div#getctxPath").text();
+        const ctxPath = $("div#getCtxPath").text();
 
         const width = 1000;
         const height = 600;
@@ -151,6 +151,8 @@ function totalSet(){
 }
 
 function paymentcomplete(){
+
+    const ctxPath = $("div#getCtxPath").text();
 
     const frm = document.orderfrm;
     frm.method = "post";

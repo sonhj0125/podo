@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cart.domain.CartDTO;
+import cart.domain.DeliveryDTO;
 import cart.model.CartDAO;
 import cart.model.CartDAO_imple;
 import common.controller.AbstractController;
@@ -16,6 +17,7 @@ import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
+import shop.domain.OrderDTO;
 
 public class OrderEnd extends AbstractController{
 
@@ -122,10 +124,63 @@ public class OrderEnd extends AbstractController{
 					System.out.println("포인트 적립중 오류 발생");
 				}
 				
-				// 주문 DB 작성
+				try {
+					for(int i=0;0<cindex.length;i++) {
+						
+						// 주문내역 입력
+						
+						CartDTO cdto = cdao.getProuctinfo(cindex[i]);
+						
+						OrderDTO odto = new OrderDTO();
+						odto.setOpoint(cdto.getPdto().getPpoint());
+						odto.setOvolume(cdto.getCvolume());
+						
+						int sumPrice = Integer.parseInt(cdto.getPdto().getPprice())*Integer.parseInt(cdto.getCvolume());
+						odto.setOtotalprice(String.valueOf(sumPrice));
+						odto.setUserid(userid);
+						
+						odto.setPindex(cdto.getPdto().getPindex());
+						
+						if(1!=cdao.setOrder(odto)) {
+							System.out.println("주문 DB 작성중 오류 발생");
+						}
+						
+						// 배송지 입력
+						
+						DeliveryDTO ddto = new DeliveryDTO();
+						
+						int Oindex = cdao.getOindex(odto);
+						
+						ddto.setOindex(Oindex);
+						ddto.setDname(dname);
+						ddto.setDemail(demail);
+						ddto.setDphone(dphone);
+						ddto.setDmsg(dmsg);
+						ddto.setDaddress(daddress);
+						ddto.setDaddressdetail(daddressdeatil);
+						
+						if(!cdao.setDelivery(ddto)) {
+							System.out.println("배달 DB 작성중 오류 발생");
+						}
+						
+						// 장바구니 삭제
+						
+						if(1 != cdao.deleteCartfromindex(cindex[i])) {
+							System.out.println("장바구니 삭제 실패");
+						}
+						
+						// 세션 재입력
+						loginuser = mdao.selectOneMember(userid);
+						session.setAttribute("loginUser", loginuser);
+						
+					}
+				}catch (Exception e) {
+				}
 				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
+				return;
 				
-			
 			}
 			
 		}

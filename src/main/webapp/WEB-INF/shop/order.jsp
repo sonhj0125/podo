@@ -8,7 +8,7 @@
 <jsp:include page="../header.jsp" />
 <script type="text/javascript" src="<%=ctxPath%>/js/shop/order.js"></script>
 
-	<div id="getctxPath" style="display: none"><%= ctxPath%></div>
+	<div id="getCtxPath" style="display: none"><%= ctxPath%></div>
 
    <div id="container">
       <form name="orderfrm">

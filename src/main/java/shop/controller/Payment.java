@@ -136,15 +136,18 @@ public class Payment extends AbstractController {
 				int[] ppoint = new int[cindex.length];
 				String[] cvolume = new String[cindex.length];
 				
-				for(int i=0; i<cindex.length;i++) {
-					
-					CartDTO cdto = cdao.getProuctinfo(cindex[i]);
-					
-					pname[i] = cdto.getPdto().getPname();
-					pprice[i] = Integer.parseInt(cdto.getPdto().getPprice());
-					ppoint[i] = Integer.parseInt(cdto.getPdto().getPpoint());
-					cvolume[i] = cdto.getCvolume();
-					
+				try {
+					for(int i=0; i<cindex.length;i++) {
+						
+						CartDTO cdto = cdao.getProuctinfo(cindex[i]);
+						
+						pname[i] = cdto.getPdto().getPname();
+						pprice[i] = Integer.parseInt(cdto.getPdto().getPprice());
+						ppoint[i] = Integer.parseInt(cdto.getPdto().getPpoint());
+						cvolume[i] = cdto.getCvolume();
+						
+					}
+				}catch(Exception e) {
 				}
 				
 				// 2. 가격,적립포인트 계산 (총 가격 + 배달비)

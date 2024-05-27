@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import cart.domain.CartDTO;
+import cart.domain.DeliveryDTO;
+import shop.domain.OrderDTO;
 
 public interface CartDAO {
 
@@ -31,6 +33,15 @@ public interface CartDAO {
 
 	// cindex로 제품정보 뽑아오기
 	CartDTO getProuctinfo(String string) throws SQLException;
+
+	// 주문기록 작성
+	int setOrder(OrderDTO odto) throws SQLException;
+
+	// 주문코드 받기
+	int getOindex(OrderDTO odto) throws SQLException;
+
+	// 배달정보 등록하기
+	boolean setDelivery(DeliveryDTO ddto) throws SQLException;
 
 
 
