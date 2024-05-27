@@ -13,6 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import cart.domain.DeliveryDTO;
 import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 import shop.domain.ReviewDTO;
@@ -1241,5 +1242,126 @@ public class ProductDAO_imple implements ProductDAO {
 		return reviewList;
 		
 	} // end of public List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException --------
+
+	
+	
+	// [주문내역조회] 회원이 주문한 상품 목록 받아오기
+	@Override
+	public List<OrderDTO> selectOrderList(String userid) throws SQLException {
+		
+		List<OrderDTO> orderList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select P.pname, pimg, O.ototalprice, ovolume, odate, P.pindex, oindex "
+					   + " from product P JOIN orders O "
+					   + " ON P.pindex = O.pindex "
+					   + " where O.userid = ? "
+					   + " order by oindex desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				OrderDTO odto = new OrderDTO();
+				ProductDTO pdto = new ProductDTO();
+				
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPimg(rs.getString("pimg"));
+				
+				odto.setPdto(pdto);
+				
+				odto.setOtotalprice(rs.getString("ototalprice"));
+				odto.setOvolume(rs.getString("ovolume"));
+				odto.setOdate(rs.getString("odate"));
+				odto.setPindex(rs.getInt("pindex"));
+				odto.setOindex(rs.getInt("oindex"));
+				
+				orderList.add(odto);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return orderList;
+		
+	} // end of public List<OrderDTO> selectOrderList(String userid) throws SQLException -----------------
+
+	
+	
+	// [주문내역조회] 주문 인덱스에 대한 상품, 주문, 배송 정보 받아오기
+	@Override
+	public DeliveryDTO getOrderDetail(Map<String, String> paraMap) throws SQLException {
+
+		DeliveryDTO ddto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select P.pindex, pname, pengname, pimg, ptype, phometown, pprice, "
+					   + "        O.oindex, ototalprice, odate, ostatus, oardate, ovolume, "
+					   + "        dnumber, dname, demail, dphone, dmsg, daddress, daddressdetail "
+					   + " from product P JOIN orders O "
+					   + " ON P.pindex = O.pindex "
+					   + " JOIN delivery D "
+					   + " ON O.oindex = D.oindex "
+					   + " where O.oindex = ? and userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("oindex"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				ddto = new DeliveryDTO();
+				
+				OrderDTO odto = new OrderDTO();
+				ProductDTO pdto = new ProductDTO();
+				
+				pdto.setPindex(rs.getInt("pindex"));
+				pdto.setPname(rs.getString("pname"));
+				pdto.setPengname(rs.getString("pengname"));
+				pdto.setPimg(rs.getString("pimg"));
+				pdto.setPtype(rs.getString("ptype"));
+				pdto.setPhometown(rs.getString("phometown"));
+				pdto.setPprice(rs.getString("pprice"));
+				
+				odto.setPdto(pdto);
+				
+				odto.setOindex(rs.getInt("oindex"));
+				odto.setOtotalprice(rs.getString("ototalprice"));
+				odto.setOdate(rs.getString("odate"));
+				odto.setOstatus(rs.getInt("ostatus"));
+				odto.setOardate(rs.getString("oardate"));
+				odto.setOvolume(rs.getString("ovolume"));
+				
+				ddto.setOdto(odto);
+				
+				ddto.setDnumber(rs.getString("dnumber"));
+				ddto.setDname(rs.getString("dname"));
+				ddto.setDemail(rs.getString("demail"));
+				ddto.setDphone(rs.getString("dphone"));
+				ddto.setDmsg(rs.getString("dmsg"));
+				ddto.setDaddress(rs.getString("daddress"));
+				ddto.setDaddressdetail(rs.getString("daddressdetail"));
+				
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return ddto;
+		
+	} // end of public DeliveryDTO getOrderDetail(Map<String, String> paraMap) throws SQLException -----------
 	
 }

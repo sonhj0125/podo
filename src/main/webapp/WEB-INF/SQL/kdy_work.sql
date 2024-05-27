@@ -242,3 +242,36 @@ ON V.oindex = R.oindex
 where rindex is null;
 
 
+
+/*
+update member set memberidx = 9
+where userid = 'test002';
+commit;
+*/
+
+
+-- 주문내역조회 페이지 : 회원이 주문한 상품 목록 받아오기
+select P.pname, pimg, O.ototalprice, ovolume, odate, P.pindex, oindex
+from product P JOIN orders O
+ON P.pindex = O.pindex
+where O.userid = 'redtree2379'
+order by oindex desc;
+
+
+
+-- 주문내역조회 페이지 : 주문 인덱스에 대한 상품, 주문, 배송 정보 받아오기
+select P.pindex, pname, pengname, pimg, ptype, phometown, pprice, 
+       O.oindex, ototalprice, odate, ostatus, oardate, ovolume, 
+       dnumber, dname, demail, dphone, dmsg, daddress, daddressdetail
+from product P JOIN orders O
+ON P.pindex = O.pindex
+JOIN delivery D
+ON O.oindex = D.oindex
+where O.oindex = 27 and userid = 'redtree2379';
+
+
+
+
+
+
+

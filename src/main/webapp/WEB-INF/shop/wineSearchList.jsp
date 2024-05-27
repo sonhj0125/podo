@@ -37,8 +37,8 @@ div.container {
 	</div>
 
 	<c:if test="${empty requestScope.wineList}">
-		<div class="m-5" style="text-align: center;">
-			<span style="font-size: 20pt;">검색 결과가 없습니다. <i class="fa-solid fa-face-sad-tear"></i></span>
+		<div class="m-5" style="text-align: center; height: 500px;">
+			<span font-size: 20pt;">검색 결과가 없습니다. <i class="fa-solid fa-face-sad-tear"></i></span>
 		</div>
 	</c:if>
 

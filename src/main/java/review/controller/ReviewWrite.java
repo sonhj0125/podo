@@ -47,7 +47,7 @@ public class ReviewWrite extends AbstractController {
 					super.setViewPage(request.getContextPath() + "/member/reviewList.wine");
 					return; // execute() 함수 종료
 				}
-								
+				
 				Map<String, String> paraMap = new HashMap<>();
 				
 				paraMap.put("oindex", oindex);

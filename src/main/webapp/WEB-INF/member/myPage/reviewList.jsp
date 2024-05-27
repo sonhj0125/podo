@@ -38,7 +38,7 @@
 
 <form>
 	<div id="container" style="width: 100%; margin-bottom: 5%;">
-		<h3 style="width: 100%; text-align: center;">리뷰관리</h3>
+		<h2 style="width: 100%; text-align: center;">리뷰 관리</h2>
 		
 		<%-- 값이 있을 때 시작 --%>
 		<c:if test="${not empty requestScope.reviewPdtList}">
@@ -93,7 +93,7 @@
 		<c:if test="${empty requestScope.reviewPdtList}">
 			<div style="width: 70%; margin: 0 auto;">
 				<hr>
-				<div class="m-5" style="text-align: center;">
+				<div class="m-5" style="text-align: center; height: 500px;">
 					<span style="font-size: 18pt;">리뷰를 작성할 수 있는 상품이 없습니다. <i class="fa-solid fa-face-sad-tear"></i></span>
 				</div>
 				<div style="text-align: center;">

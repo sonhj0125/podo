@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import cart.domain.DeliveryDTO;
+import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 import shop.domain.ReviewDTO;
 
@@ -65,6 +67,12 @@ public interface ProductDAO {
 
 	// [shop] pindex에 대한 리뷰 목록 불러오기
 	List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException;
+
+	// [주문내역조회] 회원이 주문한 상품 목록 받아오기
+	List<OrderDTO> selectOrderList(String userid) throws SQLException;
+
+	// [주문내역조회] 주문 인덱스에 대한 상품, 주문, 배송 정보 받아오기
+	DeliveryDTO getOrderDetail(Map<String, String> paraMap) throws SQLException;
 	
 	
 }
