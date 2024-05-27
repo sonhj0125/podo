@@ -123,7 +123,7 @@
             
             <h3>결제 내역</h3>
             <hr>
-               <div style="width: 90%; display:flex; justify-content: space-between; margin: 0 auto;">
+               <div style="width: 100%; display:flex; justify-content: space-between; margin: 0 auto;">
                   <div style="margin-top: 1%;">최종결제금액</div>
                   <div style="font-weight: bold; font-size: 20pt;"><fmt:formatNumber value="${requestScope.ddto.odto.ototalprice}" pattern="###,###" />원</div>
                </div>
