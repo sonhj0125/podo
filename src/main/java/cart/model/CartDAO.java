@@ -49,6 +49,9 @@ public interface CartDAO {
 	// 주문접수 페이징 셀랙
 	List<OrderDTO> selectOrderPaging(Map<String, String> paraMap) throws SQLException;
 
+	// 배송 정보 불러오기
+	DeliveryDTO getOrderDetailAdmin(int oindex) throws SQLException;
+
 
 
 	

@@ -33,9 +33,9 @@ public class AdminOrder extends AbstractController {
 			String searchType = request.getParameter("searchType");
 			String navNum = request.getParameter("navNum");
 			
-			if(searchType == null || !"1".equals(searchType) || !"2".equals(searchType)
-					|| !"3".equals(searchType) || !"4".equals(searchType)) {
-				searchType="";
+			if(searchType == null || (!"1".equals(searchType) && !"2".equals(searchType)
+					&& !"3".equals(searchType) && !"4".equals(searchType))) {
+				searchType="0";
 			}
 			
 			if(navNum == null) {
@@ -97,6 +97,8 @@ public class AdminOrder extends AbstractController {
 			
 			request.setAttribute("odtoList", odtoList);
 			request.setAttribute("pageBar", pageBar);
+			request.setAttribute("searchWord", searchWord);
+			request.setAttribute("searchType", searchType);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/member/admin/adminOrder.jsp");

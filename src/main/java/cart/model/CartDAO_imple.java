@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 import cart.domain.CartDTO;
 import cart.domain.DeliveryDTO;
 import member.domain.MemberDTO;
+import oracle.net.aso.c;
 import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 
@@ -455,19 +456,19 @@ public class CartDAO_imple implements CartDAO {
 			int step = 0;
 			
 			try {
-				if(userid.isBlank()) {
+				if(!userid.isBlank()) {
 					sql += "where userid = ? ";
 					step = 1;
 				}
 			}catch (Exception e) {
 			}
 			
-			if(step == 0 && status != null && !status.isBlank()) {
+			if(step == 0 && !"0".equals(status)) {
 				sql += "where ostatus = ? ";
 				step = 2;
 			}
 			
-			if(step == 1 && status != null && !status.isBlank()) {
+			if(step == 1 && !"0".equals(status)) {
 				sql += "and ostatus = ? ";
 				step = 3;
 			}
@@ -524,19 +525,19 @@ public class CartDAO_imple implements CartDAO {
 			int step = 0;
 			
 			try {
-				if(userid.isBlank()) {
+				if(!userid.isBlank()) {
 					sql += "and userid = ? ";
 					step = 1;
 				}
 			}catch (Exception e) {
 			}
 			
-			if(step == 0 && status != null && !status.isBlank()) {
+			if(step == 0 && !"0".equals(status)) {
 				sql += "and ostatus = ? ";
 				step = 2;
 			}
 			
-			if(step == 1 && status != null && !status.isBlank()) {
+			if(step == 1 && !"0".equals(status)) {
 				sql += "and ostatus = ? ";
 				step = 3;
 			}
@@ -599,6 +600,60 @@ public class CartDAO_imple implements CartDAO {
 		
 		return odtolist;
 		
+	}
+
+	@Override
+	public DeliveryDTO getOrderDetailAdmin(int oindex) throws SQLException {
+		
+		DeliveryDTO ddto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select dname,DPHONE,demail,DMSG,DADDRESS,DADDRESSDETAIL,DNUMBER,OSTATUS,OARDATE "
+					+ "from DELIVERY join ORDERS on DELIVERY.OINDEX = ORDERS.OINDEX where DELIVERY.OINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				ddto = new DeliveryDTO();
+				
+				ddto.setDname(rs.getString("dname"));
+				ddto.setDphone(rs.getString("dphone"));
+				ddto.setDemail(rs.getString("demail"));
+				ddto.setDmsg(rs.getString("dmsg"));
+				ddto.setDaddress(rs.getString("daddress"));
+				ddto.setDaddressdetail(rs.getString("DADDRESSDETAIL"));
+				
+				String dnumber = rs.getString("dnumber");
+				
+				try {
+					if(dnumber == null || dnumber.isBlank()) {
+						dnumber = "미등록";
+					}
+				}catch (Exception e) {
+					dnumber = "미등록";
+				}
+				
+				ddto.setDnumber(dnumber);
+				
+				OrderDTO odto = new OrderDTO();
+				
+				odto.setOstatus(rs.getInt("OSTATUS"));
+				odto.setOardate(rs.getString("OARDATE"));
+				
+				ddto.setOdto(odto);
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return ddto;
 	}
 
 	
