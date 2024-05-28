@@ -306,11 +306,12 @@ public class ProductDAO_imple implements ProductDAO {
 	                	sql += "?) ";
 	                }
 	            }
+	            
+	            sql += " and ";
 	        }
 	        
 			// 와인 가격대
 	        if(pprice != null) {
-	            sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
 	            
 	            switch (pprice) {
 		            case "1":
@@ -336,13 +337,10 @@ public class ProductDAO_imple implements ProductDAO {
 		            default:
 		                break;
 	            }
-	        }
-
-	        // 조건이 추가된 경우에만 AND 붙이기
-	        if(pprice != null || ptype_arr != null) {
+	            
 	            sql += " and ";
 	        }
-	        
+
 	        // 와인 원산지
 			if(phometown_arr != null) {
 	            
@@ -362,13 +360,10 @@ public class ProductDAO_imple implements ProductDAO {
 	                	sql += "?) ";
 	                }
 	            }
-	        }
-			
-			// 조건이 추가된 경우에만 AND 붙이기
-	        if(pprice != null || ptype_arr != null || phometown_arr != null) {
+	            
 	            sql += " and ";
 	        }
-	        
+			
 	        sql += " pbody like '%' ||  ? || '%' and "
 	             + " pacid like '%' ||  ? || '%' and "
 	             + " ptannin like '%' ||  ? || '%' ";
@@ -459,10 +454,11 @@ public class ProductDAO_imple implements ProductDAO {
 	                	sql += "?) ";
 	                }
 	            }
+	            
+	            sql += " and ";
 	        }
 			
 			if(pprice != null) {
-				sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
 				
 				switch (pprice) {
 				case "1":
@@ -488,13 +484,10 @@ public class ProductDAO_imple implements ProductDAO {
 				default:
 					break;
 				}
+				
+				sql += " and ";
 			}
 			
-			// 조건이 추가된 경우에만 AND 붙이기
-	        if(pprice != null || ptype_arr != null) {
-	            sql += " and ";
-	        }
-	        
 			if(phometown_arr != null) {
 	            
 	            for(int i=0; i<phometown_arr.length; i++) {
@@ -513,13 +506,10 @@ public class ProductDAO_imple implements ProductDAO {
 	                	sql += "?) ";
 	                }
 	            }
-	        }
-
-			// 조건이 추가된 경우에만 AND 붙이기
-	        if(pprice != null || ptype_arr != null || phometown_arr != null) {
+	            
 	            sql += " and ";
 	        }
-	        
+
 			sql += " pbody like '%' ||  ? || '%' and "
 				 + " pacid like '%' ||  ? || '%' and "
 				 + " ptannin like '%' ||  ? || '%' ";
@@ -672,42 +662,40 @@ public class ProductDAO_imple implements ProductDAO {
 	                	sql += "?) ";
 	                }
 	            }
+	            
+	            sql += " and ";
 	        }
 			
 			if(pprice != null) {
-				sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
 				
 				switch (pprice) {
 				case "1":
-					sql += " (to_number(pprice) < 10000) and ";
+					sql += " (to_number(pprice) < 10000) ";
 					break;
 					
 				case "2":
-					sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) and ";
+					sql += " (10000 <= to_number(pprice) and to_number(pprice) < 50000) ";
 					break;
 					
 				case "3":
-					sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) and ";
+					sql += " (50000 <= to_number(pprice) and to_number(pprice) < 150000) ";
 					break;
 					
 				case "4":
-					sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) and ";
+					sql += " (150000 <= to_number(pprice) and to_number(pprice) < 300000) ";
 					break;
 					
 				case "5":
-					sql += " (to_number(pprice) >= 300000) and ";
+					sql += " (to_number(pprice) >= 300000) ";
 					break;
 					
 				default:
 					break;
 				}
+				
+				sql += " and ";
 			}
 			
-			// 조건이 추가된 경우에만 AND 붙이기
-	        if(pprice != null || ptype_arr != null) {
-	            sql += " and ";
-	        }
-	        
 			if(phometown_arr != null) {
 	            
 	            for(int i=0; i<phometown_arr.length; i++) {
@@ -726,13 +714,10 @@ public class ProductDAO_imple implements ProductDAO {
 	                	sql += "?) ";
 	                }
 	            }
-	        }
-			
-			// 조건이 추가된 경우에만 AND 붙이기
-	        if(pprice != null || ptype_arr != null || phometown_arr != null) {
+	            
 	            sql += " and ";
 	        }
-	        
+			
 			sql += " 				pbody like '%' ||  ? || '%' and "
 				 + " 				pacid like '%' ||  ? || '%' and "
 				 + " 				ptannin like '%' ||  ? || '%' "

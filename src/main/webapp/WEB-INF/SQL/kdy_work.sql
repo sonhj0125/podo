@@ -60,7 +60,7 @@ select ceil(count(*)/8)
 from product
 where ptype in('레드', '로제') and
 --    (50000 <= to_number(pprice) and to_number(pprice) < 150000) and
-      phometown like '%' ||  '' || '%' and
+      phometown in('미국') and
       pbody like '%' ||  '' || '%' and
 	  pacid like '%' ||  '' || '%' and
 	  ptannin like '%' ||  '' || '%';
@@ -109,7 +109,7 @@ FROM
             from product
             where ptype in('레드', '로제') and
                   (10000 <= to_number(pprice) and to_number(pprice) < 50000) and
-                  phometown like '%' ||  '' || '%' and
+--                phometown in('미국', '프랑스') and
                   pbody like '%' ||  '' || '%' and
                   pacid like '%' ||  '' || '%' and
                   ptannin like '%' ||  '' || '%'

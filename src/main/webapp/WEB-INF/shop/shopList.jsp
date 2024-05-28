@@ -95,6 +95,8 @@ $(function() {
 	
 
 	// ==================== SMART SEARCH ====================
+		
+		
 	// 스마트서치 가격 체크박스 여러 개 중 1개만 선택되도록 만들기
     $("input:checkbox[name='pprice']").click(e => {
 
@@ -203,8 +205,21 @@ function goSmartSearch() {
 		return;
 	} */
 	
-	const frm = document.smartSearchFrm;
-	frm.submit();
+	const frm1 = document.smartSearchFrm;
+	const frm2 = document.sortFrm;
+	
+    // 정렬 폼의 입력 필드를 smart search 폼에 추가
+    Array.from(frm2.elements).forEach(element => {
+        if(element.name) { // 입력 필드에 name 속성이 있는지 확인
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = element.name;
+            input.value = element.value;
+            frm1.appendChild(input);
+        }
+    });
+	
+	frm1.submit();
 } // end of function goSmartSearch() ------------
 </script>
 
