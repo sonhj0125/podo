@@ -75,6 +75,9 @@ public interface MemberDAO {
 	// 포인트 적립 로그 작성
 	boolean writePointUp(Map<String, String> paraMap) throws SQLException;
 
+	// 회원가입 쿠폰 주기
+	int insertRegisterCoupon(String userid) throws SQLException;
+
 
 	
 }
