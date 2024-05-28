@@ -29,5 +29,11 @@ public interface CouponDAO {
 
 	// 쿠폰 사용
 	boolean delCoupon(Map<String, String> paraMap) throws SQLException;
-	
+
+	// 관리자 회원관리 - 쿠폰선택
+	List<CouponDTO> adminCoupon() throws SQLException;
+
+	// 관리자 회원관리 - 쿠폰넣기
+	int adminCouponIn(Map<String, String> paraMap) throws SQLException;
+
 }

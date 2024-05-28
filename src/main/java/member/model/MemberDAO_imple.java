@@ -339,7 +339,7 @@ public class MemberDAO_imple implements MemberDAO {
 		
 			conn = ds.getConnection();
 			
-			String sql = "insert into LOG(LOGINDEX, userid, ipaddress) VALUES (SEQ_LOGIDX.nextval, ?, ?)";
+			String sql = " insert into LOG(LOGINDEX, userid, ipaddress) VALUES (SEQ_LOGIDX.nextval, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("userid"));
@@ -558,7 +558,7 @@ public class MemberDAO_imple implements MemberDAO {
 	      try {
 	         conn = ds.getConnection();
 	         
-	         String sql =  " select userid, name, email, phone, address, addressdetail, gender "
+	         String sql =  " select userid, name, email, phone, address, addressdetail, gender, member.memberidx "
 	         			 + " , birthday, point, registerday, memberidx.status "
 	         			 + " from member join memberidx on member.memberidx = memberidx.memberidx "
 	         			 + " where memberidx.memberidx = 1 and userid = ? ";
@@ -580,6 +580,7 @@ public class MemberDAO_imple implements MemberDAO {
 	        	 mdto.setAddress(rs.getString("address"));
 	        	 mdto.setAddressDetail(rs.getString("addressdetail"));
 	        	 mdto.setGender(rs.getString("gender"));
+	        	 mdto.setMemberIdx(rs.getString("memberidx"));
 	        	 mdto.setBirthday(rs.getString("birthday"));
 	        	 mdto.setPoint(rs.getString("point"));
 	        	 mdto.setRegisterDay(rs.getString("registerday"));
@@ -648,42 +649,6 @@ public class MemberDAO_imple implements MemberDAO {
 
 
 	
-	
-	
-	
-	
-	
-	
-	/*
-	// 관리자 회원관리 - 해당 유저 정지시키기
-	@Override
-	public int disableMember(String userid) throws SQLException {
-		
-		int result = 0;
-	     
-		
-		try {
-			conn = ds.getConnection();
-     
-			String sql =  " update member "
-						+ " set memberidx = 3 "
-						+ " where userid = ? and memberidx = 1 ";
-             
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, userid);
- 
-			result = pstmt.executeUpdate();
- 
-		} finally {
-			close();
-		}
-	      
-	      return result;
-	      
-	} // end of public MemberDTO disableMember(String userid) throws SQLException
-*/
-
 	// 회원의 개인 정보 변경하기 
 	@Override
 	public int updateMember(MemberDTO member) throws SQLException {
@@ -1055,5 +1020,46 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	} // end of public List<ReviewDTO> getMyReview(String userid) throws SQLException
 
+
 	
+
+	// 관리자 회원관리 - 해당 유저 정지
+	@Override
+	public List<MemberDTO> disableMember(String userid) throws SQLException {
+		
+		List<MemberDTO> adstatusOff = new ArrayList<>();
+	     
+		try {
+			conn = ds.getConnection();
+     
+			String sql =  " update member "
+						+ " set memberidx = 3 "
+						+ " where userid = ? and memberidx = ? ";
+             
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setString(2, rs.getString("memberidx"));
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				
+				MemberDTO mdto = new MemberDTO();
+				mdto.setUserid(rs.getString("userid"));
+				mdto.setMemberIdx(rs.getString("memberidx"));
+				
+				adstatusOff.add(mdto);
+				
+			}
+		} finally {
+			close();
+		}
+	      
+	    return adstatusOff;
+	      
+	} // end of public List<MemberDTO> disableMember(String userid) throws SQLException
+
+
+	
+
 }

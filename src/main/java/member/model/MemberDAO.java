@@ -84,13 +84,13 @@ public interface MemberDAO {
 	
 	// 관리자 회원관리 - 리뷰 내역 조회
 	List<ReviewDTO> getMyReview(String userid) throws SQLException;
+
+	
+	// 관리자 회원관리 - 해당 유저 정지시키기
+	List<MemberDTO> disableMember(String userid) throws SQLException;
 	
 	
 
-	/*
-	// 관리자 회원관리 - 해당 유저 정지시키기
-	int disableMember(String userid)throws SQLException;
-	 */
 
 	
 }

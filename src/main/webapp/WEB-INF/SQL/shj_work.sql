@@ -221,9 +221,25 @@ order by odate desc;
 
 
 
+select coupon.coname
+from coupon join mycoupon on coupon.coname = mycoupon.coname
+join member on mycoupon.userid = member.userid
+where member.userid = ''
+order by coindex desc;
 
 
 
+insert into mycoupon(coindex, userid, coname, costatus) VALUES (seq_coindex.nextval, ?, ?, 1)
 
 
+delete from mycoupon
+where userid = 'admin_1';
+
+commit;
+
+
+select userid, name, email, phone, address, addressdetail, gender, member.memberIdx
+, birthday, point, registerday, memberidx.status
+from member join memberidx on member.memberidx = memberidx.memberidx
+where memberidx.memberidx = 1 and userid = 'admin_1'
 

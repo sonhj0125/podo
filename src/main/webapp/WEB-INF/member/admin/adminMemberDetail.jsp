@@ -11,55 +11,8 @@
 
 <jsp:include page="/WEB-INF/header.jsp" />
 
-<script type="text/javascript">
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminMemberDetail.js"></script>
 
-$(document).ready(function() {
-	
-	<%-- 
-	// 관리자 회원정지 //
-	$("input#submit").click(function({
-		
-	
-	
-	$.ajax({
-		url:"adminMemberDetail.jsp",
-		type:"get",
-	    data:dataObj,
-	    dataType:"json",
-		success:function(json){
-			if(json.success_count == 1){
-				$("input#submit").html("<span style='color:red; font-weight:bold;'>성공되었습니다.</span>");
-			}
-			else if(json.error_count != 0) {
-				$("input#submit").html("<span style='color:red; font-weight:bold;'>실패되었습니다.</span>");
-			}
-		}
-		},
-		error: function(request, status, error){
-			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		}
-		
-		
-		
-		
-		
-	});
-	--%>
-
-	
-    
-    
-}); // end of $(document).ready(function(){})
-
-
-
-
-
-
-
-
-
-</script>
 
 <style type="text/css">
    
@@ -85,17 +38,6 @@ $(document).ready(function() {
 	  	border-color: #ccc;
 	}
 	
-	input#submit {
-	  	border:none;
-	  	background: #ff5050;
-	  	border-radius: 5px; 
-	  	color:white;
-	}
-	
-	input#submit:hover {
-		border:none;
-	  	background: silver;
-	}
 	
 	div#modal-body {
 		width: 90%;
@@ -144,8 +86,6 @@ $(document).ready(function() {
     </div>
 </div>
 <%-- 관리자 포인트 내역 클릭시 나오는 Modal 끝 --%>
-
-
 
 
 <%-- 관리자 리뷰 내역 클릭시 나오는 Modal --%>
@@ -197,18 +137,20 @@ $(document).ready(function() {
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
-          <div class="modal-body pt-0" id="modal-body">
+          <div class="modal-body" id="modal-body">
           	<div>
             	<div class="input-group mb-3">
 					<label class="input-group-text" for="pHomeTown">쿠폰</label>
-					<select class="form-select" id="pHomeTown">
+			
+					<select class="form-select" name="aconame">
 						<option selected>선택하세요.</option>
-						<option value="1">이벤트 신규회원 가입 쿠폰</option>
-						<option value="2">무료로 드립니다 [100% 쿠폰]</option>
-						<option value="3">신규회원 가입 감사쿠폰</option>
-						<option value="4">테스트 할인쿠폰</option>
+						<c:forEach var="acolist" items="${requestScope.codtoList}">
+							<option value="${acolist.coname}">${acolist.coname}</option>
+						</c:forEach>
 					</select>
-					<div class="form-group" style="margin-left:5%;">
+					<input type="hidden" value="${requestScope.mdto.userid}" id ="userid" />
+		
+					<div class="form-group" style="margin-left:5%;">F
 						<input id="btn-couponRegister" class="btn btn-danger ml-4" type="button" value="등록" />
 					</div>
 				</div>
@@ -289,11 +231,13 @@ $(document).ready(function() {
 		            <td>회원상태</td>
 		            <td>
 		            	${requestScope.mdto.status}
-		            	<input type="button" class="submit" value="정지">
-		            	<input type="text" id="submit">
+		            	<input type="button" class="submit" value="정지" name="statusOff"/>
+		            	<input type="button" class="submit" value="해제" name="statusOn"/>
 		            </td>
 		         </tr>
 			</table>
+		<input type="text" id="stUserid" value="${requestScope.mdto.userid}"/>
+		<input type="text" id="stMemberidx" value="${requestScope.mdto.memberIdx}"/>
 		
 		<div class="input-group mb-3">
 		  	<label class="input-group-text" for="userCoupon">보유 쿠폰</label>

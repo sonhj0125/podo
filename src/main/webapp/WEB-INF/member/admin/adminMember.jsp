@@ -61,7 +61,6 @@
 			frm.userid.value = userid;
 			
 			frm.action = "<%= ctxPath%>/member/admin/adminMemberDetail.wine";
-			frm.method = "post";
 			frm.submit();
 			
 		});
