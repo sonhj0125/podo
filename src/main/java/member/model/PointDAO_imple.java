@@ -12,9 +12,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import coupon.domain.CouponDTO;
-import coupon.domain.MyCouponDTO;
-import member.domain.MemberDTO;
 import member.domain.PointDTO;
 
 public class PointDAO_imple implements PointDAO {

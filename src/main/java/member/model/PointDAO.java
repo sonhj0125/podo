@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import coupon.domain.MyCouponDTO;
 import member.domain.PointDTO;
 
 public interface PointDAO {

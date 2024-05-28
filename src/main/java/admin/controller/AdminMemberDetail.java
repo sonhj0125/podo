@@ -53,9 +53,6 @@ public class AdminMemberDetail extends AbstractController {
 				
 				List<LogDTO> ldtoList = ldao.getMyLog(userid);
 				
-			
-				
-				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/member/admin/adminMemberDetail.jsp");
 				

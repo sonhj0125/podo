@@ -26,8 +26,6 @@ public class MypageShopCoupon extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		String method = request.getMethod();
-
 		HttpSession session = request.getSession();
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
