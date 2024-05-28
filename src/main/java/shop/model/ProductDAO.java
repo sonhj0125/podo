@@ -24,13 +24,13 @@ public interface ProductDAO {
 	List<ProductDTO> searchWineEngName(String searchWord) throws SQLException;
 	
 	// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
-	int getTotalPage(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;
+	int getTotalPage(Map<String, Object> paraMap) throws SQLException;
 
 	// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
-	List<ProductDTO> selectProductPaging(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;
+	List<ProductDTO> selectProductPaging(Map<String, Object> paraMap) throws SQLException;
 	
 	// 페이징 처리한 검색 포함 상품 목록 인기순 정렬
-	List<ProductDTO> selectProductPagingPopular(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;;
+	List<ProductDTO> selectProductPagingPopular(Map<String, Object> paraMap) throws SQLException;;
 
 	// 좋아요
 	int setLike(Map<String, String> paraMap) throws SQLException;

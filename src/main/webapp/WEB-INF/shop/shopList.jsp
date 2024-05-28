@@ -172,6 +172,7 @@ $(function() {
 	$("button#submitSmartSearch").click(function() {
 		goSmartSearch();
 	});
+	
 }); // end of $(function() {}) --------------------------------
 
 function goSmartSearch() {

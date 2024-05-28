@@ -266,7 +266,7 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
 	@Override
-	public int getTotalPage(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
+	public int getTotalPage(Map<String, Object> paraMap) throws SQLException {
 
 	    int totalPage = 0;
 
@@ -280,6 +280,14 @@ public class ProductDAO_imple implements ProductDAO {
 
 	        int paramsIndex = 2; // SQL 파라미터 인덱스 초기값 설정
 
+	        String[] ptype_arr = (String[])paraMap.get("ptype_arr");
+	        String pprice = (String)paraMap.get("pprice");
+	        String[] phometown_arr = (String[])paraMap.get("phometown_arr");
+	        String pbody = (String)paraMap.get("pbody");
+	        String pacid = (String)paraMap.get("pacid");
+	        String ptannin = (String)paraMap.get("ptannin");
+	        
+	        // 와인 종류
 			if(ptype_arr != null) {
 	            
 	            for(int i=0; i<ptype_arr.length; i++) {
@@ -300,12 +308,7 @@ public class ProductDAO_imple implements ProductDAO {
 	            }
 	        }
 	        
-	        String pprice = paraMap.get("pprice");
-	        String phometown = paraMap.get("phometown");
-	        String pbody = paraMap.get("pbody");
-	        String pacid = paraMap.get("pacid");
-	        String ptannin = paraMap.get("ptannin");
-	        
+			// 와인 가격대
 	        if(pprice != null) {
 	            sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
 	            
@@ -340,22 +343,52 @@ public class ProductDAO_imple implements ProductDAO {
 	            sql += " and ";
 	        }
 	        
-	        sql += " phometown like '%' ||  ? || '%' and "
-	             + " pbody like '%' ||  ? || '%' and "
+	        // 와인 원산지
+			if(phometown_arr != null) {
+	            
+	            for(int i=0; i<phometown_arr.length; i++) {
+	            	
+	            	if(i == 0) {
+	            		sql += "phometown in(";
+	            		
+	            	}
+	            	
+	            	if(i <= phometown_arr.length - 2) {
+	            		sql += "?,";
+	            		
+	                }
+	            	
+	            	if(i == phometown_arr.length - 1) {
+	                	sql += "?) ";
+	                }
+	            }
+	        }
+			
+			// 조건이 추가된 경우에만 AND 붙이기
+	        if(pprice != null || ptype_arr != null || phometown_arr != null) {
+	            sql += " and ";
+	        }
+	        
+	        sql += " pbody like '%' ||  ? || '%' and "
 	             + " pacid like '%' ||  ? || '%' and "
 	             + " ptannin like '%' ||  ? || '%' ";
 	        
 	        pstmt = conn.prepareStatement(sql);
 
-	        pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));
+	        pstmt.setInt(1, Integer.parseInt((String)paraMap.get("sizePerPage")));
 
 	        if(ptype_arr != null) {
 	            for(int i=0; i<ptype_arr.length; i++) {
 	                pstmt.setString(paramsIndex++, ptype_arr[i]);
 	            }
 	        }
-
-	        pstmt.setString(paramsIndex++, phometown);
+	        
+	        if(phometown_arr != null) {
+	            for(int i=0; i<phometown_arr.length; i++) {
+	                pstmt.setString(paramsIndex++, phometown_arr[i]);
+	            }
+	        }
+	        
 	        pstmt.setString(paramsIndex++, pbody);
 	        pstmt.setString(paramsIndex++, pacid);
 	        pstmt.setString(paramsIndex, ptannin);
@@ -377,7 +410,7 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
 	@Override
-	public List<ProductDTO> selectProductPaging(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
+	public List<ProductDTO> selectProductPaging(Map<String, Object> paraMap) throws SQLException {
 
 		List<ProductDTO> pdtList = new ArrayList<>();
 
@@ -400,6 +433,14 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			int paramsIndex = 1; // SQL 파라미터 인덱스 초기값 설정
 			
+			String[] ptype_arr = (String[])paraMap.get("ptype_arr");
+			String pprice = (String)paraMap.get("pprice");
+			String[] phometown_arr = (String[])paraMap.get("phometown_arr");
+			String pbody = (String)paraMap.get("pbody");
+			String pacid = (String)paraMap.get("pacid");
+			String ptannin = (String)paraMap.get("ptannin");
+			
+			
 			if(ptype_arr != null) {
             
 	            for(int i=0; i<ptype_arr.length; i++) {
@@ -419,12 +460,6 @@ public class ProductDAO_imple implements ProductDAO {
 	                }
 	            }
 	        }
-			
-			String pprice = paraMap.get("pprice");
-			String phometown = paraMap.get("phometown");
-			String pbody = paraMap.get("pbody");
-			String pacid = paraMap.get("pacid");
-			String ptannin = paraMap.get("ptannin");
 			
 			if(pprice != null) {
 				sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
@@ -459,13 +494,37 @@ public class ProductDAO_imple implements ProductDAO {
 	        if(pprice != null || ptype_arr != null) {
 	            sql += " and ";
 	        }
-			
-			sql += " phometown like '%' ||  ? || '%' and "
-				 + " pbody like '%' ||  ? || '%' and "
+	        
+			if(phometown_arr != null) {
+	            
+	            for(int i=0; i<phometown_arr.length; i++) {
+	            	
+	            	if(i == 0) {
+	            		sql += "phometown in(";
+	            		
+	            	}
+	            	
+	            	if(i <= phometown_arr.length - 2) {
+	            		sql += "?,";
+	            		
+	                }
+	            	
+	            	if(i == phometown_arr.length - 1) {
+	                	sql += "?) ";
+	                }
+	            }
+	        }
+
+			// 조건이 추가된 경우에만 AND 붙이기
+	        if(pprice != null || ptype_arr != null || phometown_arr != null) {
+	            sql += " and ";
+	        }
+	        
+			sql += " pbody like '%' ||  ? || '%' and "
 				 + " pacid like '%' ||  ? || '%' and "
 				 + " ptannin like '%' ||  ? || '%' ";
 			
-			String sortType = paraMap.get("sortType");
+			String sortType = (String)paraMap.get("sortType");
 			
 			switch (sortType) {
 			case "latest":
@@ -502,8 +561,13 @@ public class ProductDAO_imple implements ProductDAO {
 	                pstmt.setString(paramsIndex++, ptype_arr[i]);
 	            }
 	        }
+
+			if(phometown_arr != null) {
+	            for(int i=0; i<phometown_arr.length; i++) {
+	                pstmt.setString(paramsIndex++, phometown_arr[i]);
+	            }
+	        }
 			
-			pstmt.setString(paramsIndex++, phometown);
 			pstmt.setString(paramsIndex++, pbody);
 			pstmt.setString(paramsIndex++, pacid);
 			pstmt.setString(paramsIndex++, ptannin);
@@ -513,8 +577,8 @@ public class ProductDAO_imple implements ProductDAO {
 			where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
 			*/
 
-			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
-			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
+			int currentShowPageNo = Integer.parseInt((String)paraMap.get("currentShowPageNo"));
+			int sizePerPage =Integer.parseInt((String)paraMap.get("sizePerPage"));
 
 			pstmt.setInt(paramsIndex++, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
 			pstmt.setInt(paramsIndex, (currentShowPageNo * sizePerPage));
@@ -559,10 +623,10 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	// 페이징 처리한 검색 포함 상품 목록 인기순 정렬
 	@Override
-	public List<ProductDTO> selectProductPagingPopular(String[] ptype_arr, Map<String, String> paraMap) throws SQLException {
+	public List<ProductDTO> selectProductPagingPopular(Map<String, Object> paraMap) throws SQLException {
 
 		List<ProductDTO> pdtList = new ArrayList<>();
-
+		
 		try {
 
 			conn = ds.getConnection();
@@ -581,6 +645,14 @@ public class ProductDAO_imple implements ProductDAO {
 					   + "			   where ";
 			
 			int paramsIndex = 1; // SQL 파라미터 인덱스 초기값 설정
+			
+			String[] ptype_arr = (String[])paraMap.get("ptype_arr");
+			String pprice = (String)paraMap.get("pprice");
+			String[] phometown_arr = (String[])paraMap.get("phometown_arr");
+			String pbody = (String)paraMap.get("pbody");
+			String pacid = (String)paraMap.get("pacid");
+			String ptannin = (String)paraMap.get("ptannin");
+			
 			
 			if(ptype_arr != null) {
             
@@ -601,12 +673,6 @@ public class ProductDAO_imple implements ProductDAO {
 	                }
 	            }
 	        }
-			
-			String pprice = paraMap.get("pprice");
-			String phometown = paraMap.get("phometown");
-			String pbody = paraMap.get("pbody");
-			String pacid = paraMap.get("pacid");
-			String ptannin = paraMap.get("ptannin");
 			
 			if(pprice != null) {
 				sql += ptype_arr != null ? " and " : ""; // ptype_arr이 null이 아니면 and 추가
@@ -641,9 +707,33 @@ public class ProductDAO_imple implements ProductDAO {
 	        if(pprice != null || ptype_arr != null) {
 	            sql += " and ";
 	        }
+	        
+			if(phometown_arr != null) {
+	            
+	            for(int i=0; i<phometown_arr.length; i++) {
+	            	
+	            	if(i == 0) {
+	            		sql += "phometown in(";
+	            		
+	            	}
+	            	
+	            	if(i <= phometown_arr.length - 2) {
+	            		sql += "?,";
+	            		
+	                }
+	            	
+	            	if(i == phometown_arr.length - 1) {
+	                	sql += "?) ";
+	                }
+	            }
+	        }
 			
-			sql += " 				phometown like '%' ||  ? || '%' and "
-				 + " 				pbody like '%' ||  ? || '%' and "
+			// 조건이 추가된 경우에만 AND 붙이기
+	        if(pprice != null || ptype_arr != null || phometown_arr != null) {
+	            sql += " and ";
+	        }
+	        
+			sql += " 				pbody like '%' ||  ? || '%' and "
 				 + " 				pacid like '%' ||  ? || '%' and "
 				 + " 				ptannin like '%' ||  ? || '%' "
 			     + "        	), "
@@ -671,8 +761,13 @@ public class ProductDAO_imple implements ProductDAO {
 	                pstmt.setString(paramsIndex++, ptype_arr[i]);
 	            }
 	        }
+
+			if(phometown_arr != null) {
+	            for(int i=0; i<phometown_arr.length; i++) {
+	                pstmt.setString(paramsIndex++, phometown_arr[i]);
+	            }
+	        }
 			
-			pstmt.setString(paramsIndex++, phometown);
 			pstmt.setString(paramsIndex++, pbody);
 			pstmt.setString(paramsIndex++, pacid);
 			pstmt.setString(paramsIndex++, ptannin);
@@ -682,8 +777,8 @@ public class ProductDAO_imple implements ProductDAO {
 			where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
 			*/
 
-			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
-			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
+			int currentShowPageNo = Integer.parseInt((String)paraMap.get("currentShowPageNo"));
+			int sizePerPage =Integer.parseInt((String)paraMap.get("sizePerPage"));
 
 			pstmt.setInt(paramsIndex++, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
 			pstmt.setInt(paramsIndex, (currentShowPageNo * sizePerPage));
