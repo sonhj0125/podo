@@ -530,5 +530,33 @@ public class CouponDAO_imple implements CouponDAO {
 		}
 		return MyCouponpagingList;
 	} // end of public List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) -----
+
+
+	// 사용가능한 쿠폰 개수 가져오기
+	@Override
+	public int getAvailableCoupons(String userid) throws SQLException {
+		int availableCoupons = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select count(*) "
+						+ " from mycoupon "
+						+ " where COSTATUS = 1 and userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			availableCoupons = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return availableCoupons;	
+	} // end of public int getAvailableCoupons(String userid) throws SQLException ----
 	
 }
