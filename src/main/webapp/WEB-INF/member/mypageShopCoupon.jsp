@@ -178,10 +178,10 @@ div#pageBar>nav {
        		
        					<%-- cotype == 2 할인율  --%>
 			<c:if test="${mycodto.codto.cotype == 2}">
-			    <hr style="border:solid 1px black; margin-top:5;">
-			    <div class="container">
-			        <div class="row">
-			            <div class="col-2 d-flex justify-content-end align-items-center">
+			    <hr style="border:solid 1px black; margin-top:5%;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2 d-flex justify-content-end align-items-center">
 			                <div>
 			                    <img src="<%=ctxPath%>/images/salecoupon/registersale.png" style="width:80px; vertical-align: middle;">&nbsp;
 			                </div>
@@ -189,12 +189,12 @@ div#pageBar>nav {
 			            <div class="col-8 d-flex justify-content-center align-items-center">
 			                <div>
 			                    <span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
-			                    할인율 : ${mycodto.codto.codiscount} %<br>
+			                    할인율 : ${mycodto.codto.codiscount} % <br>
 			                    ~ ${mycodto.codto.codate}
 			                </div>
 			            </div>
-			            <div class="col-2 d-flex justify-content-end align-items-center">
-			                <div>
+                        <div class="col-2 d-flex justify-content-end align-items-center">
+                            <div>
 			                    <%-- 1사용가능  --%>
 			                    <c:if test="${mycodto.costatus == 1}">
 			                        <span style="font-weight:bold; font-size:14pt; color:green;">사용가능</span>
