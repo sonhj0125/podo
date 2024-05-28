@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import cart.domain.DeliveryDTO;
+import shop.domain.OrderDTO;
 import shop.domain.ProductDTO;
 import shop.domain.ReviewDTO;
 
@@ -22,13 +24,13 @@ public interface ProductDAO {
 	List<ProductDTO> searchWineEngName(String searchWord) throws SQLException;
 	
 	// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
-	int getTotalPage(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;
+	int getTotalPage(Map<String, Object> paraMap) throws SQLException;
 
 	// **** 페이징 처리를 한 검색 포함 상품 목록 보여주기 ****
-	List<ProductDTO> selectProductPaging(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;
+	List<ProductDTO> selectProductPaging(Map<String, Object> paraMap) throws SQLException;
 	
 	// 페이징 처리한 검색 포함 상품 목록 인기순 정렬
-	List<ProductDTO> selectProductPagingPopular(String[] ptype_arr, Map<String, String> paraMap) throws SQLException;;
+	List<ProductDTO> selectProductPagingPopular(Map<String, Object> paraMap) throws SQLException;;
 
 	// 좋아요
 	int setLike(Map<String, String> paraMap) throws SQLException;
@@ -65,6 +67,12 @@ public interface ProductDAO {
 
 	// [shop] pindex에 대한 리뷰 목록 불러오기
 	List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException;
+
+	// [주문내역조회] 회원이 주문한 상품 목록 받아오기
+	List<OrderDTO> selectOrderList(String userid) throws SQLException;
+
+	// [주문내역조회] 주문 인덱스에 대한 상품, 주문, 배송 정보 받아오기
+	DeliveryDTO getOrderDetail(Map<String, String> paraMap) throws SQLException;
 	
 	
 }

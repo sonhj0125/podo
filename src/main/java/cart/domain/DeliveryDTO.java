@@ -1,10 +1,14 @@
 package cart.domain;
 
+import shop.domain.OrderDTO;
+
 public class DeliveryDTO {
 
 	private int dindex,oindex;
 	private String dnumber,dregisterday,dname,demail,dphone
 				   ,dmsg,daddress,daddressdetail;
+	
+	private OrderDTO odto;
 	
 	public int getDindex() {
 		return dindex;
@@ -65,6 +69,14 @@ public class DeliveryDTO {
 	}
 	public void setDaddressdetail(String daddressdetail) {
 		this.daddressdetail = daddressdetail;
+	}
+	
+	public OrderDTO getOdto() {
+		return odto;
+	}
+	
+	public void setOdto(OrderDTO odto) {
+		this.odto = odto;
 	}
 	
 }

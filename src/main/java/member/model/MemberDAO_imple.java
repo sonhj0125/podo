@@ -666,7 +666,7 @@ public class MemberDAO_imple implements MemberDAO {
 	}// end of public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException-----
 
 
-	// 마이페이지 비밀번호 변경 비밀번호 변경
+	// 마이페이지 비밀번호 변경
 	@Override
 	public int pwdUpdate2(Map<String, String> paraMap) throws SQLException {
 		
@@ -922,33 +922,32 @@ public class MemberDAO_imple implements MemberDAO {
 	}
 
 
-
+	
+	// 회원가입 쿠폰 주기
 	@Override
-	public String getMyPoint(String userid) throws SQLException {
-		
-		String point = "0";
-		
+	public int insertRegisterCoupon(String userid) throws SQLException {
+
+		int result = 0;
+
 		try {
-			
+
 			conn = ds.getConnection();
-			
-			String sql = "select point from MEMBER where USERID = ?";
-			
+
+			String sql = " insert into mycoupon(coindex, userid, coname, costatus) "
+					   + " VALUES (seq_coindex.nextval, ?, '신규회원 가입 감사쿠폰', 1) ";
+
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				point = df.format(Integer.parseInt(rs.getString("point")));
-			}
-			
-		}finally {
+
+			result = pstmt.executeUpdate();
+
+		} finally {
 			close();
 		}
-		
-		return point;
-	}
+
+		return result;
+
+	} // end of public int insertRegisterCoupon(String parameter) throws SQLException ------------
 
 	
 }
