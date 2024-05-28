@@ -130,11 +130,22 @@ function searchData() {
 	  </tbody>
 	</table>
 	
-	<div style="margin-top:4%;">
-	    <input id="startDate" type="date" style="width:20%; height:50px; margin-left:52%;"> ~ 
-	    <input id="endDate" type="date" style="width:20%; height:50px;">&nbsp;&nbsp;
-	    <button type="button" class="btn btn-secondary" style="width:5%; height:50px; font-size:13pt; font-weight:bold;" onclick="searchData()">검색</button>
-	</div>
+    <div class="container mt-4">
+        <div class="row justify-content-end align-items-center">
+            <div class="col-12 col-md-3 mb-3 mb-md-0">
+                <input id="startDate" type="date" class="form-control" />
+            </div>
+            <div class="col-12 col-md-auto text-center mb-3 mb-md-0">
+                <span>~</span>
+            </div>
+            <div class="col-12 col-md-3 mb-3 mb-md-0">
+                <input id="endDate" type="date" class="form-control" />
+            </div>
+            <div class="col-12 col-md-2">
+                <button type="button" class="btn btn-secondary w-100" onclick="searchData()">검색</button>
+            </div>
+        </div>
+    </div>
 	
 	<div class="vr" style="border:solid 1px blue; height:20px; margin-top:4%;"></div>
 		<span style="font-weight:bold; font-size:16pt;">나의 적립금</span>
