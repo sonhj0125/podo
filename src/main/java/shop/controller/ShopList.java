@@ -158,9 +158,15 @@ public class ShopList extends AbstractController {
 
 		request.setAttribute("sortType", sortType); // 정렬 타입
 		
-		request.setAttribute("ptype_arr", ptype_arr); // 와인 종류 배열
+		String ptype_arr_join = "";
+		String phometown_arr_join = "";
+		
+		if(ptype_arr != null) ptype_arr_join = String.join(",", ptype_arr);
+		if(phometown_arr != null)  phometown_arr_join = String.join(",", phometown_arr);
+		
+		request.setAttribute("ptype_arr_join", ptype_arr_join);
 		request.setAttribute("pprice", pprice);
-		request.setAttribute("phometown_arr", phometown_arr);
+		request.setAttribute("phometown_arr_join", phometown_arr_join);
 		request.setAttribute("pbody", pbody);
 		request.setAttribute("pacid", pacid);
 		request.setAttribute("ptannin", ptannin);
