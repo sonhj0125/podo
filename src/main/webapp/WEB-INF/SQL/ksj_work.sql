@@ -153,3 +153,212 @@ commit;
 select *
 from member;
 
+
+desc point;
+
+select *
+from point
+order by podate desc;
+
+
+select R.*, O.userid, P.pindex 
+from product P JOIN orders O 
+ON P.pindex = O.pindex 
+JOIN review R 
+ON O.oindex = R.oindex 
+where P.pindex = '20'
+order by rindex desc
+
+
+SELECT POINCOME, PODETAIL, PODATE 
+FROM POINT 
+WHERE USERID = 'ksj1024sj' 
+ORDER BY PODATE DESC
+
+
+SELECT NVL(SUM(TO_NUMBER(POINCOME)), '0') AS AvailablePoints 
+     , NVL(SUM(TO_NUMBER(POINCOME)), '0') AS UsedPoints 
+	 , NVL(SUM(TO_NUMBER(POINCOME)), '0') + NVL(SUM(TO_NUMBER(POINCOME)), '0') AS TotalPoints 
+FROM point 
+WHERE USERID = 'ksj1024sj'
+
+select CODISCOUNT, CONAME, CODETAIL, COTYPE, CODATE, COREGISTERDAY
+from coupon 
+where COCODE = 'QXWRTYPLMNZA'
+
+select COINDEX, USERID, CONAME, COSTATUS
+from mycoupon 
+where userid = 'ksj1024sj'
+
+    update coupon set cocode = 'QXWRTYPLMNZA'
+    where userid = 'ksj1024sj';
+
+desc coupon;
+
+desc mycoupon;
+
+ select *
+ from user_sequences
+
+    update coupon set COCODE = 'VHNFGXZLOUAW'
+    where codate = '2024-12-31'
+    
+    commit;
+
+
+ select last_number  -- 다음번에 들어올 시퀀스 값을 미리 알려주는 것이다.
+ from user_sequences
+ where sequence_name = 'SEQ_COINDEX';
+
+
+INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS)
+SELECT SEQ_COINDEX.nextval, 'ksj1024sj', CONAME, 1
+FROM coupon
+WHERE COCODE = 'QXWRTYPLMNZA';
+
+select *
+from coupon
+
+
+
+INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS)
+SELECT SEQ_COINDEX.nextval, 'ksj1024sj', CONAME, 1
+FROM coupon c
+WHERE c.COCODE = 'QXWRTYPLMNZA'
+AND NOT EXISTS (
+    SELECT 1
+    FROM mycoupon mc
+    WHERE mc.CONAME = c.CONAME
+);
+
+select COINDEX, USERID, CONAME, COSTATUS
+from mycoupon 
+where userid = 'ksj1024sj'
+
+select *
+from coupon 
+
+select CODISCOUNT, CONAME, CODETAIL, COTYPE, CODATE, COREGISTERDAY
+from coupon 
+where COCODE = 'QXWRTYPLMNZA'
+
+delete from mycoupon
+where userid = 'ksj1024sj'
+commit;
+
+
+select *
+from coupon
+
+
+
+select TRUNC(SYSDATE)
+from dual
+
+select COINDEX, USERID, CONAME, COSTATUS
+from mycoupon 
+where userid = 'ksj1024sj'
+
+
+INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS) 
+SELECT SEQ_COINDEX.nextval, 'ksj1024sj', C.CONAME, 1 
+FROM coupon C 
+WHERE C.COCODE = 'QXWRTYPLMNZA'
+AND TO_DATE(C.CODATE, 'YYYY-MM-DD') >= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+AND NOT EXISTS ( 
+             SELECT 1 
+             FROM mycoupon MC 
+             WHERE MC.CONAME = C.CONAME AND MC.USERID = 'ksj1024sj'
+);
+
+
+SELECT *
+FROM coupon
+WHERE COCODE = 'QXWRTYPLMNZA' AND TO_DATE(CODATE, 'YYYY-MM-DD') <= TRUNC(SYSDATE);
+
+
+
+SELECT *
+FROM coupon
+WHERE COCODE = 'QXWRTYPLMNZA' AND TO_DATE(CODATE, 'YYYY-MM-DD') >= TRUNC(SYSDATE);
+
+
+
+VHNFGXZLOUAW
+
+SELECT rno, USERID, POINCOME, PODETAIL, PODATE
+FROM  
+( 
+select rownum as rno, USERID, POINCOME, PODETAIL, PODATE
+ from   
+ (  
+ select USERID, POINCOME, PODETAIL, PODATE
+from point 
+where userid = ? 
+) V 
+) T  
+ WHERE T.rno BETWEEN ? AND ?
+ 
+ 
+ 
+ select CODISCOUNT, CONAME, CODETAIL, COTYPE, COMIN, CODATE, COREGISTERDAY, COCODE
+ from coupon
+ where coname = v.coname
+ 
+ 
+ 
+ SELECT 
+    T.rno, 
+    T.COINDEX, 
+    T.USERID, 
+    T.CONAME, 
+    T.COSTATUS, 
+    C.CODISCOUNT, 
+    C.CODETAIL, 
+    C.COTYPE, 
+    C.COMIN, 
+    C.CODATE, 
+    C.COREGISTERDAY, 
+    C.COCODE
+FROM (
+    SELECT 
+        rownum AS rno, 
+        COINDEX, 
+        USERID, 
+        CONAME, 
+        COSTATUS
+    FROM (
+        SELECT 
+            COINDEX, 
+            USERID, 
+            CONAME, 
+            COSTATUS
+        FROM 
+            mycoupon
+        WHERE 
+            userid = 'ksj1024sj'
+    ) V
+) T
+JOIN coupon C ON T.CONAME = C.CONAME
+WHERE T.rno BETWEEN 1 AND 5
+
+
+desc coupon
+
+
+select ceil(count(*)/10) 
+from point 
+where userid = 'ksj1024sj'
+
+select *
+from point;
+
+desc point
+
+select *
+from product 
+
+select NVL(count(*), 0) as count
+from LIKEIT
+where pindex = 33
+

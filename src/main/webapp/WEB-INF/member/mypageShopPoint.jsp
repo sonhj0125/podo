@@ -98,7 +98,7 @@ function searchData() {
 	<table class="table" style="width:50;">
 	  <thead>
 	    <tr>
-	      <th scope="col" style="font-size:16pt"><span style="font-weight:bold; font-size:20pt; color:#ff6666;"><img src="<%=ctxPath%>/images/mypageP.png" style="width:35px; vertical-align: text-top;">&nbsp;${requestScope.podto.mdto.name}</span>님</th>
+	      <th scope="col" style="font-size:16pt"><span style="font-weight:bold; font-size:20pt; color:#ff6666;"><img src="<%=ctxPath%>/images/mypageP.png" style="width:35px; vertical-align: text-top;">&nbsp;${sessionScope.loginUser.name}</span>님</th>
 	    </tr>
 	  </thead>
 	  <tbody class="table-group-divider" style="text-align:center;">
@@ -137,9 +137,6 @@ function searchData() {
 	  <li class="nav-item">
 	    <a class="nav-link active" data-bs-toggle="tab" href="#point1" style="font-weight: bold; font-size: 13pt;">적립내역</a>
 	  </li>
-	  <li class="nav-item">
-	    <a class="nav-link" data-bs-toggle="tab" href="#point2" style="font-weight: bold; font-size: 13pt;">사용내역</a>
-	  </li>
 	</ul>
 	
 	<!-- Tab panes -->
@@ -172,44 +169,7 @@ function searchData() {
 				</tbody>
 			</table>
 		</div>
-		
-		
-	  	<div class="tab-pane container fade" id="point2" style="font-size: 10pt;">
-	  		<table class="table" style="width:50;">
-			  	<tbody class="date-search-result" style="text-align:center;">
-				  	<tr class="table-light">
-				      	<th scope="row">사용 날짜</th>
-				      	<th>내용</th>
-				      	<th>사용 포인트</th>
-				  	</tr>
-				  	
-				  	<c:if test="${requestScope.pointUsedHistoryList == null}">
-				        <tr>
-				            <td colspan="3">적립되거나 사용된 포인트가 없습니다.</td>
-				        </tr>
-				    </c:if>
-  
-				    <c:if test="${requestScope.pointUsedHistoryList != null}">
-				        <c:forEach var="podto" items="${requestScope.pointUsedHistoryList}">
-					            <tr>
-					                <td>${podto.poDate}</td>
-					                <td>${podto.poDetail}</td>
-					                <td>${podto.poIncome} point</td>
-					            </tr>
-				        </c:forEach>
-				    </c:if>
-				</tbody>
-			</table>
-	  	</div>
 	</div>
-	
-	
-	 
-	
-	
-	
-	
-	
 </div>
 
 

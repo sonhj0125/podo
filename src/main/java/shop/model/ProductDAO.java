@@ -74,5 +74,8 @@ public interface ProductDAO {
 	// [주문내역조회] 주문 인덱스에 대한 상품, 주문, 배송 정보 받아오기
 	DeliveryDTO getOrderDetail(Map<String, String> paraMap) throws SQLException;
 	
+	// 좋아요 수 확인
+	int getLikeCnt(int pindex) throws SQLException;
+	
 	
 }
