@@ -30,15 +30,16 @@ div#pageBar>nav {
     });
 
     function couponRegistration() {
-        const cocode = $("input:text[name='couponCode']").val();
+        const cocode = $("input:text[name='couponCode']").val().trim();
 
         if (cocode == "") {
             alert("쿠폰번호를 입력해주세요.");
-        } else {
+            return;
+        } 
             $.ajax({
-                url: "/member/myCouponRegistration.wine",
+                url: "${pageContext.request.contextPath}/member/myCouponRegistration.wine",
                 type: "POST",
-                data: { "cocode": cocode },
+                data: {"cocode":cocode},
                 dataType: "json",
                 success: function(json) {
                     if (json.isExists === true && json.result === false) {
@@ -54,7 +55,7 @@ div#pageBar>nav {
                 }
             });
         }
-    }
+    
 </script>
 
 <div class="container" style="padding: 3% 0;">

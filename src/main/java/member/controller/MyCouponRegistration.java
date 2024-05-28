@@ -32,10 +32,9 @@ public class MyCouponRegistration extends AbstractController{
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
 		
-		if (loginUser != null && "POST".equals(method)) {
+		if (loginUser != null && "POST".equalsIgnoreCase(method)) {
 			// 로그인을 했을 경우 + POST 로 값을 받았을 경우
 
-			
 			String cocode = request.getParameter("cocode");
 			String userid = loginUser.getUserid();
 			// 쿠폰등록 (쿠폰번호가 있으면 true 없으면 false 로 해서 값 반환한다.)

@@ -351,4 +351,14 @@ from point
 where userid = 'ksj1024sj'
 
 select *
-from point
+from point;
+
+desc point
+
+select *
+from product 
+
+select NVL(count(*), 0) as count
+from LIKEIT
+where pindex = 33
+

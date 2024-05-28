@@ -501,9 +501,6 @@ public class CouponDAO_imple implements CouponDAO {
 			int currentShowPageNo = Integer.parseInt( paraMap.get("currentShowPageNo") ); 
 			int sizePerPage = Integer.parseInt( paraMap.get("sizePerPage") );
 			
-			System.out.println("currentShowPageNo" + currentShowPageNo);
-			System.out.println("sizePerPage" + sizePerPage);
-			
 			pstmt.setString(1, paraMap.get("userid"));
 			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
 			pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); // 공식

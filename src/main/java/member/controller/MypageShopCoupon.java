@@ -34,6 +34,7 @@ public class MypageShopCoupon extends AbstractController {
 		
 		if (loginUser != null) {
 			// 로그인을 했을 경우
+			
 
 			request.setAttribute("loginUser", loginUser);
 			
