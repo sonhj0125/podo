@@ -26,7 +26,7 @@
 
 <style>
 
-    div#divRegisterFrm {
+    div#MemberEditFrm {
         font-family: "Noto Sans KR", serif;
         font-optical-sizing: auto;
         font-weight: 500;
@@ -81,7 +81,7 @@
         	<div style="text-align: center">
             	<h2 class="title">내 정보 수정</h2>
             </div>
-            <form name="Registerfrm">
+            <form name="MemberEditFrm">
                 <div class="row row-space">
                     <div class="col-2">
                         <div class="input-group">
@@ -122,7 +122,7 @@
 
 			    <div class="w-100" style="display: flex; justify-content: space-between;">
 				   	<button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnClose" style="width: 45%;">취소</button>
-				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="btnSubmit" style="width: 45%;">변경하기</button>
+				    <button class="mt-2 btn btn-lg  btn-secondary" type="button" id="memberEdit" style="width: 45%;">변경하기</button>
 			    </div>
             </form>
         </div>

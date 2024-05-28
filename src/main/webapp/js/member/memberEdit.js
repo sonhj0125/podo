@@ -132,7 +132,7 @@ $(function () {
     });
 
     // 연락처 확인
-    $("input#phone").bind("change",function (e){
+    $("input#phone").bind("change",function (e) {
 
         const phone = $(e.target).val().trim();
         const tag = $('input#phone');
@@ -162,7 +162,7 @@ $(function () {
 
     });
 
-    $("button#btnSubmit").bind("click",()=>{
+    $("button#memberEdit").bind("click",()=> {
 		
         if(checkName && checkEmail && checkPhone) {
             goEdit(toastLive,toastmsg);
@@ -171,7 +171,6 @@ $(function () {
             toastmsg.innerHTML="올바르게 입력하세요";
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
             toastBootstrap.show();
-            return;
         }
 
 	});
@@ -196,7 +195,7 @@ function goEdit(toastLive,toastmsg) {
         return;
     }
 
-    const frm = document.Registerfrm;
+    const frm = document.MemberEditFrm;
     frm.action = "memberEditEnd.wine";
     frm.method = "post";
     frm.submit();

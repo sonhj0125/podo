@@ -77,5 +77,20 @@ public interface ProductDAO {
 	// 좋아요 수 확인
 	int getLikeCnt(int pindex) throws SQLException;
 	
-	
+	// 제품번호 채번 해오기
+	int getPnumOfProduct() throws SQLException;
+
+	// 제품설명이미지 채번 해오기
+	int getpdindexOfProduct() throws SQLException;
+
+	// product 테이블에 제품정보 insert 하기
+	int productInsert(ProductDTO pdto) throws SQLException;
+
+	// productDetailImg 테이블에 정보 insert 하기
+	int productDetailInsert(Map<String, String> paraMap) throws SQLException;
+
+	// pindex 채번해오기
+	int selectPindex(String pimg) throws SQLException;
+
+
 }

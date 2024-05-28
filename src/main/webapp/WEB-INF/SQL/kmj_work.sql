@@ -54,8 +54,27 @@ from member
 where userid != kmj0228 and email = ?;
 
 
+SELECT*
+FROM tab;
+
+select *
+from PRODUCT;
+
+SELECT *
+FROM all_sequences;
+
+select SEQ_PINDEX.nextval AS pindex
+from dual;
+
+select *
+from PRODUCTDETAILIMG
+
+
+
+
+
 select pwd
 from member
 where userid = 'kmj0228' and pwd = '1fb5a7508bdf2a76e5b7f0ec8be6dda74816f32bbf5542721f4802f3859a414d';
 
-
+9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382
