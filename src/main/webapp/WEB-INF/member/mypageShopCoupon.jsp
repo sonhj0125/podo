@@ -9,14 +9,24 @@
 <jsp:include page="/WEB-INF/header.jsp" />
 
 <style type="text/css">
+div#pageBar {
+	border: solid 0px red;
+	width: 80%;
+	margin: 3% auto 0 auto;
+	display: flex;
+}
 
+div#pageBar>nav {
+	margin: auto;
+}
 
 </style>
 
 <script type="text/javascript">
     $(document).ready(function() {
+		
+    	
 
-    
     });
 
     function couponRegistration() {
@@ -103,7 +113,7 @@
     <span style="font-weight:bold; font-size:16pt;">나의 쿠폰</span>
     <div class="vr" style="border:solid 1px blue; height:20px;"></div>
 
-    <c:if test="${empty requestScope.myCouponList}">
+    <c:if test="${empty requestScope.MyCouponpagingList}">
         <hr style="border:solid 1px black; margin-top:5%;">
         <div style="display:flex; margin-top:3%;">
             <div style="margin-right:20%; margin-left:10%;">
@@ -116,9 +126,11 @@
         <hr style="border:solid 1px black; margin-top:3%;">
     </c:if>
 
-    <c:if test="${not empty requestScope.myCouponList}">
-        <c:forEach var="mycodto" items="${requestScope.myCouponList}" varStatus="status">
+
+    <c:if test="${not empty requestScope.MyCouponpagingList}">
+        <c:forEach var="mycodto" items="${requestScope.MyCouponpagingList}" varStatus="status">
             <%-- 쿠폰 번호 계산 --%>
+            
             <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> 
             <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 <%-- 

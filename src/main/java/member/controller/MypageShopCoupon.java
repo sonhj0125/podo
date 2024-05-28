@@ -13,6 +13,7 @@ import coupon.domain.MyCouponDTO;
 import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
+import my.util.MyUtil;
 
 public class MypageShopCoupon extends AbstractController {
 
@@ -39,22 +40,21 @@ public class MypageShopCoupon extends AbstractController {
 			String userid = loginUser.getUserid();
 
             // 현재 페이지 번호
-            String currentShowPageNo = "1";
-
+            String currentShowPageNo = request.getParameter("currentShowPageNo");
             // 페이지당 보여줄 쿠폰 개수
             String sizePerPage = "5";
 
-            // 총 쿠폰 개수
-            int totalMyCouponCount = codao.getTotalMyCouponCount(userid);
-
             // 총 페이지 수
             int totalPage = codao.getTotalPage(userid);
-            
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
+			}
+			
             Map<String, String> paraMap = new HashMap<>();
             paraMap.put("userid", userid);
 			paraMap.put("currentShowPageNo", currentShowPageNo);
 			paraMap.put("sizePerPage", sizePerPage); // 한페이지당 보여줄 행의 개수 
-            
+			
 			try {
 				 if( Integer.parseInt(currentShowPageNo) > totalPage || 
 					 Integer.parseInt(currentShowPageNo) <= 0 ) {
@@ -66,57 +66,79 @@ public class MypageShopCoupon extends AbstractController {
 				paraMap.put("currentShowPageNo", currentShowPageNo);
 			}
 			
-            
-            // **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
-            List<MyCouponDTO> MyCouponpagingList = codao.selectMyCouponpaging(paraMap);
 			
-			request.setAttribute("MyCouponpagingList", MyCouponpagingList);
+			String pageBar = "";  
 			
-            request.setAttribute("totalPage", totalPage);
-            request.setAttribute("currentShowPageNo", currentShowPageNo);
-            request.setAttribute("totalMyCouponCount", totalMyCouponCount);
-			
-            StringBuffer requestURL = request.getRequestURL();
-            String url = requestURL.toString();
-            
-            StringBuilder pageBarsb = new StringBuilder();
-			
-			int blockSize = 10;
+			int blockSize = 5;
 			// blockSize 는 블럭(토막)당 보여지는 페이지 번호의 개수이다.
 			
 			int loop = 1;
 			// loop 는 1 부터 증가하여 1개 블럭을 이루는 페이지번호의 개수(지금은 10개)까지만 증가하는 용도이다. 
 			
 			// ==== !!! 다음은 pageNo 구하는 공식이다. !!! ==== // 
-			int startPage   = ( (Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1; 
+			int pageNo  = ( (Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1; 
+			// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
 			
-	        int endPage = startPage + blockSize - 1;
-	        if (endPage > totalPage) {
-	            endPage = totalPage;
-	        }
-	        
-	        if (startPage  > 1) {
-	            pageBarsb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"").append(url).append("?pageNo=").append(startPage - 1).append("\">&laquo;</a></li>");
-	        }
-	        
-	        // 페이지 번호 링크 추가
-	        for (int i = startPage; i <= endPage; i++) {
-	            if (i == (Integer.parseInt(currentShowPageNo))) {
-	                pageBarsb.append("<li class=\"page-item active\"><a class=\"page-link\" href=\"#\">").append(i).append("</a></li>");
-	            } else {
-	                pageBarsb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"").append(url).append("?pageNo=").append(i).append("\">").append(i).append("</a></li>");
-	            }
-	        }
-	        
-	        // 다음 페이지 바 링크 추가
-	        if (endPage < totalPage) {
-	            pageBarsb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"").append(url).append("?pageNo=").append(endPage + 1).append("\">&raquo;</a></li>");
-	        }
-	        
-	        String pageBar = pageBarsb.toString();
-	        
-	        request.setAttribute("pageBar", pageBar);
+			// *** [맨처음][이전] 만들기 *** //
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopCoupon.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>"; 
 			
+			if(pageNo != 1) {
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopCoupon.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>"; 
+			}
+			
+			while( !(loop > blockSize || pageNo > totalPage) ) {
+				
+				if(pageNo == Integer.parseInt(currentShowPageNo)) {
+					pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>"; 
+				}
+				else {
+					pageBar += "<li class='page-item'><a class='page-link' href='mypageShopCoupon.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
+				}
+				
+				loop++;    // 1 2 3 4 5 6 7 8 9 10
+				
+				pageNo++;  //  1  2  3  4  5  6  7  8  9 10
+				           // 11 12 13 14 15 16 17 18 19 20
+				           // 21 22 23 24 25 26 27 28 29 30
+				           // 31 32 33 34 35 36 37 38 39 40
+				           // 41 42 
+				            
+			}// end of while( !( ) )--------
+			
+			// *** [다음][마지막] 만들기 *** //
+			// pageNo ==> 11
+			
+			if(pageNo <= totalPage) { 
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopCoupon.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+			}
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopCoupon.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			
+			
+			// *** ======= 페이지바 만들기 끝 ======= *** //	        
+	        
+			
+			
+			// *** ====== 현재 페이지를 돌아갈 페이지(goBackURL)로 주소 지정하기 ======= *** //
+			String currentURL = MyUtil.getCurrentURL(request);
+			// 회원조회를 했을시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임.
+			
+            // **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
+            List<MyCouponDTO> MyCouponpagingList = codao.selectMyCouponpaging(paraMap);
+			
+            
+			request.setAttribute("MyCouponpagingList", MyCouponpagingList);
+			request.setAttribute("sizePerPage", sizePerPage);
+			request.setAttribute("pageBar", pageBar);
+			request.setAttribute("currentURL", currentURL);
+			
+            // 총 쿠폰 개수
+            int totalMyCouponCount = codao.getTotalMyCouponCount(userid);
+            
+            request.setAttribute("totalMyCouponCount", totalMyCouponCount);
+            request.setAttribute("currentShowPageNo", currentShowPageNo);
+            
+
+	        
 			// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
 			List<MyCouponDTO> myCouponList = codao.getMyCouponList(userid);
 			

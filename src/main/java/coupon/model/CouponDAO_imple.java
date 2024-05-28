@@ -461,23 +461,48 @@ public class CouponDAO_imple implements CouponDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT rno, COINDEX, USERID, CONAME, COSTATUS "
-					   + " FROM  "
-					   + " ( "
-					   + "     select rownum as rno, COINDEX, USERID, CONAME, COSTATUS "
-					   + "     from   "
-					   + "     (  "
-					   + "      select COINDEX, USERID, CONAME, COSTATUS "
-					   + "      from mycoupon "
-					   + "      where userid = ? "
-					   + "     ) V "
-					   + " ) T  "
-					   + " WHERE T.rno BETWEEN ? AND ? ";
+			String sql =  "  SELECT  "
+					    + "    T.rno,  "
+						+ "    T.COINDEX, "
+						+ "    T.USERID, "
+						+ "    T.CONAME, "
+						+ "    T.COSTATUS, "
+						+ "    C.CODISCOUNT, "
+						+ "    C.CODETAIL, "
+						+ "    C.COTYPE, "
+						+ "    C.COMIN, "
+						+ "    C.CODATE, "
+						+ "    C.COREGISTERDAY, "
+						+ "    C.COCODE "
+						+ " FROM ( "
+						+ "    SELECT  "
+						+ "        rownum AS rno, "
+						+ "        COINDEX, "
+						+ "        USERID, "
+						+ "        CONAME, "
+						+ "        COSTATUS "
+						+ "    FROM ( "
+						+ "        SELECT  "
+						+ "            COINDEX, "
+						+ "            USERID, "
+						+ "            CONAME, "
+						+ "            COSTATUS "
+						+ "        FROM "
+						+ "            mycoupon "
+						+ "        WHERE "
+						+ "            userid = ? "
+						+ "    ) V "
+						+ " ) T "
+						+ " JOIN coupon C ON T.CONAME = C.CONAME "
+						+ " WHERE T.rno BETWEEN ? AND ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			int currentShowPageNo = Integer.parseInt( paraMap.get("currentShowPageNo") ); 
 			int sizePerPage = Integer.parseInt( paraMap.get("sizePerPage") );
+			
+			System.out.println("currentShowPageNo" + currentShowPageNo);
+			System.out.println("sizePerPage" + sizePerPage);
 			
 			pstmt.setString(1, paraMap.get("userid"));
 			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
@@ -493,6 +518,14 @@ public class CouponDAO_imple implements CouponDAO {
 				
 				CouponDTO cdto = new CouponDTO();
 				cdto.setConame(rs.getString("CONAME"));
+				cdto.setCodetail(rs.getString("CODETAIL"));
+				cdto.setCodate(rs.getString("CODATE"));
+				cdto.setCoregisterday(rs.getString("COREGISTERDAY"));
+				cdto.setCocode(rs.getString("COCODE"));
+				cdto.setCotype(rs.getInt("COTYPE"));
+				cdto.setCodiscount(rs.getInt("CODISCOUNT"));
+				cdto.setComin(rs.getInt("COMIN"));
+				
 				mcdto.setCodto(cdto);
 				
 				MyCouponpagingList.add(mcdto);
