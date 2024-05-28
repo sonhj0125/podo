@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
 	String ctxPath = request.getContextPath();
@@ -16,7 +16,16 @@
 
 
 <style type="text/css">
+div#pageBar {
+	border: solid 0px red;
+	width: 80%;
+	margin: 3% auto 0 auto;
+	display: flex;
+}
 
+div#pageBar>nav {
+	margin: auto;
+}
 
 </style>
 
@@ -157,6 +166,13 @@ function searchData() {
 				
 				    <c:if test="${requestScope.myPointpaging != null}">
 				        <c:forEach var="podto" items="${requestScope.myPointpaging}">
+				        
+			                    <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> 
+					            <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
+					<%-- 
+					            <td>${(requestScope.totalMyCouponCount) - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
+					--%>
+				        
 					            <tr>
 					                <td>${podto.poDate}</td>
 					                <td>${podto.poDetail}</td>
@@ -170,6 +186,17 @@ function searchData() {
 			</table>
 		</div>
 	</div>
+	
+	
+<!-- 페이지바 -->
+	<div id="pageBar">
+	    <nav>
+	        <ul class="pagination">
+	            ${requestScope.pageBar}
+	        </ul>
+	    </nav>
+	</div>
+	
 </div>
 
 

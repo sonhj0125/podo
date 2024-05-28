@@ -382,13 +382,14 @@ order by PODATE desc
 desc point
 
   insert into point(USERID, POINCOME, PODETAIL, PODATE )
-  values('ksj1024sj', '4400', '상품 구매 립', '2024-05-27 12:25:00');
+  values('ksj1024sj', '4400', '상품 구매 적립', '2024-05-27 12:25:00');
   
   commit;
   
+  delete from point
+where USERID = 'ksj1024sj';
   
-SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS AvailablePoints, PODETAIL, PODATE 
+  
+SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS AvailablePoints
 FROM POINT 
-WHERE PODETAIL LIKE '%적립' AND USERID = 'ksj1024sj'
-GROUP BY PODETAIL, PODATE
-ORDER BY PODATE DESC;
+WHERE PODETAIL NOT LIKE '%적립' AND USERID = 'ksj1024sj'
