@@ -949,5 +949,31 @@ public class MemberDAO_imple implements MemberDAO {
 
 	} // end of public int insertRegisterCoupon(String parameter) throws SQLException ------------
 
+	@Override
+	public String getMyPoint(String userid) throws SQLException {
+		
+		String point = "0";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select point from MEMBER where USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				point = df.format(Integer.parseInt(rs.getString("point")));
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return point;
+	}
 	
 }

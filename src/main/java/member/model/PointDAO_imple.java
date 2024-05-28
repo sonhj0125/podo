@@ -13,9 +13,6 @@ import javax.sql.DataSource;
 
 import member.domain.MemberDTO;
 import member.domain.PointDTO;
-import shop.domain.ProductDTO;
-import util.security.AES256;
-import util.security.SecretMykey;
 
 public class PointDAO_imple implements PointDAO {
 
@@ -24,16 +21,12 @@ public class PointDAO_imple implements PointDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
-	private AES256 aes;
-	
 	public PointDAO_imple() {
 		
 		try {
 			Context initContext = new InitialContext();
 			Context envContext = (Context)initContext.lookup("java:/comp/env");
 			ds = (DataSource)envContext.lookup("jdbc/semioracle");
-			
-			aes = new AES256(SecretMykey.KEY);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
