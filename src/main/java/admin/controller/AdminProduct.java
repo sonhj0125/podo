@@ -46,9 +46,7 @@ public class AdminProduct extends AbstractController {
 		// == 관리자(admin)로 로그인 했을 때만 제품등록이 가능하도록 한다. == //
 		HttpSession session =  request.getSession();
 		
-		MemberDTO loginUser =  (MemberDTO)session.getAttribute("loginUser");
-		
-		if(loginUser != null && "kmj0228".equals(loginUser.getUserid())) {
+		if(super.isDir(session)) {
 			// 관리자(admin)로 로그인 했을 경우
 			
 			String method =  request.getMethod();
