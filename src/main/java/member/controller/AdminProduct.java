@@ -3,6 +3,8 @@ package member.controller;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -61,7 +63,8 @@ public class AdminProduct extends AbstractController {
 				
 				// 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
 	               ServletContext svlCtx = session.getServletContext();
-	               String uploadFileDir = svlCtx.getRealPath("/images");
+	               String uploadFileDir = svlCtx.getRealPath("/images/product");
+	               System.out.println(uploadFileDir);
 	            // String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyMVC\\src\\main\\webapp\\images";
 	               
 	            // System.out.println("=== 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir ==> " + uploadFileDir);
@@ -213,7 +216,6 @@ public class AdminProduct extends AbstractController {
                 String ptannin = request.getParameter("ptannin");     // 제품 타닌
                 String pacl = request.getParameter("pacl");           // 제품 도수
                 String pstock = request.getParameter("pstock");       // 제품 재고량
-                
                 // !!!! 크로스 사이트 스크립트 공격에 대응하는 안전한 코드(시큐어코드) 작성하기 !!!! //  
                 String pdetail = request.getParameter("pdetail");     // 제품설명
                 pdetail =  pdetail.replaceAll("<", "$lt;");
@@ -245,18 +247,28 @@ public class AdminProduct extends AbstractController {
                 pdto.setPindex(pindex);
                 pdto.setPdindex(pdindex); 
                 
-                pdto.setPimg(pimg);   // 제품이미지1 
-                pdto.setPdimg(pdimg);   // 제품이미지2
+                pdto.setPimg(pimg);   
+                pdto.setPdimg(pdimg); 
                 
                 // product 테이블에 제품정보 insert 하기
                 int n =  pdao.productInsert(pdto);
                 
                 int result = 0;
                 if(n == 1) {
-                	result = 1;
+                	
+                	// pindex 채번해오기
+                	int pIndex =  pdao.selectPindex(pimg);
+                	
+                	Map<String, String> paraMap = new HashMap<>();
+                	paraMap.put("pindex",  String.valueOf(pIndex));
+                	paraMap.put("pdindex", String.valueOf(pdindex));
+                	paraMap.put("pdimg", pdimg);
+                	
+                	// productDetailImg 테이블에 정보 insert 하기
+                	result =  pdao.productDetailInsert(paraMap);
+                	
                 }
              
-                
                JSONObject jsonObj = new JSONObject(); 
                jsonObj.put("result", result);
                

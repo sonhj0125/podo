@@ -918,7 +918,7 @@ public class ProductDAO_imple implements ProductDAO {
 	            conn = ds.getConnection();
 	            
 	            String sql = " insert into product(pname, pengname, ptype, phometown, pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex) "
-	                       + " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	                       + " values(?,?,?,?,?,?,?,?,?,?,?,?,?,SEQ_PINDEX.nextval) ";
 	            
 	            pstmt = conn.prepareStatement(sql);
 	            
@@ -935,23 +935,9 @@ public class ProductDAO_imple implements ProductDAO {
 	            pstmt.setString(11, pdto.getPdetail());
 	            pstmt.setString(12, pdto.getPimg());
 	            pstmt.setString(13, pdto.getPstock());
-	            pstmt.setInt(14, pdto.getPindex());
 	            
 	            result = pstmt.executeUpdate();
 	            
-	            if(result == 1) { 
-	            	
-	            	sql = " insert into productdetailimg(pdimg, pdindex) "
-		                + " values(?,?) ";
-	            	
-	            	pstmt = conn.prepareStatement(sql);
-		            
-		            pstmt.setString(1, pdto.getPdimg());
-		            pstmt.setInt(2, pdto.getPdindex());
-		            
-		            result = pstmt.executeUpdate();
-	            	
-	            }
 	            
 	       } finally {
 	            close();
@@ -962,6 +948,65 @@ public class ProductDAO_imple implements ProductDAO {
 	}// end of public int productInsert(ProductDTO pdto) throws SQLException--------------
 
 	
+	// productDetailImg 테이블에 정보 insert 하기
+	@Override
+	public int productDetailInsert(Map<String, String> paraMap) throws SQLException {
+
+		int result = 0;
+        
+	       try {
+	            conn = ds.getConnection();
+	            						   
+	            String sql = " insert into productdetailimg(pdindex, pindex, pdimg) "
+	                       + " values(SEQ_PDINDEX.nextval,?,?) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, paraMap.get("pindex"));
+	            pstmt.setString(2, paraMap.get("pdimg"));
+	            
+	            result = pstmt.executeUpdate();
+	            
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return result;
+	       
+	}// end of public int productDetailInsert(Map<String, String> paraMap) throws SQLException------------
+
 	
+	// pindex 채번해오기
+	@Override
+	public int selectPindex(String pimg) throws SQLException {
+		
+		int pIndex = 0;
+        
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " select pindex "
+	            		   + " from product "
+	            		   + " where pimg = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, pimg);
+	            
+	            rs = pstmt.executeQuery();
+	            
+	               rs.next();
+	               pIndex = rs.getInt(1);
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return pIndex;
+	       
+	}// end of public int selectPindex(String pimg) throws SQLException ---------------
+
+
 
 }
