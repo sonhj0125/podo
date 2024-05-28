@@ -111,9 +111,9 @@ function searchData() {
 	      --%>
 	    </tr>
 	    <tr class="table-group-divider">
-	      <td id="totalPoints">${requestScope.podto.totalPoints}</td>
-	      <td id="usedPoints">${requestScope.podto.usedPoints}</td>
-	      <td id="availablePoints">${requestScope.podto.availablePoints}</td>
+	      <td id="totalPoints">${requestScope.userpointdto.totalPoints}</td>
+	      <td id="usedPoints">${requestScope.userpointdto.usedPoints}</td>
+	      <td id="availablePoints">${requestScope.userpointdto.availablePoints}</td>
 	      <%--
 	      <td id="expiringPoints">${requestScope.expiringPoints}</td>
 	      --%>
@@ -149,14 +149,14 @@ function searchData() {
 				        <th>적립 내용</th>
 				        <th>포인트</th>
 				    </tr>
-				    <c:if test="${requestScope.pointHistoryList == null}">
+				    <c:if test="${requestScope.myPointpaging == null}">
 				        <tr>
 				            <td colspan="3">적립된 포인트가 없습니다.</td>
 				        </tr>
 				    </c:if>
 				
-				    <c:if test="${requestScope.pointHistoryList != null}">
-				        <c:forEach var="podto" items="${requestScope.pointHistoryList}">
+				    <c:if test="${requestScope.myPointpaging != null}">
+				        <c:forEach var="podto" items="${requestScope.myPointpaging}">
 					            <tr>
 					                <td>${podto.poDate}</td>
 					                <td>${podto.poDetail}</td>

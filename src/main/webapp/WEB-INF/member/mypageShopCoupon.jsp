@@ -139,7 +139,7 @@ div#pageBar>nav {
 --%>
             <%-- 할인쿠폰 --%>
             <c:if test="${mycodto.codto.cotype == 1}">
-                <hr style="border:solid 1px black; margin-top:5%;">
+                <hr style="border:solid 1px black; margin-top:1%;">
                 <div class="container">
                     <div class="row">
                         <div class="col-2 d-flex justify-content-end align-items-center">
@@ -174,12 +174,12 @@ div#pageBar>nav {
                         </div>
                     </div>
                 </div>
-                <hr style="border:solid 1px black; margin-top:3%;">
+                <hr style="border:solid 1px black; margin-top:1%;">
             </c:if>      		
        		
        					<%-- cotype == 2 할인율  --%>
 			<c:if test="${mycodto.codto.cotype == 2}">
-			    <hr style="border:solid 1px black; margin-top:5%;">
+			    <hr style="border:solid 1px black; margin-top:1%;">
                 <div class="container">
                     <div class="row">
                         <div class="col-2 d-flex justify-content-end align-items-center">
@@ -212,7 +212,7 @@ div#pageBar>nav {
 			            </div>
 			        </div>
 			    </div>
-			    <hr style="border:solid 1px black; margin-top:3%;">       			
+			    <hr style="border:solid 1px black; margin-top:1%;">       			
 			</c:if>  
        		
         </c:forEach>
