@@ -210,6 +210,11 @@
 		   location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
 		});
 		
+		<%-- 관리자 주문관리 클릭시 --%>
+		$("div#adminOrder").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminOrder.wine";
+		});
+		
 	} // end of window.onload
 	
 	window.closeModal = function(login) {
@@ -426,6 +431,7 @@
 	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
 	         <hr style="width: 90%;">
 	            <div>
+	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문 관리</div>
 	               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
 	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
 	               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>

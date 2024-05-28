@@ -115,6 +115,7 @@ $(function() {
     $("#btn-doorder").bind("click",function(){
 
         const ctxPath = $("div#getCtxPath").text();
+        const title = "Payment";
 
         const width = 1000;
         const height = 600;
@@ -122,11 +123,11 @@ $(function() {
         const left = Math.ceil( (window.screen.width - width)/2 );
         const top = Math.ceil( (window.screen.height - height)/2 );
         
-        window.open("", "Payment", `left=${left}, top=${top}, width=${width}, height=${height}`);
+        window.open("", title, `left=${left}, top=${top}, width=${width}, height=${height}`);
 
         const frm = document.orderfrm;
         frm.method = "post";
-        frm.target = "Payment";
+        frm.target = title;
         frm.action = `${ctxPath}/shop/payment.wine`;
         frm.submit();
 

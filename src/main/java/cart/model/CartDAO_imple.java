@@ -438,5 +438,168 @@ public class CartDAO_imple implements CartDAO {
 		
 	}
 
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/10) as cnt from ORDERS ";
+			
+			String userid = paraMap.get("searchWord");
+			String status = paraMap.get("searchType");
+			
+			int step = 0;
+			
+			try {
+				if(userid.isBlank()) {
+					sql += "where userid = ? ";
+					step = 1;
+				}
+			}catch (Exception e) {
+			}
+			
+			if(step == 0 && status != null && !status.isBlank()) {
+				sql += "where ostatus = ? ";
+				step = 2;
+			}
+			
+			if(step == 1 && status != null && !status.isBlank()) {
+				sql += "and ostatus = ? ";
+				step = 3;
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			switch (step) {
+				case 1:
+					pstmt.setString(1, userid);
+					break;
+				case 2:
+					pstmt.setString(1, status);
+					break;
+				case 3:
+					pstmt.setString(1, userid);
+					pstmt.setString(2, status);
+					break;
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<OrderDTO> selectOrderPaging(Map<String, String> paraMap) throws SQLException {
+		
+		List<OrderDTO> odtolist = new ArrayList<OrderDTO>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select * from "
+					+ " ( "
+					+ " select ROWNUM as rno,OINDEX, PNAME, OTOTALPRICE, OVOLUME, odate, ostatus, userid, OARDATE "
+					+ " from "
+					+ " (select ROWNUM,OINDEX, PNAME, OTOTALPRICE, OVOLUME, odate, ostatus, userid, OARDATE "
+					+ " from ORDERS join PRODUCT on ORDERS.PINDEX = PRODUCT.PINDEX order by ROWNUM desc) )"
+					+ " where rno between ? and ? " ;
+			
+			String userid = paraMap.get("searchWord");
+			String status = paraMap.get("searchType");
+			int navNum = Integer.parseInt(paraMap.get("navNum"));
+			int sizePerPage = 10;
+			
+			int step = 0;
+			
+			try {
+				if(userid.isBlank()) {
+					sql += "and userid = ? ";
+					step = 1;
+				}
+			}catch (Exception e) {
+			}
+			
+			if(step == 0 && status != null && !status.isBlank()) {
+				sql += "and ostatus = ? ";
+				step = 2;
+			}
+			
+			if(step == 1 && status != null && !status.isBlank()) {
+				sql += "and ostatus = ? ";
+				step = 3;
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			switch (step) {
+				case 0:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					break;
+				case 1:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					pstmt.setString(3, userid);
+					break;
+				case 2:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					pstmt.setString(3, status);
+					break;
+				case 3:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					pstmt.setString(3, userid);
+					pstmt.setString(4, status);
+					break;
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderDTO odto = new OrderDTO();
+				
+				odto.setOindex(rs.getInt("oindex"));
+				
+				ProductDTO pdto = new ProductDTO();
+				pdto.setPname(rs.getString("pname"));
+				odto.setPdto(pdto);
+				
+				odto.setOtotalprice(rs.getString("ototalprice"));
+				odto.setOvolume(rs.getString("ovolume"));
+				odto.setOdate(rs.getString("odate"));
+				odto.setOstatus(rs.getInt("ostatus"));
+				odto.setUserid(rs.getString("userid"));
+				
+				String arrDate = rs.getString("OARDATE");
+				if(arrDate == null || arrDate.isBlank()) {
+					arrDate = "없음";
+				}
+				
+				odto.setOardate(arrDate);
+				
+				odtolist.add(odto);
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return odtolist;
+		
+	}
+
 	
 }

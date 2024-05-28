@@ -57,3 +57,14 @@ INSERT INTO DELIVERY (DINDEX, DNAME, DEMAIL, DPHONE, DMSG, OINDEX, DADDRESS, DAD
 VALUES (SEQ_DINDEX.nextval, ?, ?, ?, ?, ?, ?, ?);
 
 select point from MEMBER where USERID = 'redtree2379';
+
+select ceil(count(*)/10) from ORDERS;
+
+select * from
+(
+select ROWNUM as rno,OINDEX, PNAME, OTOTALPRICE, OVOLUME, odate, ostatus, userid, OARDATE
+from
+(select ROWNUM,OINDEX, PNAME, OTOTALPRICE, OVOLUME, odate, ostatus, userid, OARDATE
+from ORDERS join PRODUCT on ORDERS.PINDEX = PRODUCT.PINDEX order by ROWNUM desc)
+    )
+where rno between 2 and 5;
