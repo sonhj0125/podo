@@ -80,6 +80,16 @@
 	
 	window.onload = ()=> {
 		
+		<%-- keycode == 27 == Esc--%>
+		document.addEventListener("keydown", function(e) {
+		  let code = (e.keyCode ? e.keyCode : e.which);
+		  
+		  if (code == 27) {
+		    let nextState = toggleSwitch.getAttribute('aria-label') == 'unchecked' ? 'checked' : 'unchecked';
+		    toggleSwitch.setAttribute('aria-label', nextState);
+		  }
+		})
+		
 		<%-- Header Home --%>
 		$("label#navTitle").bind('click',()=>{
 			location.href="<%=ctxPath%>/index.wine";
@@ -193,9 +203,16 @@
 		$("div#memberCoupon").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
 		});
+		$("div#memberCoupon2").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
+		});
 		
 		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
 		$("div#memberPoint").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
+		});
+		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
+		$("div#memberPoint2").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
 		});
 		
@@ -382,13 +399,13 @@
             </div>
             <div style="margin-right: 5%; cursor: pointer;">
                <i class="fa-solid fa-ticket"></i>
-               <div style="font-weight: bold; cursor: pointer;">쿠폰</div>
+               <div id="memberCoupon2" style="font-weight: bold; cursor: pointer;">쿠폰</div>
                <div style="color: purple;">2</div>
             </div>
             <div style="cursor: pointer;">
                <i class="fa-solid fa-circle-dollar-to-slot"></i>
                <br>
-               <div style="font-weight: bold; cursor: pointer;">적립금</div>
+               <div id="memberPoint2" style="font-weight: bold; cursor: pointer;">적립금</div>
                <div style="color: purple;">${sessionScope.loginUser.point}</div>
             </div>
            </div>

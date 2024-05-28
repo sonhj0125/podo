@@ -21,6 +21,14 @@ $(function (){
 	
 	// 카트 클릭
 	$("#btncart").bind("click",function(){
+		const count = Number($("input#count").val().trim());
+		const pstock = Number($("input#pstock").val().trim());
+		
+		if(count > pstock) {
+			alert("재고량보다 주문 수량이 많습니다.");
+			$("input#count").val(1);
+			return;
+		}
 		
 		const frm = document.cartin;
 		frm.method = "post";
@@ -105,11 +113,14 @@ $(function (){
 		                	<input name="userid" value = "${sessionScope.loginUser.userid}" style="display: none;"/>
 		                	<input name="pindex" value = "${requestScope.pdto.pindex}" style="display: none;"/>
 		                	<input name="url" value = "<%= url%>" style="display:none;"/>
+   		                <div class="input-group-prepend">
+		                    <span class="input-group-text">재고량</span>
+		                </div> 
+		                	<input class="form-control text-center me-3" id="pstock" name="pstock" type="text" value="${requestScope.pdto.pstock}" style="max-width: 5rem" readonly />
 		            </div>
 	            </form>
 	
 	            <br>
-	
 	            <div class="d-flex">
 	                <form class="d-flex" method="post">
 	                	<c:if test="${requestScope.likeit == 'none'}">
@@ -138,6 +149,7 @@ $(function (){
 		                 </button>
 	                </c:if>
 	             </div>
+	             <input class="form-control text-center me-3" id="pstock" name="pstock" type="text" value="${requestScope.likeItCnt}" style="max-width: 4.65rem" readonly />
 	         </div>
 	     </div>
 		</div>

@@ -65,6 +65,9 @@ public interface ProductDAO {
 
 	// [shop] pindex에 대한 리뷰 목록 불러오기
 	List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException;
+
+	// 좋아요 수 확인
+	int getLikeCnt(int pindex) throws SQLException;
 	
 	
 }

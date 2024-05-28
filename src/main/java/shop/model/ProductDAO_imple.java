@@ -1241,5 +1241,36 @@ public class ProductDAO_imple implements ProductDAO {
 		return reviewList;
 		
 	} // end of public List<ReviewDTO> getReviewListByPindex(int pindex) throws SQLException --------
+
+	
+	// 좋아요 수 확인
+	@Override
+	public int getLikeCnt(int pindex) throws SQLException {
+
+		int likeItCnt = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select NVL(count(*), 0) as count"
+					   + " from LIKEIT"
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, pindex);
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			likeItCnt = rs.getInt(1);
+			
+		}finally {
+			close();
+		}
+		
+		return likeItCnt;
+	} // end of public int getLikeCnt(int pindex) throws SQLException
 	
 }

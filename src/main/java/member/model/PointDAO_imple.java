@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import coupon.domain.CouponDTO;
+import coupon.domain.MyCouponDTO;
 import member.domain.MemberDTO;
 import member.domain.PointDTO;
 import shop.domain.ProductDTO;
@@ -170,51 +173,9 @@ public class PointDAO_imple implements PointDAO {
 	*/
 
 	
-	// 아이디, 이름, 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
-	@Override
-	public PointDTO getUserPointDetails(String userid) throws SQLException {
-		
-		PointDTO podto = null;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " SELECT m.NAME "
-					   + "      , p.UserID "
-					   + "      , SUM(CASE WHEN p.PODETAIL LIKE '%주문' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) AS AvailablePoints "
-					   + "      , SUM(CASE WHEN p.PODETAIL LIKE '%상품구입' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) AS UsedPoints "
-					   + "      , SUM(CASE WHEN p.PODETAIL LIKE '%주문' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) + "
-					   + "        SUM(CASE WHEN p.PODETAIL LIKE '%상품구입' THEN TO_NUMBER(p.POINCOME) ELSE 0 END) AS TotalPoints "
-					   + " FROM point p "
-					   + " JOIN member m ON p.USERID = m.USERID "
-					   + " WHERE (p.PODETAIL LIKE '%주문' OR p.PODETAIL LIKE '%상품구입') AND p.USERID = ? "
-					   + " GROUP BY m.NAME, p.USERID ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
-			rs = pstmt.executeQuery();
-			
-            if (rs.next()) {
-                podto = new PointDTO();
-                podto.setUserID(rs.getString("UserID"));
-                
-                MemberDTO mdto = new MemberDTO();
-                mdto.setName(rs.getString("Name"));
-                podto.setMdto(mdto);
-                
-                podto.setAvailablePoints(rs.getString("AvailablePoints")); // 사용가능포인트
-                podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
-                podto.setTotalPoints(rs.getString("TotalPoints"));         // 누적포인트
-            }
-			
-		} finally {
-			close();
-		}
-		
-		return podto;
-	} // end of public PointDTO getUserPointDetails(String userid) throws SQLException
-	
 
+	
+	/*
 	// 유저가 적립한 포인트 로그 가져오기
 	@Override
 	public List<PointDTO> getUserPointHistoryList(String userid) throws SQLException {
@@ -299,5 +260,199 @@ public class PointDAO_imple implements PointDAO {
 		
 		return pointUsedHistoryList;
 	} // end of public List<PointDTO> getUserPointUsedHistoryList(String userid) ------
+	*/
+
+
+	
+	// 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
+	@Override
+	public PointDTO getUserPointDetails(String userid) throws SQLException {
+		
+		PointDTO podto = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT NVL(SUM(TO_NUMBER(POINCOME)), '0') AS AvailablePoints "
+					   + "      , NVL(SUM(TO_NUMBER(POINCOME)), '0') AS UsedPoints "
+					   + "      , NVL(SUM(TO_NUMBER(POINCOME)), '0') + NVL(SUM(TO_NUMBER(POINCOME)), '0') AS TotalPoints "
+					   + " FROM point "
+					   + " WHERE USERID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+            if (rs.next()) {
+                podto = new PointDTO();
+                
+                podto.setAvailablePoints(rs.getString("AvailablePoints")); // 사용가능포인트
+                podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
+                podto.setTotalPoints(rs.getString("TotalPoints"));         // 누적포인트
+            }
+			
+		} finally {
+			close();
+		}
+		
+		return podto;
+	} // end of public PointDTO getUserPointDetails(String userid) throws SQLException
+	
+	
+	
+	// 유저가 적립한 포인트 로그 가져오기
+	@Override
+	public List<PointDTO> getUserPointHistoryList(String userid) throws SQLException {
+		List<PointDTO> pointHistoryList = null;
+		boolean isSearch = true;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT POINCOME, PODETAIL, PODATE "
+					   + " FROM POINT "
+					   + " WHERE USERID = ? "
+				   	   + " ORDER BY PODATE DESC ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				if(isSearch) {
+					pointHistoryList = new ArrayList<>();
+					isSearch = false;
+				}
+				
+				PointDTO podto = new PointDTO();
+				
+				podto.setPoIncome(rs.getString("POINCOME"));   	// 변동 포인트
+				podto.setPoDetail(rs.getString("PODETAIL")); 	// 적립내용
+				podto.setPoDate(rs.getString("PODATE"));		// 적립날짜
+				
+				pointHistoryList.add(podto);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return pointHistoryList;
+	} // end of public List<PointDTO> getUserPointDetailsList(String userid) throws SQLException ---
+
+
+	
+	// 총 페이지 수
+	@Override
+	public int getTotalPage(String userid) throws SQLException {
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select ceil(count(*)/10) "
+						+ " from point "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;	
+	}
+
+	// **** 페이징 처리를 한 모든 포인트 목록 보여주기 **** //
+	@Override
+	public List<PointDTO> selectMyPointpaging(Map<String, String> paraMap) throws SQLException {
+
+		List<PointDTO> myPointpaging = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " SELECT rno, USERID, POINCOME, PODETAIL, PODATE "
+						+ " FROM   "
+						+ " (  "
+						+ " select rownum as rno, USERID, POINCOME, PODETAIL, PODATE "
+						+ " from    "
+						+ " (   "
+						+ " select USERID, POINCOME, PODETAIL, PODATE "
+						+ " from point  "
+						+ " where userid = ?  "
+						+ " ) V  "
+						+ " ) T   "
+						+ " WHERE T.rno BETWEEN ? AND ? ";
+				
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt( paraMap.get("currentShowPageNo") ); 
+			int sizePerPage = Integer.parseInt( paraMap.get("sizePerPage") );
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); // 공식
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				PointDTO podto = new PointDTO();
+
+				podto.setUserID(rs.getString("USERID"));
+				podto.setPoIncome(rs.getString("POINCOME"));
+				podto.setPoDetail(rs.getString("PODETAIL"));
+				podto.setPoDate(rs.getString("PODATE"));
+				
+				myPointpaging.add(podto);
+			}// end of while(rs.next())---------------------
+		} finally {
+			close();
+		}
+		return myPointpaging;
+
+	} // end of public List<MyCouponDTO> selectMyPointpaging(Map<String, String> paraMap) throws SQLException ----
+
+
+	// 총 포인트 개수
+	@Override
+	public int getTotalMyPointCount(String userid) throws SQLException {
+
+		int totalMyPointCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select count(*) "
+						+ " from point "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+						
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalMyPointCount = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalMyPointCount;
+	} // end of public int getTotalMyPointCount(String userid) throws SQLException ----
+
+	
 	
 }
