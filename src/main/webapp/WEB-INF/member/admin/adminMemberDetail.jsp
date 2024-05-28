@@ -16,7 +16,6 @@
 
 <style type="text/css">
    
-	
 	.page-link {
 	  	color: #000; 
 	  	background-color: #fff;
@@ -44,6 +43,18 @@
 		align: center;
 		margin-left : 3%;
 	}
+	
+	
+	input#stopstatus {
+		background-color: #ccc;
+	}
+	
+	
+	input#stopstatus:hover {
+		background-color: #ff4d4d;
+		
+	}
+	
 	
 	
 </style>
@@ -150,7 +161,7 @@
 					</select>
 					<input type="hidden" value="${requestScope.mdto.userid}" id ="userid" />
 		
-					<div class="form-group" style="margin-left:5%;">F
+					<div class="form-group" style="margin-left:5%;">
 						<input id="btn-couponRegister" class="btn btn-danger ml-4" type="button" value="등록" />
 					</div>
 				</div>
@@ -231,13 +242,13 @@
 		            <td>회원상태</td>
 		            <td>
 		            	${requestScope.mdto.status}
-		            	<input type="button" class="submit" value="정지" name="statusOff"/>
-		            	<input type="button" class="submit" value="해제" name="statusOn"/>
+		            	<input type="button" id="stopstatus" class="statusOff" style=" border:none; border-radius: 5px;" value="정지" name="statusOff"/>
+		            	
 		            </td>
 		         </tr>
 			</table>
-		<input type="text" id="stUserid" value="${requestScope.mdto.userid}"/>
-		<input type="text" id="stMemberidx" value="${requestScope.mdto.memberIdx}"/>
+		<input type="hidden" id="stUserid" value="${requestScope.mdto.userid}"/>
+		<input type="hidden" id="stMemberidx" value="${requestScope.mdto.memberIdx}"/>
 		
 		<div class="input-group mb-3">
 		  	<label class="input-group-text" for="userCoupon">보유 쿠폰</label>

@@ -135,7 +135,7 @@ commit;
 select userid, name, email, phone, address, addressdetail, gender
  , birthday, point, registerday, memberidx.status
 from member join memberidx on member.memberidx = memberidx.memberidx
-where memberidx.memberidx = 1 and userid = 'test002'
+where memberidx.memberidx != 9 and userid = 'admin_1'
 
 
 select *
@@ -184,6 +184,8 @@ where memberidx = '3';
 
 
 commit;
+
+
 
 select *
 from member;

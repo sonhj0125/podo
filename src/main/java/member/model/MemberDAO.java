@@ -87,7 +87,11 @@ public interface MemberDAO {
 
 	
 	// 관리자 회원관리 - 해당 유저 정지시키기
-	List<MemberDTO> disableMember(String userid) throws SQLException;
+	int disableMember(Map<String, String> paraMap) throws SQLException;
+
+	
+	// 관리자 회원관리 - 해당 유저 정지해제시키기
+	int ableMember(Map<String, String> paraMap) throws SQLException;
 	
 	
 

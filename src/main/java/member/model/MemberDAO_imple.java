@@ -561,7 +561,7 @@ public class MemberDAO_imple implements MemberDAO {
 	         String sql =  " select userid, name, email, phone, address, addressdetail, gender, member.memberidx "
 	         			 + " , birthday, point, registerday, memberidx.status "
 	         			 + " from member join memberidx on member.memberidx = memberidx.memberidx "
-	         			 + " where memberidx.memberidx = 1 and userid = ? ";
+	         			 + " where memberidx.memberidx != 9 and userid = ? ";
 	                     
 	         pstmt = conn.prepareStatement(sql);
 	         
@@ -1025,9 +1025,9 @@ public class MemberDAO_imple implements MemberDAO {
 
 	// 관리자 회원관리 - 해당 유저 정지
 	@Override
-	public List<MemberDTO> disableMember(String userid) throws SQLException {
+	public int disableMember(Map<String, String> paraMap) throws SQLException {
 		
-		List<MemberDTO> adstatusOff = new ArrayList<>();
+		int result = 0;
 	     
 		try {
 			conn = ds.getConnection();
@@ -1037,27 +1037,58 @@ public class MemberDAO_imple implements MemberDAO {
 						+ " where userid = ? and memberidx = ? ";
              
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
-			pstmt.setString(2, rs.getString("memberidx"));
+			
+			pstmt.setString(1, paraMap.get("userid")); 
+			pstmt.setString(2, paraMap.get("memberidx"));
 
-			rs = pstmt.executeQuery();
+			result = pstmt.executeUpdate();
 
-			while(rs.next()) {
-				
-				MemberDTO mdto = new MemberDTO();
-				mdto.setUserid(rs.getString("userid"));
-				mdto.setMemberIdx(rs.getString("memberidx"));
-				
-				adstatusOff.add(mdto);
-				
-			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
 		} finally {
 			close();
 		}
 	      
-	    return adstatusOff;
+	    return result;
 	      
+	    
+	    
 	} // end of public List<MemberDTO> disableMember(String userid) throws SQLException
+
+
+	
+	
+	// 관리자 회원관리 - 해당 유저 정지해제시키기
+	@Override
+	public int ableMember(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+	     
+		try {
+			conn = ds.getConnection();
+     
+			String sql =  " update member "
+						+ " set memberidx = 1 "
+						+ " where userid = ? and memberidx = ? ";
+             
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid")); 
+			pstmt.setString(2, paraMap.get("memberidx"));
+
+			result = pstmt.executeUpdate();
+
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	      
+	    return result;
+	    
+	} // end of public int ableMember(Map<String, String> paraMap) throws SQLException
 
 
 	

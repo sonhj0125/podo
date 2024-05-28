@@ -333,7 +333,9 @@ public class CouponDAO_imple implements CouponDAO {
 			} // end of while(rs.next())
 			
 			
-		}finally {
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
 			close();
 		}
 		

@@ -49,6 +49,7 @@ public class AdminMemberDetail extends AbstractController {
 			String userid = request.getParameter("userid");
 			String goBackURL = request.getParameter("goBackURL");
 			String coname = request.getParameter("coname");
+			String memberidx = request.getParameter("memberidx");
 			
 			if(!"POST".equalsIgnoreCase(method)) {
 				// GET 방식일때
@@ -85,19 +86,20 @@ public class AdminMemberDetail extends AbstractController {
 				paraMap.put("coname", coname);
 				
 				int admycodtoList = codao.adminCouponIn(paraMap);
-				JSONObject jsobj = new JSONObject();	// {}
-				
-				
-				Map<String, String> paraMap = new HashMap<>();
+			
 				paraMap.put("userid", userid);
-				paraMap.put("memberidx", memberidx)
+				paraMap.put("memberidx", memberidx);
 				
 				int adstatusOff = mdao.disableMember(paraMap);
-				request.setAttribute("adstatusOff", adstatusOff);
-				
+				int adstatusOn = mdao.ableMember(paraMap);
+
+				JSONObject jsobj = new JSONObject();
+				jsobj.put("admycodtoList", admycodtoList);	
+				jsobj.put("adstatusOff", adstatusOff);
+				jsobj.put("adstatusOn", adstatusOn);
+				jsobj.put("memberidx", memberidx);
 			
-		        jsobj.put("admycodtoList", admycodtoList);	// {"isSuccess":1} 또는 {"isSuccess":0}
-		         
+		       
 		        String json = jsobj.toString();
 		        request.setAttribute("json", json);
 				
