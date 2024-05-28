@@ -285,3 +285,70 @@ WHERE COCODE = 'QXWRTYPLMNZA' AND TO_DATE(CODATE, 'YYYY-MM-DD') >= TRUNC(SYSDATE
 
 
 VHNFGXZLOUAW
+
+SELECT rno, USERID, POINCOME, PODETAIL, PODATE
+FROM  
+( 
+select rownum as rno, USERID, POINCOME, PODETAIL, PODATE
+ from   
+ (  
+ select USERID, POINCOME, PODETAIL, PODATE
+from point 
+where userid = ? 
+) V 
+) T  
+ WHERE T.rno BETWEEN ? AND ?
+ 
+ 
+ 
+ select CODISCOUNT, CONAME, CODETAIL, COTYPE, COMIN, CODATE, COREGISTERDAY, COCODE
+ from coupon
+ where coname = v.coname
+ 
+ 
+ 
+ SELECT 
+    T.rno, 
+    T.COINDEX, 
+    T.USERID, 
+    T.CONAME, 
+    T.COSTATUS, 
+    C.CODISCOUNT, 
+    C.CODETAIL, 
+    C.COTYPE, 
+    C.COMIN, 
+    C.CODATE, 
+    C.COREGISTERDAY, 
+    C.COCODE
+FROM (
+    SELECT 
+        rownum AS rno, 
+        COINDEX, 
+        USERID, 
+        CONAME, 
+        COSTATUS
+    FROM (
+        SELECT 
+            COINDEX, 
+            USERID, 
+            CONAME, 
+            COSTATUS
+        FROM 
+            mycoupon
+        WHERE 
+            userid = 'ksj1024sj'
+    ) V
+) T
+JOIN coupon C ON T.CONAME = C.CONAME
+WHERE T.rno BETWEEN 1 AND 5
+
+
+desc coupon
+
+
+select ceil(count(*)/10) 
+from point 
+where userid = 'ksj1024sj'
+
+select *
+from point

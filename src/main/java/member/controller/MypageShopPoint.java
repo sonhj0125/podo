@@ -1,6 +1,8 @@
 package member.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +13,7 @@ import member.domain.MemberDTO;
 import member.domain.PointDTO;
 import member.model.PointDAO;
 import member.model.PointDAO_imple;
+import my.util.MyUtil;
 
 public class MypageShopPoint extends AbstractController {
 
@@ -23,8 +26,6 @@ public class MypageShopPoint extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String method = request.getMethod();
-
 		HttpSession session = request.getSession();
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
@@ -35,59 +36,126 @@ public class MypageShopPoint extends AbstractController {
 			request.setAttribute("loginUser", loginUser);
 			
 			String userid = loginUser.getUserid();
-			request.setAttribute("userid", userid);
 
-			// 사용가능 적립금, 누적 적립금, 사용한 적립금(합쳐서 한개)
-			PointDTO podto = podao.getUserPointDetails(userid);
-			
-			// 유저가 적립한 포인트 로그 가져오기
-			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
-			
-			/*
-			// 유저가 적립한 포인트 로그 가져오기
-			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
+            // 현재 페이지 번호
+            String currentShowPageNo = request.getParameter("currentShowPageNo");
+            // 페이지당 보여줄 쿠폰 개수
+            String sizePerPage = "10";
 
-			// 유저가 사용한 포인트 로그 가져오기
-			List<PointDTO> pointUsedHistoryList = podao.getUserPointUsedHistoryList(userid);
-			*/
-			
-			/*
-			// 소멸예정 적립금 리스트 가져오기 (소멸예정 적립금, 날짜, 남은일자)
-			List<PointDTO> expiryList = podao.getExpiryDetailsList(userid);
-			*/
-			
-			/*
-			// 적립내역 리스트 가져오기(poStatus(0,1)) + 사용내역 리스트 가져오기(2)
-			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
-			
-			int expiringPoints = 0;
-			if(expiryList != null) {
-				for (PointDTO expiringPointDTO : expiryList) {
-					expiringPoints += Integer.parseInt(expiringPointDTO.getExpiringPoints());
-				}
+            // 총 페이지 수
+            int totalPage = podao.getTotalPage(userid);
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
 			}
 			
-			boolean hasPoStatus2 = false; // 사용기록이 있는지 없는지 확인하기 위해 만듦
-			if(pointHistoryList != null) {
-				for(PointDTO PoStatus2 : pointHistoryList) {
-					if(PoStatus2.getPoStatus().equals("2")) {
-						// PoStatus2 값이 있을 경우
-						hasPoStatus2 = true;
-						break;
-					}
-				}
+            Map<String, String> paraMap = new HashMap<>();
+            paraMap.put("userid", userid);
+			paraMap.put("currentShowPageNo", currentShowPageNo);
+			paraMap.put("sizePerPage", sizePerPage); // 한페이지당 보여줄 행의 개수 
+			
+			try {
+				 if( Integer.parseInt(currentShowPageNo) > totalPage || 
+					 Integer.parseInt(currentShowPageNo) <= 0 ) {
+					 currentShowPageNo = "1";
+					 paraMap.put("currentShowPageNo", currentShowPageNo);
+				 }
+			} catch(NumberFormatException e) {
+				currentShowPageNo = "1";
+				paraMap.put("currentShowPageNo", currentShowPageNo);
 			}
-			request.setAttribute("expiryList", expiryList);
-			request.setAttribute("expiringPoints", expiringPoints);
+			
+			
+			String pageBar = "";  
+			
+			int blockSize = 10;
+			// blockSize 는 블럭(토막)당 보여지는 페이지 번호의 개수이다.
+			
+			int loop = 1;
+			// loop 는 1 부터 증가하여 1개 블럭을 이루는 페이지번호의 개수(지금은 10개)까지만 증가하는 용도이다. 
+			
+			// ==== !!! 다음은 pageNo 구하는 공식이다. !!! ==== // 
+			int pageNo  = ( (Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1; 
+			// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
+			
+			// *** [맨처음][이전] 만들기 *** //
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>"; 
+			
+			if(pageNo != 1) {
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>"; 
+			}
+			
+			while( !(loop > blockSize || pageNo > totalPage) ) {
+				
+				if(pageNo == Integer.parseInt(currentShowPageNo)) {
+					pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>"; 
+				}
+				else {
+					pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
+				}
+				
+				loop++;    // 1 2 3 4 5 6 7 8 9 10
+				
+				pageNo++;  //  1  2  3  4  5  6  7  8  9 10
+				           // 11 12 13 14 15 16 17 18 19 20
+				           // 21 22 23 24 25 26 27 28 29 30
+				           // 31 32 33 34 35 36 37 38 39 40
+				           // 41 42 
+				            
+			}// end of while( !( ) )--------
+			
+			// *** [다음][마지막] 만들기 *** //
+			// pageNo ==> 11
+			
+			if(pageNo <= totalPage) { 
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+			}
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			
+			
+			// *** ======= 페이지바 만들기 끝 ======= *** //	        
+	        
+			
+			
+			// *** ====== 현재 페이지를 돌아갈 페이지(goBackURL)로 주소 지정하기 ======= *** //
+			String currentURL = MyUtil.getCurrentURL(request);
+			// 회원조회를 했을시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임.
+			
+            // **** 페이징 처리를 한 모든 포인트 목록 보여주기 **** //
+            List<PointDTO> myPointpaging = podao.selectMyPointpaging(paraMap);
+			
+            
+			request.setAttribute("myPointpaging", myPointpaging);
+			request.setAttribute("sizePerPage", sizePerPage);
+			request.setAttribute("pageBar", pageBar);
+			request.setAttribute("currentURL", currentURL);
+			
+            // 총 포인트 개수
+            int totalMyPointCount = podao.getTotalMyPointCount(userid);
+            
+            request.setAttribute("totalMyPointCount", totalMyPointCount);
+            request.setAttribute("currentShowPageNo", currentShowPageNo);
+            
+
+	        
+			// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
+			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
+			
 			request.setAttribute("pointHistoryList", pointHistoryList);
-			request.setAttribute("hasPoStatus2", hasPoStatus2);
 			
-			request.setAttribute("pointUsedHistoryList", pointUsedHistoryList);
-			*/
-			
-			request.setAttribute("podto", podto);
-			request.setAttribute("pointHistoryList", pointHistoryList);
-			
+			/*
+			 * int totalCoupon = 0; int usedCoupon = 0; int availableCoupons = 0;
+			 * if(pointHistoryList.size() != 0) { totalCoupon = pointHistoryList.size(); //
+			 * 총 쿠폰 발행 수
+			 * 
+			 * for (PointDTO podto : pointHistoryList) { if(podto.getCostatus() == 2) {
+			 * usedCoupon++; // 사용한 쿠폰 수 } if(podto.getCostatus() == 1) {
+			 * availableCoupons++; // 가용 쿠폰 수 } } }
+			 * 
+			 * 
+			 * request.setAttribute("totalCoupon", totalCoupon);
+			 * request.setAttribute("usedCoupon", usedCoupon);
+			 * request.setAttribute("availableCoupons", availableCoupons);
+			 */
 
 			
 			super.setRedirect(false);

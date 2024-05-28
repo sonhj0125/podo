@@ -2,7 +2,9 @@ package member.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
+import coupon.domain.MyCouponDTO;
 import member.domain.PointDTO;
 
 public interface PointDAO {
@@ -21,6 +23,15 @@ public interface PointDAO {
 	
 	// 유저가 적립한 포인트 로그 가져오기
 	List<PointDTO> getUserPointHistoryList(String userid) throws SQLException;
+
+	// 총 페이지 수
+	int getTotalPage(String userid) throws SQLException;
+
+	// **** 페이징 처리를 한 모든 포인트 목록 보여주기 **** //
+	List<PointDTO> selectMyPointpaging(Map<String, String> paraMap) throws SQLException;
+
+	// 총 포인트 개수
+	int getTotalMyPointCount(String userid) throws SQLException;
 
 
 

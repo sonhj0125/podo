@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import coupon.domain.CouponDTO;
+import coupon.domain.MyCouponDTO;
 import member.domain.MemberDTO;
 import member.domain.PointDTO;
 import shop.domain.ProductDTO;
@@ -338,6 +341,120 @@ public class PointDAO_imple implements PointDAO {
 		
 		return pointHistoryList;
 	} // end of public List<PointDTO> getUserPointDetailsList(String userid) throws SQLException ---
+
+
+	
+	// 총 페이지 수
+	@Override
+	public int getTotalPage(String userid) throws SQLException {
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select ceil(count(*)/10) "
+						+ " from point "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;	
+	}
+
+	// **** 페이징 처리를 한 모든 포인트 목록 보여주기 **** //
+	@Override
+	public List<PointDTO> selectMyPointpaging(Map<String, String> paraMap) throws SQLException {
+
+		List<PointDTO> myPointpaging = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " SELECT rno, USERID, POINCOME, PODETAIL, PODATE "
+						+ " FROM   "
+						+ " (  "
+						+ " select rownum as rno, USERID, POINCOME, PODETAIL, PODATE "
+						+ " from    "
+						+ " (   "
+						+ " select USERID, POINCOME, PODETAIL, PODATE "
+						+ " from point  "
+						+ " where userid = ?  "
+						+ " ) V  "
+						+ " ) T   "
+						+ " WHERE T.rno BETWEEN ? AND ? ";
+				
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt( paraMap.get("currentShowPageNo") ); 
+			int sizePerPage = Integer.parseInt( paraMap.get("sizePerPage") );
+			
+			System.out.println("currentShowPageNo" + currentShowPageNo);
+			System.out.println("sizePerPage" + sizePerPage);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); // 공식
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				PointDTO podto = new PointDTO();
+
+				podto.setUserID(rs.getString("USERID"));
+				podto.setPoIncome(rs.getString("POINCOME"));
+				podto.setPoDetail(rs.getString("PODETAIL"));
+				podto.setPoDate(rs.getString("PODATE"));
+				
+				myPointpaging.add(podto);
+			}// end of while(rs.next())---------------------
+		} finally {
+			close();
+		}
+		return myPointpaging;
+
+	} // end of public List<MyCouponDTO> selectMyPointpaging(Map<String, String> paraMap) throws SQLException ----
+
+
+	// 총 포인트 개수
+	@Override
+	public int getTotalMyPointCount(String userid) throws SQLException {
+
+		int totalMyPointCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select count(*) "
+						+ " from point "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+						
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalMyPointCount = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalMyPointCount;
+	} // end of public int getTotalMyPointCount(String userid) throws SQLException ----
 
 	
 	
