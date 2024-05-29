@@ -468,7 +468,6 @@ public class CouponDAO_imple implements CouponDAO {
 						+ "    C.CODISCOUNT, "
 						+ "    C.CODETAIL, "
 						+ "    C.COTYPE, "
-						+ "    C.COMIN, "
 						+ "    C.CODATE, "
 						+ "    C.COREGISTERDAY, "
 						+ "    C.COCODE "
@@ -519,7 +518,6 @@ public class CouponDAO_imple implements CouponDAO {
 				cdto.setCocode(rs.getString("COCODE"));
 				cdto.setCotype(rs.getInt("COTYPE"));
 				cdto.setCodiscount(rs.getInt("CODISCOUNT"));
-				cdto.setComin(rs.getInt("COMIN"));
 				
 				mcdto.setCodto(cdto);
 				
@@ -558,5 +556,74 @@ public class CouponDAO_imple implements CouponDAO {
 		
 		return availableCoupons;	
 	} // end of public int getAvailableCoupons(String userid) throws SQLException ----
+	
+	// 관리자 회원관리 - 쿠폰선택
+	   @Override
+	   public List<CouponDTO> adminCoupon() throws SQLException {
+	      
+	      List<CouponDTO> codtoList = new ArrayList<>();
+	      
+	      try {
+	         
+	         conn = ds.getConnection();
+	         
+	         String sql = " select codiscount, coname, codetail, cotype, codate, coregisterday, cocode "
+	                  + " from coupon ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	            
+	            CouponDTO codto = new CouponDTO();
+	            
+	            codto.setConame(rs.getString("coname"));
+	            
+	            codtoList.add(codto);
+	            
+	         } // end of while(rs.next())
+	         
+	         
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+	      return codtoList;   
+	      
+	   } // end of public List<CouponDTO> adminCouponIn() throws SQLException 
+
+
+	   // 관리자 회원관리 - 쿠폰넣기
+	   @Override
+	   public int adminCouponIn(Map<String, String> paraMap) throws SQLException {
+	      
+	      int result = 0;
+	      
+	      try {
+	         
+	         conn = ds.getConnection();
+	      
+	         String sql = " insert into mycoupon(coindex, userid, coname, costatus) VALUES (seq_coindex.nextval, ?, ?, 1) ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, paraMap.get("userid"));
+	         pstmt.setString(2, paraMap.get("coname"));
+	         
+	         result = pstmt.executeUpdate();
+	         
+	         
+	      } catch(Exception e) {
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;
+	      
+	   } // end of public List<MyCouponDTO> adminCouponIn(String userid) throws SQLException
+	
 	
 }

@@ -135,7 +135,7 @@ commit;
 select userid, name, email, phone, address, addressdetail, gender
  , birthday, point, registerday, memberidx.status
 from member join memberidx on member.memberidx = memberidx.memberidx
-where memberidx.memberidx = 1 and userid = 'test002'
+where memberidx.memberidx != 9 and userid = 'admin_1'
 
 
 select *
@@ -147,6 +147,8 @@ from coupon;
 select *
 from mycoupon;
 
+select *
+from member;
 
 insert into mycoupon(coindex, userid, coname, costatus) values('503', 'kmj0228', '무료로 드립니다 [100% 쿠폰]', '1');
 
@@ -158,10 +160,88 @@ from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCO
 where MEMBER.USERID = 'kmj0228'
 
 
-select coupon.coname AS coname
-from coupon 
-join mycoupon on coupon.coname = mycoupon.coname
-join member on mycoupon.userid = member.userid
-where member.userid = 'kmj0228';
 
+select logindex, userid, logindate, ipaddress
+from 
+(
+    select log.logindex AS logindex, member.userid AS userid, logindate, ipaddress
+    from log 
+    join member on log.userid = member.userid
+    where member.userid = 'kmj0228'
+    order by logindate desc
+) T
+WHERE rownum <= 5;
+
+
+update member
+set memberidx = '1'
+where userid = 'auto007' and memberidx = '3';
+
+
+update member
+set memberidx = '1'
+where memberidx = '3';
+
+
+commit;
+
+
+
+select *
+from member;
+
+select *
+from review;
+
+select *
+from point;
+
+
+select member.userid AS userid, poincome, podetail, podate
+from point
+join member on point.userid = member.userid
+where member.userid = 'admin_1'
+order by podate desc;
+
+
+insert into point(userid, poincome, podetail, podate) values('admin_1', 1000, '상품 구매 적립', '2024-05-27 15:16:00');
+insert into point(userid, poincome, podetail, podate) values('admin_1', 1450, '상품 구매 적립', '2024-05-27 15:10:00');
+insert into point(userid, poincome, podetail, podate) values('admin_1', 12850, '이벤트 적립', '2024-05-27 14:05:00');
+
+
+
+commit;
+
+
+
+select review.rindex, review.rstar, review.rdetail, review.rdate
+from review join orders on review.oindex = orders.oindex
+join member on orders.userid = member.userid
+where member.userid = 'admin_1'
+order by odate desc;
+
+
+
+
+select coupon.coname
+from coupon join mycoupon on coupon.coname = mycoupon.coname
+join member on mycoupon.userid = member.userid
+where member.userid = ''
+order by coindex desc;
+
+
+
+insert into mycoupon(coindex, userid, coname, costatus) VALUES (seq_coindex.nextval, ?, ?, 1)
+
+
+delete from mycoupon
+where userid = 'admin_1';
+
+commit;
+
+
+select userid, name, email, phone, address, addressdetail, gender, member.memberIdx
+, birthday, point, registerday, memberidx.status
+from member join memberidx on member.memberidx = memberidx.memberidx
+where memberidx.memberidx = 1 and userid = 'admin_1'
 

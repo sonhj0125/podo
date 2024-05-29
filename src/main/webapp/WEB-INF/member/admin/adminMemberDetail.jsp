@@ -11,32 +11,169 @@
 
 <jsp:include page="/WEB-INF/header.jsp" />
 
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminRegisterCoupon.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateStatusOff.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateStatusOn.js"></script>
+
+
 <style type="text/css">
    
-	<%-- 페이지 이동 --%>
 	.page-link {
-	  color: #000; 
-	  background-color: #fff;
-	  border: 1px solid #ccc; 
+	  	color: #000; 
+	  	background-color: #fff;
+	  	border: 1px solid #ccc; 
 	}
 	
 	.page-item.active .page-link {
-	 z-index: 1;
-	 color: #555;
-	 font-weight:bold;
-	 background-color: #f1f1f1;
-	 border-color: #ccc;
+	 	z-index: 1;
+	 	color: #555;
+	 	font-weight:bold;
+	 	background-color: #f1f1f1;
+	 	border-color: #ccc;
 	 
 	}
 	
 	.page-link:focus, .page-link:hover {
-	  color: #000;
-	  background-color: #fafafa; 
-	  border-color: #ccc;
+	  	color: #000;
+	  	background-color: #fafafa; 
+	  	border-color: #ccc;
 	}
- 
- 
+	
+	
+	div#modal-body {
+		width: 90%;
+		align: center;
+		margin-left : 3%;
+	}
+	
+	
+	input#stopstatus, input#gostatus {
+		background-color: #ccc;
+	}
+	
+	
+	input#stopstatus:hover, input#gostatus:hover {
+		background-color: #ff4d4d;
+		
+	}
+	
+	
+	
 </style>
+
+
+<%-- 관리자 포인트 내역 클릭시 나오는 Modal --%>
+<div class="modal fade" id="adminPoint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+              <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/point.png" style="width:35px; vertical-align: text-top;">&nbsp;포인트 내역</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+          	<div>
+            	<table class="table" style="text-align:center;">
+					<thead>
+						<tr>
+						  	<th scope="col">회원아이디</th>
+						  	<th scope="col">변동포인트</th>
+						  	<th scope="col">변동내역</th>
+						  	<th scope="col">변동일자</th>
+						</tr>
+					</thead>
+					
+				  	<tbody>
+				  	<c:forEach var="pointList" items="${requestScope.podtoList}">
+						<tr>
+							<th scope="row">${pointList.userID}</th>
+							<td>${pointList.poIncome}</td>
+							<td>${pointList.poDetail}</td>
+							<td>${pointList.poDate}</td>
+				    	</tr>
+				    </c:forEach> 
+				 	</tbody>
+				</table>
+           	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 포인트 내역 클릭시 나오는 Modal 끝 --%>
+
+
+<%-- 관리자 리뷰 내역 클릭시 나오는 Modal --%>
+<div class="modal fade" id="adminReview" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+              <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/adminreview.png" style="width:35px; vertical-align: text-top;">&nbsp;리뷰 내역</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body pt-0">
+          	<div>
+            	<table class="table" style="text-align:center;">
+					<thead>
+						<tr>
+						  	<th scope="col">리뷰번호</th>
+						  	<th scope="col">별점</th>
+						  	<th scope="col">리뷰내용</th>
+						  	<th scope="col">작성일자</th>
+						</tr>
+					</thead>
+					
+				  	<tbody>
+				  	<c:forEach var="reviewList" items="${requestScope.adminReviewList}">
+						<tr>
+							<th scope="row">${reviewList.rindex}</th>
+							<td>${reviewList.rstar}</td>
+							<td>${reviewList.rdetail}</td>
+							<td>${reviewList.rdate}</td>
+				    	</tr>
+				    </c:forEach> 
+				 	</tbody>
+				</table>
+           		</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 리뷰 내역 클릭시 나오는 Modal 끝 --%>
+
+
+<%-- 관리자 쿠폰 넣기 클릭시 나오는 Modal --%>
+<div class="modal fade" id="adminCouponIn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+              <h1 class="fw-bold mb-0 fs-3"><img src="<%=ctxPath%>/images/salecoupon/registersale.png" style="width:35px; vertical-align: text-top;">&nbsp;쿠폰 넣기</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body" id="modal-body">
+          	<div>
+            	<div class="input-group mb-3">
+					<label class="input-group-text" for="pHomeTown">쿠폰</label>
+			
+					<select class="form-select" name="aconame">
+						<option selected>선택하세요.</option>
+						<c:forEach var="acolist" items="${requestScope.codtoList}">
+							<option value="${acolist.coname}">${acolist.coname}</option>
+						</c:forEach>
+					</select>
+					<input type="hidden" value="${requestScope.mdto.userid}" id ="userid" />
+		
+					<div class="form-group" style="margin-left:5%;">
+						<input id="btn-couponRegister" class="btn btn-danger ml-4" type="button" value="등록" onclick="registerCouponAd()"/>
+					</div>
+				</div>
+           	</div>
+          </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 쿠폰 넣기 클릭시 나오는 Modal 끝 --%>
+
 
 
 <div class="container" style="padding: 3% 0;">
@@ -61,7 +198,7 @@
 		         </tr>
 		         <tr>
 		            <td>회원명</td>
-		            <td>${requestScope.mdto.name} <button type="button" class="btn btn-warning btn-sm" onclick="">리뷰내역</button></td>
+		            <td>${requestScope.mdto.name} <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminReview" >리뷰내역</button></td>
 		         </tr>
 		         <tr>
 		            <td>이메일</td>
@@ -95,8 +232,8 @@
 		         	<td>포인트/쿠폰</td>
 		            <td>
                			<fmt:formatNumber value="${requestScope.mdto.point}" pattern="###,###" />&nbsp;POINT
-               			<button type="button" class="btn btn-warning btn-sm" onclick="">포인트내역</button>
-               			<button type="button" class="btn btn-warning btn-sm" onclick="">쿠폰넣기</button>
+               			<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminPoint">포인트내역</button>
+               			<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#adminCouponIn">쿠폰넣기</button>
                		</td>
 		         </tr>
 		         <tr>
@@ -107,10 +244,13 @@
 		            <td>회원상태</td>
 		            <td>
 		            	${requestScope.mdto.status}
-		            	<button type="button" class="btn btn-warning btn-sm" onclick="">정지</button>
+		            	<input type="button" id="stopstatus" class="statusOff" style=" border:none; border-radius: 5px;" value="정지" onclick="statusOff()"/>
+		            	<input type="button" id="gostatus" class="statusOn" style=" border:none; border-radius: 5px;" value="해제" onclick="statusOn()"/>
 		            </td>
 		         </tr>
 			</table>
+		<input type="hidden" id="stUserid" value="${requestScope.mdto.userid}"/>
+		<input type="hidden" id="stMemberidx" value="${requestScope.mdto.memberIdx}"/>
 		
 		<div class="input-group mb-3">
 		  	<label class="input-group-text" for="userCoupon">보유 쿠폰</label>
@@ -127,19 +267,19 @@
 	<table class="table">
 		<thead>
 			<tr>
-			  	<th scope="col">LogIndex</th>
 			  	<th scope="col">UserId</th>
 			  	<th scope="col">LoginDate</th>
 			  	<th scope="col">IdAddress</th>
 			</tr>
 		</thead>
 	  	<tbody>
-			<tr>
-				<th scope="row">LogIndex</th>
-				<td>UserId</td>
-				<td>LoginDate</td>
-				<td>IdAddress</td>
-	    	</tr>
+		  	<c:forEach var="list" items="${requestScope.ldtoList}">
+				<tr>
+					<th scope="row">${list.userid}</th>
+					<td>${list.logindate}</td>
+					<td>${list.ipaddress}</td>
+		    	</tr>
+		    </c:forEach>
 	  	</tbody>
 	</table>
 		

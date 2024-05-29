@@ -72,7 +72,7 @@ $(function() {
 	    const bool = regExp_point.test($(e.target).val());
 
         if(!bool){
-            alert("숫자만 입력할수 있습니다!");
+            alert("숫자만 입력할 수 있습니다!");
             $("input#pointuse").prop("value","0");
             document.getElementById("pointsale").innerText = "0원"
         }else{

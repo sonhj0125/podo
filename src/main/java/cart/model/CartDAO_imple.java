@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -610,7 +612,7 @@ public class CartDAO_imple implements CartDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "select dname,DPHONE,demail,DMSG,DADDRESS,DADDRESSDETAIL,DNUMBER,OSTATUS,OARDATE "
+			String sql = "select dindex, dname,DPHONE,demail,DMSG,DADDRESS,DADDRESSDETAIL,DNUMBER,OSTATUS,OARDATE "
 					+ "from DELIVERY join ORDERS on DELIVERY.OINDEX = ORDERS.OINDEX where DELIVERY.OINDEX = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -621,6 +623,7 @@ public class CartDAO_imple implements CartDAO {
 			if(rs.next()) {
 				ddto = new DeliveryDTO();
 				
+				ddto.setDindex(rs.getInt("dindex"));
 				ddto.setDname(rs.getString("dname"));
 				ddto.setDphone(rs.getString("dphone"));
 				ddto.setDemail(rs.getString("demail"));
@@ -653,6 +656,118 @@ public class CartDAO_imple implements CartDAO {
 		}
 		
 		return ddto;
+	}
+
+	@Override
+	public boolean registerdnum(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE DELIVERY "
+					+ " SET DNUMBER = ? "
+					+ " WHERE DINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("dnumber"));
+			pstmt.setString(2, paraMap.get("dindex"));
+			
+			if(1 == pstmt.executeUpdate()) {
+				result=true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean registerostatus(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "update ORDERS "
+					+ "set OSTATUS = ? "
+					+ "where OINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("ostatus"));
+			pstmt.setString(2, paraMap.get("oindex"));
+			
+			if(1 == pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public void setOardate(Map<String, String> paraMap) throws SQLException {
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE ORDERS "
+					+ "SET OARDATE = ? "
+					+ "WHERE OINDEX = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			Date now = new Date();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			String nowStr = df.format(now);
+			
+			pstmt.setString(1, nowStr);
+			pstmt.setString(2, paraMap.get("oindex"));
+			
+			pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
+	}
+
+	@Override
+	public String directselectCidx(String userid) throws SQLException {
+		
+		String result = "";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select CINDEX from CART where USERID = ? order by CINDEX desc";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getString("CINDEX");
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	}
 
 	
