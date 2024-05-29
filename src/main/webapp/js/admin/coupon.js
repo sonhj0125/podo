@@ -23,6 +23,7 @@ $(function() {
         const couponNameElement = document.getElementById("couponname");
         const couponDiscountElement = document.getElementById("discount");
         const couponDateElement = document.getElementById("codate");
+        const couponCodeElement = document.getElementById("cocode");
 
 /*
         if (!couponNameElement) {
@@ -46,7 +47,7 @@ $(function() {
         const couponName = couponNameElement.value.trim(); // 쿠폰이름
         const couponDiscount = couponDiscountElement.value.trim(); // 할인금액
         const couponDate = couponDateElement.value; // 쿠폰기한 (~까지)
-		
+		const couponCode = couponCodeElement.value; // 쿠폰코드
 		
         // 유효성 검사
         if (couponName == "") {
@@ -79,6 +80,11 @@ $(function() {
 	            alert("할인율은 100% 를 넘을 수 없습니다.");
 	            isSubmit = false;
 			}
+		}
+		
+		if(couponCode.length < 16 || couponCode.length > 16) {
+	        alert("쿠폰 코드는 공백이거나 16글자 입니다.");
+	        isSubmit = false;
 		}
         
         // 쿠폰 유효기간 검사

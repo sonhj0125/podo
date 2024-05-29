@@ -28,6 +28,14 @@ public class Couponregister extends AbstractController {
 			if (super.isDir(request.getSession())) { // 관리자만 접근가능
 
 				CouponDTO codto = new CouponDTO();
+				
+				String cocode = request.getParameter("cocode");
+				if(cocode == null) {
+					codto.setCocode("");
+				}
+				else {
+					codto.setCocode(cocode);
+				}
 
 				codto.setConame(request.getParameter("coname"));
 				codto.setCodetail(request.getParameter("codetail"));

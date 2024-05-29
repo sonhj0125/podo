@@ -124,10 +124,10 @@ div#salepercent {
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="couponcode" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 코드</label>
+					<label for="cocode" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 코드</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" id="couponcode" type="text" name="couponcode" placeholder="쿠폰 코드"/>
+					<input class="form-control" id="cocode" type="text" name="cocode" placeholder="쿠폰 코드(16글자)"/>
 				</div>
 			</div>	
 		</div>
