@@ -468,7 +468,6 @@ public class CouponDAO_imple implements CouponDAO {
 						+ "    C.CODISCOUNT, "
 						+ "    C.CODETAIL, "
 						+ "    C.COTYPE, "
-						+ "    C.COMIN, "
 						+ "    C.CODATE, "
 						+ "    C.COREGISTERDAY, "
 						+ "    C.COCODE "
@@ -519,7 +518,6 @@ public class CouponDAO_imple implements CouponDAO {
 				cdto.setCocode(rs.getString("COCODE"));
 				cdto.setCotype(rs.getInt("COTYPE"));
 				cdto.setCodiscount(rs.getInt("CODISCOUNT"));
-				cdto.setComin(rs.getInt("COMIN"));
 				
 				mcdto.setCodto(cdto);
 				
