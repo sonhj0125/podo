@@ -58,7 +58,8 @@ SELECT*
 FROM tab;
 
 select *
-from PRODUCT;
+from PRODUCT
+where pname = 'qwerqwer'
 
 SELECT *
 FROM all_sequences;
@@ -70,6 +71,21 @@ select *
 from PRODUCTDETAILIMG
 
 
+select userid, memberIdx
+from member
+
+
+select *
+from PRODUCT
+where pname = '와인'
+
+DELETE from PRODUCTDETAILIMG
+where pindex = '100'
+
+DELETE from product
+where pindex = '100'
+
+commit;
 
 
 

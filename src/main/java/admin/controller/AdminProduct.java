@@ -15,6 +15,7 @@ import javax.servlet.http.Part;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
+import member.domain.MemberDTO;
 import shop.domain.ProductDTO;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
@@ -44,8 +45,12 @@ public class AdminProduct extends AbstractController {
 		
 		// == 관리자(admin)로 로그인 했을 때만 제품등록이 가능하도록 한다. == //
 		HttpSession session =  request.getSession();
+
+		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
 		
-		if(super.isDir(session)) {
+		int memberIndex = Integer.parseInt(loginUser.getMemberIdx());
+		
+		if(loginUser != null && memberIndex == 9) {
 			// 관리자(admin)로 로그인 했을 경우
 			
 			String method =  request.getMethod();
@@ -104,38 +109,8 @@ public class AdminProduct extends AbstractController {
                 
                 for(Part part : parts) {
                 	
-	                //	System.out.printf(">> 확인용   파라미터(name)명 : %s, contentType : %s, size : %d bytes \n"
-	                //                    , part.getName(), part.getContentType(), part.getSize());	
-	                
-	                /*
-	                >> 확인용   파라미터(name)명 : fk_cnum, contentType : null, size : 1 bytes 
-	                >> 확인용   파라미터(name)명 : pname, contentType : null, size : 4 bytes 
-	                >> 확인용   파라미터(name)명 : pcompany, contentType : null, size : 4 bytes 
-	                >> 확인용   파라미터(name)명 : pimg, contentType : image/jpeg, size : 48901 bytes 
-	                >> 확인용   파라미터(name)명 : pdimg, contentType : image/jpeg, size : 41931 bytes 
-	                >> 확인용   파라미터(name)명 : prdmanualFile, contentType : application/pdf, size : 791567 bytes 
-	                >> 확인용   파라미터(name)명 : pqty, contentType : null, size : 1 bytes 
-	                >> 확인용   파라미터(name)명 : price, contentType : null, size : 4 bytes 
-	                >> 확인용   파라미터(name)명 : saleprice, contentType : null, size : 4 bytes 
-	                >> 확인용   파라미터(name)명 : fk_snum, contentType : null, size : 1 bytes 
-	                >> 확인용   파라미터(name)명 : pcontent, contentType : null, size : 4 bytes 
-	                >> 확인용   파라미터(name)명 : point, contentType : null, size : 4 bytes 
-	                >> 확인용   파라미터(name)명 : attachCount, contentType : null, size : 1 bytes 
-	                >> 확인용   파라미터(name)명 : attach0, contentType : image/png, size : 135288 bytes 
-	                >> 확인용   파라미터(name)명 : attach1, contentType : image/jpeg, size : 44338 bytes 
-	                >> 확인용   파라미터(name)명 : attach2, contentType : image/png, size : 366894 bytes 
-	                >> 확인용   파라미터(name)명 : attach3, contentType : image/jpeg, size : 48901 bytes 
-					*/
-	                	
 	                if(part.getHeader("Content-Disposition").contains("filename=")) { // form 태그에서 전송되어온 것이 파일일 경우
-                
-	                	 // Content-Disposition 이란?
-	                     // 일반적인 HTTP 응답에서 Content-Disposition 헤더는 컨텐츠가 브라우저로 보여지는 웹페이지 자체이거나,
-	                     // 아니면 컨텐츠가 attachment 로써 다운로드 되어질 용도로 쓰이는 것인지를 알려주는 헤더이다.
-	                     // 첨부파일은 Header 부분에 Content-Disposition 설정을 아래와 같이 설정해준다.
-	                     // Content-Disposition: attachment; filename="filename.jpg"
-	                     
-	                     // 그래서, 업로드한 파일명을 구하려면 Content-Disposition 헤더의 값을 사용한다.
+              
 	                	
 	                	 String fileName = extractFileName(part.getHeader("Content-Disposition"));
 	                	 
@@ -218,6 +193,8 @@ public class AdminProduct extends AbstractController {
                 pdetail =  pdetail.replaceAll("<", "$lt;");
                 pdetail =  pdetail.replaceAll(">", "$gt;");
 
+                
+               // System.out.println(ptannin);
                 
                 // 입력한 내용에서 엔터는 <br>로 변환하기
                 pdetail =  pdetail.replaceAll("\r\n", "<br>");
