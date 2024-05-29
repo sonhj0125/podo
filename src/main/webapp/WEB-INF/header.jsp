@@ -276,7 +276,7 @@
     
 </head>
 <body>
-    <nav class="py-2 bg-dark">
+    <nav class="py-2 bg-dark" style="background-color: #800000;">
         <div class="container d-flex flex-wrap justify-content-center">
             <div class="nav">
                 <label id="navTitle" class="text-align-center curpointer" style="color: white;"><img src="<%=ctxPath %>/images/title.png" class="img-fluid mx-auto d-block" style="max-width: 40%;"></label>
