@@ -48,6 +48,10 @@ public class UpdateRegisterOstatus extends AbstractController {
 					result = true;
 				}
 				
+				if("4".equals(ostatus)) {
+					cdao.setOardate(paraMap);
+				}
+				
 				JSONObject json = new JSONObject();
 				json.put("result", result);
 				String jsonStr = json.toString();

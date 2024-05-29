@@ -58,6 +58,9 @@ public interface CartDAO {
 	// 상태변경 하기
 	boolean registerostatus(Map<String, String> paraMap) throws SQLException;
 
+	// 배송완료일 저장하기
+	void setOardate(Map<String, String> paraMap) throws SQLException;
+
 
 
 	

@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -710,6 +712,35 @@ public class CartDAO_imple implements CartDAO {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public void setOardate(Map<String, String> paraMap) throws SQLException {
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE ORDERS "
+					+ "SET OARDATE = ? "
+					+ "WHERE OINDEX = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			Date now = new Date();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			String nowStr = df.format(now);
+			
+			pstmt.setString(1, nowStr);
+			pstmt.setString(2, paraMap.get("oindex"));
+			
+			pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
+		
 	}
 
 	
