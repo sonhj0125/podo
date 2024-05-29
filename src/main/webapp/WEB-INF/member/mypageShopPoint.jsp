@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
 	String ctxPath = request.getContextPath();
@@ -16,7 +16,16 @@
 
 
 <style type="text/css">
+div#pageBar {
+	border: solid 0px red;
+	width: 80%;
+	margin: 3% auto 0 auto;
+	display: flex;
+}
 
+div#pageBar>nav {
+	margin: auto;
+}
 
 </style>
 
@@ -111,9 +120,9 @@ function searchData() {
 	      --%>
 	    </tr>
 	    <tr class="table-group-divider">
-	      <td id="totalPoints">${requestScope.podto.totalPoints}</td>
-	      <td id="usedPoints">${requestScope.podto.usedPoints}</td>
-	      <td id="availablePoints">${requestScope.podto.availablePoints}</td>
+	      <td id="totalPoints">${requestScope.userpointdto.totalPoints}</td>
+	      <td id="usedPoints">${requestScope.userpointdto.usedPoints}</td>
+	      <td id="availablePoints">${requestScope.userpointdto.availablePoints}</td>
 	      <%--
 	      <td id="expiringPoints">${requestScope.expiringPoints}</td>
 	      --%>
@@ -121,11 +130,22 @@ function searchData() {
 	  </tbody>
 	</table>
 	
-	<div style="margin-top:4%;">
-	    <input id="startDate" type="date" style="width:20%; height:50px; margin-left:52%;"> ~ 
-	    <input id="endDate" type="date" style="width:20%; height:50px;">&nbsp;&nbsp;
-	    <button type="button" class="btn btn-secondary" style="width:5%; height:50px; font-size:13pt; font-weight:bold;" onclick="searchData()">검색</button>
-	</div>
+    <div class="container mt-4">
+        <div class="row justify-content-end align-items-center">
+            <div class="col-12 col-md-3 mb-3 mb-md-0">
+                <input id="startDate" type="date" class="form-control" />
+            </div>
+            <div class="col-12 col-md-auto text-center mb-3 mb-md-0">
+                <span>~</span>
+            </div>
+            <div class="col-12 col-md-3 mb-3 mb-md-0">
+                <input id="endDate" type="date" class="form-control" />
+            </div>
+            <div class="col-12 col-md-2">
+                <button type="button" class="btn btn-secondary w-100" onclick="searchData()">검색</button>
+            </div>
+        </div>
+    </div>
 	
 	<div class="vr" style="border:solid 1px blue; height:20px; margin-top:4%;"></div>
 		<span style="font-weight:bold; font-size:16pt;">나의 적립금</span>
@@ -149,14 +169,21 @@ function searchData() {
 				        <th>적립 내용</th>
 				        <th>포인트</th>
 				    </tr>
-				    <c:if test="${requestScope.pointHistoryList == null}">
+				    <c:if test="${requestScope.myPointpaging == null}">
 				        <tr>
 				            <td colspan="3">적립된 포인트가 없습니다.</td>
 				        </tr>
 				    </c:if>
 				
-				    <c:if test="${requestScope.pointHistoryList != null}">
-				        <c:forEach var="podto" items="${requestScope.pointHistoryList}">
+				    <c:if test="${requestScope.myPointpaging != null}">
+				        <c:forEach var="podto" items="${requestScope.myPointpaging}">
+				        
+			                    <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> 
+					            <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
+					<%-- 
+					            <td>${(requestScope.totalMyCouponCount) - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
+					--%>
+				        
 					            <tr>
 					                <td>${podto.poDate}</td>
 					                <td>${podto.poDetail}</td>
@@ -170,6 +197,17 @@ function searchData() {
 			</table>
 		</div>
 	</div>
+	
+	
+<!-- 페이지바 -->
+	<div id="pageBar">
+	    <nav>
+	        <ul class="pagination">
+	            ${requestScope.pageBar}
+	        </ul>
+	    </nav>
+	</div>
+	
 </div>
 
 
