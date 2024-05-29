@@ -9,6 +9,15 @@ from dual;
 select *
 from member;
 
+select *
+from COUPON;
+
+desc COUPON;
+
+    update member set MEMBERIDX = '9'
+    where USERID = 'ksj1024sj';
+    commit;
+
 -- 제품 테이블
 create table Product
 (pIdx              NVARCHAR2(20)  not null        -- 제품번호

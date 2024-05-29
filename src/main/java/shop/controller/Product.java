@@ -1,6 +1,7 @@
 package shop.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import cart.model.CartDAO_imple;
 import common.controller.AbstractController;
 import member.domain.MemberDTO;
 import shop.domain.ProductDTO;
+import shop.domain.ReviewDTO;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
 
@@ -36,12 +38,19 @@ public class Product extends AbstractController {
 			ProductDTO pdto = pdao.getproduct(pindex);
 
 			if (pdto != null) {
+				
+				// 좋아요 수 확인
+				int likeItCnt = pdao.getLikeCnt(pindex);
+				request.setAttribute("likeItCnt", likeItCnt);
 
 				String cartInfo = "none";
 				String likeIt = "none";
 				
+				// pindex에 대한 리뷰 목록 불러오기
+				List<ReviewDTO> reviewList = pdao.getReviewListByPindex(pindex);
+				
 				request.setAttribute("pdto", pdto);
-
+				request.setAttribute("reviewList", reviewList);
 				
 				HttpSession session = request.getSession();
 				MemberDTO mdto = (MemberDTO) session.getAttribute("loginUser");

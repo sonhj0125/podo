@@ -1,77 +1,19 @@
 $(function() {
-    // 페이지 로드될 때 체크된 상태 업데이트
-    updateCheckedIndexes();
 
     // 패스 주소 가져오기
     const ctxPath = document.getElementById("getPath").innerText;
 
-    // 총가격 계산
-    const pricearr = document.querySelectorAll(".priceOne");
-    let sumPrice = 0;
+    // 초기 세팅 시작
 
-    pricearr.forEach((item) => {
-        const priceOne = Number(item.innerText.replace("원", "").replaceAll(",", ""));
-        sumPrice += priceOne;
+    const pindexAll = [];
+
+    $('div.cart-index').each(function(){
+        pindexAll.push($(this).text());
     });
 
-    const sumPriceStr = sumPrice.toLocaleString();
-    document.querySelector("div#sumPrice").innerText = `${sumPriceStr}원`;
+    $('input#setCindex').val(pindexAll.join(","));
 
-    const indexIn = document.querySelectorAll("div.cart-index");
-    let Arr = "";
-    let fristSet = true;
-
-    // Form 포장하기
-    indexIn.forEach((item) => {
-        if(fristSet) {
-            fristSet = false;
-            Arr += item.innerText;
-        } else {
-            Arr += "," + item.innerText;
-        }
-    });
-    $('#setCindex').attr('value', Arr);
-    $('#setCindexOne').attr('value', Arr);
-    
-    // 처음에는 #setCindex 값을 넣어주고 변경사항이 있을 경우 #setCindexOne 의 값을 넣어준다.
-    
-    // 체크된 항목의 인덱스를 로컬 스토리지에 저장하는 함수
-    function saveCheckedIndexes() {
-        const checkedIndexes = [];
-        $('input.cbOne:checked').each(function() {
-            const index = $(this).closest('div.hstack').next('div.cart-index').text().trim();
-            checkedIndexes.push(index);
-        });
-		// 로컬에 현재 체크된 인덱스 값 저장 
-		// JSON 형식의 문자열로 변환
-        localStorage.setItem('checkedIndexes', JSON.stringify(checkedIndexes));
-    }
-
-    // 이전에 저장한 체크된 항목의 인덱스를 로컬 스토리지에서 복원하는 함수
-    function restoreCheckedIndexes() {
-		// 체크박스 체크될 때마다 로컬에 저장되는 checkedIndexes 가져오기
-        const savedIndexes = localStorage.getItem('checkedIndexes');
-        if (savedIndexes) { 
-			// 체크된 것이 있을 경우
-			// JavaScript 배열로 변환
-            const checkedIndexes = JSON.parse(savedIndexes);
-            checkedIndexes.forEach((index) => {
-                $('input.cbOne').each(function() {
-                    const cbIndex = $(this).closest('div.hstack').next('div.cart-index').text().trim();
-                    if (index == cbIndex) {
-                        $(this).prop('checked', true);
-                    }
-                });
-            });
-        }
-    }
-
-    // 페이지 로드 시 이전에 체크한 항목을 복원
-    restoreCheckedIndexes();
-
-    // 체크 박스 변경 시 동작
     const cbAll = $("input#cbAll");
-
     cbAll.prop('checked', true);
 
     const cbOne = $('input.cbOne');
@@ -80,84 +22,151 @@ $(function() {
         $(this).prop('checked', true);
     });
 
-	// 전체선택 체크박스가 변경될 때마다
+    // 초기 세팅 완료
+
+    //"전체 선택" 체크박스 변경 시 모든 개별 체크박스의 상태를 변경
     cbAll.on('change', function() {
-		// 변경된 체크박스에 체크해주고
         $('input.cbOne').prop('checked', $(this).prop('checked'));
-        // 변경된 체크박스의 인덱스값 저장한 후
-        saveCheckedIndexes();
-        // 결제 예정금액에 값을 넣어준다
-        updateCheckedIndexes();
+        updateone();
+        sumAll();
     });
 
-	// 체크박스 낱개가 변경될 때마다
+    // 개별 체크박스 변경 시 "전체 선택" 체크박스 상태를 업데이트
     $('input.cbOne').on('change', function() {
+
         let allChecked = true;
+
         $('input.cbOne').each(function() {
+
             if (!$(this).is(':checked')) {
                 allChecked = false;
             }
         });
 
-        if(allChecked) {
-            cbAll.prop('checked', true);
-        } else {
-            cbAll.prop('checked', false);
+        if(allChecked){
+            cbAll.prop("checked",true);
+        }else{
+            cbAll.prop("checked",false);
         }
-		// 변경된 체크박스의 인덱스값 저장한 후
-        saveCheckedIndexes();
-        // 결제 예정금액에 값을 넣어준다
-        updateCheckedIndexes();
+
+        updateone();
+        sumAll();
+
     });
 
+    // +, - 버튼 클릭 이벤트 핸들러
+    $(".plus_btn, .minus_btn").on("click", function() {
+        const volumeDiv = $(this).siblings("div#div-volume");
+        let volume = parseInt(volumeDiv.text().replace("EA", ""));
+        if ($(this).hasClass("plus_btn")) {
+            volume++;
+        } else {
+            if (volume > 1) {
+                volume--;
+            }
+        }
+        volumeDiv.text(volume + "EA");
+        $(this).siblings("div#dcnt").text(volume);
 
-    // Link
+        updateone();
+        sumOne();
 
-    $("#btn-cartDel").bind('click',function(){
-		
-		const frm = document.orderSetOne;
-		frm.method = "post";
-		frm.action = `${ctxPath}/cart/cartoutarr.wine`;
-		frm.submit();
-		
-	});
+    });
+
+    // "카트 삭제" 버튼 클릭 이벤트 핸들러
+    $("#btn-cartDel").bind('click', function() {
+        updateone();
+        const frm = document.orderSetOne;
+        frm.method = "post";
+        frm.action = `${ctxPath}/cart/cartoutarr.wine`;
+        frm.submit();
+    });
+
+    // "Order-one" 버튼 클릭
+    $("#Order-one").bind('click', function() {
+        updateone();
+        const frm = document.orderSetOne;
+        frm.method = "post";
+        frm.action = `${ctxPath}/shop/order.wine`;
+        frm.submit();
+    });
+
+    // "Order-all" 버튼 클릭
+    $("#Order-all").bind('click', function() {
+        const frm = document.orderSet;
+        frm.method = "post";
+        frm.action = `${ctxPath}/shop/order.wine`;
+        frm.submit();
+    });
+
+    // 순차 데이터 삽입
+    updateone();
+    sumAll();
 
 });
 
-// cbAll이 변경되었을 때 결제 예정금액을 가져오는 함수
-function updateCheckedIndexes() {
-    const checkedIndexes = [];
-    $('input.cbOne:checked').each(function() {
-        const index = $(this).closest('div.hstack').next('div.cart-index').text().trim();
-        checkedIndexes.push(index);
-    });
+function updateone(){
 
-    // cbAll이 체크되어 있으면 setCindexOne에 모든 인덱스 값을 설정
-    if ($("input#cbAll").prop('checked')) {
-        const allIndexes = [];
-        $('div.cart-index').each(function() {
-            const index = $(this).text().trim();
-            allIndexes.push(index);
-        });
-        $('#setCindexOne').attr('value', allIndexes.join(','));
-    } else {
-        // cbAll이 체크되어 있지 않다면 체크된 항목의 인덱스를 설정
-        $('#setCindexOne').attr('value', checkedIndexes.join(','));
-    }
+    let pindexArr = [];
+    let pvolumeArr = [];
+    let pvolumeAllArr = [];
 
-    // 결제 예정금액 가져오기
-    const sumPrice = calculateTotalPrice(checkedIndexes);
-    const sumPriceStr = sumPrice.toLocaleString();
-    document.querySelector("div#sumPrice").innerText = `${sumPriceStr}원`;
+    $("input.cbOne").each(function() {
+
+        const volumeAll = $(this).parent().find("div#dcnt").text();
+        pvolumeAllArr.push(volumeAll);
+
+        if($(this).is(':checked')){
+            const volumeOne = $(this).parent().find("div#dcnt").text();
+            pvolumeArr.push(volumeOne);
+            const indexOne = $(this).parent().find("div#didx").text();
+            pindexArr.push(indexOne);
+        }
+
+    })
+
+    const pindexStr = pindexArr.join(",");
+    const pvolumeStr = pvolumeArr.join(",");
+    const pvolumeAllStr = pvolumeAllArr.join(",");
+
+    $("input#setcVolume").val(pvolumeAllStr);
+    $("input#setCindexOne").val(pindexStr);
+    $("input#setcVolumeOne").val(pvolumeStr);
+
 }
 
-// 체크된 상품들의 총 가격을 계산하는 함수
-function calculateTotalPrice(checkedIndexes) {
-    let sumPrice = 0;
-    checkedIndexes.forEach(function(index) {
-        const priceText = $(`div.cart-index:contains('${index}')`).prev().find('.priceOne').text().replace("원", "").replaceAll(",", "");
-        const price = Number(priceText);
-        sumPrice += price;
-    });
-    return sumPrice;
+function sumOne(){
+
+    $("input.cbOne").each(function() {
+
+        const volume = $(this).parent().find("div#dcnt").text();
+        const priceNat = $(this).parent().find("div#dprice").text();
+        const priceNum = priceNat.replace("원","").replaceAll(",","");
+
+        const sumone = Number(volume) * Number(priceNum);
+
+        $(this).parent().find("div#dpriceSum").text(sumone.toLocaleString()+"원");
+
+        sumAll();
+
+    })
+
+}
+
+function sumAll(){
+
+    let sumAll = 0;
+
+    $("input.cbOne").each(function() {
+    
+        const sumoneNat = $(this).parent().find("div#dpriceSum").text();
+
+        const sumone = sumoneNat.replace("원","").replaceAll(",","");
+    
+        sumAll += Number(sumone);
+
+    })
+
+    $("div#sumPrice").text(sumAll.toLocaleString()+"원");
+
 }

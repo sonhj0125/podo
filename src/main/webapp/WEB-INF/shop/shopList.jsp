@@ -95,6 +95,7 @@ $(function() {
 	
 
 	// ==================== SMART SEARCH ====================
+	
 	// 스마트서치 가격 체크박스 여러 개 중 1개만 선택되도록 만들기
     $("input:checkbox[name='pprice']").click(e => {
 
@@ -163,6 +164,87 @@ $(function() {
     });
 	
 	
+	
+	// 와인 종류 선택한 것 유지
+	if(${not empty requestScope.ptype_arr_join}) {
+		const ptype_arr = "${requestScope.ptype_arr_join}".split(",");
+		
+	    // ptype에 해당하는 체크박스 선택
+	    $.each(ptype_arr, function(index, value) {
+	        $("input:checkbox[name='ptype'][value='" + value + "']").prop('checked', true);
+	    });
+	}	
+	
+	// 가격 선택한 것 유지
+	if(${not empty requestScope.pprice}) {
+		$("input:checkbox[name='pprice'][value='" + value + "']").prop('checked', true);
+	}
+	
+	// 원산지 선택한 것 유지
+	if(${not empty requestScope.phometown_arr_join}) {
+		const phometown_arr = "${requestScope.phometown_arr_join}".split(",");
+		
+	    // phometown에 해당하는 체크박스 선택
+	    $.each(phometown_arr, function(index, value) {
+	        $("input:checkbox[name='phometown'][value='" + value + "']").prop('checked', true);
+	    });
+	}
+	
+	// 바디 선택한 것 유지
+	if(${not empty requestScope.pbody}) {
+		$("input:checkbox#none1").prop("checked", false);
+		let html = `<input id="slider_pbody" name="pbody" type="range" min="1" max="5" step="1" list="tickmarks">
+		    <datalist id="tickmarks">
+		        <option value="1">가벼움</option>
+		        <option value="2">약간가벼움</option>
+		        <option value="3">중간</option>
+		        <option value="4">약간무거움</option>
+		        <option value="5">무거움</option>
+	    	</datalist>`;
+
+		$("div#pbody_bar").append(html);
+		
+		$("input:checkbox[name='pbody'][value='" + value + "']").prop('checked', true);
+	}
+	
+	// 산도 선택한 것 유지
+	if(${not empty requestScope.pacid}) {
+		
+		$("input:checkbox#none2").prop("checked", false);
+		let html = `<input id="slider_pacid" name="pacid" type="range" min="1" max="5" step="1" list="acid">
+		    <datalist id="tickmarks">
+		        <option value="1">낮음</option>
+		        <option value="2">약간낮음</option>
+		        <option value="3">중간</option>
+		        <option value="4">약간높음</option>
+		        <option value="5">높음</option>
+		    </datalist>`;
+
+		$("div#pacid_bar").append(html);
+		
+		$("input:checkbox[name='pacid'][value='" + value + "']").prop('checked', true);
+	}
+	
+	// 타닌 선택한 것 유지
+	if(${not empty requestScope.ptannin}) {
+		
+		$("input:checkbox#none3").prop("checked", false);
+		let html = `<input id="slider_ptannin" name="ptannin" type="range" min="1" max="5" step="1" list="tanin">
+    		<datalist id="tickmarks">
+		        <option value="1">약함</option>
+		        <option value="2">약간약함</option>
+		        <option value="3">중간</option>
+		        <option value="4">약간강함</option>
+		        <option value="5">강함</option>
+		    </datalist>`;
+
+		$("div#ptannin_bar").append(html);
+		
+		$("input:checkbox[name='ptannin'][value='" + value + "']").prop('checked', true);
+	}
+	
+	
+	
 	// 리셋 클릭 시
 	$("i#resetSmartSearch").click(function() {
 		location.href = "<%=ctxPath%>/shop/list.wine";
@@ -172,6 +254,7 @@ $(function() {
 	$("button#submitSmartSearch").click(function() {
 		goSmartSearch();
 	});
+	
 }); // end of $(function() {}) --------------------------------
 
 function goSmartSearch() {
@@ -202,8 +285,21 @@ function goSmartSearch() {
 		return;
 	} */
 	
-	const frm = document.smartSearchFrm;
-	frm.submit();
+	const frm1 = document.smartSearchFrm;
+	const frm2 = document.sortFrm;
+	
+    // 정렬 폼의 입력 필드를 smart search 폼에 추가
+    Array.from(frm2.elements).forEach(element => {
+        if(element.name) { // 입력 필드에 name 속성이 있는지 확인
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = element.name;
+            input.value = element.value;
+            frm1.appendChild(input);
+        }
+    });
+	
+	frm1.submit();
 } // end of function goSmartSearch() ------------
 </script>
 
@@ -492,9 +588,9 @@ function goSmartSearch() {
 			    
 			    <div id="button" style="display: flex; align-items: center;">
 			  	  <%-- search 제출 버튼 --%>
-				  <button type="button" id="submitSmartSearch" class="btn btn-danger mt-5">Search</button>
+				  <button type="button" id="submitSmartSearch" class="btn btn-danger btn-lg mt-5 d-grid gap-2 col-6 mx-auto">Search</button>
 				  <%-- 검색 조건 reset --%>
-				  <i class="fa-solid fa-arrows-rotate" id="resetSmartSearch" style="margin-left: 10px;"></i>
+				  <i class="fa-solid fa-arrows-rotate fa-2x" id="resetSmartSearch" style="margin-top:13%; margin-right:2%;"></i>
 			    </div>
 		  </form>
 	  </div>

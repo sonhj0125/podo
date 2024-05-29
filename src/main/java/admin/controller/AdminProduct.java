@@ -1,4 +1,4 @@
-package member.controller;
+package admin.controller;
 
 import java.io.File;
 import java.util.Calendar;
@@ -15,7 +15,6 @@ import javax.servlet.http.Part;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
-import member.domain.MemberDTO;
 import shop.domain.ProductDTO;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;

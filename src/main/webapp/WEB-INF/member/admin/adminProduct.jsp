@@ -22,6 +22,25 @@ label.input-group-text, span.input-group-text {
 
 	$(document).ready(function(){
 		
+		// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 시작 <<== //
+		$(document).on("change", "input.img_file", function(e){
+			
+			const input_file = $(e.target).get(0);
+			
+	        const fileReader = new FileReader();
+			
+	        fileReader.readAsDataURL(input_file.files[0]); 
+	        fileReader.onload = function(){	
+	        	
+	            document.getElementById("previewImg").src = fileReader.result;	
+	        	
+	        }; // end of fileReader.onload = function()
+			
+	        
+		}); // end of $(document).on("change", "input.img_file", function(e)
+		// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 끝 <<== //
+		
+		
 	      // 제품 등록하기
 	      $("input:button[id='btnRegister']").click(function() {
 	         

@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -25,6 +28,8 @@ public class MemberDAO_imple implements MemberDAO {
 	private ResultSet rs;
 	
 	private AES256 aes;
+	
+	private DecimalFormat df = new DecimalFormat("#,###");
 	
 	public MemberDAO_imple() {
 		
@@ -68,9 +73,9 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "INSERT INTO MEMBER "
-					+ " (USERID, PWD, NAME, EMAIL, PHONE, ADDRESS, ADDRESSDETAIL, GENDER, BIRTHDAY) "
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = " INSERT INTO MEMBER "
+					   + " (USERID, PWD, NAME, EMAIL, PHONE, ADDRESS, ADDRESSDETAIL, GENDER, BIRTHDAY) "
+					   + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -127,7 +132,10 @@ public class MemberDAO_imple implements MemberDAO {
 				mdto.setAddressDetail(rs.getString(6));
 				mdto.setGender(rs.getString(7));
 				mdto.setBirthday(rs.getString(8));
-				mdto.setPoint(rs.getString(9));
+				
+				String point = df.format(Integer.parseInt(rs.getString(9)));
+				mdto.setPoint(point);
+				
 				mdto.setRegisterDay(rs.getString(10));
 				mdto.setPwdUpdateDay(rs.getString(11));
 				mdto.setMemberIdx(rs.getString(12));
@@ -344,14 +352,246 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 	}
 
+	
+	
+	// 관리자 회원관리 - 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기
+	@Override
+	public List<MemberDTO> select_Member_paging(Map<String, String> paraMap) throws SQLException {
+		
+		List<MemberDTO> memberList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT rno, userid, name, email, phone, gender, point, status "
+					   + " FROM "
+					   + " ( "
+					   + "    select rownum AS rno, userid, name, email, phone, gender, point, status "
+					   + "    from "
+					   + "    ( "
+					   + "        select userid, name, email, phone, gender, point, status "
+					   + "        from member join memberidx on member.memberidx = memberidx.memberidx "
+					   + "        where memberidx.memberidx != 9";
+			
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
+			
+			
+			sql += " order by registerday desc "
+				 + "    ) "
+				 + " ) T "
+				 + " WHERE T.rno BETWEEN ? AND ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage =Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(1, searchWord);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+				
+			} else {
+				// 검색이 없는 경우
+				
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage - (sizePerPage - 1)));
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MemberDTO mdto = new MemberDTO();
+				
+				mdto.setUserid(rs.getString("userid"));
+				mdto.setName(rs.getString("name"));
+				mdto.setEmail(aes.decrypt(rs.getString("email")));
+				mdto.setPhone(aes.decrypt(rs.getString("phone")));
+				mdto.setGender(rs.getString("gender"));
+				mdto.setPoint(rs.getString("point"));
+				mdto.setStatus(rs.getString("status"));
+				
+				memberList.add(mdto);
+				
+			} // end of while(rs.next())
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return memberList;
+		
+	} // end of public List<MemberDTO> select_Member_paging(Map<String, String> paraMap)
+
+
+	/* >>> 뷰단(memberList.jsp)에서 "페이징 처리 시 보여주는 순번 공식" 에서 사용하기 위해 
+	   검색이 있는 또는 검색이 없는 회원의 총 개수 알아오기 <<< */
+	@Override
+	public int getTotalMemberCount(Map<String, String> paraMap) throws SQLException {
+		int totalMemberCount = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) "
+					   + " from member join memberidx on member.memberidx = memberidx.memberidx "
+					   + " where memberidx.memberidx != 9 ";
+
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(1, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalMemberCount = rs.getInt(1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return totalMemberCount;
+		
+	} // end of public int getTotalMemberCount(Map<String, String> paraMap)
 
 	
+	// 관리자 회원관리 - 페이징 처리를 위한 검색이 있는 또는 검색이 없는 회원에 대한 총 페이지 수 알아오기
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "
+					   + " from member "
+					   + " join memberidx "
+					   + " on member.memberidx = memberidx.memberidx "
+					   + " where memberidx.memberidx != 9 ";
+
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				
+				sql += " and " + colname + " like '%'|| ? ||'%' ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
+			
+			if((colname != null && !colname.trim().isEmpty()) && 
+			   (searchWord != null && !searchWord.trim().isEmpty())) {
+				// 검색이 있는 경우
+				
+				pstmt.setString(2, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+		
+	} // end of public int getTotalPage(Map<String, String> paraMap) throws SQLException
+			
 	// 관리자 회원관리 - 한명 조회
 	@Override
 	public MemberDTO selectOneMember(String userid) throws SQLException {
 		
-		return null;
-	}
+		MemberDTO mdto = null;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql =  " select userid, name, email, phone, address, addressdetail, gender "
+	         			 + " , birthday, point, registerday, memberidx.status "
+	         			 + " from member join memberidx on member.memberidx = memberidx.memberidx "
+	         			 + " where memberidx.memberidx = 1 and userid = ? ";
+	                     
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, userid);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	        	 
+	        	 mdto = new MemberDTO();
+	            
+	        	 mdto.setUserid(rs.getString("userid"));
+	        	 mdto.setName(rs.getString("name"));
+	        	 mdto.setEmail(aes.decrypt(rs.getString("email")));
+	        	 mdto.setPhone(aes.decrypt(rs.getString("phone")));
+	        	 mdto.setAddress(rs.getString("address"));
+	        	 mdto.setAddressDetail(rs.getString("addressdetail"));
+	        	 mdto.setGender(rs.getString("gender"));
+	        	 mdto.setBirthday(rs.getString("birthday"));
+	        	 mdto.setPoint(rs.getString("point"));
+	        	 mdto.setRegisterDay(rs.getString("registerday"));
+	        	 mdto.setStatus(rs.getString("status"));
+	        	 
+	         } // end of if(rs.next())
+	         
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+	      return mdto;
+	      
+	} // end of public MemberDTO selectOneMember(String userid) throws SQLException
 
 
 	// 회원의 개인 정보 변경하기 
@@ -426,7 +666,7 @@ public class MemberDAO_imple implements MemberDAO {
 	}// end of public boolean emailDuplicateCheck2(Map<String, String> paraMap) throws SQLException-----
 
 
-	// 마이페이지 비밀번호 변경 비밀번호 변경
+	// 마이페이지 비밀번호 변경
 	@Override
 	public int pwdUpdate2(Map<String, String> paraMap) throws SQLException {
 		
@@ -444,13 +684,51 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(2, paraMap.get("userid"));
 	        
 	        result = pstmt.executeUpdate();
+		}finally {
+		close();
+		}
+	
+		return result;
+	
+	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
+
+	
+	// [마이페이지] 작성할 리뷰 개수 알아오기
+	@Override
+	public int getReviewCnt(String userid) throws SQLException {
+		
+		int cnt = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT count(*) as CNT "
+					   + " FROM "
+					   + " ( "
+					   + "     select P.pindex, pname, pengname, to_number(pprice) as pprice, pimg, "
+					   + "            to_number(ototalprice) as ototalprice, ostatus, odate, ovolume, oindex "
+					   + "     from product P JOIN orders O "
+					   + "     ON P.pindex = O.pindex "
+					   + "     where O.userid = ? and O.ostatus = 4 "
+					   + " ) V "
+					   + " LEFT JOIN REVIEW R "
+					   + " ON V.oindex = R.oindex "
+					   + " where rindex is null ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			cnt = rs.getInt(1);
 			
 		} finally {
 			close();
 		}
-		System.out.println(result);
 		
-		return result;
+		return cnt;
+		
 	}// end of public int pwdUpdate2(Map<String, String> paraMap) throws SQLException-----------------------
 
 
@@ -484,5 +762,218 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	}// end of public boolean duplicatePwdCheck(Map<String, String> paraMap) throws SQLException-----------
 
+	@Override
+	public int pointread(String userid) throws SQLException {
+		
+		int mypoint = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select point from MEMBER where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String pointStr = rs.getString("point");
+				
+				try {
+					mypoint = Integer.parseInt(pointStr);
+				}catch (Exception e) {
+					mypoint = -1;
+				}
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return mypoint;
+	}
+
+
+
+	@Override
+	public boolean delPoint(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MEMBER SET POINT = POINT - ? WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public boolean writePointDown(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 구입 차감";
+			String point = "-"+paraMap.get("point");
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, point);
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public boolean addPoint(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE MEMBER SET POINT = POINT + ? WHERE USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("point"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+		
+	}
+
+
+	@Override
+	public boolean writePointUp(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 구매 적립";
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("point"));
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		return result;
+		
+	}
+
+
+	
+	// 회원가입 쿠폰 주기
+	@Override
+	public int insertRegisterCoupon(String userid) throws SQLException {
+
+		int result = 0;
+
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " insert into mycoupon(coindex, userid, coname, costatus) "
+					   + " VALUES (seq_coindex.nextval, ?, '신규회원 가입 감사쿠폰', 1) ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+
+			result = pstmt.executeUpdate();
+
+		} finally {
+			close();
+		}
+
+		return result;
+
+	} // end of public int insertRegisterCoupon(String parameter) throws SQLException ------------
+
+	@Override
+	public String getMyPoint(String userid) throws SQLException {
+		
+		String point = "0";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select point from MEMBER where USERID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				point = df.format(Integer.parseInt(rs.getString("point")));
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return point;
+	}
 	
 }

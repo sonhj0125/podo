@@ -8,16 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
 import member.domain.MemberDTO;
-import member.model.MemberDAO;
-import member.model.MemberDAO_imple;
 
 public class PwdUpdate extends AbstractController {
-	
-	private MemberDAO mdao = null;
-	
-	public PwdUpdate() {
-		mdao = new MemberDAO_imple();
-	}
 
 	@Override
 	   public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

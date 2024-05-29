@@ -29,7 +29,7 @@ public class ShopList extends AbstractController {
 		
 		String[] ptype_arr = request.getParameterValues("ptype");
 		String pprice = request.getParameter("pprice");
-		String phometown = request.getParameter("phometown");
+		String[] phometown_arr = request.getParameterValues("phometown");
 		String pbody = request.getParameter("pbody");
 		String pacid = request.getParameter("pacid");
 		String ptannin = request.getParameter("ptannin");
@@ -47,20 +47,21 @@ public class ShopList extends AbstractController {
 			sizePerPage = "8";
 		}
 
-		Map<String, String> paraMap = new HashMap<>();
+		Map<String, Object> paraMap = new HashMap<>();
 		paraMap.put("currentShowPageNo", currentShowPageNo);
 		paraMap.put("sizePerPage", sizePerPage); // 한 페이지 당 보여줄 상품의 개수
 
 		paraMap.put("sortType", sortType);
 		
+		paraMap.put("ptype_arr", ptype_arr);
 		paraMap.put("pprice", pprice);
-		paraMap.put("phometown", phometown);
+		paraMap.put("phometown_arr", phometown_arr);
 		paraMap.put("pbody", pbody);
 		paraMap.put("pacid", pacid);
 		paraMap.put("ptannin", ptannin);
 		
 		// 페이징 처리를 위해 검색이 있는 또는 검색이 없는 상품에 대한 총 페이지 수 알아오기
-		int totalPage = pdao.getTotalPage(ptype_arr, paraMap);
+		int totalPage = pdao.getTotalPage(paraMap);
 
 		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 totalPage 값보다 더 큰 값을 입력하여 장난친 경우
         // === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 0 또는 음수를 입력하여 장난친 경우
@@ -85,6 +86,14 @@ public class ShopList extends AbstractController {
 		    }
 		}
 		
+		// phometown_arr 파라미터를 URL에 포함시키기 위해 변환
+		String phometownParam = "";
+		if (phometown_arr != null) {
+			for (String phometown : phometown_arr) {
+				phometownParam += "&phometown=" + URLEncoder.encode(phometown, "UTF-8");
+			}
+		}
+		
 		// *** ==== 페이지바 만들기 시작 ==== *** //
 		StringBuilder pageBar = new StringBuilder();
 
@@ -101,7 +110,9 @@ public class ShopList extends AbstractController {
 
 		String baseUrl = "list.wine?sizePerPage=" + sizePerPage + "&sortType=" + sortType + ptypeParam;
 		if (pprice != null) baseUrl += "&pprice=" + pprice;
-		if (phometown != null) baseUrl += "&phometown=" + phometown;
+		
+		baseUrl += phometownParam;
+		
 		if (pbody != null) baseUrl += "&pbody=" + pbody;
 		if (pacid != null) baseUrl += "&pacid=" + pacid;
 		if (ptannin != null) baseUrl += "&ptannin=" + ptannin;
@@ -137,19 +148,25 @@ public class ShopList extends AbstractController {
 		List<ProductDTO> pdtList = new ArrayList<>();
 		
 		if("popular".equals(sortType)) { // 인기순 정렬일 때
-			pdtList = pdao.selectProductPagingPopular(ptype_arr, paraMap);
+			pdtList = pdao.selectProductPagingPopular(paraMap);
 			
 		} else {
-			pdtList = pdao.selectProductPaging(ptype_arr, paraMap);
+			pdtList = pdao.selectProductPaging(paraMap);
 		}
 
 		request.setAttribute("pdtList", pdtList); // 상품 목록
 
 		request.setAttribute("sortType", sortType); // 정렬 타입
 		
-		request.setAttribute("ptype_arr", ptype_arr); // 와인 종류 배열
+		String ptype_arr_join = "";
+		String phometown_arr_join = "";
+		
+		if(ptype_arr != null) ptype_arr_join = String.join(",", ptype_arr);
+		if(phometown_arr != null)  phometown_arr_join = String.join(",", phometown_arr);
+		
+		request.setAttribute("ptype_arr_join", ptype_arr_join);
 		request.setAttribute("pprice", pprice);
-		request.setAttribute("phometown", phometown);
+		request.setAttribute("phometown_arr_join", phometown_arr_join);
 		request.setAttribute("pbody", pbody);
 		request.setAttribute("pacid", pacid);
 		request.setAttribute("ptannin", ptannin);

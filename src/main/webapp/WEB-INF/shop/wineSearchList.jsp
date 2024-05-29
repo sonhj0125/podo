@@ -25,13 +25,20 @@ div.container {
 		<h1 style="font-weight: bold; margin-bottom: 2%; text-align: center;">WINE</h1>
 	</div>
 	<hr>
-	<div>
-		<p style="font-size: 16pt;">검색 결과 : <span style="font-weight: bold; color: #990000;">${requestScope.searchWord}</span></p>
+	<div style="display: flex;">
+		<div style="width: 50%;">
+			<p style="font-size: 16pt;">검색 결과 : <span style="font-weight: bold; color: #990000;">${requestScope.searchWord}</span></p>
+		</div>
+		<c:if test="${not empty requestScope.wineList}">
+			<div style="width: 50%; text-align: right;">
+				<p style="font-size: 16pt;"><span style="font-weight: bold;">${requestScope.count}</span>개의 상품 검색</p>
+			</div>
+		</c:if>
 	</div>
 
 	<c:if test="${empty requestScope.wineList}">
-		<div class="m-5" style="text-align: center;">
-			<span style="font-size: 20pt;">검색 결과가 없습니다. <i class="fa-solid fa-face-sad-tear"></i></span>
+		<div class="m-5" style="text-align: center; height: 500px;">
+			<span font-size: 20pt;">검색 결과가 없습니다. <i class="fa-solid fa-face-sad-tear"></i></span>
 		</div>
 	</c:if>
 

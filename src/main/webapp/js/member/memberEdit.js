@@ -21,9 +21,8 @@ $(function () {
                 }
 
                 document.getElementById("address").value = addr;
-                // document.getElementById("addressDetail").val("");
+                $("#addressDetail").val("");
                 document.getElementById("addressDetail").focus();
-                
 
             }
         }).open();

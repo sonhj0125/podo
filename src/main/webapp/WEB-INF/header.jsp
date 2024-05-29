@@ -80,6 +80,16 @@
 	
 	window.onload = ()=> {
 		
+		<%-- keycode == 27 == Esc--%>
+		document.addEventListener("keydown", function(e) {
+		  let code = (e.keyCode ? e.keyCode : e.which);
+		  
+		  if (code == 27) {
+		    let nextState = toggleSwitch.getAttribute('aria-label') == 'unchecked' ? 'checked' : 'unchecked';
+		    toggleSwitch.setAttribute('aria-label', nextState);
+		  }
+		})
+		
 		<%-- Header Home --%>
 		$("label#navTitle").bind('click',()=>{
 			location.href="<%=ctxPath%>/index.wine";
@@ -138,7 +148,7 @@
 		});
 		
 		<%-- MyPage Click --%>
-		$("div#ReviewList").bind('click',()=>{
+		$("div.reviewList").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/reviewList.wine";
 		});
 		
@@ -188,15 +198,39 @@
 			goSearch();
 		});
 		
+		
+		<%-- 마이페이지 쇼핑정보 쿠폰 클릭시 --%>
+		$("div#memberCoupon").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
+		});
+		$("div#memberCoupon2").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
+		});
+		
+		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
+		$("div#memberPoint").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
+		});
+		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
+		$("div#memberPoint2").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
+		});
+		
+		
 		<%-- 관리자 회원관리 클릭시 --%>
-      $("div#adminMember").bind('click',()=>{
-         location.href="<%=ctxPath%>/member/admin/adminMember.wine";
-      });
+        $("div#adminMember").bind('click',()=>{
+         	location.href="<%=ctxPath%>/member/admin/adminMember.wine";
+        });
       
-      <%-- 관리자 제품등록 클릭시 --%>
-      $("div#adminProduct").bind('click',()=>{
-         location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
-      });
+		<%-- 관리자 제품등록 클릭시 --%>
+		$("div#adminProduct").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
+		});
+		
+		<%-- 관리자 주문관리 클릭시 --%>
+		$("div#adminOrder").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminOrder.wine";
+		});
 		
 	} // end of window.onload
 	
@@ -293,9 +327,9 @@
       
                       <div class="modal-body p-5 pt-0">
                           <div id="login">
-                        <iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
-                        </iframe>
-                     </div>
+	                        <iframe id="iframe_login" style="border: none; width: 100%; height: 420px;" src="<%=ctxPath%>/login/login.wine">
+	                        </iframe>
+                     	  </div>
                       </div>
                   </div>
               </div>
@@ -356,27 +390,29 @@
      <div class="offcanvas-body">
 
             <hr style="width: 90%; color: purple; border: solid 2px;">       
-            <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name }</span>님 안녕하세요!</div>
+            <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name}</span>님 안녕하세요!</div>
            <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
-            <div class="position-relative" style="margin-right: 5%; cursor: pointer;">
-               <span class="position-absolute top-1 start-100 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+            <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
+            	<c:if test="${sessionScope.reviewCnt != 0}">
+               		<span class="position-absolute top-1 ms-4 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+            	</c:if>
                   <i class="fa-regular fa-newspaper" style="margin: 10%;">
                   </i>
                   <br>
                   <div style="font-weight: bold;">리뷰</div>
-                  <div style="color: purple;">2</div>
-               </div>
-               <div style="margin-right: 5%; cursor: pointer;">
-                  <i class="fa-solid fa-ticket"></i>
-                  <div style="font-weight: bold; cursor: pointer;">쿠폰</div>
-                  <div style="color: purple;">2</div>
-               </div>
-               <div style="cursor: pointer;">
-                  <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                  <br>
-                  <div style="font-weight: bold; cursor: pointer;">적립금</div>
-                  <div style="color: purple;">${sessionScope.loginUser.point }</div>
-               </div>
+                  <div style="color: purple;">${sessionScope.reviewCnt}</div>
+            </div>
+            <div style="margin-right: 5%; cursor: pointer;">
+               <i class="fa-solid fa-ticket"></i>
+               <div id="memberCoupon2" style="font-weight: bold; cursor: pointer;">쿠폰</div>
+               <div style="color: purple;">2</div>
+            </div>
+            <div style="cursor: pointer;">
+               <i class="fa-solid fa-circle-dollar-to-slot"></i>
+               <br>
+               <div id="memberPoint2" style="font-weight: bold; cursor: pointer;">적립금</div>
+               <div style="color: purple;">${sessionScope.loginUser.point}</div>
+            </div>
            </div>
            <hr style="width: 90%; color: purple; border: solid 2px;">  
      
@@ -401,22 +437,24 @@
          <hr style="width: 90%;">
             <div>
                <div id="OrderList" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문내역조회</div>
-               <div id="ReviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;" >리뷰관리</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
+               <div id="reviewPage" class="reviewList" style="display: flex; margin-bottom: 2%; cursor: pointer;" >리뷰관리</div>
+               <div id="memberCoupon" style="display: flex; margin-bottom: 2%; cursor: pointer;">쿠폰</div>
+               <div id="memberPoint" style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
             </div>
        </div>
        
-      <div>
-         <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
-         <hr style="width: 90%;">
-            <div>
-               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
-               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
-               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
-            </div>
-            
-        </div>
+       <c:if test="${sessionScope.loginUser.memberIdx == '9'}">
+	      <div>
+	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
+	         <hr style="width: 90%;">
+	            <div>
+	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문 관리</div>
+	               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
+	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
+	               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
+	           </div>
+	       </div>
+        </c:if>
 	    
 	  </div>
 	  

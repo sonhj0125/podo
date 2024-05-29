@@ -52,6 +52,9 @@ public class Signin extends AbstractController {
 						HttpSession session = request.getSession();
 						session.setAttribute("loginUser", loginUser);
 						
+						int reviewCnt = mdao.getReviewCnt(request.getParameter("userid"));
+						session.setAttribute("reviewCnt", reviewCnt);
+						
 						int dayDiff = 0;
 						
 						if(loginUser.getPwdUpdateDay() == null) { // pw 변경이력 X
@@ -100,7 +103,7 @@ public class Signin extends AbstractController {
 						
 						if(dayDiff>90) { // 비밀번호 변경한지 90일 초과한 경우
 							
-							msg = "비밀번호 변경한지 90일을 초과하였습니다.";
+							msg = "비밀번호를 변경한 지 90일이 초과되었습니다.";
 							
 						}else { // 비밀번호 변경한지 90일 이내인 경우
 							
@@ -121,7 +124,7 @@ public class Signin extends AbstractController {
 						msg = "로그인 오류발생 관리자에게 문의해주세요.";
 					}
 				}else { // id 없음
-					msg = "없는아이디거나 틀린 비밀번호입니다.";
+					msg = "없는 아이디거나 틀린 비밀번호입니다.";
 				}
 				
 			}

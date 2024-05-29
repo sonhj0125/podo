@@ -30,7 +30,7 @@ public class FrontController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-private Map<String, Object> cmdMap = new HashMap<>();
+	private Map<String, Object> cmdMap = new HashMap<>();
 	
 	public void init(ServletConfig config) throws ServletException {
 

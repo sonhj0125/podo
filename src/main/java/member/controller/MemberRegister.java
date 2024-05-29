@@ -36,15 +36,23 @@ public class MemberRegister extends AbstractController {
 				mdto.setGender(request.getParameter("gender"));
 				mdto.setBirthday(request.getParameter("birthday"));
 				
-				if(mdao.doRegister(mdto)==1) {
+				int n1 = mdao.doRegister(mdto);
+				int n2 = 0;
+				
+				if(n1 == 1) {
+					
+					// 회원가입 쿠폰 주기
+					n2 = mdao.insertRegisterCoupon(mdto.getUserid());
+				}
+				
+				if(n1*n2 == 1) {
 					request.setAttribute("userid", mdto.getUserid());
 					request.setAttribute("pwd", mdto.getPwd());
-					request.setAttribute("msg", "알수없는이유로 회원가입에 실패하였습니다.");
-					request.setAttribute("loc", request.getContextPath()+"/index.wine");
 					super.setRedirect(false);
 					super.setViewPage("/WEB-INF/login/autoLogin.jsp");
+					
 				}else {
-					request.setAttribute("msg", "알수없는이유로 회원가입에 실패하였습니다.");
+					request.setAttribute("msg", "알 수 없는 이유로 회원가입에 실패하였습니다.");
 					request.setAttribute("loc", request.getContextPath()+"/index.wine");
 					super.setRedirect(false);
 					super.setViewPage("/WEB-INF/msg.jsp");
