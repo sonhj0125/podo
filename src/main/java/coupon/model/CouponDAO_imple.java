@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
+import member.domain.MemberDTO;
 
 public class CouponDAO_imple implements CouponDAO {
 
