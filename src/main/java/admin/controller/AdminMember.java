@@ -180,11 +180,12 @@ public class AdminMember extends AbstractController {
 				super.setViewPage("/WEB-INF/msg.jsp");
 				
 			} // end of if(loginuser != null && "ejss0125".equals(loginuser.getUserid()))
+			
 		}catch (Exception e) {
+			super.setRedirect(true);
+			super.setViewPage(request.getContextPath()+"/index.wine");
+			
 		}
-		super.setRedirect(true);
-		super.setViewPage(request.getContextPath()+"/index.wine");
-		
 	} // end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception
 
 }
