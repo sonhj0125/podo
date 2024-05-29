@@ -610,7 +610,7 @@ public class CartDAO_imple implements CartDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "select dname,DPHONE,demail,DMSG,DADDRESS,DADDRESSDETAIL,DNUMBER,OSTATUS,OARDATE "
+			String sql = "select dindex, dname,DPHONE,demail,DMSG,DADDRESS,DADDRESSDETAIL,DNUMBER,OSTATUS,OARDATE "
 					+ "from DELIVERY join ORDERS on DELIVERY.OINDEX = ORDERS.OINDEX where DELIVERY.OINDEX = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -621,6 +621,7 @@ public class CartDAO_imple implements CartDAO {
 			if(rs.next()) {
 				ddto = new DeliveryDTO();
 				
+				ddto.setDindex(rs.getInt("dindex"));
 				ddto.setDname(rs.getString("dname"));
 				ddto.setDphone(rs.getString("dphone"));
 				ddto.setDemail(rs.getString("demail"));
@@ -653,6 +654,62 @@ public class CartDAO_imple implements CartDAO {
 		}
 		
 		return ddto;
+	}
+
+	@Override
+	public boolean registerdnum(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE DELIVERY "
+					+ " SET DNUMBER = ? "
+					+ " WHERE DINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("dnumber"));
+			pstmt.setString(2, paraMap.get("dindex"));
+			
+			if(1 == pstmt.executeUpdate()) {
+				result=true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean registerostatus(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "update ORDERS "
+					+ "set OSTATUS = ? "
+					+ "where OINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("ostatus"));
+			pstmt.setString(2, paraMap.get("oindex"));
+			
+			if(1 == pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
 	}
 
 	

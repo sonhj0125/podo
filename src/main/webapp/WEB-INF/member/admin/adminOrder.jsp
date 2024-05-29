@@ -95,7 +95,7 @@ $(function() {
 		</tbody>
 	</table>
 	
-	<%-- Sign in Modal --%>
+	<%-- iframe_delivery Modal --%>
       <div class="modal fade" id="showDinfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content rounded-4 shadow">
@@ -104,13 +104,13 @@ $(function() {
                     <h1 class="fw-bold mb-0 fs-2">설정변경</h1>
                     <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                   <iframe id="iframe_delivery" style="border: none; width: 100%; height: 420px;">
+                   <iframe id="iframe_delivery" style="border: none; width: 100%; height: 600px;">
                    </iframe>
                 
 	        </div>
 	    </div>
     </div>
-    <%-- Sign in Modal 끝 --%>
+    <%-- iframe_delivery Modal 끝 --%>
 	
 	<%-- 페이지 이동 --%>
 	<c:if test="${not empty requestScope.odtoList}">

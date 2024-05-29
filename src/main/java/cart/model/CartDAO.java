@@ -52,6 +52,12 @@ public interface CartDAO {
 	// 배송 정보 불러오기
 	DeliveryDTO getOrderDetailAdmin(int oindex) throws SQLException;
 
+	// 송장번호 등록하기
+	boolean registerdnum(Map<String, String> paraMap) throws SQLException;
+
+	// 상태변경 하기
+	boolean registerostatus(Map<String, String> paraMap) throws SQLException;
+
 
 
 	
