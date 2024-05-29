@@ -54,8 +54,8 @@ $(document).ready(function() {
            <div style="display: flex; justify-content: space-between; width: 90%;">
               <div>
                     <div id="pname" style="margin-bottom: 1%; font-weight: bold;">${requestScope.ddto.odto.pdto.pname}</div>
-                    <div id="pengname" style="margin-bottom: 1%; font-size: 10pt;">${requestScope.ddto.odto.pdto.pengname}</div>
-                    <div>
+                    <div id="pengname" style="margin-bottom: 5%; font-size: 10pt;">${requestScope.ddto.odto.pdto.pengname}</div>
+                    <div class="mt-3">
                        <c:if test="${requestScope.ddto.odto.pdto.ptype == '레드'}">
                           <span class="badge rounded-pill p-2" style="background-color: #ff3333;">레드</span>
                        </c:if>
@@ -73,7 +73,7 @@ $(document).ready(function() {
                     </div>
               </div>
    
-              <div style="display:flex;">
+              <div class="mt-4" style="display:flex;">
                   <div style="font-size: 13pt; font-weight: bold;"><fmt:formatNumber value="${requestScope.ddto.odto.pdto.pprice}" pattern="###,###" />원</div>
                   <div class="mx-2">|</div>
                   <div style="font-size: 13pt;">${requestScope.ddto.odto.ovolume}EA</div>
