@@ -63,7 +63,7 @@ public class CouponDAO_imple implements CouponDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "INSERT INTO COUPON (CODISCOUNT, CONAME, CODETAIL, COTYPE, COMIN, CODATE) "
+			String sql = "INSERT INTO COUPON (CODISCOUNT, CONAME, CODETAIL, COTYPE, CODATE, COCODE) "
 					   + "VALUES (?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -72,8 +72,8 @@ public class CouponDAO_imple implements CouponDAO {
 			pstmt.setString(2, codto.getConame());
 			pstmt.setString(3, codto.getCodetail());
 			pstmt.setInt(4, codto.getCotype());
-			pstmt.setInt(5, codto.getComin());
-			pstmt.setString(6, codto.getCodate());
+			pstmt.setString(5, codto.getCodate());
+			pstmt.setString(6, codto.getCocode());
 			
 			result = pstmt.executeUpdate();
 			
