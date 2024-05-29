@@ -17,8 +17,6 @@ import javax.sql.DataSource;
 
 import member.domain.MemberDTO;
 import member.domain.PointDTO;
-import shop.domain.OrderDTO;
-import shop.domain.ProductDTO;
 import shop.domain.ReviewDTO;
 import util.security.AES256;
 import util.security.SecretMykey;
@@ -605,7 +603,7 @@ public class MemberDAO_imple implements MemberDAO {
 	
 	// 관리자 회원관리 - 포인트 내역 조회
 	@Override
-	public List<PointDTO> getMyPoint(String userid) throws SQLException {
+	public List<PointDTO> getMyPointAdmin(String userid) throws SQLException {
 		
 		List<PointDTO> podtoList = new ArrayList<>();
 	      
@@ -1031,304 +1029,115 @@ public class MemberDAO_imple implements MemberDAO {
 		return point;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 관리자 회원관리 - 리뷰 내역 조회
-	@Override
-	public List<ReviewDTO> getMyReview(String userid) throws SQLException {
-		
-		List<ReviewDTO> adminReviewList = new ArrayList<>();
+	   @Override
+	   public List<ReviewDTO> getMyReview(String userid) throws SQLException {
+	      
+	      List<ReviewDTO> adminReviewList = new ArrayList<>();
 
-		try {
+	      try {
 
-			conn = ds.getConnection();
+	         conn = ds.getConnection();
 
-			String sql = " select review.rindex AS rindex, review.rstar AS rstar, review.rdetail AS rdetail, review.rdate AS rdate "
-					   + " from review join orders on review.oindex = orders.oindex "
-					   + " join member on orders.userid = member.userid "
-					   + " where member.userid = ? "
-					   + " order by odate desc ";
+	         String sql = " select review.rindex AS rindex, review.rstar AS rstar, review.rdetail AS rdetail, review.rdate AS rdate "
+	                  + " from review join orders on review.oindex = orders.oindex "
+	                  + " join member on orders.userid = member.userid "
+	                  + " where member.userid = ? "
+	                  + " order by odate desc ";
 
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, userid);
 
-			rs = pstmt.executeQuery();
+	         rs = pstmt.executeQuery();
 
-			while(rs.next()) {
+	         while(rs.next()) {
 
-				ReviewDTO redto = new ReviewDTO();
-				redto.setRindex(rs.getInt("rindex"));
-				redto.setRstar(rs.getString("rstar"));
-				redto.setRdetail(rs.getString("rdetail"));
-				redto.setRdate(rs.getString("rdate"));
-				
-				
-				adminReviewList.add(redto);
-				
+	            ReviewDTO redto = new ReviewDTO();
+	            redto.setRindex(rs.getInt("rindex"));
+	            redto.setRstar(rs.getString("rstar"));
+	            redto.setRdetail(rs.getString("rdetail"));
+	            redto.setRdate(rs.getString("rdate"));
+	            
+	            
+	            adminReviewList.add(redto);
+	            
 
-			}
+	         }
 
-		} finally {
-			close();
-		}
+	      } finally {
+	         close();
+	      }
 
-		return adminReviewList;
-		
-	} // end of public List<ReviewDTO> getMyReview(String userid) throws SQLException
+	      return adminReviewList;
+	      
+	   } // end of public List<ReviewDTO> getMyReview(String userid) throws SQLException
 
 
-	
+	   
 
-	// 관리자 회원관리 - 해당 유저 정지
-	@Override
-	public int disableMember(Map<String, String> paraMap) throws SQLException {
-		
-		int result = 0;
+	   // 관리자 회원관리 - 해당 유저 정지
+	   @Override
+	   public int disableMember(Map<String, String> paraMap) throws SQLException {
+	      
+	      int result = 0;
+	        
+	      try {
+	         conn = ds.getConnection();
 	     
-		try {
-			conn = ds.getConnection();
-     
-			String sql =  " update member "
-						+ " set memberidx = 3 "
-						+ " where userid = ? and memberidx = ? ";
-             
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, paraMap.get("userid")); 
-			pstmt.setString(2, paraMap.get("memberidx"));
+	         String sql =  " update member "
+	                  + " set memberidx = 3 "
+	                  + " where userid = ? and memberidx = ? ";
+	             
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, paraMap.get("userid")); 
+	         pstmt.setString(2, paraMap.get("memberidx"));
 
-			result = pstmt.executeUpdate();
+	         result = pstmt.executeUpdate();
 
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
+	         
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	         
+	       return result;
+	         
+	       
+	       
+	   } // end of public List<MemberDTO> disableMember(String userid) throws SQLException
+	   
+	   // 관리자 회원관리 - 해당 유저 정지해제시키기
+	   @Override
+	   public int ableMember(Map<String, String> paraMap) throws SQLException {
 	      
-	    return result;
-	      
-	    
-	    
-	} // end of public List<MemberDTO> disableMember(String userid) throws SQLException
-
-
-	
-	
-	// 관리자 회원관리 - 해당 유저 정지해제시키기
-	@Override
-	public int ableMember(Map<String, String> paraMap) throws SQLException {
-		
-		int result = 0;
+	      int result = 0;
+	        
+	      try {
+	         conn = ds.getConnection();
 	     
-		try {
-			conn = ds.getConnection();
-     
-			String sql =  " update member "
-						+ " set memberidx = 1 "
-						+ " where userid = ? and memberidx = ? ";
-             
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, paraMap.get("userid")); 
-			pstmt.setString(2, paraMap.get("memberidx"));
+	         String sql =  " update member "
+	                  + " set memberidx = 1 "
+	                  + " where userid = ? and memberidx = ? ";
+	             
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, paraMap.get("userid")); 
+	         pstmt.setString(2, paraMap.get("memberidx"));
 
-			result = pstmt.executeUpdate();
+	         result = pstmt.executeUpdate();
 
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	      
-	    return result;
-	    
-	} // end of public int ableMember(Map<String, String> paraMap) throws SQLException
-
+	         
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	         
+	       return result;
+	       
+	   } // end of public int ableMember(Map<String, String> paraMap) throws SQLException
 
 	
 

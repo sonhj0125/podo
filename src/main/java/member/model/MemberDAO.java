@@ -84,7 +84,7 @@ public interface MemberDAO {
 	String getMyPoint(String userid) throws SQLException;
 	
 	// 관리자 회원관리 - 포인트 내역 조회
-	List<PointDTO> getMyPoint(String userid) throws SQLException;
+	List<PointDTO> getMyPointAdmin(String userid) throws SQLException;
 
 	
 	// 관리자 회원관리 - 리뷰 내역 조회

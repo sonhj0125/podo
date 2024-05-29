@@ -67,7 +67,7 @@ public class AdminMemberDetail extends AbstractController {
 				List<LogDTO> ldtoList = ldao.getMyLog(userid);
 				request.setAttribute("ldtoList", ldtoList);
 				
-				List<PointDTO> podtoList = mdao.getMyPoint(userid);
+				List<PointDTO> podtoList = mdao.getMyPointAdmin(userid);
 				request.setAttribute("podtoList", podtoList);
 				
 				List<ReviewDTO> adminReviewList = mdao.getMyReview(userid);
