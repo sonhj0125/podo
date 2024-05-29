@@ -33,7 +33,6 @@ public class Couponregister extends AbstractController {
 				codto.setCodetail(request.getParameter("codetail"));
 				codto.setCotype(Integer.parseInt(request.getParameter("cotype")));
 				codto.setCodiscount(Integer.parseInt(request.getParameter("codiscount")));
-				codto.setComin(Integer.parseInt(request.getParameter("comin")));
 				codto.setCodate(request.getParameter("codate"));
 
 				// 쿠폰을 삽입하기 전에 쿠폰이 이미 존재하는지 중복 검사(coname이름PK)
