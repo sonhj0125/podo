@@ -3,9 +3,9 @@ $(function () {
 
     const toastLive = document.getElementById('liveToast');
     const toastmsg = document.getElementById('toast-msg');
-    let checkName = false;
-    let checkEmail = false;
-    let checkPhone = false;
+    let checkName = true;
+    let checkEmail = true;
+    let checkPhone = true;
 
     $('input#address').click(function () {
 
@@ -61,6 +61,8 @@ $(function () {
             tag.addClass("status-g");
             tag.removeClass("status-ng");
         }
+
+        console.log(checkName, checkEmail, checkPhone);
 
     });
 

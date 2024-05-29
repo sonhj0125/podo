@@ -48,7 +48,9 @@ public class AdminProduct extends AbstractController {
 		
 		MemberDTO loginUser =  (MemberDTO)session.getAttribute("loginUser");
 		
-		if(loginUser != null && "kmj0228".equals(loginUser.getUserid())) {
+		int memberIndex = Integer.parseInt(loginUser.getMemberIdx());
+		
+		if(loginUser != null && memberIndex == 1) {
 			// 관리자(admin)로 로그인 했을 경우
 			
 			String method =  request.getMethod();
