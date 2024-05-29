@@ -51,6 +51,9 @@ public class OrderDetail extends AbstractController {
 			// 주문 인덱스에 대한 상품, 주문, 배송 정보 받아오기
 			DeliveryDTO ddto = pdao.getOrderDetail(paraMap);
 			
+			// 해당 주문번호에 대한 리뷰가 존재하는지 확인
+			boolean isExistReview = pdao.isExistReviewByOindex(oindex);
+			
 			if(ddto == null) {
 				// url에 다른 사용자의 oindex를 넣는 경우
 
@@ -61,6 +64,7 @@ public class OrderDetail extends AbstractController {
 			}
 			
 			request.setAttribute("ddto", ddto);
+			request.setAttribute("isExistReview", isExistReview);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/member/myPage/orderDetail.jsp");

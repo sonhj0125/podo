@@ -100,6 +100,9 @@ public interface MemberDAO {
 	
 	
 
+	// 리뷰 작성 시 포인트 적립 로그 작성
+	boolean writeReivewPointUp(Map<String, String> paraMap) throws SQLException;
+
 
 	
 }

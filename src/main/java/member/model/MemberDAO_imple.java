@@ -1028,6 +1028,40 @@ public class MemberDAO_imple implements MemberDAO {
 		
 		return point;
 	}
+
+
+	
+	// 리뷰 작성 시 포인트 적립 로그 작성
+	@Override
+	public boolean writeReivewPointUp(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "INSERT INTO POINT (USERID, POINCOME, PODETAIL) "
+					+ "VALUES (?, ?, ?)" ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String msg = "상품 리뷰 작성";
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("point"));
+			pstmt.setString(3, msg);
+			
+			if(1==pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		return result;
+		
+	} // end of public boolean writeReivewPointUp(Map<String, String> paraMap) throws SQLException ---------------
 	
 	// 관리자 회원관리 - 리뷰 내역 조회
 	   @Override

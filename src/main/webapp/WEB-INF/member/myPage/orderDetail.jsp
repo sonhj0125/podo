@@ -166,7 +166,12 @@ $(document).ready(function() {
       
       <div style="text-align: center;">
       	 <button type="button" class="btn btn-primary me-3" onclick="location.href='<%=ctxPath%>/member/orderList.wine'">주문 내역 보기</button>
-      	 <button type="button" class="btn btn-secondary" onclick="location.href='<%=ctxPath%>/member/reviewWrite.wine?oindex=${requestScope.ddto.odto.oindex}'">리뷰 내역 보기</button>
+      	 <c:if test="${requestScope.ddto.odto.ostatus == 4 && requestScope.isExistReview == true}">
+	      	 <button type="button" class="btn btn-secondary" onclick="location.href='<%=ctxPath%>/member/reviewList.wine'">리뷰 내역 보기</button>
+      	 </c:if>
+      	 <c:if test="${requestScope.ddto.odto.ostatus == 4 && requestScope.isExistReview == false}">
+	      	 <button type="button" class="btn btn-secondary" onclick="location.href='<%=ctxPath%>/member/reviewWrite.wine?oindex=${requestScope.ddto.odto.oindex}'">리뷰 쓰러 가기</button>
+      	 </c:if>
 	  </div>
      </div>
     </div>

@@ -273,5 +273,17 @@ where O.oindex = 27 and userid = 'redtree2379';
 
 
 
+update orders set ostatus = 4, oardate = '2024-05-29 14:26:00'
+where oindex = 50;
+commit;
+
+update delivery set dnumber = '1515-6565-15124'
+where dindex = 31;
+commit;
+
+
+
+
+
 
 

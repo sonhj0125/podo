@@ -1207,21 +1207,7 @@ public class ProductDAO_imple implements ProductDAO {
 			pstmt.setString(2, paraMap.get("rdetail"));
 			pstmt.setString(3, paraMap.get("oindex"));
 			
-			int n = pstmt.executeUpdate();
-			
-			if(n == 1) {
-				
-				sql = " update member "
-					+ " set point = point + 500 "
-					+ " where userid = ? ";
-				
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, paraMap.get("userid"));
-				
-				result = pstmt.executeUpdate();
-				
-			}
-			
+			result = pstmt.executeUpdate();
 			
 		} finally {
 			close();
