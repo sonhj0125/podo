@@ -235,7 +235,7 @@ insert into mycoupon(coindex, userid, coname, costatus) VALUES (seq_coindex.next
 
 
 delete from mycoupon
-where userid = 'admin_1';
+where userid = 'hihello';
 
 commit;
 
