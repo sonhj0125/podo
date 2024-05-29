@@ -1,39 +1,31 @@
 package admin.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import common.controller.AbstractController;
-import coupon.domain.CouponDTO;
-import coupon.domain.MyCouponDTO;
-import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
-import member.domain.LogDTO;
 import member.domain.MemberDTO;
-import member.domain.PointDTO;
-import member.model.LogDAO;
 import member.model.LogDAO_imple;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
-import shop.domain.ReviewDTO;
 
-public class AdminMemberDetail extends AbstractController {
+public class AdminUpdateStatusOn extends AbstractController {
 
 	private MemberDAO mdao = null;
-	private CouponDAO codao = null;
-	private LogDAO ldao = null;
 	
-	public AdminMemberDetail() {
+	public AdminUpdateStatusOn() {
 		mdao = new MemberDAO_imple();
-		codao = new CouponDAO_imple();
-		ldao = new LogDAO_imple();
 	}
-
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
+		
 		String method = request.getMethod();
 		String msg = "잘못된 접근입니다.";
 		String loc = request.getContextPath() + "/member/admin/adminMemberDetail.wine";
@@ -44,34 +36,34 @@ public class AdminMemberDetail extends AbstractController {
 		
 			String userid = request.getParameter("userid");
 			String goBackURL = request.getParameter("goBackURL");
+			String memberidx = request.getParameter("memberidx");
 			
-			if(!"POST".equalsIgnoreCase(method)) {
-				// GET 방식일때
-				
+			if("POST".equalsIgnoreCase(method)) {
+
 				MemberDTO mdto = mdao.selectOneMember(userid);
 				request.setAttribute("mdto", mdto);
 				request.setAttribute("goBackURL", goBackURL);
 				
-				List<CouponDTO> codtoList = codao.adminCoupon();
-				request.setAttribute("codtoList", codtoList);
+				Map<String, String> paraMap = new HashMap<>();
 				
-				List<MyCouponDTO> mycodtoList = codao.getMyList(userid);
-				request.setAttribute("mycodtoList", mycodtoList);
+				paraMap.put("userid", userid);
+				paraMap.put("memberidx", memberidx);
 				
-				List<LogDTO> ldtoList = ldao.getMyLog(userid);
-				request.setAttribute("ldtoList", ldtoList);
+				int adstatusOn = mdao.ableMember(paraMap);
 				
-				List<PointDTO> podtoList = mdao.getMyPointAdmin(userid);
-				request.setAttribute("podtoList", podtoList);
+				JSONObject jsobj = new JSONObject();
+				jsobj.put("adstatusOn", adstatusOn);
+				jsobj.put("memberidx", memberidx);
 				
-				List<ReviewDTO> adminReviewList = mdao.getMyReview(userid);
-				request.setAttribute("adminReviewList", adminReviewList);
-				
+				String json = jsobj.toString();
+				request.setAttribute("json", json);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/member/admin/adminMemberDetail.jsp");
+				super.setViewPage("/WEB-INF/jsonview.jsp");
 				
-			} 
+				
+			}
+			
 			
 		}
 		else {
@@ -84,8 +76,10 @@ public class AdminMemberDetail extends AbstractController {
 			super.setViewPage("/WEB-INF/msg.jsp");
 			
 			
-		} // end of if("POST".equalsIgnoreCase(method)) 
+		} // end of if(super.isDir(request.getSession()))
 		
+		
+
 	} // end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception
 
 }
