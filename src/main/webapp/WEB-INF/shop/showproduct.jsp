@@ -64,6 +64,15 @@ $(function (){
 		
 	});
 	
+	$("#btndirectBuy").bind("click",function(){
+		
+		const frm = document.cartin;
+		frm.method = "post";
+		frm.action ="<%=ctxPath%>/shop/directorder.wine";
+		frm.submit();
+		
+	});
+	
 	
 });
 
@@ -133,7 +142,7 @@ $(function (){
 		                      <img src="../images/heart.png" style="width: 3rem;"/>
 		                    </button>
 	                    </c:if>
-	                    <button class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
+	                    <button id="btndirectBuy" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
 	                        BUY IT NOW
 	                    </button>
 	                </form>

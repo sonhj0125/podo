@@ -743,5 +743,32 @@ public class CartDAO_imple implements CartDAO {
 		
 	}
 
+	@Override
+	public String directselectCidx(String userid) throws SQLException {
+		
+		String result = "";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select CINDEX from CART where USERID = ? order by CINDEX desc";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getString("CINDEX");
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
 	
 }
