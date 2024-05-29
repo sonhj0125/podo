@@ -149,11 +149,11 @@ div#pageBar>nav {
                         </div>
                         <div class="col-8 d-flex justify-content-center align-items-center">
                             <div>
-                                <span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;">
+                                <span style="text-align: center; font-weight:bold; font-size:12pt; margin-bottom: 2%;">
                                     ${mycodto.codto.coname}
                                 </span><br>
-                                할인금액 : <fmt:formatNumber value="${mycodto.codto.codiscount}" pattern="###,###" /> 원<br>
-                                ~ ${mycodto.codto.codate}
+                                <div style="text-align: center;">할인금액 : <fmt:formatNumber value="${mycodto.codto.codiscount}" pattern="###,###" /> 원<br></div>
+                                <div style="text-align: center;">~ ${mycodto.codto.codate}</div>
                             </div>
                         </div>
                         <div class="col-2 d-flex justify-content-end align-items-center">
@@ -189,9 +189,9 @@ div#pageBar>nav {
 			            </div>
 			            <div class="col-8 d-flex justify-content-center align-items-center">
 			                <div>
-			                    <span style="font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
-			                    할인율 : ${mycodto.codto.codiscount} % <br>
-			                    ~ ${mycodto.codto.codate}
+			                    <span style="text-align: center; font-weight:bold; font-size:12pt; margin-bottom: 2%;" >${mycodto.codto.coname}</span><br>
+			                    <div style="text-align: center;">할인율 : ${mycodto.codto.codiscount} % <br></div>
+			                    <div style="text-align: center;">~ ${mycodto.codto.codate}</div>
 			                </div>
 			            </div>
                         <div class="col-2 d-flex justify-content-end align-items-center">

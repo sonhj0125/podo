@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
+import coupon.model.CouponDAO;
+import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
@@ -19,9 +21,11 @@ import member.model.MemberDAO_imple;
 public class Signin extends AbstractController {
 
 	MemberDAO mdao = null;
+	CouponDAO codao = null;
 	
 	public Signin() {
 		mdao = new MemberDAO_imple();
+		codao = new CouponDAO_imple();
 	}
 	
 	@Override
@@ -54,6 +58,9 @@ public class Signin extends AbstractController {
 						
 						int reviewCnt = mdao.getReviewCnt(request.getParameter("userid"));
 						session.setAttribute("reviewCnt", reviewCnt);
+						
+						int availableCoupons = codao.getAvailableCoupons(loginUser.getUserid());
+						session.setAttribute("availableCoupons", availableCoupons);
 						
 						int dayDiff = 0;
 						
