@@ -11,7 +11,9 @@
 
 <jsp:include page="/WEB-INF/header.jsp" />
 
-<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminMemberDetail.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminRegisterCoupon.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateStatusOff.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateStatusOn.js"></script>
 
 
 <style type="text/css">
@@ -45,12 +47,12 @@
 	}
 	
 	
-	input#stopstatus {
+	input#stopstatus, input#gostatus {
 		background-color: #ccc;
 	}
 	
 	
-	input#stopstatus:hover {
+	input#stopstatus:hover, input#gostatus:hover {
 		background-color: #ff4d4d;
 		
 	}
@@ -162,7 +164,7 @@
 					<input type="hidden" value="${requestScope.mdto.userid}" id ="userid" />
 		
 					<div class="form-group" style="margin-left:5%;">
-						<input id="btn-couponRegister" class="btn btn-danger ml-4" type="button" value="등록" />
+						<input id="btn-couponRegister" class="btn btn-danger ml-4" type="button" value="등록" onclick="registerCouponAd()"/>
 					</div>
 				</div>
            	</div>
@@ -170,7 +172,7 @@
         </div>
     </div>
 </div>
-<%-- 관리자 리뷰 내역 클릭시 나오는 Modal 끝 --%>
+<%-- 관리자 쿠폰 넣기 클릭시 나오는 Modal 끝 --%>
 
 
 
@@ -242,8 +244,8 @@
 		            <td>회원상태</td>
 		            <td>
 		            	${requestScope.mdto.status}
-		            	<input type="button" id="stopstatus" class="statusOff" style=" border:none; border-radius: 5px;" value="정지" name="statusOff"/>
-		            	
+		            	<input type="button" id="stopstatus" class="statusOff" style=" border:none; border-radius: 5px;" value="정지" onclick="statusOff()"/>
+		            	<input type="button" id="gostatus" class="statusOn" style=" border:none; border-radius: 5px;" value="해제" onclick="statusOn()"/>
 		            </td>
 		         </tr>
 			</table>
