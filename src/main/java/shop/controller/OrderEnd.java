@@ -124,10 +124,7 @@ public class OrderEnd extends AbstractController{
 					System.out.println("포인트 적립중 오류 발생");
 				}
 				
-				int reviewCnt = (int)session.getAttribute("reviewCnt"); // 작성할 리뷰 개수
-				
 				try {
-					
 					for(int i=0;0<cindex.length;i++) {
 						
 						// 주문내역 입력
@@ -166,9 +163,6 @@ public class OrderEnd extends AbstractController{
 							System.out.println("배달 DB 작성중 오류 발생");
 						}
 						
-						// 주문 개수당 작성할 리뷰 개수 증가
-						reviewCnt++;
-						
 						// 장바구니 삭제
 						
 						if(1 != cdao.deleteCartfromindex(cindex[i])) {
@@ -177,7 +171,6 @@ public class OrderEnd extends AbstractController{
 						
 						
 					}// end of for
-					
 				}catch (Exception e) {
 					
 				}
@@ -186,7 +179,6 @@ public class OrderEnd extends AbstractController{
 				// 세션 재입력
 				
 				loginuser.setPoint(newpoint);
-				session.setAttribute("reviewCnt", reviewCnt);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
