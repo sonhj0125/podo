@@ -78,6 +78,9 @@ public interface MemberDAO {
 	// 회원가입 쿠폰 주기
 	int insertRegisterCoupon(String userid) throws SQLException;
 
+	// 내 포인트 셀랙트
+	String getMyPoint(String userid) throws SQLException;
+
 
 	
 }

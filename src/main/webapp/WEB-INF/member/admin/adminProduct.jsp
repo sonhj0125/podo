@@ -18,6 +18,8 @@ label.input-group-text, span.input-group-text {
 
 <script type="text/javascript">
 
+	let total_fileSize = 0; // 첨부한 파일의 총량을 누적하는 용도
+
 	$(document).ready(function(){
 		
 		// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 시작 <<== //
@@ -39,6 +41,74 @@ label.input-group-text, span.input-group-text {
 		// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 끝 <<== //
 		
 		
+	      // 제품 등록하기
+	      $("input:button[id='btnRegister']").click(function() {
+	         
+	         let is_infoData_OK = true;
+	         
+	         $(".infoData").each(function(index, elmt) {
+	            
+	            const val = $(elmt).val().trim();
+	            
+	            if(val == "") {
+	               
+	               alert("필수입력사항입니다!");
+	               is_infoData_OK = false;
+	               return false; // 일반적인 for문의 break; 와 같은 기능이다.
+	            }
+	         });
+	         
+	         if(is_infoData_OK) {
+
+	            var formData = new FormData($("form[name='prodInputFrm']").get(0)); // $("form[name='prodInputFrm']").get(0) : 폼에 작성된 모든 데이터 보내기
+	               
+
+	            // 첨부한 파일의 총량이 20MB 초과시 //   
+	            if( total_fileSize > 20*1024*1024 ) {
+	                alert("ㅋㅋㅋ 첨부한 파일의 총합의 크기가 20MB를 넘어서 제품등록을 할 수 없습니다.!!");
+	                return; // 종료
+	            } 
+	            ///////////////////////////////////////
+	            
+	            $.ajax({
+	               <%-- url: "<%=ctxPath%>/shop/admin/productRegister.up", --%>
+	                   url: "${pageContext.request.contextPath}/member/admin/adminProduct.wine",
+	                   type: "post",
+	               	   data : formData,
+	                   processData: false,  // 파일 전송 시 설정 ★★★
+	                   contentType: false,  // 파일 전송 시 설정 ★★★
+	                   dataType:"json",
+	                   success:function(json) {
+	                      
+	                       console.log("~~~ 확인용 : " + JSON.stringify(json));
+	                       // ~~~ 확인용 : {"result":1}
+	                       if(json.result == 1) {
+	                          location.href="${pageContext.request.contextPath}/shop/list.wine"; 
+	                       }
+	                   },
+	                   error: function(request, status, error) {
+	                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	                   //   alert("첨부된 파일의 크기의 총합이 20MB를 초과하여 제품등록이 실패했습니다.");
+	                   }
+	            });
+	            /*
+	            processData 관련하여, 일반적으로 서버에 전달되는 데이터는 query string(쿼리 스트링)이라는 형태로 전달된다. 
+	            ex) http://localhost:9090/board/list.action?searchType=subject&searchWord=안녕
+	                ? 다음에 나오는 searchType=subject&searchWord=안녕 이라는 것이 query string(쿼리 스트링) 이다. 
+
+	            data 파라미터로 전달된 데이터를 jQuery에서는 내부적으로 query string 으로 만든다. 
+	            하지만 파일 전송의 경우 내부적으로 query string 으로 만드는 작업을 하지 않아야 한다.
+	            이와 같이 내부적으로 query string 으로 만드는 작업을 하지 않도록 설정하는 것이 processData: false 이다.
+	            */
+	         
+	            /*
+	            	contentType 은 default 값이 "application/x-www-form-urlencoded; charset=UTF-8" 인데, 
+	            	"multipart/form-data" 로 전송이 되도록 하기 위해서는 false 로 해야 한다. 
+	            	만약에 false 대신에 "multipart/form-data" 를 넣어보면 제대로 작동하지 않는다.
+	            */
+	         }
+	         
+	      });//end of 제품등록하기----------------------------------------
 		
 	}); // end of $(document).ready(function(){})
 
@@ -55,57 +125,57 @@ label.input-group-text, span.input-group-text {
    	<%-- !!!!! ==== 중요 ==== !!!!! --%>
    	<%-- 폼에서 파일을 업로드 하려면 반드시 method 는 POST 이어야 하고 
         enctype="multipart/form-data" 으로 지정해주어야 한다.!! --%>
-   	<form id="prodInputFrm" enctype="multipart/form-data"> 
+   	<form name="prodInputFrm" enctype="multipart/form-data"> 
         <div id="container" style="width:70%; margin-bottom: 5%;">
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pType">제품 분류</label>
-				<select class="form-select" id="pType">
+				<select class="form-select infoData" name="ptype">
 					<option selected>선택하세요.</option>
-					<option value="1">레드</option>
-					<option value="2">화이트</option>
-					<option value="3">로제</option>
-					<option value="4">스파클링</option>
+					<option value="레드">레드</option>
+					<option value="화이트">화이트</option>
+					<option value="로제">로제</option>
+					<option value="스파클링">스파클링</option>
 				</select>
 			</div>
 			
 			
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pHomeTown">원산지</label>
-				<select class="form-select" id="pHomeTown">
+				<select class="form-select infoData" id="pHomeTown" name="phometown" >
 					<option selected>선택하세요.</option>
-					<option value="1">칠레</option>
-					<option value="2">미국</option>
-					<option value="3">이탈리아</option>
-					<option value="4">뉴질랜드</option>
-					<option value="5">호주</option>
-					<option value="6">스페인</option>
-					<option value="7">프랑스</option>
+					<option value="칠레">칠레</option>
+					<option value="미국">미국</option>
+					<option value="이탈리아">이탈리아</option>
+					<option value="뉴질랜드">뉴질랜드</option>
+					<option value="호주">호주</option>
+					<option value="스페인">스페인</option>
+					<option value="프랑스">프랑스</option>
 				</select>
 			</div>
 			
 			
 			<div class="input-group">
 			  	<span class="input-group-text">제품명 및 영문명</span>
-			  	<input type="text" placeholder="알파박스 앤 다이스 타로 프로세코" aria-label="name" class="form-control">
-			 	<input type="text" placeholder="ALPHA BOX AND DICE TAROT PROSECCO" aria-label="ename" class="form-control">
+			  	<input type="text" placeholder="알파박스 앤 다이스 타로 프로세코" aria-label="name" class="form-control infoData" name="pname">
+			 	<input type="text" placeholder="ALPHA BOX AND DICE TAROT PROSECCO" aria-label="ename" class="form-control infoData" name="pengname">
 			</div>
 			
 			
 			<div class="input-group mb-3">
 			  	<span class="input-group-text" id="price">가격</span>
-			  	<input type="text" class="form-control" placeholder="25,000원" aria-label="price" aria-describedby="basic-addon1">
+			  	<input type="text" class="form-control infoData" placeholder="25,000원" aria-label="price" aria-describedby="basic-addon1" name="pprice">
 			</div>
 			
 			
 			<div class="input-group mb-3">
 			  	<span class="input-group-text" id="point">적립금</span>
-			  	<input type="text" class="form-control" placeholder="1,250원" aria-label="point" aria-describedby="basic-addon1">
+			  	<input type="text" class="form-control infoData" placeholder="1,250원" aria-label="point" aria-describedby="basic-addon1" name="ppoint">
 			</div>
 			
 		
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pBody">바디</label>
-				<select class="form-select" id="pBody">
+				<select class="form-select infoData" id="pBody" name="pbody">
 					<option selected>선택하세요.</option>
 					<option value="1">가벼움</option>
 					<option value="2">약간가벼움</option>
@@ -117,7 +187,7 @@ label.input-group-text, span.input-group-text {
 		      	
 		    <div class="input-group mb-3">
 				<label class="input-group-text" for="pAcid">산도</label>
-				<select class="form-select" id="pAcid">
+				<select class="form-select infoData" id="pAcid" name="pacid">
 					<option selected>선택하세요.</option>
 					<option value="1">낮음</option>
 					<option value="2">약간낮음</option>
@@ -129,7 +199,7 @@ label.input-group-text, span.input-group-text {
 		      	
 		    <div class="input-group mb-3">
 				<label class="input-group-text" for="pTannin">타닌</label>
-				<select class="form-select" id="pTannin">
+				<select class="form-select infoData" id="pTannin" name="ptannin">
 					<option selected>선택하세요.</option>
 					<option value="1">약함</option>
 					<option value="2">약간약함</option>
@@ -141,7 +211,7 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pAcl">도수(알코올)</label>
-				<select class="form-select" id="pAcl">
+				<select class="form-select infoData" id="pAcl" name="pacl">
 					<option selected>선택하세요.</option>
 					<option value="1">낮음(~11%)</option>
 					<option value="2">중간(12~13%)</option>
@@ -151,18 +221,23 @@ label.input-group-text, span.input-group-text {
 	      	
 	      	<div class="input-group">
 			  	<span class="input-group-text">제품 설명</span>
-			  	<textarea class="form-control" style="height:150px;" aria-label="With textarea"></textarea>
+			  	<textarea class="form-control infoData" style="height:150px;" aria-label="With textarea" name="pdetail"></textarea>
 			</div>
 	     
 	     	<div class="input-group mb-3">
 			  	<label class="input-group-text" for="inputGroupFile01">제품이미지</label>
-			  	<input type="file" class="form-control" id="inputGroupFile01">
+			  	<input type="file" class="form-control infoData" id="inputGroupFile01" name="pimg">
+			</div>
+			
+			<div class="input-group mb-3">
+			  	<label class="input-group-text" for="inputGroupFile01">제품상세이미지</label>
+			  	<input type="file" class="form-control infoData" id="inputGroupFile02" name="pdimg">
 			</div>
 			
 			<div class="input-group mb-3">
                 <span class="input-group-text">재고량</span>
-            	<input class="form-control text-center me-3" id="count" name="cvolume" type="number" value="1" min="1" max="100" style="max-width: 5rem" />
-	        </div>
+            	<input class="form-control text-center me-3 infoData" id="count" type="number" value="1" min="1" max="100" style="max-width: 5rem" name="pstock"/>
+	        </div>																								
 	        
 	      	<input type="reset" value="취소"  style="width: 120px; margin-top:5%; " class="btn btn-secondary btn-lg" /> 
            	<input type="button" value="제품등록" id="btnRegister" style="width: 120px; margin-top:5%; margin-left	:50%;" class="btn btn-primary btn-lg mr-5" /> 
@@ -173,4 +248,4 @@ label.input-group-text, span.input-group-text {
 </div>
     
     
-<jsp:include page="../../footer.jsp" />      
+<jsp:include page="../../footer.jsp" />    

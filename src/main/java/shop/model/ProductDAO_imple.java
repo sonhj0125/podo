@@ -985,7 +985,58 @@ public class ProductDAO_imple implements ProductDAO {
 		return pdto_list;
 	}
 
+	// 제품번호 채번 해오기
+	@Override
+	public int getPnumOfProduct() throws SQLException {
+		
+	      int pindex = 0;
+	         
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " select SEQ_PINDEX.nextval AS pindex "
+	            		   + " from dual ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            rs = pstmt.executeQuery();
+	            
+	               rs.next();
+	               pindex = rs.getInt(1);
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return pindex;
+	       
+	}// end of public int getPnumOfProduct() throws SQLException-----------------
+
 	
+	// 제품설명이미지 채번 해오기
+	@Override
+	public int getpdindexOfProduct() throws SQLException {
+		
+		int pdindex = 0;
+        
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " select SEQ_PDINDEX.nextval AS pdindex "
+	            		   + " from dual ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            rs = pstmt.executeQuery();
+	            
+	               rs.next();
+	               pdindex = rs.getInt(1);
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return pdindex;
+	}// end of public int getpdindexOfProduct() throws SQLException---------
+
 	
 	// [리뷰 관리] 회원이 주문한 상품 중 배송완료인 상품 목록 띄우기
 	@Override
@@ -1444,4 +1495,134 @@ public class ProductDAO_imple implements ProductDAO {
 		
 	} // end of public DeliveryDTO getOrderDetail(Map<String, String> paraMap) throws SQLException -----------
 	
+	// 좋아요 수 확인
+	@Override
+	public int getLikeCnt(int pindex) throws SQLException {
+
+		int likeItCnt = 0;
+
+		try{
+
+			conn = ds.getConnection();
+
+			String sql = " select NVL(count(*), 0) as count"
+					   + " from LIKEIT"
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, pindex);
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			likeItCnt = rs.getInt(1);
+			
+		}finally {
+			close();
+		}
+		
+		return likeItCnt;
+	} // end of public int getLikeCnt(int pindex) throws SQLException
+	// product 테이블에 제품정보 insert 하기
+	@Override
+	public int productInsert(ProductDTO pdto) throws SQLException {
+		
+	      int result = 0;
+	         
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " insert into product(pname, pengname, ptype, phometown, pprice, ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pindex) "
+	                       + " values(?,?,?,?,?,?,?,?,?,?,?,?,?,SEQ_PINDEX.nextval) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, pdto.getPname());
+	            pstmt.setString(2, pdto.getPengname());
+	            pstmt.setString(3, pdto.getPtype());    
+	            pstmt.setString(4, pdto.getPhometown()); 
+	            pstmt.setString(5, pdto.getPprice());    
+	            pstmt.setString(6, pdto.getPpoint()); 
+	            pstmt.setString(7, pdto.getPbody()); 
+	            pstmt.setString(8, pdto.getPacid());
+	            pstmt.setString(9, pdto.getPtannin());
+	            pstmt.setString(10, pdto.getPacl());
+	            pstmt.setString(11, pdto.getPdetail());
+	            pstmt.setString(12, pdto.getPimg());
+	            pstmt.setString(13, pdto.getPstock());
+	            
+	            result = pstmt.executeUpdate();
+	            
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return result;
+	       
+	}// end of public int productInsert(ProductDTO pdto) throws SQLException--------------
+
+	
+	// productDetailImg 테이블에 정보 insert 하기
+	@Override
+	public int productDetailInsert(Map<String, String> paraMap) throws SQLException {
+
+		int result = 0;
+        
+	       try {
+	            conn = ds.getConnection();
+	            						   
+	            String sql = " insert into productdetailimg(pdindex, pindex, pdimg) "
+	                       + " values(SEQ_PDINDEX.nextval,?,?) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, paraMap.get("pindex"));
+	            pstmt.setString(2, paraMap.get("pdimg"));
+	            
+	            result = pstmt.executeUpdate();
+	            
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return result;
+	       
+	}// end of public int productDetailInsert(Map<String, String> paraMap) throws SQLException------------
+
+	
+	// pindex 채번해오기
+	@Override
+	public int selectPindex(String pimg) throws SQLException {
+		
+		int pIndex = 0;
+        
+	       try {
+	            conn = ds.getConnection();
+	            
+	            String sql = " select pindex "
+	            		   + " from product "
+	            		   + " where pimg = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, pimg);
+	            
+	            rs = pstmt.executeQuery();
+	            
+	               rs.next();
+	               pIndex = rs.getInt(1);
+	            
+	       } finally {
+	            close();
+	       }
+	         
+	       return pIndex;
+	       
+	}// end of public int selectPindex(String pimg) throws SQLException ---------------
+
+
+
 }

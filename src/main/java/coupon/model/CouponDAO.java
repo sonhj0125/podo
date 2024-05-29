@@ -29,5 +29,21 @@ public interface CouponDAO {
 
 	// 쿠폰 사용
 	boolean delCoupon(Map<String, String> paraMap) throws SQLException;
+
+	// 쿠폰등록 (쿠폰번호가 있으면 true 없으면 false 로 해서 값 반환한다.)
+	boolean CouponRegistration(Map<String, String> paraMap) throws SQLException;
+
+	// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
+	List<MyCouponDTO> getMyCouponList(String userid) throws SQLException;
+
+	
+	// 쿠폰의 총개수 알아오기
+	int getTotalMyCouponCount(String userid) throws SQLException;
+	
+	// 쿠폰의 총 페이지 수 알아오기
+	int getTotalPage(String userid) throws SQLException;
+
+	// **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
+	List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) throws SQLException ;
 	
 }

@@ -43,6 +43,24 @@ public interface CartDAO {
 	// 배달정보 등록하기
 	boolean setDelivery(DeliveryDTO ddto) throws SQLException;
 
+	// 어드민 주문페이지 수 가져오기
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 주문접수 페이징 셀랙
+	List<OrderDTO> selectOrderPaging(Map<String, String> paraMap) throws SQLException;
+
+	// 배송 정보 불러오기
+	DeliveryDTO getOrderDetailAdmin(int oindex) throws SQLException;
+
+	// 송장번호 등록하기
+	boolean registerdnum(Map<String, String> paraMap) throws SQLException;
+
+	// 상태변경 하기
+	boolean registerostatus(Map<String, String> paraMap) throws SQLException;
+
+	// 배송완료일 저장하기
+	void setOardate(Map<String, String> paraMap) throws SQLException;
+
 
 
 	

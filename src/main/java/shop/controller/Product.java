@@ -38,6 +38,10 @@ public class Product extends AbstractController {
 			ProductDTO pdto = pdao.getproduct(pindex);
 
 			if (pdto != null) {
+				
+				// 좋아요 수 확인
+				int likeItCnt = pdao.getLikeCnt(pindex);
+				request.setAttribute("likeItCnt", likeItCnt);
 
 				String cartInfo = "none";
 				String likeIt = "none";

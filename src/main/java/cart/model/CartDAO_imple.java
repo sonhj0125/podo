@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -435,6 +437,309 @@ public class CartDAO_imple implements CartDAO {
 		}
 		
 		return result;
+		
+	}
+
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/10) as cnt from ORDERS ";
+			
+			String userid = paraMap.get("searchWord");
+			String status = paraMap.get("searchType");
+			
+			int step = 0;
+			
+			try {
+				if(!userid.isBlank()) {
+					sql += "where userid = ? ";
+					step = 1;
+				}
+			}catch (Exception e) {
+			}
+			
+			if(step == 0 && !"0".equals(status)) {
+				sql += "where ostatus = ? ";
+				step = 2;
+			}
+			
+			if(step == 1 && !"0".equals(status)) {
+				sql += "and ostatus = ? ";
+				step = 3;
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			switch (step) {
+				case 1:
+					pstmt.setString(1, userid);
+					break;
+				case 2:
+					pstmt.setString(1, status);
+					break;
+				case 3:
+					pstmt.setString(1, userid);
+					pstmt.setString(2, status);
+					break;
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<OrderDTO> selectOrderPaging(Map<String, String> paraMap) throws SQLException {
+		
+		List<OrderDTO> odtolist = new ArrayList<OrderDTO>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select * from "
+					+ " ( "
+					+ " select ROWNUM as rno,OINDEX, PNAME, OTOTALPRICE, OVOLUME, odate, ostatus, userid, OARDATE "
+					+ " from "
+					+ " (select ROWNUM,OINDEX, PNAME, OTOTALPRICE, OVOLUME, odate, ostatus, userid, OARDATE "
+					+ " from ORDERS join PRODUCT on ORDERS.PINDEX = PRODUCT.PINDEX order by ROWNUM desc) )"
+					+ " where rno between ? and ? " ;
+			
+			String userid = paraMap.get("searchWord");
+			String status = paraMap.get("searchType");
+			int navNum = Integer.parseInt(paraMap.get("navNum"));
+			int sizePerPage = 10;
+			
+			int step = 0;
+			
+			try {
+				if(!userid.isBlank()) {
+					sql += "and userid = ? ";
+					step = 1;
+				}
+			}catch (Exception e) {
+			}
+			
+			if(step == 0 && !"0".equals(status)) {
+				sql += "and ostatus = ? ";
+				step = 2;
+			}
+			
+			if(step == 1 && !"0".equals(status)) {
+				sql += "and ostatus = ? ";
+				step = 3;
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			switch (step) {
+				case 0:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					break;
+				case 1:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					pstmt.setString(3, userid);
+					break;
+				case 2:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					pstmt.setString(3, status);
+					break;
+				case 3:
+					pstmt.setInt(1, (navNum * sizePerPage - (sizePerPage - 1)));
+					pstmt.setInt(2, (navNum * sizePerPage));
+					pstmt.setString(3, userid);
+					pstmt.setString(4, status);
+					break;
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderDTO odto = new OrderDTO();
+				
+				odto.setOindex(rs.getInt("oindex"));
+				
+				ProductDTO pdto = new ProductDTO();
+				pdto.setPname(rs.getString("pname"));
+				odto.setPdto(pdto);
+				
+				odto.setOtotalprice(rs.getString("ototalprice"));
+				odto.setOvolume(rs.getString("ovolume"));
+				odto.setOdate(rs.getString("odate"));
+				odto.setOstatus(rs.getInt("ostatus"));
+				odto.setUserid(rs.getString("userid"));
+				
+				String arrDate = rs.getString("OARDATE");
+				if(arrDate == null || arrDate.isBlank()) {
+					arrDate = "없음";
+				}
+				
+				odto.setOardate(arrDate);
+				
+				odtolist.add(odto);
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return odtolist;
+		
+	}
+
+	@Override
+	public DeliveryDTO getOrderDetailAdmin(int oindex) throws SQLException {
+		
+		DeliveryDTO ddto = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "select dindex, dname,DPHONE,demail,DMSG,DADDRESS,DADDRESSDETAIL,DNUMBER,OSTATUS,OARDATE "
+					+ "from DELIVERY join ORDERS on DELIVERY.OINDEX = ORDERS.OINDEX where DELIVERY.OINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				ddto = new DeliveryDTO();
+				
+				ddto.setDindex(rs.getInt("dindex"));
+				ddto.setDname(rs.getString("dname"));
+				ddto.setDphone(rs.getString("dphone"));
+				ddto.setDemail(rs.getString("demail"));
+				ddto.setDmsg(rs.getString("dmsg"));
+				ddto.setDaddress(rs.getString("daddress"));
+				ddto.setDaddressdetail(rs.getString("DADDRESSDETAIL"));
+				
+				String dnumber = rs.getString("dnumber");
+				
+				try {
+					if(dnumber == null || dnumber.isBlank()) {
+						dnumber = "미등록";
+					}
+				}catch (Exception e) {
+					dnumber = "미등록";
+				}
+				
+				ddto.setDnumber(dnumber);
+				
+				OrderDTO odto = new OrderDTO();
+				
+				odto.setOstatus(rs.getInt("OSTATUS"));
+				odto.setOardate(rs.getString("OARDATE"));
+				
+				ddto.setOdto(odto);
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return ddto;
+	}
+
+	@Override
+	public boolean registerdnum(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE DELIVERY "
+					+ " SET DNUMBER = ? "
+					+ " WHERE DINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("dnumber"));
+			pstmt.setString(2, paraMap.get("dindex"));
+			
+			if(1 == pstmt.executeUpdate()) {
+				result=true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean registerostatus(Map<String, String> paraMap) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "update ORDERS "
+					+ "set OSTATUS = ? "
+					+ "where OINDEX = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("ostatus"));
+			pstmt.setString(2, paraMap.get("oindex"));
+			
+			if(1 == pstmt.executeUpdate()) {
+				result = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public void setOardate(Map<String, String> paraMap) throws SQLException {
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "UPDATE ORDERS "
+					+ "SET OARDATE = ? "
+					+ "WHERE OINDEX = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			Date now = new Date();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			String nowStr = df.format(now);
+			
+			pstmt.setString(1, nowStr);
+			pstmt.setString(2, paraMap.get("oindex"));
+			
+			pstmt.executeUpdate();
+			
+		}finally {
+			close();
+		}
 		
 	}
 

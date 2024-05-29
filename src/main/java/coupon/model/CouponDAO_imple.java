@@ -165,6 +165,7 @@ public class CouponDAO_imple implements CouponDAO {
 						
 						mycodto.setCodto(codto);
 						mycodto.setCoindex(rs.getInt("COINDEX"));
+						mycodto.setCostatus(rs.getInt("costatus"));
 						
 						mycodtoList.add(mycodto);
 					}
@@ -301,5 +302,233 @@ public class CouponDAO_imple implements CouponDAO {
 		
 		return result;
 	}
+
+
+	// 쿠폰등록 (쿠폰번호가 있으면 true 없으면 false 로 해서 값 반환한다.)
+	@Override
+	public boolean CouponRegistration(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " INSERT INTO mycoupon (COINDEX, USERID, CONAME, COSTATUS)  "
+					   + " SELECT SEQ_COINDEX.nextval, ?, C.CONAME, 1  "
+					   + " FROM coupon C  "
+					   + " WHERE C.COCODE = ? "
+					   + " AND TO_DATE(C.CODATE, 'YYYY-MM-DD') >= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') "
+					   + " AND NOT EXISTS (  "
+					   + "             SELECT 1  "
+					   + "             FROM mycoupon MC  "
+					   + "             WHERE MC.CONAME = C.CONAME AND MC.USERID = ? "
+					   + " ) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("cocode"));
+			pstmt.setString(3, paraMap.get("userid"));
+			
+			int n = pstmt.executeUpdate();
+			if(n == 1) {
+				isExists = true;
+			}
+			
+		}finally {
+			close();
+		}
+		
+		return isExists;
+	} // end of public boolean CouponRegistration(String cocode) --------
+
+
+	
+	
+	@Override
+	public List<MyCouponDTO> getMyCouponList(String userid) throws SQLException {
+			
+		List<MyCouponDTO> mycodtoList = new ArrayList<>();
+				
+			try {
+				
+				conn = ds.getConnection();
+				
+				String sql = " select COUPON.CONAME as coname, COTYPE, CODISCOUNT, CODATE, COREGISTERDAY, COINDEX, costatus "
+						+ " from COUPON join MYCOUPON on COUPON.CONAME = MYCOUPON.CONAME join MEMBER on MYCOUPON.USERID = MEMBER.USERID "
+						+ " where MEMBER.USERID = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+	
+					MyCouponDTO mycodto = new MyCouponDTO();
+					
+					CouponDTO codto = new CouponDTO();
+					
+					codto.setConame(rs.getString("coname"));
+					codto.setCotype(rs.getInt("cotype"));
+					codto.setCodiscount(rs.getInt("codiscount"));
+					codto.setCodate(rs.getString("codate"));
+					codto.setCoregisterday(rs.getString("coregisterday"));
+					
+					mycodto.setCodto(codto);
+					mycodto.setCoindex(rs.getInt("COINDEX"));
+					mycodto.setCostatus(rs.getInt("costatus"));
+					
+					mycodtoList.add(mycodto);
+			
+				}
+				
+			}
+			finally {
+				close();
+			}
+		return mycodtoList;
+	} // end of public List<MyCouponDTO> getMyCouponList(String userid) throws SQLException -----
+
+
+	
+	// 내 쿠폰의 총개수 알아오기
+	@Override
+	public int getTotalMyCouponCount(String userid) throws SQLException {
+		int totalMyCouponCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select count(*) "
+						+ " from mycoupon "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+						
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalMyCouponCount = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalMyCouponCount;
+	}// end of public int getTotalMyCouponCount(String userid) throws SQLException ---
+
+
+	// 내 쿠폰의 총 페이지 수 알아오기
+	@Override
+	public int getTotalPage(String userid) throws SQLException {
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select ceil(count(*)/5) "
+						+ " from mycoupon "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;	
+	}
+
+
+	// **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
+	@Override
+	public List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) throws SQLException {
+		List<MyCouponDTO> MyCouponpagingList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  "  SELECT  "
+					    + "    T.rno,  "
+						+ "    T.COINDEX, "
+						+ "    T.USERID, "
+						+ "    T.CONAME, "
+						+ "    T.COSTATUS, "
+						+ "    C.CODISCOUNT, "
+						+ "    C.CODETAIL, "
+						+ "    C.COTYPE, "
+						+ "    C.COMIN, "
+						+ "    C.CODATE, "
+						+ "    C.COREGISTERDAY, "
+						+ "    C.COCODE "
+						+ " FROM ( "
+						+ "    SELECT  "
+						+ "        rownum AS rno, "
+						+ "        COINDEX, "
+						+ "        USERID, "
+						+ "        CONAME, "
+						+ "        COSTATUS "
+						+ "    FROM ( "
+						+ "        SELECT  "
+						+ "            COINDEX, "
+						+ "            USERID, "
+						+ "            CONAME, "
+						+ "            COSTATUS "
+						+ "        FROM "
+						+ "            mycoupon "
+						+ "        WHERE "
+						+ "            userid = ? "
+						+ "    ) V "
+						+ " ) T "
+						+ " JOIN coupon C ON T.CONAME = C.CONAME "
+						+ " WHERE T.rno BETWEEN ? AND ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt( paraMap.get("currentShowPageNo") ); 
+			int sizePerPage = Integer.parseInt( paraMap.get("sizePerPage") );
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); // 공식
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MyCouponDTO mcdto = new MyCouponDTO();
+				mcdto.setCoindex(rs.getInt("COINDEX"));
+				mcdto.setCostatus(rs.getInt("COSTATUS"));
+				
+				CouponDTO cdto = new CouponDTO();
+				cdto.setConame(rs.getString("CONAME"));
+				cdto.setCodetail(rs.getString("CODETAIL"));
+				cdto.setCodate(rs.getString("CODATE"));
+				cdto.setCoregisterday(rs.getString("COREGISTERDAY"));
+				cdto.setCocode(rs.getString("COCODE"));
+				cdto.setCotype(rs.getInt("COTYPE"));
+				cdto.setCodiscount(rs.getInt("CODISCOUNT"));
+				cdto.setComin(rs.getInt("COMIN"));
+				
+				mcdto.setCodto(cdto);
+				
+				MyCouponpagingList.add(mcdto);
+			}// end of while(rs.next())---------------------
+		} finally {
+			close();
+		}
+		return MyCouponpagingList;
+	} // end of public List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) -----
 	
 }

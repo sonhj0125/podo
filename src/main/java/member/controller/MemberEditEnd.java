@@ -63,7 +63,7 @@ public class MemberEditEnd extends AbstractController {
 					loginuser.setAddress(address);
 					loginuser.setAddressDetail(addressDetail);
 					
-					msg = "회원정보 수정 성공!";
+					msg = "회원정보 수정 성공";
 					loc = request.getContextPath()+"/index.wine"; // 시작페이지로 이동한다.
 				}
 				

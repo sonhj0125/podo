@@ -3,8 +3,21 @@ package shop.domain;
 public class ProductDTO {
 	
 	private String pname, pengname, ptype, phometown, pprice, 
-	ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock;
-	private int pindex;
+	ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pdimg;
+	private int pindex, pdindex;
+	
+	public String getPdimg() {
+		return pdimg;
+	}
+	public void setPdimg(String pdimg) {
+		this.pdimg = pdimg;
+	}
+	public int getPdindex() {
+		return pdindex;
+	}
+	public void setPdindex(int pdindex) {
+		this.pdindex = pdindex;
+	}
 	
 	public String getPname() {
 		return pname;
@@ -90,6 +103,8 @@ public class ProductDTO {
 	public void setPpoint(String ppoint) {
 		this.ppoint = ppoint;
 	}
+	
+	
 	
 
 }
