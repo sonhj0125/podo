@@ -57,11 +57,6 @@ public class UpdateRegisterOstatus extends AbstractController {
 					session.setAttribute("reviewCnt", reviewCnt + 1);
 				}
 				
-				if(!"4".equals(ostatus)) {
-					// 주문상태가 4가 아니면 회원의 작성할 리뷰 개수 1 감소
-					session.setAttribute("reviewCnt", reviewCnt - 1);
-				}
-				
 				JSONObject json = new JSONObject();
 				json.put("result", result);
 				String jsonStr = json.toString();
