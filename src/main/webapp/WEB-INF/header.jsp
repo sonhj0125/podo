@@ -380,7 +380,7 @@
     </header>
     
     <%-- 로그인 후 상단에 아이디 버튼 클릭 시 마이페이지 오프캔버스 나오기 --%>
-   <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+   <div class="offcanvas offcanvas-start" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
    
      <div class="offcanvas-header">
        <h3 style="font-weight: bold;">마이페이지</h3>
