@@ -362,3 +362,34 @@ select NVL(count(*), 0) as count
 from LIKEIT
 where pindex = 33
 
+
+
+SELECT rno, USERID, POINCOME, PODETAIL, PODATE
+ FROM 
+ ( 
+     select rownum as rno, USERID, POINCOME, PODETAIL, PODATE 
+     from  
+     ( 
+      select USERID, POINCOME, PODETAIL, PODATE 
+      from point 
+      where userid = ?
+order by PODATE desc 
+     ) V 
+ ) T 
+ WHERE T.rno BETWEEN ? AND ?
+
+
+desc point
+
+  insert into point(USERID, POINCOME, PODETAIL, PODATE )
+  values('ksj1024sj', '4400', '상품 구매 적립', '2024-05-27 12:25:00');
+  
+  commit;
+  
+  delete from point
+where USERID = 'ksj1024sj';
+  
+  
+SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS AvailablePoints
+FROM POINT 
+WHERE PODETAIL NOT LIKE '%적립' AND USERID = 'ksj1024sj'

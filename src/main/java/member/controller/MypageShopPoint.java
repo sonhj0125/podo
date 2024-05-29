@@ -135,13 +135,28 @@ public class MypageShopPoint extends AbstractController {
             request.setAttribute("totalMyPointCount", totalMyPointCount);
             request.setAttribute("currentShowPageNo", currentShowPageNo);
             
-
+            // 지금 포인트 사용할 때 어떤 값이 오는지 몰라서 주석처리해뒀습니다.
 	        
-			// 총 쿠폰 발행 수,	사용 쿠폰 수,	가용 쿠폰 수
-			List<PointDTO> pointHistoryList = podao.getUserPointHistoryList(userid);
+            
+            
+			// 사용가능포인트, 사용한포인트 , 총포인트
+            PointDTO userpointdto = podao.getUserPointDetails(userid);
+            if(userpointdto.getAvailablePoints() == null) {
+            	userpointdto.setAvailablePoints("0");
+            }
+            if(userpointdto.getUsedPoints() == null) {
+            	userpointdto.setUsedPoints("0");
+            }
+            if(userpointdto.getTotalPoints() == null && userpointdto.getAvailablePoints() != null && userpointdto.getUsedPoints() != null) {
+            	int AvailablePoints = Integer.parseInt(userpointdto.getAvailablePoints());
+            	int UsedPoints = Integer.parseInt(userpointdto.getUsedPoints());
+            	int TotalPoints = AvailablePoints + UsedPoints;
+            	userpointdto.setTotalPoints(Integer.toString(TotalPoints));
+            }
 			
-			request.setAttribute("pointHistoryList", pointHistoryList);
-			
+            request.setAttribute("userpointdto", userpointdto);
+            
+            
 			/*
 			 * int totalCoupon = 0; int usedCoupon = 0; int availableCoupons = 0;
 			 * if(pointHistoryList.size() != 0) { totalCoupon = pointHistoryList.size(); //

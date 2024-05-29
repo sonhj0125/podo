@@ -63,7 +63,7 @@ public class CouponDAO_imple implements CouponDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = "INSERT INTO COUPON (CODISCOUNT, CONAME, CODETAIL, COTYPE, COMIN, CODATE) "
+			String sql = "INSERT INTO COUPON (CODISCOUNT, CONAME, CODETAIL, COTYPE, CODATE, COCODE) "
 					   + "VALUES (?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -72,8 +72,8 @@ public class CouponDAO_imple implements CouponDAO {
 			pstmt.setString(2, codto.getConame());
 			pstmt.setString(3, codto.getCodetail());
 			pstmt.setInt(4, codto.getCotype());
-			pstmt.setInt(5, codto.getComin());
-			pstmt.setString(6, codto.getCodate());
+			pstmt.setString(5, codto.getCodate());
+			pstmt.setString(6, codto.getCocode());
 			
 			result = pstmt.executeUpdate();
 			
@@ -528,6 +528,34 @@ public class CouponDAO_imple implements CouponDAO {
 		}
 		return MyCouponpagingList;
 	} // end of public List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) -----
+
+
+	// 사용가능한 쿠폰 개수 가져오기
+	@Override
+	public int getAvailableCoupons(String userid) throws SQLException {
+		int availableCoupons = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select count(*) "
+						+ " from mycoupon "
+						+ " where COSTATUS = 1 and userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			availableCoupons = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return availableCoupons;	
+	} // end of public int getAvailableCoupons(String userid) throws SQLException ----
 	
 	// 관리자 회원관리 - 쿠폰선택
 	   @Override

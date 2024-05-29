@@ -61,6 +61,8 @@ $(function () {
             tag.removeClass("status-ng");
         }
 
+        console.log(checkName, checkEmail, checkPhone);
+
     });
 
 

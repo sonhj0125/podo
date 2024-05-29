@@ -45,6 +45,9 @@ public interface CouponDAO {
 
 	// **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
 	List<MyCouponDTO> selectMyCouponpaging(Map<String, String> paraMap) throws SQLException ;
+
+	// 사용가능한 쿠폰 개수 가져오기
+	int getAvailableCoupons(String userid) throws SQLException ;
 	
 	// 관리자 회원관리 - 쿠폰선택
 	List<CouponDTO> adminCoupon() throws SQLException;
