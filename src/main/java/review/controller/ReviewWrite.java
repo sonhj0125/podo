@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
 import member.domain.MemberDTO;
+import member.model.MemberDAO;
+import member.model.MemberDAO_imple;
 import shop.domain.ProductDTO;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
@@ -16,9 +18,11 @@ import shop.model.ProductDAO_imple;
 public class ReviewWrite extends AbstractController {
 	
 	ProductDAO pdao = null;
+	MemberDAO mdao = null;
 	
 	public ReviewWrite() {
 		pdao = new ProductDAO_imple();
+		mdao = new MemberDAO_imple();
 	}
 	
 	@Override
@@ -94,10 +98,34 @@ public class ReviewWrite extends AbstractController {
 				// 리뷰 작성하기
 				int result = pdao.addReview(paraMap);
 				
+				boolean addPoint = false;
+				boolean writeLog = false;
+				
+				if(result == 1) {
+					
+					String point = "500";
+					paraMap.put("point", point);
+					
+					// 리뷰 작성 포인트 500 주기
+					addPoint = mdao.addPoint(paraMap);
+					
+				}
+				
+				if(addPoint) {
+					// 포인트 적립 로그 작성
+					writeLog = mdao.writeReivewPointUp(paraMap);
+				}
+				
 				String msg = "";
 				String loc = "";
 				
-				if(result == 1) {
+				if(result == 1 && addPoint && writeLog) {
+					
+					int reviewCnt = (int)session.getAttribute("reviewCnt");
+					
+					reviewCnt = reviewCnt - 1;
+					
+					session.setAttribute("reviewCnt", reviewCnt);
 					
 					msg = "리뷰가 작성되었습니다.\\n리뷰 등록 후 삭제가 불가합니다.";
 					loc = request.getContextPath() + "/member/reviewList.wine";

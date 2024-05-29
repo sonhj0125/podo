@@ -81,6 +81,9 @@ public interface MemberDAO {
 	// 내 포인트 셀랙트
 	String getMyPoint(String userid) throws SQLException;
 
+	// 리뷰 작성 시 포인트 적립 로그 작성
+	boolean writeReivewPointUp(Map<String, String> paraMap) throws SQLException;
+
 
 	
 }
