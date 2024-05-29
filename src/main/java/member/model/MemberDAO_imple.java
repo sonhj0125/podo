@@ -934,7 +934,7 @@ public class MemberDAO_imple implements MemberDAO {
 			conn = ds.getConnection();
 
 			String sql = " insert into mycoupon(coindex, userid, coname, costatus) "
-					   + " VALUES (seq_coindex.nextval, ?, '신규회원 가입 감사쿠폰', 1) ";
+					   + " VALUES (seq_coindex.nextval, ?, '신규회원 가입 [5000원]', 1) ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
