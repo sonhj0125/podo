@@ -306,7 +306,7 @@ function goSmartSearch() {
 <div class="container">
 	<%-- 상단 --%>
 	<div class="mt-4">
-		<h1 style="font-weight:bold;margin-bottom:2%; text-align:center;">WINE</h1>
+		<h2 style="font-weight:bold;margin-bottom:2%; text-align:center;">제품 수정/삭제</h2>
 	</div>
 	<hr>
 	<div class="hstack gap-3 mt-3">
@@ -327,7 +327,7 @@ function goSmartSearch() {
 		<div class="p-2 ms-auto"></div>
 		<div class="p-2">
 			<button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-				<img src="../images/setting.png" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"/>
+				<img src="../../images/setting.png" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"/>
 				<span style="font-size:10pt; font-weight:bold; color:black;">SMART SEARCH</span>
 			</button>
 		</div>
@@ -350,7 +350,7 @@ function goSmartSearch() {
 			  	<div class="col curpointer" onclick="showProduct('${pdto.pindex}')">
 			    	<div class="card h-100">
 				    	<%-- product image --%>
-						<img src="../images/product/${pdto.pimg}" class="card-img-top" alt="...">
+						<img src="../../images/product/${pdto.pimg}" class="card-img-top" alt="...">
 						<%-- sale badge --%>
 						<c:if test="${pdto.pstock == '0'}">
 							<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sold-out</div>
