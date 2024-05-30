@@ -98,10 +98,13 @@ public interface MemberDAO {
 	// 관리자 회원관리 - 해당 유저 정지해제시키기
 	int ableMember(Map<String, String> paraMap) throws SQLException;
 	
-	
 
 	// 리뷰 작성 시 포인트 적립 로그 작성
 	boolean writeReivewPointUp(Map<String, String> paraMap) throws SQLException;
+
+	
+
+	
 
 
 	

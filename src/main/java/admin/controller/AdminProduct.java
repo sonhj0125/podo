@@ -67,7 +67,7 @@ public class AdminProduct extends AbstractController {
             
             // 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
                   ServletContext svlCtx = session.getServletContext();
-                  String uploadFileDir = svlCtx.getRealPath("/images/product");
+                  String uploadFileDir = "C:/NCS/podo/src/main/webapp/images/product";
                   System.out.println(uploadFileDir);
                // String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyMVC\\src\\main\\webapp\\images";
                   

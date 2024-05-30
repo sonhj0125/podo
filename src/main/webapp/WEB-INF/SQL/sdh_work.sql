@@ -85,3 +85,9 @@ select CINDEX from CART order by CINDEX desc;
 select * from PRODUCT;
 
 delete from PRODUCT where PINDEX = 134;
+
+update product set pstock = pstock -1 where PINDEX = '1';
+
+select PRODUCT.pindex from PRODUCT join CART on PRODUCT.PINDEX = CART.PINDEX where CINDEX = '168';
+
+select PRODUCT.pindex as pindex from PRODUCT join CART on PRODUCT.PINDEX = CART.PINDEX where CINDEX = '168';

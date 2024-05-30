@@ -182,8 +182,6 @@
 		
 		});
 		
-		
-	
 		$("input:text[name='memo']").hide();
 		
 		$('#order_msg').change(function() {
@@ -217,11 +215,11 @@
 			goSearch();
 		});
 		
-		
 		<%-- 마이페이지 쇼핑정보 쿠폰 클릭시 --%>
 		$("div#memberCoupon").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
 		});
+		
 		$("div#memberCoupon2").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
 		});
@@ -230,11 +228,11 @@
 		$("div#memberPoint").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
 		});
+		
 		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
 		$("div#memberPoint2").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
 		});
-		
 		
 		<%-- 관리자 회원관리 클릭시 --%>
         $("div#adminMember").bind('click',()=>{
@@ -255,17 +253,24 @@
 	
 	window.closeModal = function(login) {
 		
-	    $('#loginModal').modal('hide');
 	    
-	    if(!login){ // 회원가입일 경우
+	    if(login == 'register'){ // 회원가입일 경우
+	    	$('#loginModal').modal('hide');
 	    	location.href="<%=ctxPath%>/member/memberRegister.wine";
-	    }else{ // 로그인일 경우
+	    }else if(login == 'login'){ // 로그인일 경우
+	    	$('#loginModal').modal('hide');
 	    	$('#spinner').show();
 	    	setTimeout(function() {
 	    		$('#spinner').hide();
 			    javascript:history.go(0);
 			}, 1200);
+	    }else if(login == 'paymentNG'){ //결제 종료
+	    	$('#payment').modal('hide');
+	    }else if(login == 'payment'){
+	    	$('#payment').modal('hide');
+	    	paymentcomplete();
 	    }
+	    
 	    
 	}// end of window.closeModal
 	
@@ -289,6 +294,18 @@
 			frm.action = "<%=ctxPath%>/shop/search.wine";
 			frm.submit();
 		}
+	}
+	
+	<%-- 결제 성공 --%>
+	function paymentcomplete(){
+		
+	    const frm = document.orderfrm;
+	    frm.method = "post";
+	    frm.action = "<%=ctxPath%>/shop/orderend.wine";
+	    frm.submit();
+	    
+	    location.href = "<%=ctxPath%>/shop/payend.wine"
+
 	}
 	
 </script>

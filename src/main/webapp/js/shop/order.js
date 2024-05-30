@@ -1,7 +1,5 @@
-$(function() {
+$(document).ready(function(){
 
-    const toastLive = document.getElementById('liveToast');
-    const toastmsg = document.getElementById('toast-msg');
     let checkName = true;
     let checkEmail = true;
     let checkPhone = true;
@@ -124,63 +122,11 @@ $(function() {
     const indexjoinArr = indexArr.join(",");
     $("input#idxArrjoin").val(indexjoinArr);
 
+
     $("#btn-doorder").bind("click",function(){
 
-		if(!checkName || !checkEmail || !checkPhone || !checkAddress || !checkAddressDetail){
-			if(!checkName) {
-	            toastmsg.innerHTML="이름을 올바르게 입력하세요";
-	            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-	            toastBootstrap.show();
-	            return false;
-            }
-            
-            if (!checkEmail) {
-	            toastmsg.innerHTML="이메일을 올바르게 입력하세요";
-	            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-	            toastBootstrap.show();
-	            return false;
-			}
-			
-			if (!checkPhone) {
-	            toastmsg.innerHTML="연락처를 올바르게 입력하세요";
-	            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-	            toastBootstrap.show();
-	            return false;
-			}
-			
-			if (!checkAddress) {
-	            toastmsg.innerHTML="주소를 올바르게 입력하세요";
-	            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-	            toastBootstrap.show();
-	            return false;
-			}
-			
-			if (!checkAddressDetail) {
-	            toastmsg.innerHTML="상세주소를 올바르게 입력하세요";
-	            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-	            toastBootstrap.show();
-	            return false;
-			}
-        }
-
-
-        const ctxPath = $("div#getCtxPath").text();
-        const title = "Payment";
-
-        const width = 1000;
-        const height = 600;
-
-        const left = Math.ceil( (window.screen.width - width)/2 );
-        const top = Math.ceil( (window.screen.height - height)/2 );
+        Setpayment(checkName,checkEmail,checkPhone,checkAddress,checkAddressDetail);
         
-        window.open("", title, `left=${left}, top=${top}, width=${width}, height=${height}`);
-
-        const frm = document.orderfrm;
-        frm.method = "post";
-        frm.target = title;
-        frm.action = `${ctxPath}/shop/payment.wine`;
-        frm.submit();
-
     });
     
     		// 주문자 정보 변경시 유효성 검사 ===============================================
@@ -379,13 +325,53 @@ function totalSet(){
 
 }
 
-function paymentcomplete(){
+function Setpayment(checkName,checkEmail,checkPhone,checkAddress,checkAddressDetail){
 
-    const ctxPath = $("div#getCtxPath").text();
+    const toastLive = document.getElementById('liveToast');
+    const toastmsg = document.getElementById('toast-msg');
 
+    if(!checkName || !checkEmail || !checkPhone || !checkAddress || !checkAddressDetail){
+        if(!checkName) {
+            toastmsg.innerHTML="이름을 올바르게 입력하세요";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            return false;
+        }
+        
+        if (!checkEmail) {
+            toastmsg.innerHTML="이메일을 올바르게 입력하세요";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            return false;
+        }
+        
+        if (!checkPhone) {
+            toastmsg.innerHTML="연락처를 올바르게 입력하세요";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            return false;
+        }
+        
+        if (!checkAddress) {
+            toastmsg.innerHTML="주소를 올바르게 입력하세요";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            return false;
+        }
+        
+        if (!checkAddressDetail) {
+            toastmsg.innerHTML="상세주소를 올바르게 입력하세요";
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+            toastBootstrap.show();
+            return false;
+        }
+    }
+
+    const ctxPath = $("#getCtxPath").text();
     const frm = document.orderfrm;
     frm.method = "post";
-    frm.action = `${ctxPath}/shop/orderend.wine`;
+    frm.action = `${ctxPath}/shop/payment.wine`;
+    frm.target = "payment";
     frm.submit();
 
 }

@@ -68,6 +68,15 @@ $(function (){
 	
 	$("#btndirectBuy").bind("click",function(){
 		
+		const count = Number($("input#count").val().trim());
+		const pstock = Number($("input#pstock").val().trim());
+		
+		if(count > pstock) {
+			alert("재고량보다 주문 수량이 많습니다.");
+			$("input#count").val(1);
+			return;
+		}
+		
 		const frm = document.cartin;
 		frm.method = "post";
 		frm.action ="<%=ctxPath%>/shop/directorder.wine";
@@ -86,6 +95,7 @@ button#btn-like, button#btn-unlike {
 	outline:none !important;
 	box-shadow:none !important;
 }
+
 
 </style>
 
@@ -141,35 +151,41 @@ button#btn-like, button#btn-unlike {
 	            </form>
 	
 	            <br>
-	            <div class="d-flex">
+	            <div class="d-flex" style="align-items:center; margin-left:10%; width:100%;">
 	                <form class="d-flex" method="post">
-	                	<c:if test="${requestScope.likeit == 'none'}">
-		                    <button id="btn-like" class="btn btn-outline-light flex-shrink-0 fw-semibold pt-3 me-3" type="button">
-		                      <img id="btn-like" src="../images/heartempty.png" style="width: 3rem;"/>
+	                	<div>
+		                	<c:if test="${requestScope.likeit == 'none'}">
+		                		<img id="btn-like"  src="../images/heartempty.png" style="width:3rem;"/>
+		                    </c:if>
+		                    <c:if test="${requestScope.likeit == 'show' }">
+			                    <img id="btn-unlike"  src="../images/heartfull.png" style="width:3rem;"/>
+		                    </c:if>
+		                </div>  
+		            </form>
+		            <div class="d-flex" style="align-items:center; margin-left:20%; width:100%;">
+		            <form class="d-flex" method="post"> 
+		                <div>
+		                    <button id="btndirectBuy" class="btn btn-outline-dark fw-semibold btn-lg" type="button">
+		                        <span style="">BUY IT NOW</span>
 		                    </button>
-	                    </c:if>
-	                    <c:if test="${requestScope.likeit == 'show' }">
-	                    	<button id="btn-unlike" class="btn btn-outline-light btn-flex-shrink-0 fw-semibold pt-3 me-3" type="button" >
-		                      <img id="btn-unlike" src="../images/heartfull.png" style="width: 3rem;"/>
-		                    </button>
-	                    </c:if>
-	                    <button id="btndirectBuy" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
-	                        BUY IT NOW
-	                    </button>
+	                    </div> 
 	                </form>
 	                &nbsp;&nbsp; 
-	                <c:if test="${requestScope.cartInfo == 'none'}">
-		                <button id="btncart" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
-		                    CART
-		                 </button>
-	                </c:if>
-	                <c:if test="${requestScope.cartInfo == 'show'}">
-		                <button id="btncart-out" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
-		                    CART OUT
-		                 </button>
-	                </c:if>
-	             </div>
-	             <input class="form-control text-center me-3" id="pstock" name="pstock" type="text" value="${requestScope.likeItCnt}" style="max-width: 4.65rem" readonly />
+	                <div style="margin-left:5%; align-items:center;">
+		                <c:if test="${requestScope.cartInfo == 'none'}">
+				                <button id="btncart" class="btn btn-outline-light fw-semibold btn-lg" style="background-color: #9999ff; " type="button">
+				                    CART
+				                </button>
+		                </c:if>
+		                <c:if test="${requestScope.cartInfo == 'show'}">
+				                <button id="btncart-out" class="btn btn-outline-light fw-semibold btn-lg" style="background-color: #9999ff; " type="button">
+				                    CART OUT
+				                </button>
+		                </c:if>
+	                </div>
+	                </div>
+	               </div> 
+	             <input class="form-control text-center me-3" id="pstock" name="pstock" type="text" value="${requestScope.likeItCnt}" style="max-width:3rem; margin-left:10%; color:red; border:none;" readonly />
 	         </div>
 	     </div>
 		</div>
