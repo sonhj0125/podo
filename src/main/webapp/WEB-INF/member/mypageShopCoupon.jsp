@@ -44,7 +44,7 @@ div#pageBar>nav {
                 success: function(json) {
                     if (json.isExists === true && json.result === false) {
                         alert("쿠폰이 등록되었습니다..");
-                        location.href = "/member/mypageShopCoupon.wine"; // 지금 페이지로 간다.
+                        location.href = "${pageContext.request.contextPath}/member/mypageShopCoupon.wine"; // 지금 페이지로 간다.
                     } else {
                         alert("존재하지 않는 쿠폰번호입니다.");
                         return;
