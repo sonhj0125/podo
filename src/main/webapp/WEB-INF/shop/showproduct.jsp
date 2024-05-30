@@ -68,6 +68,15 @@ $(function (){
 	
 	$("#btndirectBuy").bind("click",function(){
 		
+		const count = Number($("input#count").val().trim());
+		const pstock = Number($("input#pstock").val().trim());
+		
+		if(count > pstock) {
+			alert("재고량보다 주문 수량이 많습니다.");
+			$("input#count").val(1);
+			return;
+		}
+		
 		const frm = document.cartin;
 		frm.method = "post";
 		frm.action ="<%=ctxPath%>/shop/directorder.wine";
