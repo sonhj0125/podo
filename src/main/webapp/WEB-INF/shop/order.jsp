@@ -86,6 +86,7 @@
       
       <div class="cart_body_2" style="margin: 0 auto; display: flex;">
       	<%-- 여기 --%>
+      	
          <div style="border:solid 0px red; width: 50%;">
             <h3>주문자 정보</h3>
             
@@ -191,6 +192,7 @@
             </div>
          </div>
          </div>
+         
         
       </div>
       
@@ -200,7 +202,7 @@
       </div>
       
       <input type="text" name="userid" value="${sessionScope.loginUser.userid}" style="display: none;" />
-	</form> 
+	</form>
    	</div>
  
  

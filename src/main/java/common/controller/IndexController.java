@@ -44,6 +44,8 @@ public class IndexController extends AbstractController {
 				
 				int reviewCnt = mdao.getReviewCnt(loginUser.getUserid());
 				session.setAttribute("reviewCnt", reviewCnt);
+				System.out.println(reviewCnt);
+				
 			}
 			
 			super.setRedirect(false);
