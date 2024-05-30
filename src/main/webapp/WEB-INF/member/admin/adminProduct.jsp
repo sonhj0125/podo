@@ -12,7 +12,7 @@
 <style type="text/css">
 
 label.input-group-text, span.input-group-text {
-	background-color: #ccd9ff;
+	background-color: ;
 	width: 20%;
 }
    
@@ -208,20 +208,20 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group">
 			  	<span class="input-group-text">제품명 및 영문명</span>
-			  	<input type="text" placeholder="알파박스 앤 다이스 타로 프로세코" aria-label="name" class="form-control infoData" name="pname" id="pname">
-			 	<input type="text" placeholder="ALPHA BOX AND DICE TAROT PROSECCO" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
+			  	<input type="text" placeholder="제품의 한글이름을 입력해주세요" aria-label="name" class="form-control infoData" name="pname" id="pname">
+			 	<input type="text" placeholder="제픔의 영문이름을 입력해주세요" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
 			</div>
 			
 			
 			<div class="input-group mb-3">
 			  	<span class="input-group-text" id="price">가격</span>
-			  	<input type="text" class="form-control infoData" placeholder="25,000원" aria-label="price" aria-describedby="basic-addon1" name="pprice" id="pprice">
+			  	<input type="text" class="form-control infoData" aria-label="price" aria-describedby="basic-addon1" name="pprice" id="pprice">
 			</div>
 			
 			
 			<div class="input-group mb-3">
 			  	<span class="input-group-text" id="point">적립금</span>
-			  	<input type="text" class="form-control infoData" placeholder="1,250원" aria-label="point" aria-describedby="basic-addon1" name="ppoint" id="ppoint" value="" readonly>
+			  	<input type="text" class="form-control infoData" aria-label="point" aria-describedby="basic-addon1" name="ppoint" id="ppoint" value="" readonly>
 			</div>
 			
 		
