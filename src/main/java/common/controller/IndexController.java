@@ -11,6 +11,7 @@ import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
 import member.model.MemberDAO;
+import member.model.MemberDAO_imple;
 import shop.domain.ProductDTO;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
@@ -22,6 +23,7 @@ public class IndexController extends AbstractController {
 
 	public IndexController() {
 		pdao = new ProductDAO_imple();
+		mdao = new MemberDAO_imple();
 	}
 
 	@Override
