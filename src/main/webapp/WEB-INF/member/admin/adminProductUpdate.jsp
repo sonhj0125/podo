@@ -347,7 +347,7 @@ function goSmartSearch() {
 				<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 				<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 
-			  	<div class="col curpointer" onclick="showProduct('${pdto.pindex}')">
+			  	<div class="col curpointer" onclick="updateProduct('${pdto.pindex}')">
 			    	<div class="card h-100">
 				    	<%-- product image --%>
 						<img src="../../images/product/${pdto.pimg}" class="card-img-top" alt="...">

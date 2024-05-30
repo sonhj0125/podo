@@ -281,6 +281,13 @@
 		
 	}
 	
+	// product 보기
+	function updateProduct(idx){
+		
+		location.href = "<%=ctxPath %>/member/admin/updateProduct.wine?pindex="+idx;
+		
+	}
+	
 	<%-- 와인 검색 --%>
 	function goSearch() {
 		
