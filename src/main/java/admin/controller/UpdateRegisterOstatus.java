@@ -48,13 +48,8 @@ public class UpdateRegisterOstatus extends AbstractController {
 					result = true;
 				}
 				
-				int reviewCnt = (int)session.getAttribute("reviewCnt");
-				
 				if("4".equals(ostatus)) {
 					cdao.setOardate(paraMap);
-					
-					// 주문상태가 4일 때 회원의 작성할 리뷰 개수 1 증가
-					session.setAttribute("reviewCnt", reviewCnt + 1);
 				}
 				
 				JSONObject json = new JSONObject();
