@@ -36,7 +36,9 @@ public class AdminProduct extends AbstractController {
               return fileName.substring(index + 1);
            }
         }
+        
         return null;
+        
      }// end of private String extractFileName(String partHeader)-------------------
 
    @Override
