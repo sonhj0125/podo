@@ -1609,6 +1609,36 @@ public class ProductDAO_imple implements ProductDAO {
 	       
 	}// end of public int selectPindex(String pimg) throws SQLException ---------------
 
+	
+	// 물건 주문 후 재고량 수 변경
+	@Override
+	public int updatePstock(int pindex) throws SQLException {
+		
+		int pstockCnt = 0;
+		
+		try {
+            conn = ds.getConnection();
+            
+            String sql = " update product set pstock  = pstock -1 "
+            		   + " where pindex = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            
+            pstmt.setInt(1, pindex);
+            
+            rs = pstmt.executeQuery();
+            
+               rs.next();
+               pstockCnt = rs.getInt(1);
+            
+       } finally {
+            close();
+       }
+		
+		return pstockCnt;
+		
+	}// end of public int updatePstock(int pindex) throws SQLException------------------
+
 
 
 }
