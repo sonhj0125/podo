@@ -1609,6 +1609,77 @@ public class ProductDAO_imple implements ProductDAO {
 	       
 	}// end of public int selectPindex(String pimg) throws SQLException ---------------
 
+	
+	
+	
+	// 관리자 회원관리 - 리뷰내역 삭제하기
+	@Override
+	public int delReviewAd(String rindex) throws SQLException {
+		
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		
+	       try {
+	            conn = ds.getConnection();
+	            
+	            conn.setAutoCommit(false);
+	            
+	            
+	            String sql = " delete from review "
+	            		   + " where rindex = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, rindex);
+	            
+	            result1 = pstmt.executeUpdate();
+	            
+	            String userid = "";
+	            
+	            if(result1 == 1) {
+	            	
+	            	sql = " update member set point = point - 500 "
+	            		+ " where userid = ? ";
+		            
+		            pstmt = conn.prepareStatement(sql);
+		            
+					pstmt.setString(1, userid);
+		            
+		            result2 = pstmt.executeUpdate();
+	            	
+		            System.out.println("1단계 성공");
+		            
+		            if(result2 == 1) {
+		            	
+		            	conn.commit();
+		            	conn.setAutoCommit(true);
+		            	result3 = 1;
+		            	
+		            	System.out.println("2단계 성공");
+		            }
+		            
+		            
+	            }else {
+	            	
+	            	conn.rollback();
+	            }
+	            
+	            
+	       } catch(Exception e) {
+	    	   
+	    	   conn.rollback();
+	    	   e.printStackTrace();
+	       } finally {
+	            close();
+	       }
+	         
+	       System.out.println("3단계 성공");
+	       return result3;
+	       
+	} // end of public int delReviewAd(String rindex) throws SQLException
 
+	
+	
 
 }

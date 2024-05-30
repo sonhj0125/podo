@@ -92,5 +92,10 @@ public interface ProductDAO {
 	// pindex 채번해오기
 	int selectPindex(String pimg) throws SQLException;
 
+	
+	// 관리자 회원관리 - 리뷰내역 삭제하기
+	int delReviewAd(String rindex) throws SQLException;
+
+
 
 }

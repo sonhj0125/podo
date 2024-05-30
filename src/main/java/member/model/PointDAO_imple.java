@@ -450,6 +450,9 @@ public class PointDAO_imple implements PointDAO {
 		return totalMyPointCount;
 	} // end of public int getTotalMyPointCount(String userid) throws SQLException ----
 
+
+	
+	
 	
 	
 }
