@@ -77,17 +77,20 @@ from member
 
 select *
 from PRODUCT
-where pname = '쌍용와인'
+where pname = '어린이가 좋아하는'
 
 select *
 from PRODUCTDETAILIMG
-where pindex = '122'
+where pname
+
+select *
+from PRODUCTDETAILIMG
 
 DELETE from PRODUCTDETAILIMG
-where pindex = '128'
+where pindex = '134'
 
 DELETE from product
-where pindex = '128'
+where pindex = '134'
 
 commit;
 
