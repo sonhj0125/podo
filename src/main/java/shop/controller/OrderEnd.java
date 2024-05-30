@@ -182,13 +182,16 @@ public class OrderEnd extends AbstractController{
 				
 				loginuser.setPoint(newpoint);
 				
+				System.out.println("성공");
+				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
+				
 				return;
 				
 			}// 유효성
 			
-		}// Post
+		}// End of Post
 		
 		super.setRedirect(true);
 		super.setViewPage(request.getContextPath()+"/index.wine");

@@ -29,21 +29,21 @@ function goLogin() {
         return; 
     }
 
-    const login = true;
+    const staff = "login";
 
     const frm = document.loginFrm;
     frm.method = "POST"
     frm.action = "signin.wine"
     frm.submit();
-    window.parent.closeModal(login);
+    window.parent.closeModal(staff);
     
 }
 
 function doregister(){
 
-    const login = false;
+    const staff = "register";
 
-    window.parent.closeModal(login);
+    window.parent.closeModal(staff);
 
 }
 

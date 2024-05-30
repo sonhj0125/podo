@@ -325,17 +325,6 @@ function totalSet(){
 
 }
 
-function paymentcomplete(){
-
-    const ctxPath = $("div#getCtxPath").text();
-
-    const frm = document.orderfrm;
-    frm.method = "post";
-    frm.action = `${ctxPath}/shop/orderend.wine`;
-    frm.submit();
-
-}
-
 function Setpayment(checkName,checkEmail,checkPhone,checkAddress,checkAddressDetail){
 
     const toastLive = document.getElementById('liveToast');
@@ -379,21 +368,10 @@ function Setpayment(checkName,checkEmail,checkPhone,checkAddress,checkAddressDet
     }
 
     const ctxPath = $("#getCtxPath").text();
-    const title = "Payment";
-
-    const width = 1000;
-    const height = 600;
-
-    const left = Math.ceil( (window.screen.width - width)/2 );
-    const top = Math.ceil( (window.screen.height - height)/2 );
-    
     const frm = document.orderfrm;
     frm.method = "post";
     frm.action = `${ctxPath}/shop/payment.wine`;
-
-    window.open("", title, `left=${left}, top=${top}, width=${width}, height=${height}`);
-    
-    frm.target = title;
+    frm.target = "payment";
     frm.submit();
 
 }
