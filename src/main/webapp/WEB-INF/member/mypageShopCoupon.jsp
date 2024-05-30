@@ -229,5 +229,6 @@ div#pageBar>nav {
 
 
 </div>
-<jsp page="/WEB-INF/footer.jsp" />
+
+<jsp:include page="/WEB-INF/footer.jsp" />
                                 
