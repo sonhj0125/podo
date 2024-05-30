@@ -82,10 +82,10 @@ public class MypageShopPoint extends AbstractController {
 			// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
 			
 			// *** [맨처음][이전] 만들기 *** //
-			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>"; 
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>◀◀</a></li>"; 
 			
 			if(pageNo != 1) {
-				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>◀</a></li>"; 
 			}
 			
 			while( !(loop > blockSize || pageNo > totalPage) ) {
@@ -111,9 +111,9 @@ public class MypageShopPoint extends AbstractController {
 			// pageNo ==> 11
 			
 			if(pageNo <= totalPage) { 
-				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>▶</a></li>";
 			}
-			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>▶▶</a></li>";
 			
 			
 			// *** ======= 페이지바 만들기 끝 ======= *** //	        
