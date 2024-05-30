@@ -10,6 +10,8 @@ import coupon.domain.MyCouponDTO;
 import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
+import member.model.MemberDAO;
+import member.model.MemberDAO_imple;
 import shop.domain.ProductDTO;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
@@ -17,9 +19,11 @@ import shop.model.ProductDAO_imple;
 public class IndexController extends AbstractController {
 
 	ProductDAO pdao = null;
+	MemberDAO mdao = null;
 
 	public IndexController() {
 		pdao = new ProductDAO_imple();
+		mdao = new MemberDAO_imple();
 	}
 
 	@Override
@@ -35,7 +39,15 @@ public class IndexController extends AbstractController {
 
 			request.setAttribute("newProductList", pdtoList);
 			request.setAttribute("popProductList", pdtoList2);
-
+			
+			if(loginUser != null) {
+				
+				int reviewCnt = mdao.getReviewCnt(loginUser.getUserid());
+				session.setAttribute("reviewCnt", reviewCnt);
+				System.out.println(reviewCnt);
+				
+			}
+			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/index.jsp");
 

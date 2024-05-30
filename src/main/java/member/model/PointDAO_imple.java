@@ -263,7 +263,7 @@ public class PointDAO_imple implements PointDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS AvailablePoints "
+			String sql = " SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS TotalPoints "
 					   + " FROM POINT "
 					   + " WHERE PODETAIL LIKE '%적립' AND USERID = ? ";
 			
@@ -274,17 +274,33 @@ public class PointDAO_imple implements PointDAO {
             if (rs.next()) {
                 podto = new PointDTO();
                 
-                podto.setAvailablePoints(rs.getString("AvailablePoints")); // 사용가능포인트
+                podto.setTotalPoints(rs.getString("TotalPoints")); // 누적 적립금
 
             	sql = " SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS UsedPoints "
  					+ " FROM POINT "
- 					+ " WHERE PODETAIL NOT LIKE '%적립' AND USERID = ? ";
+ 					+ " WHERE PODETAIL LIKE '%차감' AND USERID = ? ";
             	
     			pstmt = conn.prepareStatement(sql);
     			pstmt.setString(1, userid);
     			rs = pstmt.executeQuery();
-    			rs.next();
-	            podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
+    			if(rs.next()) {
+		            podto.setUsedPoints(rs.getString("UsedPoints"));  // 사용한 포인트
+		            
+		            // 사용 가능한 포인트
+		            if(podto.getTotalPoints() == "" || podto.getTotalPoints() == null) {
+		            	podto.setTotalPoints("0");
+		            }
+		            if(podto.getUsedPoints() == "" || podto.getUsedPoints() == null) {
+		            	podto.setUsedPoints("0");
+		            }
+		            
+		        	int TotalPoints = Integer.parseInt(podto.getTotalPoints());
+		        	int UsedPoints = Integer.parseInt(podto.getUsedPoints());
+		        	int AvailablePoints = TotalPoints + UsedPoints;
+		        	podto.setAvailablePoints(Integer.toString(AvailablePoints));
+		        	
+		        	// 이제 사용 가능한 포인트 값을 적립금에 업데이트 해준다.
+    			}
             }
 			
 		} finally {

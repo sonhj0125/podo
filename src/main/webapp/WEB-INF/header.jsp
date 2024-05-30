@@ -75,6 +75,24 @@
        font-family: "Noto Sans KR";
     }
     
+
+    .reviewList {
+        margin-right: 5%;
+        cursor: pointer;
+        position: relative; /* 부모 요소에 상대 위치 설정 */
+        display: inline-block;
+    }
+    .sticky-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #cc99ff;
+        padding: 0.3rem;
+        border: 1px solid lightgray;
+        border-radius: 50%;
+        transform: translate(50%, -50%); /* 원을 아이콘의 오른쪽 위로 이동 */
+    }
+
 	</style>
 	
 	<script type="text/javascript">
@@ -395,7 +413,7 @@
            <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
             <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
             	<c:if test="${sessionScope.reviewCnt != 0}">
-               		<span class="position-absolute top-1 ms-4 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+               		<span class="sticky-indicator ms-4 border border-light rounded-circle"></span>
             	</c:if>
                   <i class="fa-regular fa-newspaper" style="margin: 10%;">
                   </i>
