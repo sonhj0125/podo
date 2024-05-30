@@ -393,3 +393,19 @@ where USERID = 'ksj1024sj';
 SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS AvailablePoints
 FROM POINT 
 WHERE PODETAIL NOT LIKE '%적립' AND USERID = 'ksj1024sj'
+
+
+select *
+from orders
+
+
+desc coupon
+
+select *
+from coupon
+
+
+select *
+from member
+
+desc coupon
