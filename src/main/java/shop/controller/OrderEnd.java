@@ -18,12 +18,14 @@ import member.domain.MemberDTO;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
 import shop.domain.OrderDTO;
+import shop.model.ProductDAO;
 
 public class OrderEnd extends AbstractController{
 
 	CouponDAO codao = null;
 	MemberDAO mdao = null;
 	CartDAO cdao = null;
+	ProductDAO pdao = null; 
 	
 	public OrderEnd() {
 		mdao = new MemberDAO_imple();
@@ -192,5 +194,6 @@ public class OrderEnd extends AbstractController{
 		super.setViewPage(request.getContextPath()+"/index.wine");
 
 	}
+
 
 }

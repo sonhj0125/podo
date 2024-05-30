@@ -92,5 +92,8 @@ public interface ProductDAO {
 	// pindex 채번해오기
 	int selectPindex(String pimg) throws SQLException;
 
+	// 물건 주문 후 재고량 수 변경
+	int updatePstock(int pindex) throws SQLException;
+
 
 }
