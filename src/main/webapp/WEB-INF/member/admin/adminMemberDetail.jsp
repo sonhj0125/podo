@@ -129,6 +129,7 @@
 							<td>${reviewList.rstar}</td>
 							<td>${reviewList.rdetail}</td>
 							<td>${reviewList.rdate}</td>
+							<td><button type="button" class="btn btn-outline-danger btn-sm">삭제</button></td>
 				    	</tr>
 				    </c:forEach> 
 				 	</tbody>
