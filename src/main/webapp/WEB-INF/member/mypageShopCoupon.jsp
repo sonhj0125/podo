@@ -9,15 +9,25 @@
 <jsp:include page="/WEB-INF/header.jsp" />
 
 <style type="text/css">
-div#pageBar {
-	border: solid 0px red;
-	width: 80%;
-	margin: 3% auto 0 auto;
-	display: flex;
+.page-link {
+  color: #000; 
+  background-color: #fff;
+  border: 1px solid #ccc; 
 }
 
-div#pageBar>nav {
-	margin: auto;
+.page-item.active .page-link {
+ z-index: 1;
+ color: #555;
+ font-weight:bold;
+ background-color: #f1f1f1;
+ border-color: #ccc;
+ 
+}
+
+.page-link:focus, .page-link:hover {
+  color: #000;
+  background-color: #fafafa; 
+  border-color: #ccc;
 }
 
 </style>
@@ -216,16 +226,12 @@ div#pageBar>nav {
 			</c:if>  
        		
         </c:forEach>
-    </c:if>
+   <%-- 페이지 이동 --%>
+	<nav aria-label="Page navigation example">
+	  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
+	</nav>
+   </c:if>
     
-	<!-- 페이지바 -->
-	<div id="pageBar">
-	    <nav>
-	        <ul class="pagination">
-	            ${requestScope.pageBar}
-	        </ul>
-	    </nav>
-	</div>
 
 
 </div>
