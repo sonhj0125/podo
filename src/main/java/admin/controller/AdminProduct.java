@@ -21,7 +21,7 @@ import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
 
 public class AdminProduct extends AbstractController {
-	
+   
     private ProductDAO pdao = null;
       
     public AdminProduct() {
@@ -39,39 +39,39 @@ public class AdminProduct extends AbstractController {
         return null;
      }// end of private String extractFileName(String partHeader)-------------------
 
-	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		
-		// == 관리자(admin)로 로그인 했을 때만 제품등록이 가능하도록 한다. == //
-		HttpSession session =  request.getSession();
+   @Override
+   public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+      
+      
+      // == 관리자(admin)로 로그인 했을 때만 제품등록이 가능하도록 한다. == //
+      HttpSession session =  request.getSession();
 
-		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
-		
-		int memberIndex = Integer.parseInt(loginUser.getMemberIdx());
-		
-		if(loginUser != null && memberIndex == 9) {
-			// 관리자(admin)로 로그인 했을 경우
-			
-			String method =  request.getMethod();
-			
-			if(!"POST".equalsIgnoreCase(method)) { //"GET" 이라면
-				
-				super.setRedirect(false);
-	            super.setViewPage("/WEB-INF/member/admin/adminProduct.jsp");
-				
-			}
-			else { //"POST" 이라면
-				
-				// 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
-	               ServletContext svlCtx = session.getServletContext();
-	               String uploadFileDir = svlCtx.getRealPath("/images/product");
-	               System.out.println(uploadFileDir);
-	            // String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyMVC\\src\\main\\webapp\\images";
-	               
-	            // System.out.println("=== 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir ==> " + uploadFileDir);
-	            //  위와 같이 하면 파일 업로드 후에 어떤분들은 이클립스에서 새로고침을 해주어야 된다.
-	               
+      MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
+      
+      int memberIndex = Integer.parseInt(loginUser.getMemberIdx());
+      
+      if(loginUser != null && memberIndex == 9) {
+         // 관리자(admin)로 로그인 했을 경우
+         
+         String method =  request.getMethod();
+         
+         if(!"POST".equalsIgnoreCase(method)) { //"GET" 이라면
+            
+            super.setRedirect(false);
+               super.setViewPage("/WEB-INF/member/admin/adminProduct.jsp");
+            
+         }
+         else { //"POST" 이라면
+            
+            // 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
+                  ServletContext svlCtx = session.getServletContext();
+                  String uploadFileDir = svlCtx.getRealPath("/images/product");
+                  System.out.println(uploadFileDir);
+               // String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyMVC\\src\\main\\webapp\\images";
+                  
+               // System.out.println("=== 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir ==> " + uploadFileDir);
+               //  위와 같이 하면 파일 업로드 후에 어떤분들은 이클립스에서 새로고침을 해주어야 된다.
+                  
                 // ==== >>> 파일을 업로드 해준다 <<< ==== //
                 String pimg = null;
                 String pdimg = null;
@@ -108,50 +108,50 @@ public class AdminProduct extends AbstractController {
                 */
                 
                 for(Part part : parts) {
-                	
-	                if(part.getHeader("Content-Disposition").contains("filename=")) { // form 태그에서 전송되어온 것이 파일일 경우
+                   
+                   if(part.getHeader("Content-Disposition").contains("filename=")) { // form 태그에서 전송되어온 것이 파일일 경우
               
-	                	
-	                	 String fileName = extractFileName(part.getHeader("Content-Disposition"));
-	                	 
-	                	 if(part.getSize() > 0) {
-	                	     // System.out.println("~~~ 확인용  업로드한 파일명 :  " + fileName);
-	                		 /*
-	                		  ~~~ 확인용  업로드한 파일명 :  cloth_canmart_3.png
-							  ~~~ 확인용  업로드한 파일명 :  cloth_canmart_4.png
-							  ~~~ 확인용  업로드한 파일명 :  Electrolux냉장고_사용설명서.pdf
-							  ~~~ 확인용  업로드한 파일명 :  berkelekle덩크04.jpg
-							  ~~~ 확인용  업로드한 파일명 :  berkelekle단가라포인트03.jpg
-							  ~~~ 확인용  업로드한 파일명 :  berkelekle심플V넥02.jpg
-							  ~~~ 확인용  업로드한 파일명 :  berkelekle심플라운드01.jpg
-	                		 */
-	                		 
-	                		 // 서버에 저장할 새로운 파일명을 만든다.
+                      
+                       String fileName = extractFileName(part.getHeader("Content-Disposition"));
+                       
+                       if(part.getSize() > 0) {
+                           // System.out.println("~~~ 확인용  업로드한 파일명 :  " + fileName);
+                          /*
+                           ~~~ 확인용  업로드한 파일명 :  cloth_canmart_3.png
+                       ~~~ 확인용  업로드한 파일명 :  cloth_canmart_4.png
+                       ~~~ 확인용  업로드한 파일명 :  Electrolux냉장고_사용설명서.pdf
+                       ~~~ 확인용  업로드한 파일명 :  berkelekle덩크04.jpg
+                       ~~~ 확인용  업로드한 파일명 :  berkelekle단가라포인트03.jpg
+                       ~~~ 확인용  업로드한 파일명 :  berkelekle심플V넥02.jpg
+                       ~~~ 확인용  업로드한 파일명 :  berkelekle심플라운드01.jpg
+                          */
+                          
+                          // 서버에 저장할 새로운 파일명을 만든다.
                              // 서버에 저장할 새로운 파일명이 동일한 파일명이 되지 않고 고유한 파일명이 되도록 하기 위해
                              // 현재의 년월일시분초에다가 현재 나노세컨즈nanoseconds 값을 결합하여 확장자를 붙여서 만든다.
-	                		 String newFilename = fileName.substring(0, fileName.lastIndexOf(".")); // 확장자를 뺀 파일명 알아오기
-	                		 
-	                		 newFilename += "_"+String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
-	                		 newFilename += System.nanoTime();
-	                		 newFilename += fileName.substring(fileName.lastIndexOf(".")); // 확장자 붙이기
-	                		 
-	                		 System.out.println("==== 확인용 실제 업로드 되어질 newFilename : " + newFilename);
-	                		 /*
-	                		  ==== 확인용 실제 업로드 되어질 newFilename : cloth_buckaroo_5_202405211029306904177048300.png
-							  ==== 확인용 실제 업로드 되어질 newFilename : cloth_canmart_4_202405211029306904177810700.png
-							  ==== 확인용 실제 업로드 되어질 newFilename : Electrolux냉장고_사용설명서_202405211029306904177868400.pdf
-						  	  ==== 확인용 실제 업로드 되어질 newFilename : berkelekle단가라포인트03_202405211029306904177931300.jpg
-						      ==== 확인용 실제 업로드 되어질 newFilename : berkelekle덩크04_202405211029306904177971600.jpg
-							  ==== 확인용 실제 업로드 되어질 newFilename : berkelekle디스트리뷰트06_202405211029306904178012800.jpg
-							  ==== 확인용 실제 업로드 되어질 newFilename : berkelekle심플V넥02_202405211029306904178074100.jpg
-	                		 */
-	                		 
-	                		// >>> 파일을 지정된 디스크 경로에 저장해준다. 이것이 바로 파일을 업로드 해주는 작업이다. <<<
+                          String newFilename = fileName.substring(0, fileName.lastIndexOf(".")); // 확장자를 뺀 파일명 알아오기
+                          
+                          newFilename += "_"+String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+                          newFilename += System.nanoTime();
+                          newFilename += fileName.substring(fileName.lastIndexOf(".")); // 확장자 붙이기
+                          
+                          System.out.println("==== 확인용 실제 업로드 되어질 newFilename : " + newFilename);
+                          /*
+                           ==== 확인용 실제 업로드 되어질 newFilename : cloth_buckaroo_5_202405211029306904177048300.png
+                       ==== 확인용 실제 업로드 되어질 newFilename : cloth_canmart_4_202405211029306904177810700.png
+                       ==== 확인용 실제 업로드 되어질 newFilename : Electrolux냉장고_사용설명서_202405211029306904177868400.pdf
+                         ==== 확인용 실제 업로드 되어질 newFilename : berkelekle단가라포인트03_202405211029306904177931300.jpg
+                        ==== 확인용 실제 업로드 되어질 newFilename : berkelekle덩크04_202405211029306904177971600.jpg
+                       ==== 확인용 실제 업로드 되어질 newFilename : berkelekle디스트리뷰트06_202405211029306904178012800.jpg
+                       ==== 확인용 실제 업로드 되어질 newFilename : berkelekle심플V넥02_202405211029306904178074100.jpg
+                          */
+                          
+                         // >>> 파일을 지정된 디스크 경로에 저장해준다. 이것이 바로 파일을 업로드 해주는 작업이다. <<<
                             part.write(uploadFileDir + File.separator + newFilename);
                             
                             // >>> 임시저장된 파일 데이터를 제거해준다. <<<
                             // 즉 @MultipartConfig(location = "C:\\NCS\\workspace_jsp\\MyMVC\\images_temp_upload",
-                            //				      fileSizeThreshold = 1024) 와 같이 설정되면 
+                            //                  fileSizeThreshold = 1024) 와 같이 설정되면 
                             // C:\\NCS\\workspace_jsp\\MyMVC\\images_temp_upload 폴더에 임시 저장된 파일을 제거해야 한다.
                             part.delete();
                             
@@ -163,17 +163,17 @@ public class AdminProduct extends AbstractController {
                                 pdimg = newFilename;
                              }
                          
-	                	 }
-	                	
-	                }// end of if(part.getHeader("Content-Disposition").contains("filename="))------------------------------
-	                else { // form 태그에서 전송되어온 것이 파일이 아닐 경우
+                       }
+                      
+                   }// end of if(part.getHeader("Content-Disposition").contains("filename="))------------------------------
+                   else { // form 태그에서 전송되어온 것이 파일이 아닐 경우
                         String formValue = request.getParameter(part.getName());
                    //   System.out.printf("파일이 아닌 경우 파라미터(name)명 : %s, value : %s \n"
                    //                     , part.getName(), formValue);
                    }
-	               System.out.println("");
-	               
-	                	
+                  System.out.println("");
+                  
+                      
                 }// end of for(Part part : parts)------------------------
                 
                 // === 첨부 이미지 파일, 제품설명서 파일을 올렸으니 그 다음으로 제품정보를 (제품명, 정가, 제품수량,...) DB의 tbl_product 테이블에 insert 를 해주어야 한다.  ===
@@ -229,18 +229,18 @@ public class AdminProduct extends AbstractController {
                 
                 int result = 0;
                 if(n == 1) {
-                	
-                	// pindex 채번해오기
-                	int pIndex =  pdao.selectPindex(pimg);
-                	
-                	Map<String, String> paraMap = new HashMap<>();
-                	paraMap.put("pindex",  String.valueOf(pIndex));
-                	paraMap.put("pdindex", String.valueOf(pdindex));
-                	paraMap.put("pdimg", pdimg);
-                	
-                	// productDetailImg 테이블에 정보 insert 하기
-                	result =  pdao.productDetailInsert(paraMap);
-                	
+                   
+                   // pindex 채번해오기
+                   int pIndex =  pdao.selectPindex(pimg);
+                   
+                   Map<String, String> paraMap = new HashMap<>();
+                   paraMap.put("pindex",  String.valueOf(pIndex));
+                   paraMap.put("pdindex", String.valueOf(pdindex));
+                   paraMap.put("pdimg", pdimg);
+                   
+                   // productDetailImg 테이블에 정보 insert 하기
+                   result =  pdao.productDetailInsert(paraMap);
+                   
                 }
              
                JSONObject jsonObj = new JSONObject(); 
@@ -252,21 +252,21 @@ public class AdminProduct extends AbstractController {
                super.setRedirect(false);
                super.setViewPage("/WEB-INF/jsonview.jsp"); 
                 
-			}// end of else { //"POST" 이라면-----------------------------------------
+         }// end of else { //"POST" 이라면-----------------------------------------
 
-		}
-		else {
-	         // 로그인을 안한 경우 또는 일반사용자로 로그인 한 경우 
-	         String msg = "관리자만 접근이 가능합니다.";
-	         String loc = "javascript:history.back()";
-	         
-	         request.setAttribute("msg", msg);
-	         request.setAttribute("loc", loc);
-	         
-	      //   super.setRedirect(false);
-	           super.setViewPage("/WEB-INF/msg.jsp");
-	      }
+      }
+      else {
+            // 로그인을 안한 경우 또는 일반사용자로 로그인 한 경우 
+            String msg = "관리자만 접근이 가능합니다.";
+            String loc = "javascript:history.back()";
+            
+            request.setAttribute("msg", msg);
+            request.setAttribute("loc", loc);
+            
+         //   super.setRedirect(false);
+              super.setViewPage("/WEB-INF/msg.jsp");
+         }
 
-	}
+   }
 
 }
