@@ -11,6 +11,7 @@
 	}
 	
    String uri = request.getRequestURI();
+   
 %>
 <!DOCTYPE html>
 <html>
@@ -405,7 +406,7 @@
             <div style="margin-right: 5%; cursor: pointer;">
                <i class="fa-solid fa-ticket"></i>
                <div id="memberCoupon2" style="font-weight: bold; cursor: pointer;">쿠폰</div>
-               <div style="color: purple;">2</div>
+               <div style="color: purple;">${sessionScope.availableCoupons}</div>
             </div>
             <div style="cursor: pointer;">
                <i class="fa-solid fa-circle-dollar-to-slot"></i>

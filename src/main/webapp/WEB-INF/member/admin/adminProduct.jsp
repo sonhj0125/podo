@@ -1,17 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%
+	String ctxPath = request.getContextPath();
+%>    
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="../../header.jsp" />    
 
 <style type="text/css">
 
-
 label.input-group-text, span.input-group-text {
 	background-color: #ccd9ff;
 	width: 20%;
-
 }
    
 </style>
@@ -21,29 +23,93 @@ label.input-group-text, span.input-group-text {
 	let total_fileSize = 0; // 첨부한 파일의 총량을 누적하는 용도
 
 	$(document).ready(function(){
-		
-		// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 시작 <<== //
-		$(document).on("change", "input.img_file", function(e){
-			
-			const input_file = $(e.target).get(0);
-			
-	        const fileReader = new FileReader();
-			
-	        fileReader.readAsDataURL(input_file.files[0]); 
-	        fileReader.onload = function(){	
-	        	
-	            document.getElementById("previewImg").src = fileReader.result;	
-	        	
-	        }; // end of fileReader.onload = function()
-			
-	        
-		}); // end of $(document).on("change", "input.img_file", function(e)
-		// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 끝 <<== //
-		
-		
+
+        
+       // 와인영문이름 유효성검사	
+       $("input#pengname").blur( function (e) {
+         	 
+         	 const pengname = $(e.target).val().trim();
+         	 const regExp_name = new RegExp(/^[가-힣]{2,50}$/);
+         	 const bool = regExp_name.test(pengname);
+         	 
+         	 if(bool) {
+         		 alert("올바른 이름이 아닙니다! 영문으로만 입력해주세요.");
+         		checkPengName = false;
+         		 return;
+         	 }
+         	 else {
+         		checkPengName = true;
+       	     }
+         	 
+        });
+       
+        // 가격 유효성검사
+        $("input#pprice").blur( function (e) {
+        	 
+	       	 const pprice = $(e.target).val().trim();
+	       	 const regExp_name = new RegExp(/^[0-9]*$/);
+	       	 const bool = regExp_name.test(pprice);
+	       	 
+	       	 if(!bool) {
+	       		 alert("가격은 숫자로면 입력해주세요!");
+	       		 return;
+	       	 }
+    	 
+       });
+        
+       $("input#pprice").bind("change", function (e) {
+       	 
+    	   $("input#ppoint").val($('input#pprice').val() * (5/100));
+       });
+       
+
 	      // 제품 등록하기
 	      $("input:button[id='btnRegister']").click(function() {
-	         
+	    	  
+	    	 const pbody_val = $("select[name='pbody']").val();
+	    	 
+	    	 if(pbody_val == "선택하세요."){
+	    		 alert("바디를 선택하세요!");
+	    		 return false;
+	    	 }
+	    	 
+			 const ptype_val = $("select[name='ptype']").val();
+	    	 
+	    	 if(ptype_val == "선택하세요."){
+	    		 alert("와인 제품분류를 선택하세요!");
+	    		 return false;
+	    	 }
+	    	 
+	         const pHomeTown_val = $("select[name='phometown']").val();
+	    	 
+	    	 if(pHomeTown_val == "선택하세요."){
+	    		 alert("와인 원산지를 선택하세요!");
+	    		 return false;
+	    	 }
+	    	 
+		     const pAcid_val = $("select[name='pacid']").val();
+	    	 
+	    	 if(pAcid_val == "선택하세요."){
+	    		 alert("와인 산도를 선택하세요!");
+	    		 return false;
+	    	 }
+	    	 
+	    	 console.log(pAcid_val);
+	    	 
+			 const pTannin_val = $("select[name='ptannin']").val();
+	    	 
+	    	 if(pTannin_val == "선택하세요."){
+	    		 alert("와인 타닌을 선택하세요!");
+	    		 return false;
+	    	 }
+	    	 
+			 const pAcl_val = $("select[name='pacl']").val();
+	    	 
+	    	 if(pAcl_val == "선택하세요."){
+	    		 alert("와인 도수를 선택하세요!");
+	    		 return false;
+	    	 }
+	    	 
 	         let is_infoData_OK = true;
 	         
 	         $(".infoData").each(function(index, elmt) {
@@ -57,6 +123,7 @@ label.input-group-text, span.input-group-text {
 	               return false; // 일반적인 for문의 break; 와 같은 기능이다.
 	            }
 	         });
+
 	         
 	         if(is_infoData_OK) {
 
@@ -71,14 +138,13 @@ label.input-group-text, span.input-group-text {
 	            ///////////////////////////////////////
 	            
 	            $.ajax({
-	               <%-- url: "<%=ctxPath%>/shop/admin/productRegister.up", --%>
-	                   url: "${pageContext.request.contextPath}/member/admin/adminProduct.wine",
-	                   type: "post",
-	               	   data : formData,
-	                   processData: false,  // 파일 전송 시 설정 ★★★
-	                   contentType: false,  // 파일 전송 시 설정 ★★★
-	                   dataType:"json",
-	                   success:function(json) {
+	                    url: "${pageContext.request.contextPath}/member/admin/adminProduct.wine",
+	                    type: "post",
+	               	    data : formData,
+	                    processData: false,  // 파일 전송 시 설정 ★★★
+	                    contentType: false,  // 파일 전송 시 설정 ★★★
+	                    dataType:"json",
+	                    success:function(json) {
 	                      
 	                       console.log("~~~ 확인용 : " + JSON.stringify(json));
 	                       // ~~~ 확인용 : {"result":1}
@@ -91,21 +157,7 @@ label.input-group-text, span.input-group-text {
 	                   //   alert("첨부된 파일의 크기의 총합이 20MB를 초과하여 제품등록이 실패했습니다.");
 	                   }
 	            });
-	            /*
-	            processData 관련하여, 일반적으로 서버에 전달되는 데이터는 query string(쿼리 스트링)이라는 형태로 전달된다. 
-	            ex) http://localhost:9090/board/list.action?searchType=subject&searchWord=안녕
-	                ? 다음에 나오는 searchType=subject&searchWord=안녕 이라는 것이 query string(쿼리 스트링) 이다. 
 
-	            data 파라미터로 전달된 데이터를 jQuery에서는 내부적으로 query string 으로 만든다. 
-	            하지만 파일 전송의 경우 내부적으로 query string 으로 만드는 작업을 하지 않아야 한다.
-	            이와 같이 내부적으로 query string 으로 만드는 작업을 하지 않도록 설정하는 것이 processData: false 이다.
-	            */
-	         
-	            /*
-	            	contentType 은 default 값이 "application/x-www-form-urlencoded; charset=UTF-8" 인데, 
-	            	"multipart/form-data" 로 전송이 되도록 하기 위해서는 false 로 해야 한다. 
-	            	만약에 false 대신에 "multipart/form-data" 를 넣어보면 제대로 작동하지 않는다.
-	            */
 	         }
 	         
 	      });//end of 제품등록하기----------------------------------------
@@ -129,7 +181,7 @@ label.input-group-text, span.input-group-text {
         <div id="container" style="width:70%; margin-bottom: 5%;">
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pType">제품 분류</label>
-				<select class="form-select infoData" name="ptype">
+				<select class="form-select infoData" name="ptype" id="ptype">
 					<option selected>선택하세요.</option>
 					<option value="레드">레드</option>
 					<option value="화이트">화이트</option>
@@ -141,7 +193,7 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pHomeTown">원산지</label>
-				<select class="form-select infoData" id="pHomeTown" name="phometown" >
+				<select class="form-select infoData" id="pHomeTown" name="phometown" id="pHomeTown">
 					<option selected>선택하세요.</option>
 					<option value="칠레">칠레</option>
 					<option value="미국">미국</option>
@@ -156,26 +208,26 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group">
 			  	<span class="input-group-text">제품명 및 영문명</span>
-			  	<input type="text" placeholder="알파박스 앤 다이스 타로 프로세코" aria-label="name" class="form-control infoData" name="pname">
-			 	<input type="text" placeholder="ALPHA BOX AND DICE TAROT PROSECCO" aria-label="ename" class="form-control infoData" name="pengname">
+			  	<input type="text" placeholder="알파박스 앤 다이스 타로 프로세코" aria-label="name" class="form-control infoData" name="pname" id="pname">
+			 	<input type="text" placeholder="ALPHA BOX AND DICE TAROT PROSECCO" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
 			</div>
 			
 			
 			<div class="input-group mb-3">
 			  	<span class="input-group-text" id="price">가격</span>
-			  	<input type="text" class="form-control infoData" placeholder="25,000원" aria-label="price" aria-describedby="basic-addon1" name="pprice">
+			  	<input type="text" class="form-control infoData" placeholder="25,000원" aria-label="price" aria-describedby="basic-addon1" name="pprice" id="pprice">
 			</div>
 			
 			
 			<div class="input-group mb-3">
 			  	<span class="input-group-text" id="point">적립금</span>
-			  	<input type="text" class="form-control infoData" placeholder="1,250원" aria-label="point" aria-describedby="basic-addon1" name="ppoint">
+			  	<input type="text" class="form-control infoData" placeholder="1,250원" aria-label="point" aria-describedby="basic-addon1" name="ppoint" id="ppoint" value="" readonly>
 			</div>
 			
 		
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pBody">바디</label>
-				<select class="form-select infoData" id="pBody" name="pbody">
+				<select class="form-select infoData" id="pBody" name="pbody" id="pbody">
 					<option selected>선택하세요.</option>
 					<option value="1">가벼움</option>
 					<option value="2">약간가벼움</option>
@@ -187,7 +239,7 @@ label.input-group-text, span.input-group-text {
 		      	
 		    <div class="input-group mb-3">
 				<label class="input-group-text" for="pAcid">산도</label>
-				<select class="form-select infoData" id="pAcid" name="pacid">
+				<select class="form-select infoData" id="pAcid" name="pacid" id="pAcid">
 					<option selected>선택하세요.</option>
 					<option value="1">낮음</option>
 					<option value="2">약간낮음</option>
@@ -199,7 +251,7 @@ label.input-group-text, span.input-group-text {
 		      	
 		    <div class="input-group mb-3">
 				<label class="input-group-text" for="pTannin">타닌</label>
-				<select class="form-select infoData" id="pTannin" name="ptannin">
+				<select class="form-select infoData" id="pTannin" name="ptannin" id="pTannin">
 					<option selected>선택하세요.</option>
 					<option value="1">약함</option>
 					<option value="2">약간약함</option>
@@ -211,7 +263,7 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pAcl">도수(알코올)</label>
-				<select class="form-select infoData" id="pAcl" name="pacl">
+				<select class="form-select infoData" id="pAcl" name="pacl" id="pAcl">
 					<option selected>선택하세요.</option>
 					<option value="1">낮음(~11%)</option>
 					<option value="2">중간(12~13%)</option>
@@ -236,7 +288,7 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group mb-3">
                 <span class="input-group-text">재고량</span>
-            	<input class="form-control text-center me-3 infoData" id="count" type="number" value="1" min="1" max="100" style="max-width: 5rem" name="pstock"/>
+            	<input class="form-control text-center me-3 infoData" id="count" type="number" value="1" min="0" max="99999" style="max-width: 5rem" name="pstock" id="pstock"/>
 	        </div>																								
 	        
 	      	<input type="reset" value="취소"  style="width: 120px; margin-top:5%; " class="btn btn-secondary btn-lg" /> 

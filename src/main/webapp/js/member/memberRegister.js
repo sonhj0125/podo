@@ -208,7 +208,7 @@ $(function () {
         const tag = $('input#email');
 
         const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
-       const bool = regExp_email.test($(e.target).val());
+        const bool = regExp_email.test($(e.target).val());
 
         // === 이메일 중복 확인 ===
         $.ajax({
