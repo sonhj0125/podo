@@ -93,7 +93,7 @@ public interface ProductDAO {
 	int selectPindex(String pimg) throws SQLException;
 
 	// 물건 주문 후 재고량 수 변경
-	int updatePstock(int pindex) throws SQLException;
+	boolean updatePstock(int pindex) throws SQLException;
 
 
 }

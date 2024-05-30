@@ -1612,33 +1612,30 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	// 물건 주문 후 재고량 수 변경
 	@Override
-	public int updatePstock(int pindex) throws SQLException {
+	public boolean updatePstock(int pindex) throws SQLException {
 		
-		int pstockCnt = 0;
+		boolean result = false;
 		
 		try {
+			
             conn = ds.getConnection();
             
-            String sql = " update product set pstock  = pstock -1 "
-            		   + " where pindex = ? ";
+            String sql = " update product set pstock = pstock - 1 where PINDEX = ? ";
             
             pstmt = conn.prepareStatement(sql);
             
-            pstmt.setInt(1, pindex);
+            pstmt.setString(1, String.valueOf(pindex));
             
-            rs = pstmt.executeQuery();
-            
-               rs.next();
-               pstockCnt = rs.getInt(1);
+            if(1==pstmt.executeUpdate()) {
+            	result = true;
+            }
             
        } finally {
             close();
        }
 		
-		return pstockCnt;
+		return result;
 		
-	}// end of public int updatePstock(int pindex) throws SQLException------------------
-
-
+	}// end of public int updatePstock(int pindex) throws SQLException
 
 }
