@@ -16,15 +16,25 @@
 
 
 <style type="text/css">
-div#pageBar {
-	border: solid 0px red;
-	width: 80%;
-	margin: 3% auto 0 auto;
-	display: flex;
+.page-link {
+  color: #000; 
+  background-color: #fff;
+  border: 1px solid #ccc; 
 }
 
-div#pageBar>nav {
-	margin: auto;
+.page-item.active .page-link {
+ z-index: 1;
+ color: #555;
+ font-weight:bold;
+ background-color: #f1f1f1;
+ border-color: #ccc;
+ 
+}
+
+.page-link:focus, .page-link:hover {
+  color: #000;
+  background-color: #fafafa; 
+  border-color: #ccc;
 }
 
 </style>
@@ -112,20 +122,13 @@ function searchData() {
 	  </thead>
 	  <tbody class="table-group-divider" style="text-align:center;">
 	    <tr class="table-secondary">
-	      <th scope="row">누적 적립금</th>
-	      <th>사용 적립금</th>
-	      <th>가용 적립금</th>
+	      <th scope="row">사용가능 적립금</th>
 	      <%-- 
 	      <th>소멸예정 적립금</th>
 	      --%>
 	    </tr>
 	    <tr class="table-group-divider">
-	      <td id="totalPoints">${requestScope.userpointdto.totalPoints}</td>
-	      <td id="usedPoints">${requestScope.userpointdto.usedPoints}</td>
-	      <td id="availablePoints">${requestScope.userpointdto.availablePoints}</td>
-	      <%--
-	      <td id="expiringPoints">${requestScope.expiringPoints}</td>
-	      --%>
+	      <td id="point">${requestScope.point}</td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -159,7 +162,27 @@ function searchData() {
 	  </li>
 	</ul>
 	
+	<c:if test="${requestScope.myPointpaging == null}">
+		<div class="tab-content pt-5 pb-5">
+		  	<div class="tab-pane container active" id="point1" style="font-size: 10pt;">
+				<table class="table" style="width:50;">
+					<tbody class="date-search-result" style="text-align:center;">
+					    <tr class="table-light">
+					        <th scope="row">적립 날짜</th>
+					        <th>적립 내용</th>
+					        <th>포인트</th>
+					    </tr>
+				        <tr>
+				            <td colspan="3">적립된 포인트가 없습니다.</td>
+				        </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</c:if>
+	
 	<!-- Tab panes -->
+	<c:if test="${requestScope.myPointpaging != null}">
 	<div class="tab-content pt-5 pb-5">
 	  	<div class="tab-pane container active" id="point1" style="font-size: 10pt;">
 			<table class="table" style="width:50;">
@@ -175,7 +198,7 @@ function searchData() {
 				        </tr>
 				    </c:if>
 				
-				    <c:if test="${requestScope.myPointpaging != null}">
+				    
 				        <c:forEach var="podto" items="${requestScope.myPointpaging}">
 				        
 			                    <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> 
@@ -192,26 +215,15 @@ function searchData() {
 					                </td>
 					            </tr>
 				        </c:forEach>
-				    </c:if>
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
+	   <%-- 페이지 이동 --%>
+		<nav aria-label="Page navigation example">
+		  <ul class="pagination justify-content-center">${requestScope.pageBar}</ul>
+		</nav>
+	</c:if>
 	
 	
-<!-- 페이지바 -->
-	<div id="pageBar">
-	    <nav>
-	        <ul class="pagination">
-	            ${requestScope.pageBar}
-	        </ul>
-	    </nav>
-	</div>
-	
-</div>
-
-
-
-
-
 <jsp:include page="/WEB-INF/footer.jsp" />     

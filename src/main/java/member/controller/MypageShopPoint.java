@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 import common.controller.AbstractController;
 import member.domain.MemberDTO;
 import member.domain.PointDTO;
+import member.model.MemberDAO;
+import member.model.MemberDAO_imple;
 import member.model.PointDAO;
 import member.model.PointDAO_imple;
 import my.util.MyUtil;
@@ -18,8 +20,10 @@ import my.util.MyUtil;
 public class MypageShopPoint extends AbstractController {
 
 	PointDAO podao = null;
-
+	MemberDAO mdao = null;
+	
 	public MypageShopPoint() {
+		mdao = new MemberDAO_imple();
 		podao = new PointDAO_imple();
 	}
 
@@ -78,10 +82,10 @@ public class MypageShopPoint extends AbstractController {
 			// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
 			
 			// *** [맨처음][이전] 만들기 *** //
-			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>"; 
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo=1'>◀◀</a></li>"; 
 			
 			if(pageNo != 1) {
-				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>◀</a></li>"; 
 			}
 			
 			while( !(loop > blockSize || pageNo > totalPage) ) {
@@ -107,9 +111,9 @@ public class MypageShopPoint extends AbstractController {
 			// pageNo ==> 11
 			
 			if(pageNo <= totalPage) { 
-				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>▶</a></li>";
 			}
-			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			pageBar += "<li class='page-item'><a class='page-link' href='mypageShopPoint.wine?sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>▶▶</a></li>";
 			
 			
 			// *** ======= 페이지바 만들기 끝 ======= *** //	        
@@ -135,44 +139,21 @@ public class MypageShopPoint extends AbstractController {
             request.setAttribute("totalMyPointCount", totalMyPointCount);
             request.setAttribute("currentShowPageNo", currentShowPageNo);
             
-            // 지금 포인트 사용할 때 어떤 값이 오는지 몰라서 주석처리해뒀습니다.
-	        
-            
-            
+            /*
 			// 사용가능포인트, 사용한포인트 , 총포인트
             PointDTO userpointdto = podao.getUserPointDetails(userid);
-            if(userpointdto.getAvailablePoints() == null) {
-            	userpointdto.setAvailablePoints("0");
-            }
-            if(userpointdto.getUsedPoints() == null) {
-            	userpointdto.setUsedPoints("0");
-            }
-            if(userpointdto.getTotalPoints() == null && userpointdto.getAvailablePoints() != null && userpointdto.getUsedPoints() != null) {
-            	int AvailablePoints = Integer.parseInt(userpointdto.getAvailablePoints());
-            	int UsedPoints = Integer.parseInt(userpointdto.getUsedPoints());
-            	int TotalPoints = AvailablePoints + UsedPoints;
-            	userpointdto.setTotalPoints(Integer.toString(TotalPoints));
-            }
-			
             request.setAttribute("userpointdto", userpointdto);
             
+            지금 로그기록에서 가져오는 게 아니라, 구입할 때 포인트를 넣어주는 방식이기 때문에 member 테이블에서 point 를 가져와야한다.
+			*/
             
-			/*
-			 * int totalCoupon = 0; int usedCoupon = 0; int availableCoupons = 0;
-			 * if(pointHistoryList.size() != 0) { totalCoupon = pointHistoryList.size(); //
-			 * 총 쿠폰 발행 수
-			 * 
-			 * for (PointDTO podto : pointHistoryList) { if(podto.getCostatus() == 2) {
-			 * usedCoupon++; // 사용한 쿠폰 수 } if(podto.getCostatus() == 1) {
-			 * availableCoupons++; // 가용 쿠폰 수 } } }
-			 * 
-			 * 
-			 * request.setAttribute("totalCoupon", totalCoupon);
-			 * request.setAttribute("usedCoupon", usedCoupon);
-			 * request.setAttribute("availableCoupons", availableCoupons);
-			 */
-
-			
+            String point = mdao.getMyPoint(userid);
+            request.setAttribute("point", point);
+            
+            
+            
+            
+            
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/member/mypageShopPoint.jsp");
 			
