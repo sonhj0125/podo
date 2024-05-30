@@ -112,20 +112,13 @@ function searchData() {
 	  </thead>
 	  <tbody class="table-group-divider" style="text-align:center;">
 	    <tr class="table-secondary">
-	      <th scope="row">누적 적립금</th>
-	      <th>사용 적립금</th>
-	      <th>가용 적립금</th>
+	      <th scope="row">사용가능 적립금</th>
 	      <%-- 
 	      <th>소멸예정 적립금</th>
 	      --%>
 	    </tr>
 	    <tr class="table-group-divider">
-	      <td id="totalPoints">${requestScope.userpointdto.totalPoints}</td>
-	      <td id="usedPoints">${requestScope.userpointdto.usedPoints}</td>
-	      <td id="availablePoints">${requestScope.userpointdto.availablePoints}</td>
-	      <%--
-	      <td id="expiringPoints">${requestScope.expiringPoints}</td>
-	      --%>
+	      <td id="point">${requestScope.point}</td>
 	    </tr>
 	  </tbody>
 	</table>

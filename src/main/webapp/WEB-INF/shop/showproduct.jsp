@@ -46,6 +46,8 @@ $(function (){
 		
 	});
 	
+	
+	// 좋아요
 	$("#btn-like").bind("click",function(){
 		
 		const frm = document.cartin;
@@ -77,6 +79,15 @@ $(function (){
 });
 
 </script>
+
+<style type="text/css">
+
+button#btn-like, button#btn-unlike {
+	outline:none !important;
+	box-shadow:none !important;
+}
+
+</style>
 
 <div class="container">
 
@@ -133,13 +144,13 @@ $(function (){
 	            <div class="d-flex">
 	                <form class="d-flex" method="post">
 	                	<c:if test="${requestScope.likeit == 'none'}">
-		                    <button id="btn-like" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 me-3" type="button">
-		                      <img src="../images/heart.png" style="width: 3rem;"/>
+		                    <button id="btn-like" class="btn btn-outline-light flex-shrink-0 fw-semibold pt-3 me-3" type="button">
+		                      <img id="btn-like" src="../images/heartempty.png" style="width: 3rem;"/>
 		                    </button>
 	                    </c:if>
 	                    <c:if test="${requestScope.likeit == 'show' }">
-	                    	<button id="btn-unlike" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 me-3" type="button" style="background-color: black;">
-		                      <img src="../images/heart.png" style="width: 3rem;"/>
+	                    	<button id="btn-unlike" class="btn btn-outline-light btn-flex-shrink-0 fw-semibold pt-3 me-3" type="button" >
+		                      <img id="btn-unlike" src="../images/heartfull.png" style="width: 3rem;"/>
 		                    </button>
 	                    </c:if>
 	                    <button id="btndirectBuy" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">

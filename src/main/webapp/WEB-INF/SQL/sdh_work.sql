@@ -80,4 +80,8 @@ update ORDERS
 set OSTATUS = ?
 where OINDEX = ?;
 
-select CINDEX from CART where USERID = ? order by CINDEX desc;
+select CINDEX from CART order by CINDEX desc;
+
+select * from PRODUCT;
+
+delete from PRODUCT where PINDEX = 134;
