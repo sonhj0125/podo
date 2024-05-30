@@ -6,6 +6,10 @@
 %>
 
 <jsp:include page="../header.jsp" />
+
+<!-- 우편번호찾기 API -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script type="text/javascript" src="<%=ctxPath%>/js/shop/order.js"></script>
 
 	<div id="getCtxPath" style="display: none"><%= ctxPath%></div>
@@ -81,7 +85,7 @@
       <input id="idxArrjoin" type="text" name="cinedxjoinarr" style="display: none;"/>
       
       <div class="cart_body_2" style="margin: 0 auto; display: flex;">
-      	
+      	<%-- 여기 --%>
          <div style="border:solid 0px red; width: 50%;">
             <h3>주문자 정보</h3>
             
@@ -89,26 +93,26 @@
             <div class="form-group row my-4">
                <label class="col-2"  style="width: 14%; font-weight: bold;">이름</label>
                <div class="col-sm-7">
-                  <input type="text" value="${sessionScope.loginUser.name}" name="name" class="form-control" placeholder="이름을 입력해주세요." style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.name}" id="name" name="name" class="form-control" placeholder="이름을 입력해주세요." style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row  my-4">
                <label class="col-2" style="width: 14%; font-weight: bold;">이메일</label>
                <div class="col-sm-7">
-                  <input type="text" value="${sessionScope.loginUser.email}" name="email" class="form-control" placeholder="이메일을 입력해주세요." style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.email}" id="email" name="email" class="form-control" placeholder="이메일을 입력해주세요." style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row  my-4">
                <label class="col-2" style="width: 14%; font-weight: bold;">연락처</label>
                <div class="col-sm-7">
-                  <input type="text" value="${sessionScope.loginUser.phone}" name="phone" class="form-control" placeholder='"-"를 제외한 숫자만 입력해주세요.' style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.phone}" id="phone" name="phone" class="form-control" placeholder='"-"를 제외한 숫자만 입력해주세요.' style="border-color: black;"/>
                </div>
             </div>
             <div class="form-group row" style="margin-bottom: 1.8%;">
                <label class="col-2" style="width: 14%; font-weight: bold;">주소</label>
                <div class="col-sm-7">
-                  <input type="text" value="${sessionScope.loginUser.address}" name="address" class="form-control" style="border-color: black;"/>
-                  <input type="text" value="${sessionScope.loginUser.addressDetail}" name="addressDetail" class="form-control mt-1" placeholder="상세주소" style="border-color: black;"/>
+                  <input type="text" value="${sessionScope.loginUser.address}" id="address" name="address" class="form-control" style="border-color: black;" readonly />
+                  <input type="text" value="${sessionScope.loginUser.addressDetail}" id="addressDetail" name="addressDetail" class="form-control mt-1" placeholder="상세주소" style="border-color: black;"/>
                </div>
             </div>
             
@@ -198,7 +202,18 @@
       <input type="text" name="userid" value="${sessionScope.loginUser.userid}" style="display: none;" />
 	</form> 
    	</div>
-   	
+ 
+ 
+ <div class="toast-container position-fixed end-0 p-5 top-0 start-50 translate-middle-x">
+	<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header text-bg-warning">
+			<strong class="me-auto">알림</strong>
+   			<small>주문하기</small>
+		</div>
+		<div class="toast-body fw-bold" id="toast-msg">
+		</div>
+	</div>
+</div>  	
    	
 
 <jsp:include page="../footer.jsp" />

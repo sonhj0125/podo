@@ -61,6 +61,9 @@ public interface CartDAO {
 	// 배송완료일 저장하기
 	void setOardate(Map<String, String> paraMap) throws SQLException;
 
+	// 빠른 구매 cidx값 받기
+	String directselectCidx(String userid) throws SQLException;
+
 
 
 	

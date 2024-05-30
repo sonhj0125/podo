@@ -79,3 +79,5 @@ WHERE DINDEX = 29;
 update ORDERS
 set OSTATUS = ?
 where OINDEX = ?;
+
+select CINDEX from CART where USERID = ? order by CINDEX desc;

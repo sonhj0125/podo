@@ -263,11 +263,9 @@ public class PointDAO_imple implements PointDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT NVL(SUM(TO_NUMBER(POINCOME)), '0') AS AvailablePoints "
-					   + "      , NVL(SUM(TO_NUMBER(POINCOME)), '0') AS UsedPoints "
-					   + "      , NVL(SUM(TO_NUMBER(POINCOME)), '0') + NVL(SUM(TO_NUMBER(POINCOME)), '0') AS TotalPoints "
-					   + " FROM point "
-					   + " WHERE USERID = ? ";
+			String sql = " SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS AvailablePoints "
+					   + " FROM POINT "
+					   + " WHERE PODETAIL LIKE '%적립' AND USERID = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
@@ -277,8 +275,16 @@ public class PointDAO_imple implements PointDAO {
                 podto = new PointDTO();
                 
                 podto.setAvailablePoints(rs.getString("AvailablePoints")); // 사용가능포인트
-                podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
-                podto.setTotalPoints(rs.getString("TotalPoints"));         // 누적포인트
+
+            	sql = " SELECT NVL(TO_CHAR(SUM(TO_NUMBER(POINCOME))), '0') AS UsedPoints "
+ 					+ " FROM POINT "
+ 					+ " WHERE PODETAIL NOT LIKE '%적립' AND USERID = ? ";
+            	
+    			pstmt = conn.prepareStatement(sql);
+    			pstmt.setString(1, userid);
+    			rs = pstmt.executeQuery();
+    			rs.next();
+	            podto.setUsedPoints(rs.getString("UsedPoints"));           // 사용한포인트
             }
 			
 		} finally {
@@ -371,16 +377,17 @@ public class PointDAO_imple implements PointDAO {
 			conn = ds.getConnection();
 			
 			String sql =  " SELECT rno, USERID, POINCOME, PODETAIL, PODATE "
-						+ " FROM   "
+						+ " FROM "
 						+ " (  "
-						+ " select rownum as rno, USERID, POINCOME, PODETAIL, PODATE "
-						+ " from    "
-						+ " (   "
-						+ " select USERID, POINCOME, PODETAIL, PODATE "
-						+ " from point  "
-						+ " where userid = ?  "
-						+ " ) V  "
-						+ " ) T   "
+						+ "     select rownum as rno, USERID, POINCOME, PODETAIL, PODATE "
+						+ "     from "
+						+ "     (  "
+						+ "      select USERID, POINCOME, PODETAIL, PODATE "
+						+ "      from point  "
+						+ "      where userid = ? "
+						+ " order by PODATE desc  "
+						+ "     ) V  "
+						+ " ) T  "
 						+ " WHERE T.rno BETWEEN ? AND ? ";
 				
 			pstmt = conn.prepareStatement(sql);

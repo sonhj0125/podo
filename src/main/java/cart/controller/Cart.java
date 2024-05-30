@@ -39,7 +39,6 @@ public class Cart extends AbstractController {
 			
 		}else {
 			
-			// 로그인후 이용가능하다는 뷰단 만들어야함 임시로 메인페이지로 이동
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/shop/cart.jsp");
 			

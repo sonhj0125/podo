@@ -22,8 +22,8 @@ $(function() {
         // 필드 가져오기
         const couponNameElement = document.getElementById("couponname");
         const couponDiscountElement = document.getElementById("discount");
-        const minOrderAmountElement = document.getElementById("couponmin");
         const couponDateElement = document.getElementById("codate");
+        const couponCodeElement = document.getElementById("cocode");
 
 /*
         if (!couponNameElement) {
@@ -46,9 +46,9 @@ $(function() {
 
         const couponName = couponNameElement.value.trim(); // 쿠폰이름
         const couponDiscount = couponDiscountElement.value.trim(); // 할인금액
-        const minOrderAmount = minOrderAmountElement.value.trim(); // 최소 주문금액
         const couponDate = couponDateElement.value; // 쿠폰기한 (~까지)
-
+		const couponCode = couponCodeElement.value; // 쿠폰코드
+		
         // 유효성 검사
         if (couponName == "") {
             alert("쿠폰 이름을 입력하세요.");
@@ -56,29 +56,37 @@ $(function() {
         } else if (couponName.length > 20) {
             alert("쿠폰 이름은 20자를 초과할 수 없습니다.");
             isSubmit = false;
-        }
+        } // 여기
 
-        if (couponDiscount == "" || isNaN(couponDiscount)) {
-            alert("할인 금액을 올바르게 입력하세요.");
-            isSubmit = false;
-        } else if (parseInt(couponDiscount) < 0) {
-            alert("할인 금액은 음수일 수 없습니다.");
-            isSubmit = false;
-        }
-        
-        if(method.innerText = "할인율" && couponDiscount > 100) {
-			alert("할인율이 100%를 넘을 수 없습니다.");
-            isSubmit = false;
+
+		if(document.getElementById("saleNat").checked) {
+	        if (couponDiscount == "" || isNaN(couponDiscount)) {
+	            alert("할인 금액을 올바르게 입력하세요.");
+	            isSubmit = false;
+	        } else if (parseInt(couponDiscount) < 0) {
+	            alert("할인 금액은 음수일 수 없습니다.");
+	            isSubmit = false;
+	        }
+	    }
+
+		if(document.getElementById("salePer").checked) {
+	        if (couponDiscount == "" || isNaN(couponDiscount)) {
+	            alert("할인율을 올바르게 입력하세요.");
+	            isSubmit = false;
+	        } else if (parseInt(couponDiscount) < 0) {
+	            alert("할인율은 음수일 수 없습니다.");
+	            isSubmit = false;
+	        } else if (parseInt(couponDiscount) > 100) {
+	            alert("할인율은 100% 를 넘을 수 없습니다.");
+	            isSubmit = false;
+			}
 		}
-
-        if (minOrderAmount != "" && isNaN(minOrderAmount)) {
-            alert("최소 주문 금액을 올바르게 입력하세요.");
-            isSubmit = false;
-        } else if (minOrderAmount != "" && parseInt(minOrderAmount) < 0) {
-            alert("최소 주문 금액은 음수일 수 없습니다.");
-            isSubmit = false;
-        }
-
+		
+		if(couponCode.length < 16 || couponCode.length > 16) {
+	        alert("쿠폰 코드는 공백이거나 16글자 입니다.");
+	        isSubmit = false;
+		}
+        
         // 쿠폰 유효기간 검사
         const today = new Date();
         const couponDateObj = new Date(couponDate);
@@ -87,6 +95,8 @@ $(function() {
             alert("쿠폰 기한은 최소 내일 이후여야 합니다.");
             isSubmit = false;
         }
+        
+        
 
         if (isSubmit) {
             const frm = document.couponRegister;

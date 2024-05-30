@@ -113,17 +113,6 @@ div#salepercent {
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="couponmin" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;최소 주문금액</label>
-				</div>
-				<div class="col-md-9">
-					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="10000"/>
-				</div>
-			</div>	
-		</div>
-		
-		<div class="form-group">
-		    <div class="row">
-				<div class="col-md-3">
 					<label for="" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 기한 (~까지)</label>
 				</div>
 				<div class="col-md-9">
@@ -135,10 +124,10 @@ div#salepercent {
 		<div class="form-group">
 		    <div class="row">
 				<div class="col-md-3">
-					<label for="couponmin" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 코드</label>
+					<label for="cocode" style="font-weight:bold; font-size:14pt;"><img src="<%=ctxPath %>/images/1.png">&nbsp;&nbsp;쿠폰 코드</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" id="couponmin" type="text" name="comin" placeholder="쿠폰 코드"/>
+					<input class="form-control" id="cocode" type="text" name="cocode" placeholder="쿠폰 코드(16글자)"/>
 				</div>
 			</div>	
 		</div>

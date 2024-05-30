@@ -40,7 +40,11 @@ public class Deliveryinfo extends AbstractController{
 			request.setAttribute("oindex", oindex);
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/member/admin/deliveryinfo.jsp");
+			return;
 		}
+		
+		super.setRedirect(true);
+		super.setViewPage(request.getContextPath()+"/index.wine");
 		
 	}
 
