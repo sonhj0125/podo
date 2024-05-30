@@ -59,8 +59,8 @@ public class AdminProduct extends AbstractController {
          
          if(!"POST".equalsIgnoreCase(method)) { //"GET" 이라면
             
-            super.setRedirect(false);
-               super.setViewPage("/WEB-INF/member/admin/adminProduct.jsp");
+        	 super.setRedirect(false);
+             super.setViewPage("/WEB-INF/member/admin/adminProduct.jsp");
             
          }
          else { //"POST" 이라면
