@@ -121,12 +121,6 @@ public class ReviewWrite extends AbstractController {
 				
 				if(result == 1 && addPoint && writeLog) {
 					
-					int reviewCnt = (int)session.getAttribute("reviewCnt");
-					
-					reviewCnt = reviewCnt - 1;
-					
-					session.setAttribute("reviewCnt", reviewCnt);
-					
 					msg = "리뷰가 작성되었습니다.\\n리뷰 등록 후 삭제가 불가합니다.";
 					loc = request.getContextPath() + "/member/reviewList.wine";
 					
