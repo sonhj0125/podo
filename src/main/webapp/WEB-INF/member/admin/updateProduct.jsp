@@ -19,71 +19,7 @@
 
 $(function (){
 	
-	// 카트 클릭
-	$("#btncart").bind("click",function(){
-		const count = Number($("input#count").val().trim());
-		const pstock = Number($("input#pstock").val().trim());
-		
-		if(count > pstock) {
-			alert("재고량보다 주문 수량이 많습니다.");
-			$("input#count").val(1);
-			return;
-		}
-		
-		const frm = document.cartin;
-		frm.method = "post";
-		frm.action = "<%=ctxPath%>/cart/cartin.wine";
-		frm.submit();
-		
-	});
-	
-	$("#btncart-out").bind("click",function(){
-		
-		const frm = document.cartin;
-		frm.method = "post";
-		frm.action = "<%=ctxPath%>/cart/cartout.wine";
-		frm.submit();
-		
-	});
-	
-	
-	// 좋아요
-	$("#btn-like").bind("click",function(){
-		
-		const frm = document.cartin;
-		frm.method = "post";
-		frm.action ="<%=ctxPath%>/shop/likeit.wine";
-		frm.submit();
-		
-	});
-	
-	$("#btn-unlike").bind("click",function(){
-		
-		const frm = document.cartin;
-		frm.method = "post";
-		frm.action ="<%=ctxPath%>/shop/unlikeit.wine";
-		frm.submit();
-		
-	});
-	
-	$("#btndirectBuy").bind("click",function(){
-		
-		const count = Number($("input#count").val().trim());
-		const pstock = Number($("input#pstock").val().trim());
-		
-		if(count > pstock) {
-			alert("재고량보다 주문 수량이 많습니다.");
-			$("input#count").val(1);
-			return;
-		}
-		
-		const frm = document.cartin;
-		frm.method = "post";
-		frm.action ="<%=ctxPath%>/shop/directorder.wine";
-		frm.submit();
-		
-	});
-	
+
 	
 });
 
@@ -91,10 +27,7 @@ $(function (){
 
 <style type="text/css">
 
-button#btn-like, button#btn-unlike {
-	outline:none !important;
-	box-shadow:none !important;
-}
+
 
 </style>
 
@@ -134,14 +67,6 @@ button#btn-like, button#btn-unlike {
 	
 	            <form name="cartin">
 		            <div class="input-group fs-5 mb-5">
-		                <div class="input-group-prepend">
-		                    <input type="hidden" id="stockquantity" name="stockquantity">
-		                    <span class="input-group-text">주문 수량</span>
-		                </div>
-		                	<input class="form-control text-center me-3" id="count" name="cvolume" type="number" value="1" start="1" min="0" max="100" style="max-width: 5rem" />
-		                	<input name="userid" value = "${sessionScope.loginUser.userid}" style="display: none;"/>
-		                	<input name="pindex" value = "${requestScope.pdto.pindex}" style="display: none;"/>
-		                	<input name="url" value = "<%= url%>" style="display:none;"/>
    		                <div class="input-group-prepend">
 		                    <span class="input-group-text">재고량</span>
 		                </div> 
@@ -152,33 +77,17 @@ button#btn-like, button#btn-unlike {
 	            <br>
 	            <div class="d-flex">
 	                <form class="d-flex" method="post">
-	                	<c:if test="${requestScope.likeit == 'none'}">
-		                    <button id="btn-like" class="btn btn-outline-light flex-shrink-0 fw-semibold pt-3 me-3" type="button">
-		                      <img id="btn-like" src="../images/heartempty.png" style="width: 3rem;"/>
-		                    </button>
-	                    </c:if>
-	                    <c:if test="${requestScope.likeit == 'show' }">
-	                    	<button id="btn-unlike" class="btn btn-outline-light btn-flex-shrink-0 fw-semibold pt-3 me-3" type="button" >
-		                      <img id="btn-unlike" src="../images/heartfull.png" style="width: 3rem;"/>
-		                    </button>
-	                    </c:if>
-	                    <button id="btndirectBuy" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
-	                        BUY IT NOW
+	                    <button id="productUpdate" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="<%= ctxPath%>/member/admin/proUpdate.wine">
+	                        제품정보 수정하기
 	                    </button>
 	                </form>
 	                &nbsp;&nbsp; 
-	                <c:if test="${requestScope.cartInfo == 'none'}">
-		                <button id="btncart" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
-		                    CART
-		                 </button>
-	                </c:if>
-	                <c:if test="${requestScope.cartInfo == 'show'}">
-		                <button id="btncart-out" class="btn btn-outline-light ms-5 flex-shrink-0 fw-semibold btn-lg me-5" style="background-color: #9999ff;" type="button">
-		                    CART OUT
-		                 </button>
-	                </c:if>
+					<form class="d-flex" method="post">
+	                    <button id="productDelete" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="<%= ctxPath%>/member/admin/proDelete.wine">
+	                        제품정보 삭제하기
+	                    </button>
+	                </form>
 	             </div>
-	             <input class="form-control text-center me-3" id="pstock" name="pstock" type="text" value="${requestScope.likeItCnt}" style="max-width: 4.65rem" readonly />
 	         </div>
 	     </div>
 		</div>
