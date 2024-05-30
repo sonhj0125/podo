@@ -75,6 +75,24 @@
        font-family: "Noto Sans KR";
     }
     
+
+    .reviewList {
+        margin-right: 5%;
+        cursor: pointer;
+        position: relative; /* 부모 요소에 상대 위치 설정 */
+        display: inline-block;
+    }
+    .sticky-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #cc99ff;
+        padding: 0.3rem;
+        border: 1px solid lightgray;
+        border-radius: 50%;
+        transform: translate(50%, -50%); /* 원을 아이콘의 오른쪽 위로 이동 */
+    }
+
 	</style>
 	
 	<script type="text/javascript">
@@ -381,7 +399,7 @@
     </header>
     
     <%-- 로그인 후 상단에 아이디 버튼 클릭 시 마이페이지 오프캔버스 나오기 --%>
-   <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+   <div class="offcanvas offcanvas-start" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
    
      <div class="offcanvas-header">
        <h3 style="font-weight: bold;">마이페이지</h3>
@@ -395,7 +413,7 @@
            <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
             <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
             	<c:if test="${sessionScope.reviewCnt != 0}">
-               		<span class="position-absolute top-1 ms-4 translate-middle p-1 border border-light rounded-circle" style="background-color: #cc99ff;"></span>
+               		<span class="sticky-indicator ms-4 border border-light rounded-circle"></span>
             	</c:if>
                   <i class="fa-regular fa-newspaper" style="margin: 10%;">
                   </i>
@@ -446,13 +464,20 @@
        
        <c:if test="${sessionScope.loginUser.memberIdx == '9'}">
 	      <div>
-	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 전용 메뉴</h5>
+	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 회원관리 메뉴</h5>
 	         <hr style="width: 90%;">
 	            <div>
 	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문 관리</div>
 	               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
-	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
 	               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
+	           </div>
+	       </div>
+	       <div>
+	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 제품관리 메뉴</h5>
+	         <hr style="width: 90%;">
+	            <div>
+	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
+	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
 	           </div>
 	       </div>
         </c:if>
