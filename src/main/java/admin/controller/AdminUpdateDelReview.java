@@ -35,6 +35,7 @@ public class AdminUpdateDelReview extends AbstractController {
 		
 			String goBackURL = request.getParameter("goBackURL");
 			String rindex = request.getParameter("rindex");
+			String userid = request.getParameter("userid");
 			
 			if("POST".equalsIgnoreCase(method)) {
 
@@ -43,15 +44,9 @@ public class AdminUpdateDelReview extends AbstractController {
 				
 				Map<String, String> paraMap = new HashMap<>();
 				paraMap.put("rindex", rindex);
+				paraMap.put("userid", userid);
 				
-				
-				
-				System.out.println(rindex);
-				
-				
-				
-				
-				int delReviewAd = pdao.delReviewAd(rindex);
+				int delReviewAd = pdao.delReviewAd(paraMap);
 				
 				JSONObject jsobj = new JSONObject();
 				jsobj.put("delReviewAd", delReviewAd);

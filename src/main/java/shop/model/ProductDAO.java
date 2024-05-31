@@ -96,7 +96,7 @@ public interface ProductDAO {
 	boolean updatePstock(int pindex) throws SQLException;
 	
 	// 관리자 회원관리 - 리뷰내역 삭제하기
-	int delReviewAd(String rindex) throws SQLException;
+	int delReviewAd(Map<String, String> paraMap) throws SQLException;
 
 
 

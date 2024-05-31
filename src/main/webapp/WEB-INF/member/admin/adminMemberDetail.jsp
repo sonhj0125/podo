@@ -130,7 +130,7 @@
 							<td>${reviewList.rstar}</td>
 							<td>${reviewList.rdetail}</td>
 							<td>${reviewList.rdate}</td>
-							<td><button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteReviewAd('${reviewList.rindex}, ${requestScope.mdto.userid}')">삭제</button></td>
+							<td><button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteReviewAd('${reviewList.rindex}', '${requestScope.mdto.userid}')">삭제</button></td>
 				    	</tr>
 				    </c:forEach> 
 				 	</tbody>
