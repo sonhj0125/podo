@@ -490,6 +490,7 @@
 	            <div>
 	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
 	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
+	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;" onclick="<%= ctxPath %>/member/admin/chart.up">제품별 판매량 통계</div>
 	           </div>
 	       </div>
         </c:if>
