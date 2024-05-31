@@ -197,8 +197,8 @@
       </div>
       
       <div class="cart_footer" style="text-align: center; margin-top: 4%; margin-bottom: 4%;">
-         <button id="" type="button" class="btn btn-outline-secondary">취소</button>
-         <button id="btn-doorder" type="button" class="btn btn-outline-secondary">주문하기</button>
+         <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/index.wine'">취소</button>
+         <button id="btn-doorder" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#payment">주문하기</button>
       </div>
       
       <input type="text" name="userid" value="${sessionScope.loginUser.userid}" style="display: none;" />
@@ -215,7 +215,22 @@
 		<div class="toast-body fw-bold" id="toast-msg">
 		</div>
 	</div>
-</div>  	
+</div>
+
+<%-- 관리자 쿠폰 등록 클릭시 나오는 Modal --%>
+ <div class="modal modal-center fade" id="payment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl">
+       <div class="modal-content rounded-4 shadow">
+           <div class="modal-body pt-3">
+           	<div>
+             	<iframe id="payment" name="payment" style="border: none; width: 100%; height: 600px; margin:0 auto;">
+              	</iframe>
+           	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%-- 관리자 쿠폰 등록 클릭시 나오는 Modal 끝 --%>
    	
 
 <jsp:include page="../footer.jsp" />

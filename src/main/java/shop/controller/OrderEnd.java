@@ -19,6 +19,7 @@ import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
 import shop.domain.OrderDTO;
 import shop.model.ProductDAO;
+import shop.model.ProductDAO_imple;
 
 public class OrderEnd extends AbstractController{
 
@@ -31,6 +32,7 @@ public class OrderEnd extends AbstractController{
 		mdao = new MemberDAO_imple();
 		codao = new CouponDAO_imple();
 		cdao = new CartDAO_imple();
+		pdao = new ProductDAO_imple();
 	}
 	
 	@Override
@@ -97,7 +99,7 @@ public class OrderEnd extends AbstractController{
 					
 				}
 				
-				// 물품별 포인트 적립
+				// 물품별 포인트, 제고량 변경 적립
 				try {
 					
 					int sumPoint = 0;
@@ -107,6 +109,8 @@ public class OrderEnd extends AbstractController{
 						CartDTO cdto = cdao.getProuctinfo(cindex[i]);
 						
 						sumPoint += Integer.parseInt(cdto.getPdto().getPpoint());
+						
+						pdao.updatePstock(cdto.getPdto().getPindex());
 						
 					}
 					
@@ -123,6 +127,7 @@ public class OrderEnd extends AbstractController{
 					}
 					
 				}catch (Exception e) {
+					e.printStackTrace();
 					System.out.println("포인트 적립중 오류 발생");
 				}
 				
@@ -182,13 +187,16 @@ public class OrderEnd extends AbstractController{
 				
 				loginuser.setPoint(newpoint);
 				
+				System.out.println("성공");
+				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
+				
 				return;
 				
 			}// 유효성
 			
-		}// Post
+		}// End of Post
 		
 		super.setRedirect(true);
 		super.setViewPage(request.getContextPath()+"/index.wine");

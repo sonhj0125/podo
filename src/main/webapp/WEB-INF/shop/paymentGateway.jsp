@@ -31,12 +31,13 @@ window.onload = () => {
    }, function(rsp) {
 		if ( rsp.success ) {
 			
-		    self.close();
-		    opener.location.href = "javascript:paymentcomplete();";
+			const staff = "payment"
+	        window.parent.closeModal(staff);
 		
         } else {
         	
-            self.close();
+        	const staff = "paymentNG"
+        	window.parent.closeModal(staff);
             
        }
 

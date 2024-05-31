@@ -44,7 +44,11 @@ public class Unlikeit extends AbstractController{
 				paraMap.put("pindex", pindex);
 				
 				if(1==pdao.setunlike(paraMap)) {
-					msg ="좋아요가 취소되었습니다.";
+					
+					super.setRedirect(true);
+					super.setViewPage(loc);
+					return;
+					
 				}else {
 					msg = "오류가 발생하였습니다.";
 				}

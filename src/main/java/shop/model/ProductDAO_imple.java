@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,8 +97,17 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPacl(rs.getString("ptannin"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
-				pdto.setPindex(rs.getInt("pindex"));
+				
+				int pindex = rs.getInt("pindex");
+				
+				pdto.setPindex(pindex);
 				pdto.setPimg(rs.getString("pimg"));
+				
+				ProductDAO_add pdaoadd = new ProductDAO_add();
+				
+				int like = pdaoadd.getlikecntAdd(pindex);
+				
+				pdto.setLike(like);
 				
 				resultList.add(pdto);
 				
@@ -970,8 +980,17 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPacl(rs.getString("ptannin"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
-				pdto.setPindex(rs.getInt("pindex"));
+				
+				int pindex = rs.getInt("pindex");
+				
+				pdto.setPindex(pindex);
 				pdto.setPimg(rs.getString("pimg"));
+				
+				ProductDAO_add pdaoadd = new ProductDAO_add();
+				
+				int like = pdaoadd.getlikecntAdd(pindex);
+				
+				pdto.setLike(like);
 				
 				pdto_list.add(pdto);
 				
@@ -1609,38 +1628,109 @@ public class ProductDAO_imple implements ProductDAO {
 	       
 	}// end of public int selectPindex(String pimg) throws SQLException ---------------
 
-	
 	// 물건 주문 후 재고량 수 변경
 	@Override
-	public int updatePstock(int pindex) throws SQLException {
+	public boolean updatePstock(int pindex) throws SQLException {
 		
-		int pstockCnt = 0;
+		boolean result = false;
 		
 		try {
+			
             conn = ds.getConnection();
             
-            String sql = " update product set pstock  = pstock -1 "
-            		   + " where pindex = ? ";
+            String sql = " update product set pstock = pstock - 1 where PINDEX = ? ";
             
             pstmt = conn.prepareStatement(sql);
             
-            pstmt.setInt(1, pindex);
+            pstmt.setString(1, String.valueOf(pindex));
             
-            rs = pstmt.executeQuery();
-            
-               rs.next();
-               pstockCnt = rs.getInt(1);
+            if(1==pstmt.executeUpdate()) {
+            	result = true;
+            }
             
        } finally {
             close();
        }
 		
-		return pstockCnt;
+		return result;
 		
-	}// end of public int updatePstock(int pindex) throws SQLException------------------
+	}// end of public int updatePstock(int pindex) throws SQLException
+	
+	
+	
+	
+	// 관리자 회원관리 - 리뷰내역 삭제하기
+	@Override
+	public int delReviewAd(Map<String, String> paraMap) throws SQLException {
+		
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		int result4 = 0;
+		
+	       try {
+	            conn = ds.getConnection();
+	            
+	            conn.setAutoCommit(false);
+	            
+	            String sql = " delete from review "
+	            		   + " where to_char(rindex) = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, paraMap.get("rindex"));
+	            
+	            result1 = pstmt.executeUpdate();
+	            
+	            if(result1 == 1) {
+	            	
+	            	sql = " update member set point = point - 1000 "
+	            		+ " where userid = ? ";
+		            
+		            pstmt = conn.prepareStatement(sql);
+		            
+					pstmt.setString(1, paraMap.get("userid"));
+		            
+		            result2 = pstmt.executeUpdate();
+	            	
+		            
+		            if(result2 == 1) {
+		            	
+		            	sql = " insert into point(userid, poincome, podetail, podate) VALUES (?, -1000, '관리자 리뷰 삭제 차감', to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')) "
+;
+			            pstmt = conn.prepareStatement(sql);
+			            
+						pstmt.setString(1, paraMap.get("userid"));
+			            
+			            result3 = pstmt.executeUpdate();
+				            
+			            
+		            	if(result3 == 1) {
+		            		
+		            		conn.commit();
+			            	conn.setAutoCommit(true);
+			            	result4 = 1;
+		            	}
+		            }
+		            
+	            } else {
+	            	
+	            	conn.rollback();
+	            }
+	            
+	       } catch(Exception e) {
+	    	   
+	    	   conn.rollback();
+	    	   e.printStackTrace();
+	    	   
+	       } finally {
+	            close();
+	       }
+	         
+	       return result4;
+	       
+	} // end of public int delReviewAd(String rindex) throws SQLException
 
-	
-	
 	// 제품 수정하기
 	@Override
 	public int updateProduct(ProductDTO pdto) throws SQLException {
@@ -1665,6 +1755,47 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 		
 	} // end of public int updateProduct(ProductDTO pdto) throws SQLException -----------------
+
+	
+	// 제품타입별 판매량 수 알아오기
+	@Override
+	public List<Map<String, String>> chart_map_List() throws SQLException {
+		
+		List<Map<String, String>> chart_map_List = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT P.pType, nvl(sum(O.OVOLUME),0) AS Ordersum "
+					   + " FROM Product P "
+					   + " LEFT JOIN Orders O ON P.pindex = O.pindex "
+					   + " GROUP BY P.pType ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				String ptype =  rs.getString("pType");
+				String ordersum =  rs.getString("Ordersum");
+				
+				Map<String, String> map = new HashMap<>();
+				map.put("ptype", ptype);
+				map.put("ordersum", ordersum);
+				
+				chart_map_List.add(map);
+				
+			}// end of while----------------------------
+			
+		} finally {
+			close();
+		}
+
+		return chart_map_List;
+		
+	}// end of public List<Map<String, String>> chart_map_List() throws SQLException------------
 
 
 

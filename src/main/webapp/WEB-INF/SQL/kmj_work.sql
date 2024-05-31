@@ -72,12 +72,11 @@ from PRODUCTDETAILIMG
 
 
 select userid, memberIdx
-from member
-
+from member;
 
 select *
 from PRODUCT
-where pname = '어린이가 좋아하는'
+where pname = '어린이가 좋아하는';
 
 select *
 from PRODUCTDETAILIMG
@@ -94,10 +93,52 @@ where pindex = '134'
 
 commit;
 
-
-
 select pwd
 from member
 where userid = 'kmj0228' and pwd = '1fb5a7508bdf2a76e5b7f0ec8be6dda74816f32bbf5542721f4802f3859a414d';
 
 9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382
+
+
+WITH
+O AS
+(SELECT pIndex
+FROM order 
+WHERE fk_userid = 'kmj0228'
+)
+,
+OD AS
+(SELECT fk_odrcode, fk_pnum, oqty, odrprice
+FROM tbl_orderdetail
+)
+
+
+
+---- 와인별 총 판매개수 ----
+
+WITH
+O AS
+(SELECT pIndex
+FROM order)
+select ptype, count(*)
+from O join product P
+ON O.pindex = P.pindex
+group by P.ptype;
+
+
+SELECT P.pType, COUNT(O.oIndex) AS OrderCount
+FROM Product P
+LEFT JOIN Orders O ON P.pindex = O.pindex
+GROUP BY P.pType;
+
+select *
+from product;
+
+select *
+from orders;
+
+
+SELECT P.pType, nvl(sum(O.OVOLUME),0) AS Ordersum
+FROM Product P
+LEFT JOIN Orders O ON P.pindex = O.pindex
+GROUP BY P.pType;

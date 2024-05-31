@@ -14,6 +14,7 @@
 <script type="text/javascript" src="<%= ctxPath%>/js/admin/adminRegisterCoupon.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateStatusOff.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateStatusOn.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/adminUpdateDelReview.js"></script>
 
 
 <style type="text/css">
@@ -125,10 +126,11 @@
 				  	<tbody>
 				  	<c:forEach var="reviewList" items="${requestScope.adminReviewList}">
 						<tr>
-							<th scope="row">${reviewList.rindex}</th>
+							<th scope="row" id="rindex">${reviewList.rindex}</th>
 							<td>${reviewList.rstar}</td>
 							<td>${reviewList.rdetail}</td>
 							<td>${reviewList.rdate}</td>
+							<td><button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteReviewAd('${reviewList.rindex}', '${requestScope.mdto.userid}')">삭제</button></td>
 				    	</tr>
 				    </c:forEach> 
 				 	</tbody>

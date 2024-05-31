@@ -1173,6 +1173,10 @@ public class MemberDAO_imple implements MemberDAO {
 	       
 	   } // end of public int ableMember(Map<String, String> paraMap) throws SQLException
 
+
+
+
+
 	
 
 }

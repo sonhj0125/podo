@@ -66,9 +66,11 @@
 			<h3>비밀번호 찾기</h3>
 		</div>
 		
-		<div class="m-5 text-center">
-			<input type="radio" name="findType" value="phone" id="phone" /><label for="phone" style="margin-left: 1.5%;">휴대폰 인증</label>
-            <input type="radio" name="findType" value="email" id="email" style="margin-left: 10%;" /><label for="email" style="margin-left: 1.5%;">이메일 인증</label>
+		<div class="m-5" style="display:flex;">
+			<input type="radio" name="findType" value="phone" id="phone" class="btn-check" checked/>
+				<label for="phone" style="margin-left: 4%; margin-right: 20%; height:100px; font-weight:bold; display: flex; align-items: center;" class="btn btn-outline-danger"><span>휴대폰 인증</span></label>
+            <input type="radio" name="findType" value="email" id="email" style="margin-left: 10%;" class="btn-check"/>
+            	<label for="email" style="height:100px; font-weight:bold; display: flex; align-items: center;" class="btn btn-outline-danger"><span>이메일 인증</span></label>
 		</div>
 		
 		<div class="my-3 text-center">

@@ -93,10 +93,17 @@ public interface ProductDAO {
 	int selectPindex(String pimg) throws SQLException;
 
 	// 물건 주문 후 재고량 수 변경
-	int updatePstock(int pindex) throws SQLException;
+	boolean updatePstock(int pindex) throws SQLException;
+	
+	// 관리자 회원관리 - 리뷰내역 삭제하기
+	int delReviewAd(Map<String, String> paraMap) throws SQLException;
+
 
 	// 제품 수정하기
 	int updateProduct(ProductDTO pdto) throws SQLException;
+
+	// 제품타입별 판매량 수 알아오기
+	List<Map<String, String>> chart_map_List() throws SQLException;
 
 
 }

@@ -6,9 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import coupon.domain.MyCouponDTO;
-import coupon.model.CouponDAO;
-import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
@@ -36,15 +33,15 @@ public class IndexController extends AbstractController {
 
 			List<ProductDTO> pdtoList = pdao.listReadDesc();
 			List<ProductDTO> pdtoList2 = pdao.listPopReadDesc();
-
+			
 			request.setAttribute("newProductList", pdtoList);
 			request.setAttribute("popProductList", pdtoList2);
+			
 			
 			if(loginUser != null) {
 				
 				int reviewCnt = mdao.getReviewCnt(loginUser.getUserid());
 				session.setAttribute("reviewCnt", reviewCnt);
-//				System.out.println(reviewCnt);
 				
 			}
 			

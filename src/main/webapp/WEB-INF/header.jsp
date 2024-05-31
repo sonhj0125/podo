@@ -182,8 +182,6 @@
 		
 		});
 		
-		
-	
 		$("input:text[name='memo']").hide();
 		
 		$('#order_msg').change(function() {
@@ -217,11 +215,11 @@
 			goSearch();
 		});
 		
-		
 		<%-- 마이페이지 쇼핑정보 쿠폰 클릭시 --%>
 		$("div#memberCoupon").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
 		});
+		
 		$("div#memberCoupon2").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopCoupon.wine";
 		});
@@ -230,11 +228,11 @@
 		$("div#memberPoint").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
 		});
+		
 		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
 		$("div#memberPoint2").bind('click',()=>{
 			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
 		});
-		
 		
 		<%-- 관리자 회원관리 클릭시 --%>
         $("div#adminMember").bind('click',()=>{
@@ -256,21 +254,36 @@
 		   location.href="<%=ctxPath%>/member/admin/adminOrder.wine";
 		});
 		
+		<%-- 관리자 제품별 판매량 통계 클릭시 --%>
+		$("div#adminChart").bind('click',()=>{
+		   location.href="<%= ctxPath %>/member/admin/chart.wine";
+		});
+		
+		
+		
+		
 	} // end of window.onload
 	
 	window.closeModal = function(login) {
 		
-	    $('#loginModal').modal('hide');
 	    
-	    if(!login){ // 회원가입일 경우
+	    if(login == 'register'){ // 회원가입일 경우
+	    	$('#loginModal').modal('hide');
 	    	location.href="<%=ctxPath%>/member/memberRegister.wine";
-	    }else{ // 로그인일 경우
+	    }else if(login == 'login'){ // 로그인일 경우
+	    	$('#loginModal').modal('hide');
 	    	$('#spinner').show();
 	    	setTimeout(function() {
 	    		$('#spinner').hide();
 			    javascript:history.go(0);
 			}, 1200);
+	    }else if(login == 'paymentNG'){ //결제 종료
+	    	$('#payment').modal('hide');
+	    }else if(login == 'payment'){
+	    	$('#payment').modal('hide');
+	    	paymentcomplete();
 	    }
+	    
 	    
 	}// end of window.closeModal
 	
@@ -303,6 +316,24 @@
 		}
 	}
 	
+	<%-- 결제 성공 --%>
+	function paymentcomplete(){
+		
+	    const frm = document.orderfrm;
+	    frm.method = "post";
+	    frm.action = "<%=ctxPath%>/shop/orderend.wine";
+	    frm.submit();
+	    
+	    location.href = "<%=ctxPath%>/shop/payend.wine"
+
+	}
+	
+	function kakao(){
+		
+		window.open('https://open.kakao.com/o/gwCJMkug', '_blank', '');
+		
+	}
+	
 </script>
     
 </head>
@@ -327,7 +358,7 @@
                 <ul class="nav">
                     <li class="nav-item fw-bold"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
                     <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnEvent" class="nav-link link-body-emphasis px-2 curpointer">Event</label></li>
+                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">About</label></li>
                 </ul>
@@ -340,8 +371,6 @@
                     <c:if test="${not empty sessionScope.loginUser}">
                        <li class="nav-item fw-bold"><label id="btnSignout" class="nav-link link-body-emphasis px-2 curpointer">Sign out</label></li>
                     </c:if>
-                    <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnSearch" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#searchModal">Search</label></li>
                 </ul>
@@ -374,12 +403,13 @@
                    <div class="modal-content">
                      <div class="modal-body">
                      <div class="input-group">
-                          <div class="form-outline" data-mdb-input-init style="padding-left: 8.5%;">
-                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
-                          </div> 
-                          <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
+                          <div class="form-outline" data-mdb-input-init style="width: 100%; display: flex; text-align: center;">
+                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 100%; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>
+                            <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
                                   <i class="fas fa-search"></i>
-                          </button>
+                          </button>                             
+                          </div> 
+                          
                      </div>
                      </div>
                    </div>
@@ -490,6 +520,7 @@
 	            <div>
 	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
 	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
+	               <div id="adminChart" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품별 판매량 통계</div>
 	           </div>
 	       </div>
         </c:if>

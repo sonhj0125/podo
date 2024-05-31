@@ -11,7 +11,7 @@
 		</li>
 		<li class="nav-item"><label id="btnAbout" class="nav-link px-2 text-body-secondary curpointer">About</label>
 		</li>
-		<li class="nav-item"><label id="btnKakao" class="nav-link px-2 text-body-secondary curpointer" onclick="location.href = 'https://open.kakao.com/o/gwCJMkug';">Kakao</label>
+		<li class="nav-item"><label id="btnKakao" class="nav-link px-2 text-body-secondary curpointer" onclick="kakao()">Kakao</label>
 		</li>
 	</ul>
 </footer>
