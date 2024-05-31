@@ -95,5 +95,8 @@ public interface ProductDAO {
 	// 물건 주문 후 재고량 수 변경
 	int updatePstock(int pindex) throws SQLException;
 
+	// 제품 수정하기
+	int updateProduct(ProductDTO pdto) throws SQLException;
+
 
 }

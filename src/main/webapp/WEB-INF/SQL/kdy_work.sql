@@ -285,5 +285,22 @@ commit;
 
 
 
+-- 와인종류별 판매량
+WITH
+O AS (select pindex
+from orders)
+SELECT ptype, count(ptype)
+FROM O JOIN product P
+ON O.pindex = P.pindex
+group by P.ptype;
+
+
+
+select pindex, ovolume
+from orders;
+
+
+
+
 
 

@@ -77,13 +77,13 @@ $(function (){
 	            <br>
 	            <div class="d-flex">
 	                <form class="d-flex" method="post">
-	                    <button id="productUpdate" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="<%= ctxPath%>/member/admin/proUpdate.wine">
+	                    <button id="productUpdate" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="location.href='<%=ctxPath%>/member/admin/pdtUpdate.wine?pindex=${requestScope.pdto.pindex}'">
 	                        제품정보 수정하기
 	                    </button>
 	                </form>
 	                &nbsp;&nbsp; 
 					<form class="d-flex" method="post">
-	                    <button id="productDelete" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="<%= ctxPath%>/member/admin/proDelete.wine">
+	                    <button id="productDelete" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="location.href='<%=ctxPath%>/member/admin/pdtDelete.wine'">
 	                        제품정보 삭제하기
 	                    </button>
 	                </form>

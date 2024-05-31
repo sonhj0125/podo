@@ -117,7 +117,7 @@ public class AdminProductUpdate extends AbstractController {
 			// pageNo 는 페이지바에서 보여지는 첫 번째 번호이다.
 
 
-			String baseUrl = "list.wine?sizePerPage=" + sizePerPage + "&sortType=" + sortType + ptypeParam;
+			String baseUrl = "adminProductUpdate.wine?sizePerPage=" + sizePerPage + "&sortType=" + sortType + ptypeParam;
 			if (pprice != null) baseUrl += "&pprice=" + pprice;
 			
 			baseUrl += phometownParam;
