@@ -102,5 +102,8 @@ public interface ProductDAO {
 	// 제품 수정하기
 	int updateProduct(ProductDTO pdto) throws SQLException;
 
+	// 제품타입별 판매량 수 알아오기
+	List<Map<String, String>> chart_map_List() throws SQLException;
+
 
 }

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1754,6 +1755,47 @@ public class ProductDAO_imple implements ProductDAO {
 		return result;
 		
 	} // end of public int updateProduct(ProductDTO pdto) throws SQLException -----------------
+
+	
+	// 제품타입별 판매량 수 알아오기
+	@Override
+	public List<Map<String, String>> chart_map_List() throws SQLException {
+		
+		List<Map<String, String>> chart_map_List = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT P.pType, nvl(sum(O.OVOLUME),0) AS Ordersum "
+					   + " FROM Product P "
+					   + " LEFT JOIN Orders O ON P.pindex = O.pindex "
+					   + " GROUP BY P.pType ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				String ptype =  rs.getString("pType");
+				String ordersum =  rs.getString("Ordersum");
+				
+				Map<String, String> map = new HashMap<>();
+				map.put("ptype", ptype);
+				map.put("ordersum", ordersum);
+				
+				chart_map_List.add(map);
+				
+			}// end of while----------------------------
+			
+		} finally {
+			close();
+		}
+
+		return chart_map_List;
+		
+	}// end of public List<Map<String, String>> chart_map_List() throws SQLException------------
 
 
 
