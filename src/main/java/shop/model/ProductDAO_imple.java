@@ -1651,11 +1651,11 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " update product"
-					   + " set pname = ?, pengname = ?, ptype = ?,"
-					   + "	   phometown = ?, pprice = ?, ppoint = ?,"
-					   + "	   pbody = ?, pacid = ?, ptannin = ?,"
-					   + "	   pimg = ?, pstock = ?"
+			String sql = " update product "
+					   + " set pname = ?, pengname = ?, ptype = ?, "
+					   + "	   phometown = ?, pprice = ?, ppoint = ?, "
+					   + "	   pbody = ?, pacid = ?, ptannin = ?, "
+					   + "	   pimg = ?, pstock = ? "
 					   + " where pindex = ? ";
 			
 		} finally {
