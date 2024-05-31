@@ -57,6 +57,16 @@ $(function (){
 		
 	});
 	
+	$("#btn-like").hover(function(){
+		
+		$("#btn-like").attr("src","../images/heartfull.png");
+		
+	},function(){
+		
+		$("#btn-like").attr("src","../images/heartempty.png");
+		
+	});
+	
 	$("#btn-unlike").bind("click",function(){
 		
 		const frm = document.cartin;

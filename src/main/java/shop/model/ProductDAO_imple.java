@@ -96,8 +96,17 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPacl(rs.getString("ptannin"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
-				pdto.setPindex(rs.getInt("pindex"));
+				
+				int pindex = rs.getInt("pindex");
+				
+				pdto.setPindex(pindex);
 				pdto.setPimg(rs.getString("pimg"));
+				
+				ProductDAO_add pdaoadd = new ProductDAO_add();
+				
+				int like = pdaoadd.getlikecntAdd(pindex);
+				
+				pdto.setLike(like);
 				
 				resultList.add(pdto);
 				
@@ -970,8 +979,17 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPacl(rs.getString("ptannin"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
-				pdto.setPindex(rs.getInt("pindex"));
+				
+				int pindex = rs.getInt("pindex");
+				
+				pdto.setPindex(pindex);
 				pdto.setPimg(rs.getString("pimg"));
+				
+				ProductDAO_add pdaoadd = new ProductDAO_add();
+				
+				int like = pdaoadd.getlikecntAdd(pindex);
+				
+				pdto.setLike(like);
 				
 				pdto_list.add(pdto);
 				
@@ -1711,6 +1729,5 @@ public class ProductDAO_imple implements ProductDAO {
 	       return result4;
 	       
 	} // end of public int delReviewAd(String rindex) throws SQLException
-
 
 }

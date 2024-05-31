@@ -44,7 +44,9 @@ public class Likeit extends AbstractController {
 				
 				if(1==pdao.setLike(paraMap)) {
 					
-					msg = "좋아요";
+					super.setRedirect(true);
+					super.setViewPage(loc);
+					return;
 									
 				}else {
 					

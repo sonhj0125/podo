@@ -308,6 +308,12 @@
 
 	}
 	
+	function kakao(){
+		
+		window.open('https://open.kakao.com/o/gwCJMkug', '_blank', '');
+		
+	}
+	
 </script>
     
 </head>
@@ -332,7 +338,7 @@
                 <ul class="nav">
                     <li class="nav-item fw-bold"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
                     <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnEvent" class="nav-link link-body-emphasis px-2 curpointer">Event</label></li>
+                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">About</label></li>
                 </ul>
@@ -345,8 +351,6 @@
                     <c:if test="${not empty sessionScope.loginUser}">
                        <li class="nav-item fw-bold"><label id="btnSignout" class="nav-link link-body-emphasis px-2 curpointer">Sign out</label></li>
                     </c:if>
-                    <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnSearch" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#searchModal">Search</label></li>
                 </ul>
@@ -379,12 +383,13 @@
                    <div class="modal-content">
                      <div class="modal-body">
                      <div class="input-group">
-                          <div class="form-outline" data-mdb-input-init style="padding-left: 8.5%;">
-                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
-                          </div> 
-                          <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
+                          <div class="form-outline" data-mdb-input-init style="width: 100%; display: flex; text-align: center;">
+                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 100%; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>
+                            <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
                                   <i class="fas fa-search"></i>
-                          </button>
+                          </button>                             
+                          </div> 
+                          
                      </div>
                      </div>
                    </div>
