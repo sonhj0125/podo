@@ -1730,4 +1730,31 @@ public class ProductDAO_imple implements ProductDAO {
 	       
 	} // end of public int delReviewAd(String rindex) throws SQLException
 
+	// 제품 수정하기
+	@Override
+	public int updateProduct(ProductDTO pdto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " update product"
+					   + " set pname = ?, pengname = ?, ptype = ?,"
+					   + "	   phometown = ?, pprice = ?, ppoint = ?,"
+					   + "	   pbody = ?, pacid = ?, ptannin = ?,"
+					   + "	   pimg = ?, pstock = ?"
+					   + " where pindex = ? ";
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int updateProduct(ProductDTO pdto) throws SQLException -----------------
+
+
+
 }

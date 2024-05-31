@@ -99,5 +99,8 @@ public interface ProductDAO {
 	int delReviewAd(Map<String, String> paraMap) throws SQLException;
 
 
+	// 제품 수정하기
+	int updateProduct(ProductDTO pdto) throws SQLException;
+
 
 }

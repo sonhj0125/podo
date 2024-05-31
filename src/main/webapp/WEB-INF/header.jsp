@@ -244,6 +244,11 @@
 		   location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
 		});
 		
+		<%-- 관리자 제품 수정/삭제 클릭시 --%>
+		$("div#adminProductUpdate").bind('click',()=>{
+		   location.href="<%=ctxPath%>/member/admin/adminProductUpdate.wine";
+		});
+		
 		<%-- 관리자 주문관리 클릭시 --%>
 		$("div#adminOrder").bind('click',()=>{
 		   location.href="<%=ctxPath%>/member/admin/adminOrder.wine";
@@ -278,6 +283,13 @@
 	function showProduct(idx){
 		
 		location.href = "<%=ctxPath %>/shop/product.wine?pindex="+idx;
+		
+	}
+	
+	// product 보기
+	function updateProduct(idx){
+		
+		location.href = "<%=ctxPath %>/member/admin/updateProduct.wine?pindex="+idx;
 		
 	}
 	
@@ -499,7 +511,7 @@
 	         <hr style="width: 90%;">
 	            <div>
 	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
-	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
+	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
 	           </div>
 	       </div>
         </c:if>

@@ -121,7 +121,7 @@ public class ReviewWrite extends AbstractController {
 				
 				if(result == 1 && addPoint && writeLog) {
 					
-					msg = "리뷰가 작성되었습니다.\\n리뷰 등록 후 삭제가 불가합니다.";
+					msg = "리뷰가 작성되었습니다.\\n욕설 및 폭언이 포함될 경우 무통보 삭제 및 포인트가 차감됩니다.";
 					loc = request.getContextPath() + "/member/reviewList.wine";
 					
 				} else {
