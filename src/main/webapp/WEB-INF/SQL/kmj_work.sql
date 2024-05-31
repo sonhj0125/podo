@@ -126,4 +126,19 @@ ON O.pindex = P.pindex
 group by P.ptype;
 
 
+SELECT P.pType, COUNT(O.oIndex) AS OrderCount
+FROM Product P
+LEFT JOIN Orders O ON P.pindex = O.pindex
+GROUP BY P.pType;
 
+select *
+from product;
+
+select *
+from orders;
+
+
+SELECT P.pType, nvl(sum(O.OVOLUME),0) AS Ordersum
+FROM Product P
+LEFT JOIN Orders O ON P.pindex = O.pindex
+GROUP BY P.pType;

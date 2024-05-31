@@ -256,6 +256,14 @@
 		   location.href="<%=ctxPath%>/member/admin/adminOrder.wine";
 		});
 		
+		<%-- 관리자 제품별 판매량 통계 클릭시 --%>
+		$("div#adminChart").bind('click',()=>{
+		   location.href="<%= ctxPath %>/member/admin/chart.wine";
+		});
+		
+		
+		
+		
 	} // end of window.onload
 	
 	window.closeModal = function(login) {
@@ -490,7 +498,7 @@
 	            <div>
 	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
 	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
-	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;" onclick="<%= ctxPath %>/member/admin/chart.up">제품별 판매량 통계</div>
+	               <div id="adminChart" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품별 판매량 통계</div>
 	           </div>
 	       </div>
         </c:if>

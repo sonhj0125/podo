@@ -95,5 +95,8 @@ public interface ProductDAO {
 	// 물건 주문 후 재고량 수 변경
 	int updatePstock(int pindex) throws SQLException;
 
+	// 제품타입별 판매량 수 알아오기
+	List<Map<String, String>> chart_map_List() throws SQLException;
+
 
 }
