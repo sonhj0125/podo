@@ -1637,67 +1637,78 @@ public class ProductDAO_imple implements ProductDAO {
 		
 	}// end of public int updatePstock(int pindex) throws SQLException
 	
+	
+	
+	
 	// 관리자 회원관리 - 리뷰내역 삭제하기
 	@Override
-	public int delReviewAd(String rindex) throws SQLException {
+	public int delReviewAd(Map<String, String> paraMap) throws SQLException {
 		
 		int result1 = 0;
 		int result2 = 0;
 		int result3 = 0;
+		int result4 = 0;
 		
 	       try {
 	            conn = ds.getConnection();
 	            
 	            conn.setAutoCommit(false);
 	            
-	            
 	            String sql = " delete from review "
-	            		   + " where rindex = ? ";
+	            		   + " where to_char(rindex) = ? ";
 	            
 	            pstmt = conn.prepareStatement(sql);
 	            
-	            pstmt.setString(1, rindex);
+	            pstmt.setString(1, paraMap.get("rindex"));
 	            
 	            result1 = pstmt.executeUpdate();
 	            
-	            String userid = "";
-	            
 	            if(result1 == 1) {
 	            	
-	            	sql = " update member set point = point - 500 "
+	            	sql = " update member set point = point - 1000 "
 	            		+ " where userid = ? ";
 		            
 		            pstmt = conn.prepareStatement(sql);
 		            
-					pstmt.setString(1, userid);
+					pstmt.setString(1, paraMap.get("userid"));
 		            
 		            result2 = pstmt.executeUpdate();
 	            	
 		            
 		            if(result2 == 1) {
 		            	
-		            	conn.commit();
-		            	conn.setAutoCommit(true);
-		            	result3 = 1;
-		            	
+		            	sql = " insert into point(userid, poincome, podetail, podate) VALUES (?, -1000, '관리자 리뷰 삭제 차감', to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')) "
+;
+			            pstmt = conn.prepareStatement(sql);
+			            
+						pstmt.setString(1, paraMap.get("userid"));
+			            
+			            result3 = pstmt.executeUpdate();
+				            
+			            
+		            	if(result3 == 1) {
+		            		
+		            		conn.commit();
+			            	conn.setAutoCommit(true);
+			            	result4 = 1;
+		            	}
 		            }
 		            
-		            
-	            }else {
+	            } else {
 	            	
 	            	conn.rollback();
 	            }
-	            
 	            
 	       } catch(Exception e) {
 	    	   
 	    	   conn.rollback();
 	    	   e.printStackTrace();
+	    	   
 	       } finally {
 	            close();
 	       }
 	         
-	       return result3;
+	       return result4;
 	       
 	} // end of public int delReviewAd(String rindex) throws SQLException
 

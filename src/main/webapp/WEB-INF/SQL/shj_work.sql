@@ -261,19 +261,21 @@ where member.userid = 'gpwjd1wldms'
 
 
 delete from review
-where rindex = 21;
+where to_char(rindex) = 21;
 
 rollback;
 
 update member set point = point - 500
 where userid = 'gpwjd1wldms';
 
+select *
+from point
+where userid = 'gpwjd1wldms';
 
 
+insert into point(userid, poincome, podetail, podate) VALUES ('gpwjd1wldms', -500, '관리자 리뷰 삭제 차감', to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
 
-
-
-
+commit;
 
 
 
