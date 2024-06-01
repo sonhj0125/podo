@@ -10,15 +10,15 @@
 
 <style type="text/css">
 
-	.highcharts-figure,
-	.highcharts-data-table table {
+#container {
+    height: 400px;
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
     min-width: 310px;
     max-width: 800px;
     margin: 1em auto;
-}
-
-#container {
-    height: 400px;
 }
 
 .highcharts-data-table table {
@@ -67,7 +67,6 @@
 
 <figure class="highcharts-figure">
     <div id="container"></div>
- 
 </figure>
 
 <script type="text/javascript">
@@ -102,14 +101,16 @@ $.ajax({
 		        type: 'column'
 		    },
 		    title: {
-		        text: '와인 타입별 판매량 수',
-		        align: 'left'
+		        text: '와인타입별 판매량 통계'
 		    },
 		    xAxis: {
-		        categories: resultArr,
-		        crosshair: true,
-		        accessibility: {
-		            description: 'Countries'
+		        type: 'category',
+		        labels: {
+		            autoRotation: [-45, -90],
+		            style: {
+		                fontSize: '13px',
+		                fontFamily: 'Verdana, sans-serif'
+		            }
 		        }
 		    },
 		    yAxis: {
@@ -118,21 +119,39 @@ $.ajax({
 		            text: '개수'
 		        }
 		    },
+		    legend: {
+		        enabled: false
+		    },
 		    tooltip: {
-		        valueSuffix: ' (개수)'
+		        pointFormat: 'Population in 2021: <b>{point.y:.1f} millions</b>'
 		    },
-		    plotOptions: {
-		        column: {
-		            pointPadding: 0.2,
-		            borderWidth: 0
+		    series: [{
+		        name: 'Population',
+		        colors: [
+		            '#ff8080', '#66c2ff', ' #ff3333', '#ffb366'
+		        ],
+		        colorByPoint: true,
+		        groupPadding: 0,
+		        data: [
+		            [resultArr[0], resultArr2[0]],
+		            [resultArr[1], resultArr2[1]],
+		            [resultArr[2], resultArr2[2]],
+		            [resultArr[3], resultArr2[3]]
+		        ],
+		        dataLabels: {
+		            enabled: true,
+		            rotation: 0,
+		            color: '#FFFFFF',
+		            inside: true,
+		            verticalAlign: 'top',
+		            format: '{point.y}', // one decimal
+		            y: 10, // 10 pixels down from the top
+		            style: {
+		                fontSize: '15px',
+		                fontFamily: 'Verdana, sans-serif'
+		            }
 		        }
-		    },
-		    series: [
-		        {
-		            name: '와인타입별 판매량',
-		            data: resultArr2
-		        }
-		    ]
+		    }]
 		});
 
 				
