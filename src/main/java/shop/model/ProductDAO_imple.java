@@ -1741,12 +1741,31 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " update product"
-					   + " set pname = ?, pengname = ?, ptype = ?,"
-					   + "	   phometown = ?, pprice = ?, ppoint = ?,"
-					   + "	   pbody = ?, pacid = ?, ptannin = ?,"
-					   + "	   pimg = ?, pstock = ?"
+			String sql = " update product "
+					   + " set pname = ?, pengname = ?, ptype = ?, "
+					   + "	   phometown = ?, pprice = ?, ppoint = ?, "
+					   + "	   pbody = ?, pacid = ?, ptannin = ?, "
+					   + "	   pacl = ?, pdetail = ?, pstock = ? "
 					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, pdto.getPname());
+			pstmt.setString(2, pdto.getPengname());
+			pstmt.setString(3, pdto.getPtype());
+			pstmt.setString(4, pdto.getPhometown());
+			pstmt.setString(5, pdto.getPprice());
+			pstmt.setString(6, pdto.getPpoint());
+			pstmt.setString(7, pdto.getPbody());
+			pstmt.setString(8, pdto.getPacid());
+			pstmt.setString(9, pdto.getPtannin());
+			pstmt.setString(10, pdto.getPacl());
+			pstmt.setString(11, pdto.getPdetail());
+			pstmt.setString(12, pdto.getPstock());
+			
+			pstmt.setInt(13, pdto.getPindex());
+			
+			result = pstmt.executeUpdate();
 			
 		} finally {
 			close();
@@ -1795,7 +1814,209 @@ public class ProductDAO_imple implements ProductDAO {
 
 		return chart_map_List;
 		
-	}// end of public List<Map<String, String>> chart_map_List() throws SQLException------------
+	}// end of public List<Map<String, String>> chart_map_List() throws SQLException ------------
+
+	
+	
+	// [제품 삭제] 제품번호에 대한 주문번호 여러 개 받아오기
+	@Override
+	public List<String> getOindexListByPindex(String pindex) throws SQLException {
+		
+		List<String> list = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select oindex "
+					   + " from orders "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("oindex"));
+			}
+			
+			
+		} finally {
+			close();
+		}
+		
+		return list;
+		
+	} // end of public String[] getOindexByPindex(String pindex) throws SQLException -------------
+
+	
+	
+	// [제품 삭제] 리뷰 삭제하기
+	@Override
+	public int deleteReview(String oindex) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from review "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteReview(String oindex) throws SQLException ------------
+
+	
+	
+	// [제품 삭제] 배송정보 삭제하기
+	@Override
+	public int deleteDelivery(String oindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from delivery "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // public int deleteDelivery(String oindex) throws SQLException ---------------
+
+	
+	
+	// [제품 삭제] 주문내역 삭제하기
+	@Override
+	public int deleteOrders(String oindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from orders "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteOrders(String oindex) throws SQLException ------------
+
+	
+	
+	// [제품 삭제] 좋아요 삭제하기
+	@Override
+	public int deleteLikeit(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from likeit "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteLikeit(String pindex) throws SQLException --------------
+
+	
+	
+	// [제품 삭제] 제품상세이미지 삭제하기
+	@Override
+	public int deletePdimg(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from productdetailimg "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // public int deletePdimg(String pindex) throws SQLException ----------------
+
+	
+	
+	// 제품 삭제하기
+	@Override
+	public int deleteProduct(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from product "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteProduct(String pindex) throws SQLException ----------------
 
 
 
