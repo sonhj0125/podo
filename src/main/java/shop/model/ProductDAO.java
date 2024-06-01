@@ -105,5 +105,26 @@ public interface ProductDAO {
 	// 제품타입별 판매량 수 알아오기
 	List<Map<String, String>> chart_map_List() throws SQLException;
 
+	// [제품 삭제] 제품번호에 대한 주문번호 여러 개 받아오기
+	List<String> getOindexListByPindex(String pindex) throws SQLException;
+
+	// [제품 삭제] 리뷰 삭제하기
+	int deleteReview(String oindex) throws SQLException;
+
+	// [제품 삭제] 배송정보 삭제하기
+	int deleteDelivery(String oindex) throws SQLException;
+
+	// [제품 삭제] 주문내역 삭제하기
+	int deleteOrders(String oindex) throws SQLException;
+
+	// [제품 삭제] 좋아요 삭제하기
+	int deleteLikeit(String pindex) throws SQLException;
+
+	// [제품 삭제] 제품상세이미지 삭제하기
+	int deletePdimg(String pindex) throws SQLException;
+
+	// 제품 삭제하기
+	int deleteProduct(String pindex) throws SQLException;
+
 
 }

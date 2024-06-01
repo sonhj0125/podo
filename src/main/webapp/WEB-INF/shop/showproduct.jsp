@@ -95,6 +95,36 @@ $(function (){
 	});
 	
 	
+	<%-- 제품 삭제하기 --%>
+	$("button#productDelete").click(function() {
+		
+		if(confirm("제품 삭제 시 고객 리뷰 및 주문내역이 모두 삭제됩니다.\n정말 삭제하시겠습니까?")) {
+			
+			$.ajax({
+				url: "${pageContext.request.contextPath}/member/admin/pdtDelete.wine",
+				type: "post",
+				data: {"pindex":"${requestScope.pdto.pindex}"},
+				dataType: "json",
+	            success: function(json) {
+	            	
+	            	if(json.result == 1) {
+	            		alert("제품이 삭제되었습니다.");
+	            		location.href = "${pageContext.request.contextPath}/shop/list.wine";
+	            		
+	            	} else {
+	            		alert("제품 삭제에 실패하였습니다.");
+	            		lcoation.href = "${pageContext.request.contextPath}/shop/product.wine?pindex=${requestScope.pdto.pindex}";
+	            	}
+	            	
+	            },
+	            error: function(request, status, error) {
+	            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	           	}
+				
+			});
+		}
+	});
+	
 });
 
 </script>
@@ -209,13 +239,13 @@ button#btn-like, button#btn-unlike {
                 <div class="d-flex">
 	                <form class="d-flex" method="post">
 	                    <button id="productUpdate" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="location.href='<%=ctxPath%>/member/admin/pdtUpdate.wine?pindex=${requestScope.pdto.pindex}'">
-	                        제품정보 수정하기
+	                        제품 수정하기
 	                    </button>
 	                </form>
 	                &nbsp;&nbsp; 
 					<form class="d-flex" method="post">
-	                    <button id="productDelete" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="location.href='<%=ctxPath%>/member/admin/pdtDelete.wine'">
-	                        제품정보 삭제하기
+	                    <button id="productDelete" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
+	                        제품 삭제하기
 	                    </button>
 	                </form>
 	             </div>

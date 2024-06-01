@@ -295,10 +295,26 @@ ON O.pindex = P.pindex
 group by P.ptype;
 
 
+/*
+update product set ptannin = 2
+where ptannin = 0;
+
+commit;
+*/
+select oindex
+from orders
+where pindex = 144;
 
 
 
+select count(*) as count
+from cart
+where pindex = 146;
 
 
-
+/*
+delete from product
+where pindex = 146;
+commit;
+*/
 
