@@ -123,7 +123,7 @@ $.ajax({
 		        enabled: false
 		    },
 		    tooltip: {
-		        pointFormat: 'Population in 2021: <b>{point.y:.1f} millions</b>'
+		        pointFormat: '{point.y}개</b>'
 		    },
 		    series: [{
 		        name: 'Population',
