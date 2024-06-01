@@ -245,3 +245,49 @@ select userid, name, email, phone, address, addressdetail, gender, member.member
 from member join memberidx on member.memberidx = memberidx.memberidx
 where memberidx.memberidx = 1 and userid = 'admin_1'
 
+select *
+from point;
+
+select *
+from review;
+
+
+select rindex, rstar, rdetail, rdate
+from member join orders on member.userid = orders.userid
+join review on orders.oindex = review.oindex
+where member.userid = 'gpwjd1wldms'
+
+
+
+
+delete from review
+where rindex = 21;
+
+rollback;
+
+update member set point = point - 500
+where userid = 'gpwjd1wldms';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
