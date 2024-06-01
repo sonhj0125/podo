@@ -285,5 +285,36 @@ commit;
 
 
 
+-- 와인종류별 판매량
+WITH
+O AS (select pindex
+from orders)
+SELECT ptype, count(ptype)
+FROM O JOIN product P
+ON O.pindex = P.pindex
+group by P.ptype;
 
+
+/*
+update product set ptannin = 2
+where ptannin = 0;
+
+commit;
+*/
+select oindex
+from orders
+where pindex = 144;
+
+
+
+select count(*) as count
+from cart
+where pindex = 146;
+
+
+/*
+delete from product
+where pindex = 146;
+commit;
+*/
 

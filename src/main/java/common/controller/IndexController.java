@@ -33,9 +33,10 @@ public class IndexController extends AbstractController {
 
 			List<ProductDTO> pdtoList = pdao.listReadDesc();
 			List<ProductDTO> pdtoList2 = pdao.listPopReadDesc();
-
+			
 			request.setAttribute("newProductList", pdtoList);
 			request.setAttribute("popProductList", pdtoList2);
+			
 			
 			if(loginUser != null) {
 				

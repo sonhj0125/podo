@@ -91,3 +91,8 @@ update product set pstock = pstock -1 where PINDEX = '1';
 select PRODUCT.pindex from PRODUCT join CART on PRODUCT.PINDEX = CART.PINDEX where CINDEX = '168';
 
 select PRODUCT.pindex as pindex from PRODUCT join CART on PRODUCT.PINDEX = CART.PINDEX where CINDEX = '168';
+
+SELECT P.pType, sum(O.OVOLUME) AS Ordersum
+FROM Product P
+LEFT JOIN Orders O ON P.pindex = O.pindex
+GROUP BY P.pType;
