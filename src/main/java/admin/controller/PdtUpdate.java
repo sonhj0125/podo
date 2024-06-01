@@ -25,20 +25,7 @@ public class PdtUpdate extends AbstractController {
 	public PdtUpdate() {
 		pdao = new ProductDAO_imple();
 	}
-
-    private String extractFileName(String partHeader) {
-        for(String cd : partHeader.split("\\;")) {
-           if(cd.trim().startsWith("filename")) {
-              String fileName = cd.substring(cd.indexOf("=") + 1).trim().replace("\"", ""); 
-              int index = fileName.lastIndexOf(File.separator); // File.separator 란? OS가 Windows 이라면 \ 이고, OS가 Mac, Linux, Unix 이라면 / 를 말하는 것이다.
-              return fileName.substring(index + 1);
-           }
-        }
-        
-        return null;
-        
-     }// end of private String extractFileName(String partHeader)-------------------
-
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -79,65 +66,8 @@ public class PdtUpdate extends AbstractController {
 				
 			} else {
 				// POST 방식일 경우
-
-				// 1. 첨부된 파일을 업로드 할 디스크 경로 설정
-				ServletContext svlCtx = session.getServletContext();
-				String uploadFileDir = "C:/NCS/podo/src/main/webapp/images/product";
-
-				// ==== >>> 파일 업로드하기 <<< ==== //
-				String pimg = null;
-				String pdimg = null;
-
-				Collection<Part> parts = request.getParts();
-				//  getParts()를 사용하여 form 태그로부터 넘어온 데이터들을 각각의 Part로 하나하나씩 받는다.
-
-				for (Part part : parts) {
-
-					if (part.getHeader("Content-Disposition").contains("filename=")) {
-						// form 태그에서 전송되어 온 것이 파일일 경우
-
-						String fileName = extractFileName(part.getHeader("Content-Disposition"));
-
-						if (part.getSize() > 0) {
-
-							// 서버에 저장할 새로운 파일명을 만든다.
-							// 서버에 저장할 새로운 파일명이 동일한 파일명이 되지 않고 고유한 파일명이 되도록 하기 위해
-							// 현재의 년월일시분초에다가 현재 나노세컨즈nanoseconds 값을 결합하여 확장자를 붙여서 만든다.
-							String newFilename = fileName.substring(0, fileName.lastIndexOf(".")); // 확장자를 뺀 파일명 알아오기
-
-							newFilename += "_"
-									+ String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
-							newFilename += System.nanoTime();
-							newFilename += fileName.substring(fileName.lastIndexOf(".")); // 확장자 붙이기
-
-							// >>> 파일을 지정된 디스크 경로에 저장하기 <<<
-							part.write(uploadFileDir + File.separator + newFilename);
-
-							// >>> 임시저장된 파일 데이터를 제거해준다. <<<
-							part.delete();
-
-							if ("pimg".equals(part.getName())) {
-								pimg = newFilename;
-							}
-
-							else if ("pdimg".equals(part.getName())) {
-								pdimg = newFilename;
-							}
-
-						}
-
-					} // end of if(part.getHeader("Content-Disposition").contains("filename=")) ------------------------------
-					
-					else { // form 태그에서 전송되어 온 것이 파일이 아닐 경우
-						String formValue = request.getParameter(part.getName());
-						pimg = request.getParameter("origin_pimg");
-						pdimg = request.getParameter("origin_pdimg");
-					}
-
-				} // end of for(Part part : parts)------------------------
-
-				// === 이미지 파일을 제외한 제품 정보 ===
-				int pindex = Integer.parseInt(request.getParameter("pname")); // 제품 인덱스
+				
+				int pindex = Integer.parseInt(request.getParameter("pindex")); // 제품 인덱스
 				String pname = request.getParameter("pname"); // 제품한글명
 				String pengname = request.getParameter("pengname"); // 제품영어명
 				String ptype = request.getParameter("ptype"); // 제품타입(예: 레드, 화이트)
@@ -171,9 +101,6 @@ public class PdtUpdate extends AbstractController {
                 pdto.setPstock(pstock);
                 pdto.setPindex(pindex);
                 
-                pdto.setPimg(pimg);   
-                pdto.setPdimg(pdimg); 
-
                 // 제품 수정하기
 				int result = pdao.updateProduct(pdto);
 
@@ -182,7 +109,7 @@ public class PdtUpdate extends AbstractController {
 
 				String json = jsonObj.toString(); // 문자열로 변환
 				request.setAttribute("json", json);
-
+				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/jsonview.jsp");
 

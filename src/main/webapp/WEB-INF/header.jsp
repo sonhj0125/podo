@@ -246,7 +246,7 @@
 		
 		<%-- 관리자 제품 수정/삭제 클릭시 --%>
 		$("div#adminProductUpdate").bind('click',()=>{
-		   location.href="<%=ctxPath%>/member/admin/adminProductUpdate.wine";
+		   location.href="<%=ctxPath%>/shop/list.wine";
 		});
 		
 		<%-- 관리자 주문관리 클릭시 --%>

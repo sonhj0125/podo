@@ -296,8 +296,6 @@ group by P.ptype;
 
 
 
-select pindex, ovolume
-from orders;
 
 
 

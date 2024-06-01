@@ -146,10 +146,14 @@ button#btn-like, button#btn-unlike {
 	            <form name="cartin">
 		            <div class="input-group fs-5 mb-5">
 		                <div class="input-group-prepend">
-		                    <input type="hidden" id="stockquantity" name="stockquantity">
-		                    <span class="input-group-text">주문 수량</span>
+			                    <input type="hidden" id="stockquantity" name="stockquantity">
+		                	<c:if test="${sessionScope.loginUser.memberIdx != 9}">
+			                    <span class="input-group-text">주문 수량</span>
+		                	</c:if>
 		                </div>
+		                <c:if test="${sessionScope.loginUser.memberIdx != 9}">
 		                	<input class="form-control text-center me-3" id="count" name="cvolume" type="number" value="1" start="1" min="0" max="100" style="max-width: 5rem" />
+	                	</c:if>
 		                	<input name="userid" value = "${sessionScope.loginUser.userid}" style="display: none;"/>
 		                	<input name="pindex" value = "${requestScope.pdto.pindex}" style="display: none;"/>
 		                	<input name="url" value = "<%= url%>" style="display:none;"/>
@@ -161,6 +165,8 @@ button#btn-like, button#btn-unlike {
 	            </form>
 	
 	            <br>
+	            <%-- 관리자가 아닐 때 --%>
+                <c:if test="${sessionScope.loginUser.memberIdx != 9}">
 	            <div class="d-flex" style="align-items:center; margin-left:10%; width:100%;">
 	                <form class="d-flex" method="post">
 	                	<div>
@@ -196,6 +202,25 @@ button#btn-like, button#btn-unlike {
 	                </div>
 	               </div> 
 	             <input class="form-control text-center me-3" id="pstock" name="pstock" type="text" value="${requestScope.likeItCnt}" style="max-width:3rem; margin-left:10%; color:red; border:none;" readonly />
+                </c:if>
+                
+                <%-- 관리자일 때 --%>
+                <c:if test="${sessionScope.loginUser.memberIdx == 9}">
+                <div class="d-flex">
+	                <form class="d-flex" method="post">
+	                    <button id="productUpdate" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="location.href='<%=ctxPath%>/member/admin/pdtUpdate.wine?pindex=${requestScope.pdto.pindex}'">
+	                        제품정보 수정하기
+	                    </button>
+	                </form>
+	                &nbsp;&nbsp; 
+					<form class="d-flex" method="post">
+	                    <button id="productDelete" class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button" onclick="location.href='<%=ctxPath%>/member/admin/pdtDelete.wine'">
+	                        제품정보 삭제하기
+	                    </button>
+	                </form>
+	             </div>
+                </c:if>
+                
 	         </div>
 	     </div>
 		</div>

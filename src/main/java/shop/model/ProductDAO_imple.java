@@ -1744,9 +1744,25 @@ public class ProductDAO_imple implements ProductDAO {
 			String sql = " update product "
 					   + " set pname = ?, pengname = ?, ptype = ?, "
 					   + "	   phometown = ?, pprice = ?, ppoint = ?, "
-					   + "	   pbody = ?, pacid = ?, ptannin = ?, "
-					   + "	   pimg = ?, pstock = ? "
+					   + "	   pbody = ?, pacid = ?, ptannin = ?, pstock = ? "
 					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, pdto.getPname());
+			pstmt.setString(2, pdto.getPengname());
+			pstmt.setString(3, pdto.getPtype());
+			pstmt.setString(4, pdto.getPhometown());
+			pstmt.setString(5, pdto.getPprice());
+			pstmt.setString(6, pdto.getPpoint());
+			pstmt.setString(7, pdto.getPbody());
+			pstmt.setString(8, pdto.getPacid());
+			pstmt.setString(9, pdto.getPtannin());
+			pstmt.setString(10, pdto.getPstock());
+			
+			pstmt.setInt(11, pdto.getPindex());
+			
+			result = pstmt.executeUpdate();
 			
 		} finally {
 			close();

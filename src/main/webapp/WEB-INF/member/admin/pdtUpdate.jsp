@@ -110,8 +110,6 @@ label.input-group-text, span.input-group-text {
 	    		 return false;
 	    	 }
 	    	 
-	    	 console.log(pAcid_val);
-	    	 
 			 const pTannin_val = $("select[name='ptannin']").val();
 	    	 
 	    	 if(pTannin_val == "선택하세요."){
@@ -144,26 +142,19 @@ label.input-group-text, span.input-group-text {
 	         if(is_infoData_OK) {
 
 	            var formData = new FormData($("form[name='prodInputFrm']").get(0)); // $("form[name='prodInputFrm']").get(0) : 폼에 작성된 모든 데이터 보내기
-	               
-	            // 첨부한 파일의 총량이 20MB 초과 시 //   
-	            if( total_fileSize > 20*1024*1024 ) {
-	            	
-	                alert("첨부한 파일의 총합의 크기가 20MB를 초과하여 제품 수정이 불가합니다.");
-	                return; // 종료
-	            } 
-	            ///////////////////////////////////////
 	            
 	            $.ajax({
 	                    url: "${pageContext.request.contextPath}/member/admin/pdtUpdate.wine",
 	                    type: "post",
 	               	    data : formData,
-	                    processData: false,  // 파일 전송 시 설정 ★★★
-	                    contentType: false,  // 파일 전송 시 설정 ★★★
+	                    processData: false,  
+	                    contentType: false,  
 	                    dataType:"json",
 	                    success:function(json) {
 	                       
 	                       if(json.result == 1) {
-	                          location.href = "${pageContext.request.contextPath}/member/admin/updateProduct.wine?pindex="; // pindex 추가하기 
+	                    	   alert("제품 수정이 완료되었습니다.");
+	                          location.href = "${pageContext.request.contextPath}/shop/product.wine?pindex=${requestScope.pdto.pindex}"; // pindex 추가하기 
 	                       }
 	                   },
 	                   error: function(request, status, error) {
@@ -187,15 +178,10 @@ label.input-group-text, span.input-group-text {
    	
    	<br/>
    
-   	<%-- !!!!! ==== 중요 ==== !!!!! --%>
-   	<%-- 폼에서 파일을 업로드 하려면 반드시 method 는 POST 이어야 하고 
-        enctype="multipart/form-data" 으로 지정해주어야 한다.!! --%>
    	<form name="prodInputFrm" enctype="multipart/form-data"> 
         <div id="container" style="width:70%; margin-bottom: 5%;">
         
         	<input type="hidden" value="${requestScope.pdto.pindex}" name="pindex">
-        	<input type="hidden" value="${requestScope.pdto.pimg}" name="origin_pimg">
-        	<input type="hidden" value="${requestScope.pdImgName}" name="origin_pdimg">
         	
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pType">제품 분류</label>
@@ -227,7 +213,7 @@ label.input-group-text, span.input-group-text {
 			<div class="input-group">
 			  	<span class="input-group-text">제품명 및 영문명</span>
 			  	<input type="text" placeholder="제품의 한글이름을 입력해주세요" aria-label="name" class="form-control infoData" name="pname" id="pname">
-			 	<input type="text" placeholder="제픔의 영문이름을 입력해주세요" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
+			 	<input type="text" placeholder="제품의 영문이름을 입력해주세요" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
 			</div>
 			
 			
@@ -293,17 +279,7 @@ label.input-group-text, span.input-group-text {
 			  	<span class="input-group-text">제품 설명</span>
 			  	<textarea class="form-control infoData" style="height:150px;" aria-label="With textarea" name="pdetail"></textarea>
 			</div>
-	     
-	     	<div class="input-group mb-3">
-			  	<label class="input-group-text" for="inputGroupFile01">제품이미지</label>
-			  	<input type="file" class="form-control" id="inputGroupFile01" name="pimg">
-			</div>
-			
-			<div class="input-group mb-3">
-			  	<label class="input-group-text" for="inputGroupFile01">제품상세이미지</label>
-			  	<input type="file" class="form-control" id="inputGroupFile02" name="pdimg">
-			</div>
-			
+	     	
 			<div class="input-group mb-3">
                 <span class="input-group-text">재고량</span>
             	<input class="form-control text-center me-3 infoData" type="number" value="1" min="0" max="99999" style="max-width: 5rem" name="pstock" id="pstock"/>
