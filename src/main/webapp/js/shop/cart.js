@@ -158,13 +158,17 @@ function sumAll(){
     let sumAll = 0;
 
     $("input.cbOne").each(function() {
-    
-        const sumoneNat = $(this).parent().find("div#dpriceSum").text();
 
-        const sumone = sumoneNat.replace("원","").replaceAll(",","");
-    
-        sumAll += Number(sumone);
+        if($(this).is(':checked')){
 
+            const sumoneNat = $(this).parent().find("div#dpriceSum").text();
+
+            const sumone = sumoneNat.replace("원","").replaceAll(",","");
+        
+            sumAll += Number(sumone);
+
+        }
+        
     })
 
     $("div#sumPrice").text(sumAll.toLocaleString()+"원");
