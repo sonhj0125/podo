@@ -543,15 +543,15 @@ function goSmartSearch() {
 			    <div class="mt-5">
 				    <p style="font-weight:bold; font-size:14pt;">🍷바디</p>
 				    <hr>
-				    
-				    <div id="pbody_bar"></div>
-				    
-					<div class="form-check pt-3">
+					<div class="form-check pb-3">
 					  	<input class="form-check-input" type="checkbox" name="pbody" value="" id="none1">
 					  	<label class="form-check-label" style="font-size:12pt;" for="none1">
 					    	상관없음
 					  	</label>
 					</div>
+				    
+				    <div id="pbody_bar"></div>
+				    
 		    	</div>
 			    
 			    <br>
@@ -559,15 +559,15 @@ function goSmartSearch() {
 			    <div class="mt-5">
 				    <p style="font-weight:bold; font-size:14pt;">🍷산도</p>
 				    <hr>
-				    
-				    <div id="pacid_bar"></div>
-				    
-			    	<div class="form-check pt-3">
+			    	<div class="form-check pb-3">
 					  	<input class="form-check-input" type="checkbox" name="pacid" value="" id="none2">
 					  	<label class="form-check-label" style="font-size:12pt;" for="none2">
 					    	상관없음
 					  	</label>
 					</div>
+				    
+				    <div id="pacid_bar"></div>
+				    
 			    </div>
 			    
 			    <br>
@@ -575,15 +575,15 @@ function goSmartSearch() {
 			    <div class="mt-5">
 				    <p style="font-weight:bold; font-size:14pt;">🍷타닌</p>
 				    <hr>
-				    
-				    <div id="ptannin_bar"></div>
-				    
-			    	<div class="form-check pt-3">
+			    	<div class="form-check pb-3">
 					  	<input class="form-check-input" type="checkbox" name="ptannin" value="" id="none3">
 					  	<label class="form-check-label" style="font-size:12pt;" for="none3">
 					    	상관없음
 					  	</label>
 					</div>
+				    
+				    <div id="ptannin_bar"></div>
+				    
 			    </div>
 			    
 			    <div id="button" style="display: flex; align-items: center;">
