@@ -34,7 +34,7 @@
 
 <div id="mainView" class="text-center">
 	<img src="<%=ctxPath %>/images/main.png" class="img-fluid rounded" alt="...">
-	<h1 id="testtype">와인 정~말 맛있어 달콤해</h1>
+	<h1 id="testtype">Everything About Premium Wine, PODO</h1>
 </div>
 
 
