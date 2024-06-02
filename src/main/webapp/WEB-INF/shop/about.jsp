@@ -22,10 +22,10 @@
 				      <img src="<%=ctxPath %>/images/intro/intro_sdh.png" class="d-block w-100" alt="...">
 				    </div>
 				    <div class="carousel-item">
-				      <img src="<%=ctxPath %>/images/intro/intro_kmj.png" class="d-block w-100" alt="...">
+				      <img src="<%=ctxPath %>/images/intro/intro_kdy.png" class="d-block w-100" alt="...">
 				    </div>
 				    <div class="carousel-item">
-				      <img src="<%=ctxPath %>/images/intro/intro_kdy.png" class="d-block w-100" alt="...">
+				      <img src="<%=ctxPath %>/images/intro/intro_kmj.png" class="d-block w-100" alt="...">
 				    </div>
 				    <div class="carousel-item">
 				      <img src="<%=ctxPath %>/images/intro/intro_shj.png" class="d-block w-100" alt="...">
