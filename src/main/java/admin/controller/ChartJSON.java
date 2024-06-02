@@ -10,8 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import cart.model.CartDAO;
-import cart.model.CartDAO_imple;
 import common.controller.AbstractController;
 import member.domain.MemberDTO;
 import shop.model.ProductDAO;
@@ -66,7 +64,7 @@ public class ChartJSON extends AbstractController {
 	    	  
 	    	  request.setAttribute("json", json_arr.toString() );
 	          
-              // super.setRedirect(false);
+              super.setRedirect(false);
               super.setViewPage("/WEB-INF/jsonview.jsp");
 	      }
 

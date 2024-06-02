@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
-import coupon.model.CouponDAO_imple;
 import member.domain.MemberDTO;
-import member.model.LogDAO_imple;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
 

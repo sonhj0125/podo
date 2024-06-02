@@ -7,19 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import common.controller.AbstractController;
-import member.model.MemberDAO;
-import member.model.MemberDAO_imple;
 import shop.model.ProductDAO;
 import shop.model.ProductDAO_imple;
 
 public class AdminUpdateDelReview extends AbstractController {
 	
 	private ProductDAO pdao = null;
-	private MemberDAO mdao = null;
 	
 	public AdminUpdateDelReview() {
 		pdao = new ProductDAO_imple();
-		mdao = new MemberDAO_imple();
 	}
 	
 	

@@ -76,7 +76,7 @@ $.ajax({
 	url:"<%= ctxPath%>/member/admin/chartJSON.wine",
 	dataType:"json",
 	success: function(json){
-		console.log(JSON.stringify(json));
+		// console.log(JSON.stringify(json));
 		/*
 			[{"ptype":"로제","ordersum":"0"},
 			 {"ptype":"스파클링","ordersum":"5"},
@@ -93,8 +93,6 @@ $.ajax({
 			resultArr2.push(Number(json[i].ordersum));
 		}
 			
-			
-		
 		///////////////////////////////////////////////////////////
 		Highcharts.chart('container', {
 		    chart: {
@@ -162,8 +160,6 @@ $.ajax({
 	
 	
 });
-
-
 
 </script>
 
