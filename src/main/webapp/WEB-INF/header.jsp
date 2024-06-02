@@ -359,7 +359,7 @@
                     <li class="nav-item fw-bold"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
                     <div class="vr m-2"></div>
                     
-                    <c:if test="${sessionScope.loginUser.memberIdx != 9}">
+                    <c:if test="${not empty sessionScope.loginUser && sessionScope.loginUser.memberIdx != 9}">
                     <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
                     </c:if>
