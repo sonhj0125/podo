@@ -260,7 +260,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 			String sql = " select userid "
 					   + " from member "
-					   + " where memberidx = 1 and name = ? and userid = ? ";
+					   + " where name = ? and userid = ? ";
 
 			if(paraMap.containsKey("email")) { // '이메일 인증'일 때
 				sql += " and email = ? ";
