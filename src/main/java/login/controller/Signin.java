@@ -49,8 +49,6 @@ public class Signin extends AbstractController {
 				
 				if(loginUser != null) { // id 있음
 					
-					System.out.println(loginUser.getStatus());
-					
 					if("3".equals(loginUser.getMemberIdx())) {
 						request.setAttribute("msg","정지 회원입니다. 관리자 문의 바람");
 						request.setAttribute("loc", location);
