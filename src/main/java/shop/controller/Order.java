@@ -94,7 +94,7 @@ public class Order extends AbstractController {
 				
 			}
 			
-			request.setAttribute("msg", "알수없는 오류 발생");
+			request.setAttribute("msg", "로그인후 이용 가능합니다!");
 			request.setAttribute("loc", request.getContextPath()+"/index.wine");
 			
 			super.setRedirect(false);

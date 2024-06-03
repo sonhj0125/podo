@@ -26,7 +26,7 @@ public class Chart extends AbstractController {
 	         request.setAttribute("msg", "제품 판매량 통계는 관리자만 열람할 수 있습니다!");
 	         request.setAttribute("loc", "javascript:history.back()"); 
 	         
-	         // super.setRedirect(false);
+	         super.setRedirect(false);
 	         super.setViewPage("/WEB-INF/msg.jsp");
 	         return; // 종료
 	      }

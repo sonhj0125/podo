@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -66,13 +65,7 @@ public class AdminProduct extends AbstractController {
          else { //"POST" 이라면
             
             // 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
-                  ServletContext svlCtx = session.getServletContext();
                   String uploadFileDir = "C:/NCS/podo/src/main/webapp/images/product";
-//                System.out.println(uploadFileDir);
-               // String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyMVC\\src\\main\\webapp\\images";
-                  
-               // System.out.println("=== 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir ==> " + uploadFileDir);
-               //  위와 같이 하면 파일 업로드 후에 어떤분들은 이클립스에서 새로고침을 해주어야 된다.
                   
                 // ==== >>> 파일을 업로드 해준다 <<< ==== //
                 String pimg = null;
@@ -168,10 +161,7 @@ public class AdminProduct extends AbstractController {
                        }
                       
                    }// end of if(part.getHeader("Content-Disposition").contains("filename="))------------------------------
-                   else { // form 태그에서 전송되어온 것이 파일이 아닐 경우
-                        String formValue = request.getParameter(part.getName());
-                   //   System.out.printf("파일이 아닌 경우 파라미터(name)명 : %s, value : %s \n"
-                   //                     , part.getName(), formValue);
+                   else { 
                    }
                   System.out.println("");
                   

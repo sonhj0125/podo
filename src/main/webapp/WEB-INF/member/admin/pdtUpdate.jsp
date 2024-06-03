@@ -286,7 +286,7 @@ label.input-group-text, span.input-group-text {
 	        </div>																								
 	        
 	      	<input type="reset" value="취소"  style="width: 120px; margin-top:5%; " class="btn btn-secondary btn-lg" /> 
-           	<input type="button" value="제품수정" id="btnUpdate" style="width: 120px; margin-top:5%; margin-left	:50%;" class="btn btn-primary btn-lg mr-5" /> 
+           	<input type="button" value="제품수정" id="btnUpdate" style="width: 120px; margin-top:5%; margin-left	:5%;" class="btn btn-primary btn-lg mr-5" /> 
            	  	
 		</div>
    </form>

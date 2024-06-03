@@ -161,6 +161,13 @@ label.input-group-text, span.input-group-text {
 	         }
 	         
 	      });//end of 제품등록하기----------------------------------------
+	      
+	      <%-- 취소 버튼 누르면 새로고침하고 뒤로 나가기 --%>
+	      $("input.btn-secondary").click(function(){
+				javascript:history.go(0);
+	      		location.href="<%=ctxPath%>/index.wine";
+			
+			});
 		
 	}); // end of $(document).ready(function(){})
 
@@ -168,7 +175,7 @@ label.input-group-text, span.input-group-text {
 
 	<div align="center" style="margin-bottom: 20px;">
 
-   	<div style="border: solid pink 3px; width: 250px; margin-top: 20px; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
+   	<div style="border: solid purple 3px; width: 250px; margin-top: 20px; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
       	<span style="font-size: 15pt; font-weight: bold;">제품등록&nbsp;[관리자전용]</span>   
    	</div>
    	
@@ -290,10 +297,10 @@ label.input-group-text, span.input-group-text {
                 <span class="input-group-text">재고량</span>
             	<input class="form-control text-center me-3 infoData" id="count" type="number" value="1" min="0" max="99999" style="max-width: 5rem" name="pstock" id="pstock"/>
 	        </div>																								
-	        
+	       
 	      	<input type="reset" value="취소"  style="width: 120px; margin-top:5%; " class="btn btn-secondary btn-lg" /> 
-           	<input type="button" value="제품등록" id="btnRegister" style="width: 120px; margin-top:5%; margin-left	:50%;" class="btn btn-primary btn-lg mr-5" /> 
-           	  	
+           	<input type="button" value="제품등록" id="btnRegister" style="width: 120px; margin-top:5%; margin-left	:5%;" class="btn btn-primary btn-lg mr-5" /> 
+           	 	
 		</div>
    </form>
 
