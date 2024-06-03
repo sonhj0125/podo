@@ -3,6 +3,7 @@ package login.controller;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,18 +80,15 @@ public class Signin extends AbstractController {
 							SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 							String nowStr = sdf.format(now);
 							String updatedayStr = loginUser.getRegisterDay();
-							
-							
+						
 							String[] nowArr = nowStr.split("[-]");
 							String[] updatedayArr = updatedayStr.split("[-]");
 							
 							LocalDate date1 = LocalDate.of(Integer.parseInt(nowArr[0]) , Integer.parseInt(nowArr[1]), Integer.parseInt(nowArr[2]));
 					        LocalDate date2 = LocalDate.of(Integer.parseInt(updatedayArr[0]), Integer.parseInt(updatedayArr[1]), Integer.parseInt(updatedayArr[2]));
 					        
-					        Period period = Period.between(date2, date1);
+					        dayDiff = (int)ChronoUnit.DAYS.between(date2, date1);
 					        
-					        dayDiff = period.getDays();
-						     
 					        
 						}else { // pw 변경이력 O
 							
@@ -107,9 +105,7 @@ public class Signin extends AbstractController {
 								LocalDate date1 = LocalDate.of(Integer.parseInt(nowArr[0]) , Integer.parseInt(nowArr[1]), Integer.parseInt(nowArr[2]));
 						        LocalDate date2 = LocalDate.of(Integer.parseInt(updatedayArr[0]), Integer.parseInt(updatedayArr[1]), Integer.parseInt(updatedayArr[2]));
 						        
-						        Period period = Period.between(date1, date2);
-						        
-						        dayDiff = period.getDays();
+						        dayDiff = (int)ChronoUnit.DAYS.between(date2, date1);
 						        
 							}catch(Exception e) {
 								e.printStackTrace();
