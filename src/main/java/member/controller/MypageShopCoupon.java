@@ -1,5 +1,7 @@
 package member.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
+import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
 import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
@@ -33,8 +36,12 @@ public class MypageShopCoupon extends AbstractController {
 		if (loginUser != null) {
 			// 로그인을 했을 경우
 			
-
 			request.setAttribute("loginUser", loginUser);
+			
+			int availableCoupons = codao.getAvailableCoupons(loginUser.getUserid());
+			session.setAttribute("availableCoupons", availableCoupons);
+			
+			request.setAttribute("availableCoupons", availableCoupons);
 			
 			String userid = loginUser.getUserid();
 
@@ -123,7 +130,6 @@ public class MypageShopCoupon extends AbstractController {
 			
             // **** 페이징 처리를 한 모든 쿠폰 목록 보여주기 **** //
             List<MyCouponDTO> MyCouponpagingList = codao.selectMyCouponpaging(paraMap);
-			
             
 			request.setAttribute("MyCouponpagingList", MyCouponpagingList);
 			request.setAttribute("sizePerPage", sizePerPage);
@@ -143,7 +149,6 @@ public class MypageShopCoupon extends AbstractController {
 			
 			int totalCoupon = 0;
 			int usedCoupon = 0;
-			int availableCoupons = 0;
 			if(myCouponList.size() != 0) {
 				totalCoupon = myCouponList.size(); // 총 쿠폰 발행 수
 				
@@ -151,16 +156,13 @@ public class MypageShopCoupon extends AbstractController {
 					if(myCoupon.getCostatus() == 2) {
 						usedCoupon++; // 사용한 쿠폰 수
 					}
-					if(myCoupon.getCostatus() == 1) {
-						availableCoupons++; // 가용 쿠폰 수
-					}
+
 				}
 			}
 			
 			request.setAttribute("myCouponList", myCouponList);
 			request.setAttribute("totalCoupon", totalCoupon);
 			request.setAttribute("usedCoupon", usedCoupon);
-			request.setAttribute("availableCoupons", availableCoupons);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/member/mypageShopCoupon.jsp");
