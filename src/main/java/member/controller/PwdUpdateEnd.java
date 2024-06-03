@@ -53,6 +53,8 @@ public class PwdUpdateEnd extends AbstractController {
 					loginUser.setPwd(new_pwd);
 
 					msg = "비밀번호 변경 성공!!";
+					
+					session.invalidate();
 					loc = request.getContextPath()+"/index.wine"; // 시작페이지로 이동한다.
 				}
 				
