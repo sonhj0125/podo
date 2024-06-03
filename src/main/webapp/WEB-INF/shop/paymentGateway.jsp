@@ -23,7 +23,7 @@ window.onload = () => {
        pay_method : 'card',
        merchant_uid : 'merchant_' + new Date().getTime(),
        name : '${requestScope.productName}',
-       amount : ${requestScope.price}, //${requestScope.price},
+       amount : 100, //${requestScope.price},
        buyer_email : '${requestScope.email}',
        buyer_name : '${requestScope.name}',
        buyer_tel : '${requestScope.mobile}',
