@@ -6,9 +6,38 @@
 %>
 
 <jsp:include page="header.jsp" />
-<div class="text-center">
+
+<script src="https://unpkg.com/typeit@8.8.3/dist/index.umd.js"></script>
+<script>
+
+	document.addEventListener('DOMContentLoaded', () => {
+	
+		new TypeIt('#testtype')
+		.pause(1000)
+		.go();
+		
+	});
+	
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<style>
+	h1#testtype {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-style: italic;
+}
+</style>
+
+
+
+<div id="mainView" class="text-center">
 	<img src="<%=ctxPath %>/images/main.png" class="img-fluid rounded" alt="...">
-</div> 
+	<h1 id="testtype">Everything About Premium Wine, PODO</h1>
+</div>
+
+
     <div id="container">
         <div>
             <h1 class="py-5 px-lg-5 text-center">
@@ -30,6 +59,7 @@
 		                            <c:if test="${newList.pstock != '0'}">
 		                            	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
 		                            </c:if>
+		                            <div class="badge position-absolute " style="top: 0.5rem; left : 0.5rem; background-color: #15F54D;">New</div>
 		                            <!-- Product image-->
 		                            <img class="card-img-top" src="<%=ctxPath %>/images/product/${newList.pimg}" alt="..." />
 		                            <div class="card-body p-4">
@@ -76,7 +106,7 @@
 	            <div class="container px-4 px-lg-5 mt-5">
 	                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 	                    
-	                    <c:forEach var="popList" items="${requestScope.popProductList}" end="3">
+	                    <c:forEach var="popList" items="${requestScope.popProductList}" end="3" varStatus="status">
 	                    	
 	                    	<div class="col mb-5">
 		                        <div class="card h-100 curpointer" onclick="showProduct('${popList.pindex}')">
@@ -87,6 +117,7 @@
 		                            <c:if test="${popList.pstock != '0'}">
 		                            	<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
 		                            </c:if>
+		                            <div class="badge position-absolute " style="top: 0.5rem; left : 0.5rem; background-color: pink;">${popList.like} Likes</div>
 		                            <!-- Product image-->
 		                            <img class="card-img-top" src="<%=ctxPath %>/images/product/${popList.pimg}" alt="..." />
 		                            <div class="card-body p-4">

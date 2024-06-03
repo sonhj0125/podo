@@ -4,13 +4,13 @@ $(function() {
 
     document.getElementById("saleNat").addEventListener("change", () => {
         if (document.getElementById("saleNat").checked) {
-            method.innerText = "할인 금액";
+            method.innerText = "▶ 할인 금액";
         }
     });
 
     document.getElementById("salePer").addEventListener("change", () => {
         if (document.getElementById("salePer").checked) {
-            method.innerText = "할인율";
+            method.innerText = "▶ 할인율";
         }
     });
 

@@ -771,4 +771,64 @@ public class CartDAO_imple implements CartDAO {
 	}
 
 	
+	
+	// [제품 삭제] 장바구니 내역 삭제하기
+	@Override
+	public int deleteCartFromPindex(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from cart "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteCartFromPindex(String pindex) throws SQLException ------------
+
+	
+	
+	// 제품에 대한 장바구니 개수 확인
+	@Override
+	public int getCartCnt(String pindex) throws SQLException {
+
+		int cnt = 0;
+
+		try{
+
+			conn = ds.getConnection();
+
+			String sql = " select count(*) as count"
+					   + " from cart "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			cnt = rs.getInt(1);
+			
+		}finally {
+			close();
+		}
+		
+		return cnt;
+		
+	} // end of public int getCartCnt(String pindex) throws SQLException -----------------
+
+	
 }

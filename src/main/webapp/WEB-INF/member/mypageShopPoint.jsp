@@ -111,7 +111,7 @@ function searchData() {
 
 
 <div class="container" style="padding: 3% 0;">
-	<h2 style="font-weight:bold; margin-bottom:2%; text-align:center;"><img src="<%=ctxPath%>/images/point.png" style="width:40px; vertical-align: text-top;">&nbsp;마이페이지</h2>
+	<h2 style="font-weight:bold; margin-bottom:2%; text-align:center;"><img src="<%=ctxPath%>/images/point.png" style="width:40px; vertical-align: text-top;">&nbsp;적립금</h2>
 	<hr>
 	
 	<table class="table" style="width:50;">

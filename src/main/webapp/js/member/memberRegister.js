@@ -339,7 +339,7 @@ function goRegister(toastLive,toastmsg) {
         toastBootstrap.show();
         return;
     }else if(age<20){
-        toastmsg.innerHTML="20세 미만은 가입할수 없습니다";
+        toastmsg.innerHTML="20세 미만은 가입할 수 없습니다!";
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
         toastBootstrap.show();
         return;

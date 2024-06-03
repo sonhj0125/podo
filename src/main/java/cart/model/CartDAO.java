@@ -63,6 +63,12 @@ public interface CartDAO {
 
 	// 빠른 구매 cidx값 받기
 	String directselectCidx(String userid) throws SQLException;
+	
+	// 제품에 대한 장바구니 개수 확인
+	int getCartCnt(String pindex) throws SQLException;
+
+	// [제품 삭제] 장바구니 내역 삭제하기
+	int deleteCartFromPindex(String pindex) throws SQLException;
 
 
 

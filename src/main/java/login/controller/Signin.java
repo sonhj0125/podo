@@ -2,7 +2,7 @@ package login.controller;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +49,15 @@ public class Signin extends AbstractController {
 				
 				if(loginUser != null) { // id 있음
 					
+					if("3".equals(loginUser.getMemberIdx())) {
+						request.setAttribute("msg","정지 회원입니다. 관리자 문의 바람");
+						request.setAttribute("loc", location);
+							
+						super.setRedirect(false);
+						super.setViewPage("/WEB-INF/msg.jsp");
+						return;
+					}
+					
 					paraMap.put("clientip", request.getRemoteAddr());
 					
 					if(mdao.logwrite(paraMap)==1) { // Log 입력 정상
@@ -70,18 +79,15 @@ public class Signin extends AbstractController {
 							SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 							String nowStr = sdf.format(now);
 							String updatedayStr = loginUser.getRegisterDay();
-							
-							
+						
 							String[] nowArr = nowStr.split("[-]");
 							String[] updatedayArr = updatedayStr.split("[-]");
 							
 							LocalDate date1 = LocalDate.of(Integer.parseInt(nowArr[0]) , Integer.parseInt(nowArr[1]), Integer.parseInt(nowArr[2]));
 					        LocalDate date2 = LocalDate.of(Integer.parseInt(updatedayArr[0]), Integer.parseInt(updatedayArr[1]), Integer.parseInt(updatedayArr[2]));
 					        
-					        Period period = Period.between(date2, date1);
+					        dayDiff = (int)ChronoUnit.DAYS.between(date2, date1);
 					        
-					        dayDiff = period.getDays();
-						     
 					        
 						}else { // pw 변경이력 O
 							
@@ -98,9 +104,7 @@ public class Signin extends AbstractController {
 								LocalDate date1 = LocalDate.of(Integer.parseInt(nowArr[0]) , Integer.parseInt(nowArr[1]), Integer.parseInt(nowArr[2]));
 						        LocalDate date2 = LocalDate.of(Integer.parseInt(updatedayArr[0]), Integer.parseInt(updatedayArr[1]), Integer.parseInt(updatedayArr[2]));
 						        
-						        Period period = Period.between(date1, date2);
-						        
-						        dayDiff = period.getDays();
+						        dayDiff = (int)ChronoUnit.DAYS.between(date2, date1);
 						        
 							}catch(Exception e) {
 								e.printStackTrace();

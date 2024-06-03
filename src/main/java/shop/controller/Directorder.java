@@ -31,6 +31,7 @@ public class Directorder extends AbstractController{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String method = request.getMethod();
+		String loc = request.getParameter("url");
 		
 		if("POST".equalsIgnoreCase(method)) {
 			
@@ -86,8 +87,8 @@ public class Directorder extends AbstractController{
 				
 			}
 			
-			request.setAttribute("msg", "알수없는 오류 발생");
-			request.setAttribute("loc", request.getContextPath()+"/index.wine");
+			request.setAttribute("msg", "로그인 후 이용 할수 있습니다");
+			request.setAttribute("loc", loc);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/msg.jsp");

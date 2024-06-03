@@ -43,7 +43,7 @@ $(function () {
     	}else{
 
     		$("#btn-success-idFind").hide();
-    		msg.text(`회원님의 아이디는 : ${userid}`);
+    		msg.text(`회원님의 아이디 : ${userid}`);
     		msg.removeClass("ngSearch")
     		msg.addClass("gSearch");
     	}

@@ -51,7 +51,7 @@ label.input-group-text, span.input-group-text {
 	       	 const bool = regExp_name.test(pprice);
 	       	 
 	       	 if(!bool) {
-	       		 alert("가격은 숫자로면 입력해주세요!");
+	       		 alert("가격은 숫자로만 입력해주세요!");
 	       		 return;
 	       	 }
     	 
@@ -118,7 +118,7 @@ label.input-group-text, span.input-group-text {
 	            
 	            if(val == "") {
 	               
-	               alert("필수입력사항입니다!");
+	               alert("필수 입력사항입니다!");
 	               is_infoData_OK = false;
 	               return false; // 일반적인 for문의 break; 와 같은 기능이다.
 	            }
@@ -161,6 +161,13 @@ label.input-group-text, span.input-group-text {
 	         }
 	         
 	      });//end of 제품등록하기----------------------------------------
+	      
+	      <%-- 취소 버튼 누르면 새로고침하고 뒤로 나가기 --%>
+	      $("input.btn-secondary").click(function(){
+				javascript:history.go(0);
+	      		location.href="<%=ctxPath%>/index.wine";
+			
+			});
 		
 	}); // end of $(document).ready(function(){})
 
@@ -168,7 +175,7 @@ label.input-group-text, span.input-group-text {
 
 	<div align="center" style="margin-bottom: 20px;">
 
-   	<div style="border: solid pink 3px; width: 250px; margin-top: 20px; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
+   	<div style="border: solid purple 3px; width: 250px; margin-top: 20px; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
       	<span style="font-size: 15pt; font-weight: bold;">제품등록&nbsp;[관리자전용]</span>   
    	</div>
    	
@@ -193,7 +200,7 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pHomeTown">원산지</label>
-				<select class="form-select infoData" id="pHomeTown" name="phometown" id="pHomeTown">
+				<select class="form-select infoData" name="phometown" id="phometown">
 					<option selected>선택하세요.</option>
 					<option value="칠레">칠레</option>
 					<option value="미국">미국</option>
@@ -209,7 +216,7 @@ label.input-group-text, span.input-group-text {
 			<div class="input-group">
 			  	<span class="input-group-text">제품명 및 영문명</span>
 			  	<input type="text" placeholder="제품의 한글이름을 입력해주세요" aria-label="name" class="form-control infoData" name="pname" id="pname">
-			 	<input type="text" placeholder="제픔의 영문이름을 입력해주세요" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
+			 	<input type="text" placeholder="제품의 영문이름을 입력해주세요" aria-label="ename" class="form-control infoData" name="pengname" id="pengname">
 			</div>
 			
 			
@@ -227,7 +234,7 @@ label.input-group-text, span.input-group-text {
 		
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pBody">바디</label>
-				<select class="form-select infoData" id="pBody" name="pbody" id="pbody">
+				<select class="form-select infoData" name="pbody" id="pbody">
 					<option selected>선택하세요.</option>
 					<option value="1">가벼움</option>
 					<option value="2">약간가벼움</option>
@@ -239,7 +246,7 @@ label.input-group-text, span.input-group-text {
 		      	
 		    <div class="input-group mb-3">
 				<label class="input-group-text" for="pAcid">산도</label>
-				<select class="form-select infoData" id="pAcid" name="pacid" id="pAcid">
+				<select class="form-select infoData" name="pacid" id="pacid">
 					<option selected>선택하세요.</option>
 					<option value="1">낮음</option>
 					<option value="2">약간낮음</option>
@@ -251,7 +258,7 @@ label.input-group-text, span.input-group-text {
 		      	
 		    <div class="input-group mb-3">
 				<label class="input-group-text" for="pTannin">타닌</label>
-				<select class="form-select infoData" id="pTannin" name="ptannin" id="pTannin">
+				<select class="form-select infoData" name="ptannin" id="ptannin">
 					<option selected>선택하세요.</option>
 					<option value="1">약함</option>
 					<option value="2">약간약함</option>
@@ -263,7 +270,7 @@ label.input-group-text, span.input-group-text {
 			
 			<div class="input-group mb-3">
 				<label class="input-group-text" for="pAcl">도수(알코올)</label>
-				<select class="form-select infoData" id="pAcl" name="pacl" id="pAcl">
+				<select class="form-select infoData" name="pacl" id="pacl">
 					<option selected>선택하세요.</option>
 					<option value="1">낮음(~11%)</option>
 					<option value="2">중간(12~13%)</option>
@@ -290,10 +297,10 @@ label.input-group-text, span.input-group-text {
                 <span class="input-group-text">재고량</span>
             	<input class="form-control text-center me-3 infoData" id="count" type="number" value="1" min="0" max="99999" style="max-width: 5rem" name="pstock" id="pstock"/>
 	        </div>																								
-	        
+	       
 	      	<input type="reset" value="취소"  style="width: 120px; margin-top:5%; " class="btn btn-secondary btn-lg" /> 
-           	<input type="button" value="제품등록" id="btnRegister" style="width: 120px; margin-top:5%; margin-left	:50%;" class="btn btn-primary btn-lg mr-5" /> 
-           	  	
+           	<input type="button" value="제품등록" id="btnRegister" style="width: 120px; margin-top:5%; margin-left	:5%;" class="btn btn-primary btn-lg mr-5" /> 
+           	 	
 		</div>
    </form>
 

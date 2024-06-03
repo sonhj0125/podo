@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,8 +97,17 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPacl(rs.getString("ptannin"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
-				pdto.setPindex(rs.getInt("pindex"));
+				
+				int pindex = rs.getInt("pindex");
+				
+				pdto.setPindex(pindex);
 				pdto.setPimg(rs.getString("pimg"));
+				
+				ProductDAO_add pdaoadd = new ProductDAO_add();
+				
+				int like = pdaoadd.getlikecntAdd(pindex);
+				
+				pdto.setLike(like);
 				
 				resultList.add(pdto);
 				
@@ -970,8 +980,17 @@ public class ProductDAO_imple implements ProductDAO {
 				pdto.setPacl(rs.getString("ptannin"));
 				pdto.setPdetail(rs.getString("pdetail"));
 				pdto.setPstock(rs.getString("pstock"));
-				pdto.setPindex(rs.getInt("pindex"));
+				
+				int pindex = rs.getInt("pindex");
+				
+				pdto.setPindex(pindex);
 				pdto.setPimg(rs.getString("pimg"));
+				
+				ProductDAO_add pdaoadd = new ProductDAO_add();
+				
+				int like = pdaoadd.getlikecntAdd(pindex);
+				
+				pdto.setLike(like);
 				
 				pdto_list.add(pdto);
 				
@@ -1711,6 +1730,325 @@ public class ProductDAO_imple implements ProductDAO {
 	       return result4;
 	       
 	} // end of public int delReviewAd(String rindex) throws SQLException
+
+	// 제품 수정하기
+	@Override
+	public int updateProduct(ProductDTO pdto) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " update product "
+					   + " set pname = ?, pengname = ?, ptype = ?, "
+					   + "	   phometown = ?, pprice = ?, ppoint = ?, "
+					   + "	   pbody = ?, pacid = ?, ptannin = ?, "
+					   + "	   pacl = ?, pdetail = ?, pstock = ? "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, pdto.getPname());
+			pstmt.setString(2, pdto.getPengname());
+			pstmt.setString(3, pdto.getPtype());
+			pstmt.setString(4, pdto.getPhometown());
+			pstmt.setString(5, pdto.getPprice());
+			pstmt.setString(6, pdto.getPpoint());
+			pstmt.setString(7, pdto.getPbody());
+			pstmt.setString(8, pdto.getPacid());
+			pstmt.setString(9, pdto.getPtannin());
+			pstmt.setString(10, pdto.getPacl());
+			pstmt.setString(11, pdto.getPdetail());
+			pstmt.setString(12, pdto.getPstock());
+			
+			pstmt.setInt(13, pdto.getPindex());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int updateProduct(ProductDTO pdto) throws SQLException -----------------
+
+	
+	// 제품타입별 판매량 수 알아오기
+	@Override
+	public List<Map<String, String>> chart_map_List() throws SQLException {
+		
+		List<Map<String, String>> chart_map_List = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT P.pType, nvl(sum(O.OVOLUME),0) AS Ordersum "
+					   + " FROM Product P "
+					   + " LEFT JOIN Orders O ON P.pindex = O.pindex "
+					   + " GROUP BY P.pType ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				String ptype =  rs.getString("pType");
+				String ordersum =  rs.getString("Ordersum");
+				
+				Map<String, String> map = new HashMap<>();
+				map.put("ptype", ptype);
+				map.put("ordersum", ordersum);
+				
+				chart_map_List.add(map);
+				
+			}// end of while----------------------------
+			
+		} finally {
+			close();
+		}
+
+		return chart_map_List;
+		
+	}// end of public List<Map<String, String>> chart_map_List() throws SQLException ------------
+
+	
+	
+	// [제품 삭제] 제품번호에 대한 주문번호 여러 개 받아오기
+	@Override
+	public List<String> getOindexListByPindex(String pindex) throws SQLException {
+		
+		List<String> list = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select oindex "
+					   + " from orders "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("oindex"));
+			}
+			
+			
+		} finally {
+			close();
+		}
+		
+		return list;
+		
+	} // end of public String[] getOindexByPindex(String pindex) throws SQLException -------------
+
+	
+	
+	// [제품 삭제] 리뷰 삭제하기
+	@Override
+	public int deleteReview(String oindex) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from review "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteReview(String oindex) throws SQLException ------------
+
+	
+	
+	// [제품 삭제] 배송정보 삭제하기
+	@Override
+	public int deleteDelivery(String oindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from delivery "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // public int deleteDelivery(String oindex) throws SQLException ---------------
+
+	
+	
+	// [제품 삭제] 주문내역 삭제하기
+	@Override
+	public int deleteOrders(String oindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from orders "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteOrders(String oindex) throws SQLException ------------
+
+	
+	
+	// [제품 삭제] 좋아요 삭제하기
+	@Override
+	public int deleteLikeit(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from likeit "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteLikeit(String pindex) throws SQLException --------------
+
+	
+	
+	// [제품 삭제] 제품상세이미지 삭제하기
+	@Override
+	public int deletePdimg(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from productdetailimg "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // public int deletePdimg(String pindex) throws SQLException ----------------
+
+	
+	
+	// 제품 삭제하기
+	@Override
+	public int deleteProduct(String pindex) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from product "
+					   + " where pindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pindex);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	} // end of public int deleteProduct(String pindex) throws SQLException ----------------
+
+	
+	
+	// [제품 삭제] 주문번호에 대한 배송정보가 존재하는지 확인
+	@Override
+	public boolean isExistDeliveryByOindex(String oindex) throws SQLException {
+
+		boolean isExistDelivery = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					   + " from delivery "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			isExistDelivery = rs.next();
+			
+		} finally {
+			close();
+		}
+		
+		return isExistDelivery;
+		
+	} // end of public boolean isExistDeliveryByOindex(String oindex) throws SQLException --------------
+
 
 
 }

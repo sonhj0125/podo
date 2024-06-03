@@ -235,19 +235,32 @@
 		});
 		
 		<%-- 관리자 회원관리 클릭시 --%>
-        $("div#adminMember").bind('click',()=>{
+        $("div.adminMember").bind('click',()=>{
          	location.href="<%=ctxPath%>/member/admin/adminMember.wine";
         });
       
 		<%-- 관리자 제품등록 클릭시 --%>
-		$("div#adminProduct").bind('click',()=>{
+		$("div.adminProduct").bind('click',()=>{
 		   location.href="<%=ctxPath%>/member/admin/adminProduct.wine";
 		});
 		
+		<%-- 관리자 제품 수정/삭제 클릭시 --%>
+		$("div#adminProductUpdate").bind('click',()=>{
+		   location.href="<%=ctxPath%>/shop/list.wine";
+		});
+		
 		<%-- 관리자 주문관리 클릭시 --%>
-		$("div#adminOrder").bind('click',()=>{
+		$("div.adminOrder").bind('click',()=>{
 		   location.href="<%=ctxPath%>/member/admin/adminOrder.wine";
 		});
+		
+		<%-- 관리자 제품별 판매량 통계 클릭시 --%>
+		$("div#adminChart").bind('click',()=>{
+		   location.href="<%= ctxPath %>/member/admin/chart.wine";
+		});
+		
+		
+		
 		
 	} // end of window.onload
 	
@@ -281,6 +294,13 @@
 		
 	}
 	
+	// product 보기
+	function updateProduct(idx){
+		
+		location.href = "<%=ctxPath %>/member/admin/updateProduct.wine?pindex="+idx;
+		
+	}
+	
 	<%-- 와인 검색 --%>
 	function goSearch() {
 		
@@ -308,6 +328,12 @@
 
 	}
 	
+	function kakao(){
+		
+		window.open('https://open.kakao.com/o/gwCJMkug', '_blank', '');
+		
+	}
+	
 </script>
     
 </head>
@@ -332,8 +358,12 @@
                 <ul class="nav">
                     <li class="nav-item fw-bold"><label id="btnShop" class="nav-link link-body-emphasis px-2 curpointer">Shop</label></li>
                     <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnEvent" class="nav-link link-body-emphasis px-2 curpointer">Event</label></li>
+                    
+                    <c:if test="${not empty sessionScope.loginUser && sessionScope.loginUser.memberIdx != 9}">
+                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
+                    </c:if>
+                    
                     <li class="nav-item fw-bold"><label id="btnAbout" class="nav-link link-body-emphasis px-2 curpointer">About</label></li>
                 </ul>
             </div>
@@ -345,8 +375,6 @@
                     <c:if test="${not empty sessionScope.loginUser}">
                        <li class="nav-item fw-bold"><label id="btnSignout" class="nav-link link-body-emphasis px-2 curpointer">Sign out</label></li>
                     </c:if>
-                    <div class="vr m-2"></div>
-                    <li class="nav-item fw-bold"><label id="btnCart" class="nav-link link-body-emphasis px-2 curpointer">Cart</label></li>
                     <div class="vr m-2"></div>
                     <li class="nav-item fw-bold"><label id="btnSearch" class="nav-link link-body-emphasis px-2 curpointer" data-bs-toggle="modal" data-bs-target="#searchModal">Search</label></li>
                 </ul>
@@ -379,12 +407,13 @@
                    <div class="modal-content">
                      <div class="modal-body">
                      <div class="input-group">
-                          <div class="form-outline" data-mdb-input-init style="padding-left: 8.5%;">
-                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 600px; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>                             
-                          </div> 
-                          <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
+                          <div class="form-outline" data-mdb-input-init style="width: 100%; display: flex; text-align: center;">
+                            <input type="search" id="searchWord" name="searchWord" class="form-control" style=" width: 100%; maxlength=20; height: 50px;" placeholder="와인을 검색하세요"/>
+                            <button type="button" class="btn btn-primary" id="wineSearch" style="height: 50px;" data-mdb-ripple-init>
                                   <i class="fas fa-search"></i>
-                          </button>
+                          </button>                             
+                          </div> 
+                          
                      </div>
                      </div>
                    </div>
@@ -427,29 +456,53 @@
 
             <hr style="width: 90%; color: purple; border: solid 2px;">       
             <div style="font-size: 15pt; margin:3% 0;"><span style="font-weight: bold; color: purple;">${sessionScope.loginUser.name}</span>님 안녕하세요!</div>
-           <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
-            <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
-            	<c:if test="${sessionScope.reviewCnt != 0}">
-               		<span class="sticky-indicator ms-4 border border-light rounded-circle"></span>
-            	</c:if>
-                  <i class="fa-regular fa-newspaper" style="margin: 10%;">
-                  </i>
-                  <br>
-                  <div style="font-weight: bold;">리뷰</div>
-                  <div style="color: purple;">${sessionScope.reviewCnt}</div>
-            </div>
-            <div style="margin-right: 5%; cursor: pointer;">
-               <i class="fa-solid fa-ticket"></i>
-               <div id="memberCoupon2" style="font-weight: bold; cursor: pointer;">쿠폰</div>
-               <div style="color: purple;">${sessionScope.availableCoupons}</div>
-            </div>
-            <div style="cursor: pointer;">
-               <i class="fa-solid fa-circle-dollar-to-slot"></i>
-               <br>
-               <div id="memberPoint2" style="font-weight: bold; cursor: pointer;">적립금</div>
-               <div style="color: purple;">${sessionScope.loginUser.point}</div>
-            </div>
-           </div>
+            
+            <%-- 관리자가 아닐 때 --%>
+            <c:if test="${sessionScope.loginUser.memberIdx != 9}">
+	           <div style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
+	            <div id="reviewBtn" class="reviewList" class="position-relative" style="margin-right: 5%; cursor: pointer;">
+	            	<c:if test="${sessionScope.reviewCnt != 0}">
+	               		<span class="sticky-indicator ms-4 border border-light rounded-circle"></span>
+	            	</c:if>
+	                  <i class="fa-regular fa-newspaper" style="margin: 10%;">
+	                  </i>
+	                  <br>
+	                  <div style="font-weight: bold;">리뷰</div>
+	                  <div style="color: purple;">${sessionScope.reviewCnt}</div>
+	            </div>
+	            <div style="margin-right: 5%; cursor: pointer;">
+	               <i class="fa-solid fa-ticket"></i>
+	               <div id="memberCoupon2" style="font-weight: bold; cursor: pointer;">쿠폰</div>
+	               <div style="color: purple;">${sessionScope.availableCoupons}</div>
+	            </div>
+	            <div style="cursor: pointer;">
+	               <i class="fa-solid fa-circle-dollar-to-slot"></i>
+	               <br>
+	               <div id="memberPoint2" style="font-weight: bold; cursor: pointer;">적립금</div>
+	               <div style="color: purple;">${sessionScope.loginUser.point}</div>
+	            </div>
+	           </div>
+            </c:if>
+            
+            <%-- 관리자일 때 --%>
+            <c:if test="${sessionScope.loginUser.memberIdx == 9}">
+   	           <div class="mt-3" style="display:flex; width: 90%; justify-content: space-between; text-align: center;">
+	            <div class="adminMember" class="position-relative" style="margin-right: 5%; cursor: pointer;">
+	                  <i class="fa-solid fa-users"></i>
+	                  <br>
+	                  <div style="font-weight: bold;">회원 관리</div>
+	            </div>
+	            <div class="adminOrder" style="margin-right: 5%; cursor: pointer;">
+	               <i class="fa-solid fa-list-check"></i>
+	               <div style="font-weight: bold; cursor: pointer;">주문 관리</div>
+	            </div>
+	            <div style="cursor: pointer;">
+	               <i class="fa-solid fa-wine-glass"></i>
+	               <br>
+	               <div class="adminProduct" style="font-weight: bold; cursor: pointer;">제품 등록</div>
+	            </div>
+	           </div>
+            </c:if>
            <hr style="width: 90%; color: purple; border: solid 2px;">  
      
         <div>
@@ -468,6 +521,7 @@
             </div>
        </div>
        
+       <c:if test="${sessionScope.loginUser.memberIdx != 9}">
        <div>
          <h4 style="font-weight: bold; margin-top: 13%;">쇼핑정보</h4>
          <hr style="width: 90%;">
@@ -478,14 +532,15 @@
                <div id="memberPoint" style="display: flex; margin-bottom: 2%; cursor: pointer;">적립금</div>
             </div>
        </div>
+       </c:if>
        
        <c:if test="${sessionScope.loginUser.memberIdx == '9'}">
 	      <div>
 	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 회원관리 메뉴</h5>
 	         <hr style="width: 90%;">
 	            <div>
-	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문 관리</div>
-	               <div id="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
+	               <div class="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">주문 관리</div>
+	               <div class="adminMember" style="display: flex; margin-bottom: 2%; cursor: pointer;">회원 관리</div>
 	               <div style="display: flex; margin-bottom: 2%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#adminCoupon">쿠폰 등록</div>
 	           </div>
 	       </div>
@@ -493,8 +548,9 @@
 	         <h5 style="font-weight: bold; margin-top: 13%;">관리자 제품관리 메뉴</h5>
 	         <hr style="width: 90%;">
 	            <div>
-	               <div id="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
-	               <div id="adminOrder" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
+	               <div class="adminProduct" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 등록</div>
+	               <div id="adminProductUpdate" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품 수정/삭제</div>
+	               <div id="adminChart" style="display: flex; margin-bottom: 2%; cursor: pointer;">제품별 판매량 통계</div>
 	           </div>
 	       </div>
         </c:if>

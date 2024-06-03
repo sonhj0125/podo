@@ -5,6 +5,7 @@ public class ProductDTO {
 	private String pname, pengname, ptype, phometown, pprice, 
 	ppoint, pbody, pacid, ptannin, pacl, pdetail, pimg, pstock, pdimg;
 	private int pindex, pdindex;
+	private int like;
 	
 	public String getPdimg() {
 		return pdimg;
@@ -102,6 +103,12 @@ public class ProductDTO {
 	}
 	public void setPpoint(String ppoint) {
 		this.ppoint = ppoint;
+	}
+	public int getLike() {
+		return like;
+	}
+	public void setLike(int like) {
+		this.like = like;
 	}
 	
 	
