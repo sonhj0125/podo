@@ -110,6 +110,9 @@ public interface ProductDAO {
 
 	// [제품 삭제] 리뷰 삭제하기
 	int deleteReview(String oindex) throws SQLException;
+	
+	// [제품 삭제] 주문번호에 대한 배송정보가 존재하는지 확인
+	boolean isExistDeliveryByOindex(String oindex) throws SQLException;
 
 	// [제품 삭제] 배송정보 삭제하기
 	int deleteDelivery(String oindex) throws SQLException;

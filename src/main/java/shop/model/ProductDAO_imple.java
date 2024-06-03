@@ -2018,6 +2018,37 @@ public class ProductDAO_imple implements ProductDAO {
 		
 	} // end of public int deleteProduct(String pindex) throws SQLException ----------------
 
+	
+	
+	// [제품 삭제] 주문번호에 대한 배송정보가 존재하는지 확인
+	@Override
+	public boolean isExistDeliveryByOindex(String oindex) throws SQLException {
+
+		boolean isExistDelivery = false;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					   + " from delivery "
+					   + " where oindex = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, oindex);
+			
+			rs = pstmt.executeQuery();
+			
+			isExistDelivery = rs.next();
+			
+		} finally {
+			close();
+		}
+		
+		return isExistDelivery;
+		
+	} // end of public boolean isExistDeliveryByOindex(String oindex) throws SQLException --------------
+
 
 
 }

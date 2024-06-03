@@ -318,3 +318,9 @@ where pindex = 146;
 commit;
 */
 
+
+
+select *
+from delivery
+where oindex = 151;
+

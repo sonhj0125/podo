@@ -54,16 +54,37 @@ public class PdtDelete extends AbstractController {
 					
 					for(String oindex : oindexList) {
 						
-						// 리뷰 삭제하기
-						int n1 = pdao.deleteReview(oindex);
+						// 주문번호에 대한 리뷰가 존재하는지 확인
+						boolean isExistReview = pdao.isExistReviewByOindex(oindex);
 						
-						// 배송정보 삭제하기
-						int n2 = pdao.deleteDelivery(oindex);
+						int n1 = 0;
 						
-						if(n1*n2 == 1) {
+						if(isExistReview) {
+							// 리뷰 삭제하기
+							n1 = pdao.deleteReview(oindex);
+							
+						} else {
+							n1 = 1;
+						}
+
+						// 주문번호에 대한 배송정보가 존재하는지 확인
+						boolean isExistDelivery = pdao.isExistDeliveryByOindex(oindex);
+						
+						int n2 = 0;
+						
+						if(isExistDelivery) {
+							// 배송정보 삭제하기
+							n2 = pdao.deleteDelivery(oindex);
+							
+						} else {
+							n2 = 1;
+						}
+						
+						if(n1 != 0 && n2 != 0) {
 							// 주문내역 삭제하기
 							o_result += pdao.deleteOrders(oindex);
 						}
+						
 					} // end of for -----------------------
 					
 					if(o_result == oindexList.size()) {
