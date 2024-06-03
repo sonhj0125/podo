@@ -104,7 +104,7 @@
 
                 <c:if test="${requestScope.myCouponList != null}">
                     <tr>
-                        <td>${requestScope.totalCoupon}</td>
+                        <td>${requestScope.totalMyCouponCount}</td>
                         <td>${requestScope.usedCoupon}</td>
                         <td>${requestScope.availableCoupons}</td>
                     </tr>

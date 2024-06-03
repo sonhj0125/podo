@@ -55,4 +55,7 @@ public interface CouponDAO {
 	// 관리자 회원관리 - 쿠폰넣기
 	int adminCouponIn(Map<String, String> paraMap) throws SQLException;
 
+	// 쿠폰 유효기간 확인
+	String getCouponCodate(String coname) throws SQLException;
+
 }

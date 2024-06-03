@@ -409,3 +409,22 @@ select *
 from member
 
 desc coupon
+
+
+select *
+from mycoupon
+where userid = 'TestID'
+
+  delete from mycoupon
+  where userid = 'TestID' and coname = '무료로 드려요 ㅎㅎ [100%할인]';
+  
+  delete from mycoupon
+  where userid = 'TestID' and coname = '무료로 드려요 ㅎㅎ [100%할인]';  
+  
+  commit;
+
+desc mycoupon;
+
+select *
+from coupon
+where coname = '무료로 드려요 ㅎㅎ [100%할인]'

@@ -519,11 +519,28 @@ public class CouponDAO_imple implements CouponDAO {
 				cdto.setCotype(rs.getInt("COTYPE"));
 				cdto.setCodiscount(rs.getInt("CODISCOUNT"));
 				
+				
+				// 쿠폰의 유효기간 확인
+            	SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+            	Date codate = sdformat.parse(rs.getString("CODATE"));
+            	
+            	Date now = new Date();	// 현재시각
+            	now = sdformat.parse(sdformat.format(now));
+            	
+            	if (now.compareTo(codate) > 0) { // 오늘이 쿠폰 유효기간보다 이후일 경우
+            		mcdto.setCostatus(3);
+    			}
+				
 				mcdto.setCodto(cdto);
 				
 				MyCouponpagingList.add(mcdto);
 			}// end of while(rs.next())---------------------
-		} finally {
+		}
+    	catch (ParseException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
 			close();
 		}
 		return MyCouponpagingList;
@@ -624,6 +641,34 @@ public class CouponDAO_imple implements CouponDAO {
 	      return result;
 	      
 	   } // end of public List<MyCouponDTO> adminCouponIn(String userid) throws SQLException
+
+
+	// 쿠폰 유효기간 확인
+	@Override
+	public String getCouponCodate(String coname) throws SQLException {
+		String CouponCodate = "";
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select CODATE "
+						+ " from coupon "
+						+ " where CONAME = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, coname);
+			rs = pstmt.executeQuery();
+			rs.next();
+			CouponCodate = rs.getString(1);	
+			
+			
+		} finally {
+			close();
+		}
+		
+		return CouponCodate;
+	} // public int getCouponCodate(String coname) throws SQLException --------------
 	
 	
 }
