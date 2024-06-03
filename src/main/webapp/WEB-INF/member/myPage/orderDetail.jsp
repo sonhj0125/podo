@@ -132,7 +132,7 @@ $(document).ready(function() {
                     </c:if>
                </div>
             </div>
-            <c:if test="${requestScope.ddto.odto.ostatus !=  1}">
+            <c:if test="${requestScope.ddto.odto.ostatus ==  3 || requestScope.ddto.odto.ostatus ==  4}">
                <div class="form-group row my-4" style="margin-bottom: 1.8%;">
                   <label class="col-2" style="width: 15.5%; font-weight: bold;">송장번호</label>
                   <div class="col-sm-7">
