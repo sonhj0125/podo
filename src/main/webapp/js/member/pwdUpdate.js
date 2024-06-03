@@ -65,7 +65,23 @@ $("input#pwd2").blur( (e) => {
 });
 
 function goPwdUpdate() {
-
+	
+	const toastLive = document.getElementById('liveToast');
+    const toastmsg = document.getElementById('toast-msg');
+	let checkPwd = false;
+	
+	if($("input#pwd").val().trim() == "") {
+		toastmsg.innerText="비밀번호를 입력해주세요";
+		const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+		toastBootstrap.show();
+		
+	} else if($("input#pwd2").val().trim() == "") {
+		toastmsg.innerText="비밀번호를 입력해주세요";
+		const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+		toastBootstrap.show();
+		
+	} else {
+		
 		let isNewPwd = true;
 		
 		$.ajax({
@@ -96,6 +112,10 @@ function goPwdUpdate() {
 			frm.submit();
 			
 		}
+	}
+	
+	
+
 
 }
 

@@ -187,7 +187,7 @@ public class OrderEnd extends AbstractController{
 				
 				loginuser.setPoint(newpoint);
 				
-				System.out.println("성공");
+//				System.out.println("성공");
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/shop/orderEnd.jsp");
