@@ -321,6 +321,6 @@ commit;
 
 
 select *
-from delivery
-where oindex = 151;
+from likeit
+where pindex = 152;
 

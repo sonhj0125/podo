@@ -97,7 +97,7 @@ public class PdtDelete extends AbstractController {
 				}
 				
 				// 제품에 대한 좋아요 수 확인
-				int likeCnt = pdao.getLikeCnt(result);
+				int likeCnt = pdao.getLikeCnt(Integer.parseInt(pindex));
 				
 				int l_result = 0;
 				
