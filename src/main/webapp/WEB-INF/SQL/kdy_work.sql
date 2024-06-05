@@ -1,4 +1,61 @@
 
+------------------------------ 데이터베이스 백업 ---------------------------------
+---- **** local sys로 연결하기 **** ----
+show user;
+-- USER이(가) "SYS"입니다.
+
+-- 이제 부터 오라클 계정생성시 계정명앞에 c## 붙이지 않고 생성하도록 하겠다.
+alter session set "_ORACLE_SCRIPT"=true;
+-- Session이(가) 변경되었습니다.
+
+create user semi_orauser4 identified by gclass default tablespace users;
+-- User SEMI_ORAUSER4이(가) 생성되었습니다.
+
+/*
+만약 user 이름이 중복돼서 생성이 안 될 경우
+drop user semi_orauser4 cascade;
+를 하고 다시 생성하기!
+*/
+
+grant connect, resource, create view, unlimited tablespace to semi_orauser4;
+-- Grant을(를) 성공했습니다.
+
+/*
+'새 접속'으로 local_semi_orauser4 만들기
+도구 - 데이터베이스 복사 - 소스(remote), 대상(local) - '조회' 누르고 '>>' 클릭 후 완료
+*/
+
+---- **** local_semi_orauser4 로 연결하기 **** ----
+show user;
+-- USER이(가) "SEMI_ORAUSER4"입니다.
+
+select * from tab;
+
+select *
+from product;
+
+/*
+C:\SW\apache-tomcat-9.0.79\conf\context.xml 과
+이클립스 Servers - 톰캣9 - context.xml 에서
+
+	<!-- ======= SemiDBCP Setting Start ======= -->
+	<Resource name="jdbc/semioracle" auth="Container"
+              type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@127.0.0.1:1521:xe"
+              username="semi_orauser4" password="gclass" maxTotal="20" maxIdle="20"
+              maxWaitMillis="10000"/>
+    <!-- ======= SemiDBCP Setting End ======= -->
+
+와 같이 ip 주소 127.0.0.1로 바꾸기
+*/
+----------------------------- 데이터베이스 백업 끝 --------------------------------
+
+
+
+
+
+
+
 -- Search창 와인 검색
 select pname, pengname, ptype, phometown, pprice, pdetail, pimg, pindex
 from product
