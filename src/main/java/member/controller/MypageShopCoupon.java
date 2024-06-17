@@ -1,7 +1,5 @@
 package member.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
-import coupon.domain.CouponDTO;
 import coupon.domain.MyCouponDTO;
 import coupon.model.CouponDAO;
 import coupon.model.CouponDAO_imple;
