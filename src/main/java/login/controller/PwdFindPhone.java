@@ -74,10 +74,10 @@ public class PwdFindPhone extends AbstractController {
 				// HashMap 에 받는사람번호, 보내는사람번호, 문자내용 등 을 저장한뒤 Coolsms 클래스의 send를 이용해 보냅니다.
 
 				// String api_key = "발급받은 본인의 API Key";  // 발급받은 본인 API Key
-				String api_key = "NCS3R0D49U5CD3TD";
+				String api_key = ""; // ★★★ 개인정보 유출 문제로 작성 X ★★★
 
 				// String api_secret = "발급받은 본인의 API Secret";  // 발급받은 본인 API Secret 
-				String api_secret = "QP9YUCN7FERRQJRMAKUGKUMZSSYXTUXG";
+				String api_secret = ""; // ★★★ 개인정보 유출 문제로 작성 X ★★★
 
 				Message coolsms = new Message(api_key, api_secret);
 				// net.nurigo.java_sdk.api.Message 임.
@@ -89,7 +89,7 @@ public class PwdFindPhone extends AbstractController {
 				// == 4개 파라미터(to, from, type, text)는 필수사항이다. ==
 				HashMap<String, String> smsMap = new HashMap<>();
 				smsMap.put("to", phone); // 수신번호
-				smsMap.put("from", "01042642722"); // 발신번호
+				smsMap.put("from", "01011111111"); // 발신번호 => ★★★ 개인정보 유출 문제로 작성 X ★★★
 				// 2020년 10월 16일 이후로 발신번호 사전등록제로 인해 등록된 발신번호로만 문자를 보내실 수 있습니다.
 				smsMap.put("type", "SMS"); // Message type ( SMS(단문), LMS(장문), MMS, ATA )
 				smsMap.put("text", smsContent); // 문자내용
